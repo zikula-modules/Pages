@@ -55,13 +55,15 @@ class Pages_Api_User extends Zikula_Api
             }
         }
 
+
         // if the parse parameter was true lets get the template source using our custom resource
         if ($args['parse']) {
-            $this->view->force_compile = true;
+            $view = Zikula_View::getInstance($this->getName());
+            $view->force_compile = true;
             //$this->view->register_resource('pagesvar');
             $resourceid = 'pagesitem'.$item['pageid'].$item['language'];
             $GLOBALS[$resourceid] =& $item['content'];
-            $item['content'] = $this->view->fetch("pagesvar:$resourceid", $item['pageid'], $item['pageid']);
+            $item['content'] = $view->fetch("pagesvar:$resourceid", $item['pageid'], $item['pageid']);
         }
 
         return $item;
