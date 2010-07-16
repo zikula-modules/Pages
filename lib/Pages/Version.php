@@ -17,7 +17,6 @@ class Pages_Version extends Zikula_Version
         //! this defines the module's url
         $meta['url']            = $this->__('pages');
         $meta['version']        = '2.4.2';
-        $meta['contact']        = 'http://zikula.org/';
 
         $meta['securityschema'] = array('Pages::'         => 'Page name::Page ID',
                 'Pages:category:' => 'Category ID::');
