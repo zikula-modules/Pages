@@ -41,7 +41,6 @@
 </ul>
 
 {modurl modname='Pages' func='view' startnum=$startnum assign='returnurl'}
-{modcallhooks hookobject='category' hookaction='display' module='Pages' returnurl=$returnurl}
 
 {pager show='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' shift=1}
 {/if}

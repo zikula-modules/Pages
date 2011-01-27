@@ -1,4 +1,3 @@
-{*  $Id: pages_admin_modifyconfig.htm 423 2010-06-26 19:41:28Z drak $  *}
 {include file='pages_admin_menu.htm'}
 
 <div class="z-admincontainer">
@@ -58,8 +57,6 @@
                     <input id="pages_showpermalinkinput" type="checkbox" name="showpermalinkinput"{if $showpermalinkinput} checked="checked"{/if} />
                 </div>
             </fieldset>
-
-            {modcallhooks hookobject='module' hookaction='modifyconfig' module='Pages'}
 
             <div class="z-formbuttons">
                 {button src='button_ok.gif' set='icons/small' __alt='Save' __title='Save'}

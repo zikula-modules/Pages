@@ -1,4 +1,3 @@
-{*  $Id: pages_admin_modify.htm 432 2010-07-06 12:25:50Z drak $  *}
 {ajaxheader modname='Pages' filename='pages.js'}
 {gt text='Update page' assign='templatetitle'}
 
@@ -98,7 +97,7 @@
                 </ul>
             </fieldset>
 
-            {modcallhooks hookobject='item' hookaction='modify' hookid=$pageid module='Pages'}
+            {*modcallhooks hookobject='item' hookaction='modify' hookid=$pageid module='Pages'*}
 
             <div class="z-formbuttons">
                 {button src='button_ok.gif' set='icons/small' __alt='Update' __title='Update'}

@@ -75,9 +75,6 @@ class Pages_Api_Admin extends Zikula_Api
             return LogUtil::registerError($this->__('Error! Creation attempt failed.'));
         }
 
-        // Let any hooks know that we have created a new item.
-        $this->callHooks('item', 'create', $args['pageid'], array('module' => 'Pages'));
-
         // An item was created, so we clear all cached pages of the items list.
         $render = Zikula_View::getInstance('Pages');
         $render->clear_cache('pages_user_view.htm');
@@ -113,9 +110,6 @@ class Pages_Api_Admin extends Zikula_Api
         if (!DBUtil::deleteObjectByID('pages', $args['pageid'], 'pageid')) {
             return LogUtil::registerError($this->__('Error! Deletion attempt failed.'));
         }
-
-        // Let any hooks know that we have deleted an item.
-        $this->callHooks('item', 'delete', $args['pageid'], array('module' => 'Pages'));
 
         // The item has been modified, so we clear all cached pages of this item.
         $render = Zikula_View::getInstance('Pages');
@@ -199,9 +193,6 @@ class Pages_Api_Admin extends Zikula_Api
         if (!DBUtil::updateObject($args, 'pages', '', 'pageid')) {
             return LogUtil::registerError($this->__('Error! Update attempt failed.'));
         }
-
-        // Let any other modules know we have updated an item
-        $this->callHooks('item', 'update', $args['pageid'], array('module' => 'Pages'));
 
         // The item has been modified, so we clear all cached pages of this item.
         $render = Zikula_View::getInstance('Pages');

@@ -453,9 +453,6 @@ class Pages_Controller_Admin extends Zikula_Controller
         $showpermalinkinput = (bool)FormUtil::getPassedValue('showpermalinkinput', false, 'POST');
         $this->setVar('showpermalinkinput', $showpermalinkinput);
 
-        // Let any other modules know that the modules configuration has been updated
-        $this->callHooks('module','updateconfig','Pages', array('module' => 'Pages'));
-
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Module configuration updated.'));
 
