@@ -289,7 +289,7 @@ class Pages_Controller_User extends Zikula_Controller
         unset($allpages);
 
         // Display Admin Edit Link
-        if (SecurityUtil::checkPermission('Pages::', "$item[title]::$item[pageid]", ACCESS_EDIT)) {
+        if (SecurityUtil::checkPermission('Pages::Page', "{$item['title']}::{$item['pageid']}", ACCESS_EDIT)) {
             $item['displayeditlink'] = true;
         }
 
