@@ -1,8 +1,7 @@
-{*  $Id: pages_admin_new.htm 414 2010-06-14 04:49:35Z drak $  *}
 {ajaxheader modname='Pages' filename='pages.js'}
 {gt text='Create a page' assign='templatetitle'}
 
-{include file='pages_admin_menu.htm'}
+{include file='admin/menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='core' src='filenew.gif' set='icons/large' alt=$templatetitle}</div>

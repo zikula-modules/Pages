@@ -80,7 +80,7 @@ class Pages_Block_Page extends Zikula_Block
         $this->view->assign($item);
 
         // Populate block info and pass to theme
-        $blockinfo['content'] = $this->view->fetch('pages_block_pageblock_display.htm');
+        $blockinfo['content'] = $this->view->fetch('block/pageblock_display.tpl');
         return BlockUtil::themeBlock($blockinfo);
     }
 
@@ -99,7 +99,7 @@ class Pages_Block_Page extends Zikula_Block
         $this->view->assign($vars);
 
         // Return output
-        return $this->view->fetch('pages_block_pageblock_modify.htm');
+        return $this->view->fetch('block/pageblock_modify.tpl');
     }
 
     /**
@@ -117,7 +117,7 @@ class Pages_Block_Page extends Zikula_Block
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $this->view->clear_cache('pages_block_pageslist.htm');
+        $this->view->clear_cache('block/pageslist.tpl');
 
         return $blockinfo;
     }

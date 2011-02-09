@@ -1,7 +1,7 @@
 {ajaxheader modname='Pages' filename='pages.js'}
 {gt text='Update page' assign='templatetitle'}
 
-{include file='pages_admin_menu.htm'}
+{include file='admin/menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='core' src='edit.gif' set='icons/large' alt=$templatetitle}</div>

@@ -1,4 +1,4 @@
-{include file='pages_admin_menu.htm'}
+{include file='admin/menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='core' src='configure.gif' set='icons/large' alt=''}</div>

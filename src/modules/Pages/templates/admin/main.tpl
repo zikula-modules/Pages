@@ -1,0 +1,1 @@
+{modfunc modname='Pages' type='admin' func='view'}

@@ -60,7 +60,7 @@ class Pages_Api_Search extends Zikula_Api
             // we can return it easily when required
             $render = Zikula_View::getInstance('Pages');
             $render->assign('active', !isset($args['active']) || isset($args['active']['Pages']));
-            return $render->fetch('pages_search_options.htm');
+            return $render->fetch('search/options.tpl');
         }
 
         return '';

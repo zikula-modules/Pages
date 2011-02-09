@@ -1,6 +1,5 @@
-{*  $Id: pages_admin_delete.htm 423 2010-06-26 19:41:28Z drak $  *}
 {gt text='Delete page' assign='templatetitle'}
-{include file='pages_admin_menu.htm'}
+{include file='admin/menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='core' src='editdelete.gif' set='icons/large' alt=$templatetitle}</div>

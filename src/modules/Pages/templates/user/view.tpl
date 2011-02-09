@@ -1,4 +1,3 @@
-{*  $Id: pages_user_view.htm 414 2010-06-14 04:49:35Z drak $  *}
 {gt text='Pages list' assign=templatetitle}
 {pagesetvar name='title' value=$templatetitle}
 {insert name='getstatusmsg'}

@@ -1,8 +1,7 @@
-{*  $Id: pages_admin_view.htm 432 2010-07-06 12:25:50Z drak $  *}
 {ajaxheader modname='Pages' filename='pages.js' nobehaviour=true noscriptaculous=true}
 {gt text='View pages list' assign='templatetitle'}
 
-{include file='pages_admin_menu.htm'}
+{include file='admin/menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='core' src='windowlist.gif' set='icons/large' alt=$templatetitle}</div>
