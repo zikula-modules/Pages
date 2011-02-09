@@ -1,17 +1,4 @@
 <?php
-/**
- * Zikula Application Framework
- *
- * @copyright (c) 2004, Zikula Development Team
- * @link http://www.zikula.org/
- * @version $Id: Pageslist.php 434 2010-07-06 12:53:16Z drak $
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @author Andrea Moro
- * @author Mark West
- * @package Zikula_Value_Addons
- * @subpackage Pages
- */
-
 class Pages_Block_Pageslist extends Zikula_Block
 {
     /**

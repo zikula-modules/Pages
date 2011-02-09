@@ -1,15 +1,4 @@
 <?php
-/**
- * Zikula Application Framework
- *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id: User.php 434 2010-07-06 12:53:16Z drak $
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_Value_Addons
- * @subpackage Pages
- */
-
 class Pages_Controller_User extends Zikula_Controller
 {
     /**

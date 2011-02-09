@@ -1,16 +1,5 @@
 <?php
 /**
- * Zikula Application Framework
- *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id: tables.php 432 2010-07-06 12:25:50Z drak $
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_Value_Addons
- * @subpackage Pages
- */
-
-/**
  * pages table information
 */
 function Pages_tables()

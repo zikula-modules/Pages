@@ -1,7 +1,3 @@
-/*
- *  $Id: pages.js 334 2009-11-09 05:51:54Z drak $ 
- */
- 
 /**
  * create the onload function to enable the respective functions
  *
@@ -24,7 +20,6 @@ function pages_init_check()
 /**
  * Admin panel functions
  */
-
 
 function pages_filter_init()
 {
