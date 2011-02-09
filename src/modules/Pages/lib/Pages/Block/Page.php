@@ -1,5 +1,5 @@
 <?php
-class Pages_Block_Page extends Zikula_Block
+class Pages_Block_Page extends Zikula_Controller_Block
 {
     /**
      * initialise block
