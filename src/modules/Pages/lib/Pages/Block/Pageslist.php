@@ -23,8 +23,8 @@ class Pages_Block_Pageslist extends Zikula_Block
     public function info()
     {
         return array('module'          => 'Pages',
-                'text_type'       => $this->__('Pages list', $dom),
-                'text_type_long'  => $this->__('Display a list of pages', $dom),
+                'text_type'       => $this->__('Pages list'),
+                'text_type_long'  => $this->__('Display a list of pages'),
                 'allow_multiple'  => true,
                 'form_content'    => false,
                 'form_refresh'    => false,
