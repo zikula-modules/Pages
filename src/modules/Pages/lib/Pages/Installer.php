@@ -98,6 +98,7 @@ class Pages_Installer extends Zikula_Installer
 
             case '2.4':
             case '2.4.1':
+            case '2.4.2':
             // further upgrade routines
         }
 
