@@ -145,7 +145,6 @@ class Pages_Installer extends Zikula_Installer
 
         // get the language file
         $lang = ZLanguage::getLanguageCode();
-        $dom = ZLanguage::getModuleDomain('Pages');
 
         // create root category and entry in the categories registry
         $this->_createdefaultcategory('/__SYSTEM__/Modules/Pages');
