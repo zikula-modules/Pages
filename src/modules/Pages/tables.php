@@ -5,11 +5,11 @@
 function Pages_tables()
 {
     // Initialise table array
-    $pntable = array();
+    $table = array();
 
     // Full table definition
-    $pntable['pages'] = DBUtil::getLimitedTablename('pages');
-    $pntable['pages_column'] = array ('pageid'         => 'pn_pageid',
+    $table['pages'] = DBUtil::getLimitedTablename('pages');
+    $table['pages_column'] = array ('pageid'         => 'pn_pageid',
                                       'title'          => 'pn_title',
                                       'urltitle'       => 'pn_urltitle',
                                       'content'        => 'pn_content',
@@ -21,7 +21,7 @@ function Pages_tables()
                                       'displaytextinfo' => 'pn_displaytextinfo',
                                       'displayprint'   => 'pn_displayprint',
                                       'language'       => 'pn_language');
-    $pntable['pages_column_def'] = array('pageid'         => 'I AUTOINCREMENT PRIMARY',
+    $table['pages_column_def'] = array('pageid'         => 'I AUTOINCREMENT PRIMARY',
                                          'title'          => "X NOTNULL DEFAULT ''",
                                          'urltitle'       => "X NOTNULL DEFAULT ''",
                                          'content'        => "X NOTNULL DEFAULT ''",
@@ -35,16 +35,16 @@ function Pages_tables()
                                          'language'       => "C(30) NOTNULL DEFAULT ''");
 
     // Enable categorization services
-    $pntable['pages_db_extra_enable_categorization'] = ModUtil::getVar('Pages', 'enablecategorization');
-    $pntable['pages_primary_key_column'] = 'pageid';
+    $table['pages_db_extra_enable_categorization'] = ModUtil::getVar('Pages', 'enablecategorization');
+    $table['pages_primary_key_column'] = 'pageid';
 
     // add standard data fields
-    ObjectUtil::addStandardFieldsToTableDefinition($pntable['pages_column'], 'pn_');
-    ObjectUtil::addStandardFieldsToTableDataDefinition($pntable['pages_column_def']);
+    ObjectUtil::addStandardFieldsToTableDefinition($table['pages_column'], 'pn_');
+    ObjectUtil::addStandardFieldsToTableDataDefinition($table['pages_column_def']);
 
     // old tables for upgrade/renaming purposes
-    $pntable['seccont']  = DBUtil::getLimitedTablename('seccont');
-    $pntable['sections'] = DBUtil::getLimitedTablename('sections');
+    $table['seccont']  = DBUtil::getLimitedTablename('seccont');
+    $table['sections'] = DBUtil::getLimitedTablename('sections');
 
-    return $pntable;
+    return $table;
 }

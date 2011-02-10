@@ -60,11 +60,11 @@ class Pages_Api_Search extends Zikula_Api
     public function search($args)
     {
         ModUtil::dbInfoLoad('Search');
-        $pntable = DBUtil::getTables();
-        $pagestable = $pntable['pages'];
-        $pagescolumn = $pntable['pages_column'];
-        $searchTable = $pntable['search_result'];
-        $searchColumn = $pntable['search_result_column'];
+        $table = DBUtil::getTables();
+        $pagestable = $table['pages'];
+        $pagescolumn = $table['pages_column'];
+        $searchTable = $table['search_result'];
+        $searchColumn = $table['search_result_column'];
 
         $where = search_construct_where($args,
                 array($pagescolumn['title'],

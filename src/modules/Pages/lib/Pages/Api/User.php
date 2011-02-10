@@ -104,8 +104,8 @@ class Pages_Api_User extends Zikula_Api
 
         // populate an array with each part of the where clause and then implode the array if there is a need.
         // credit to Jorg Napp for this technique - markwest
-        $pntable = DBUtil::getTables();
-        $pagescolumn = $pntable['pages_column'];
+        $table = DBUtil::getTables();
+        $pagescolumn = $table['pages_column'];
         $queryargs = array();
         if (System::getVar('multilingual') == 1 && !$args['ignoreml'] && $args['language']) {
             $queryargs[] = '(' . $pagescolumn['language'] . ' = "' . DataUtil::formatForStore($args['language']) . '"'

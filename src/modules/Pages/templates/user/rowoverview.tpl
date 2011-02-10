@@ -1,1 +1,1 @@
-{$title|safehtml}
+{$item.title|safehtml}

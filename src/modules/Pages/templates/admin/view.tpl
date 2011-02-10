@@ -1,4 +1,4 @@
-{ajaxheader modname='Pages' filename='pages.js' nobehaviour=true noscriptaculous=true}
+{ajaxheader modname='Pages' filename='pages.js'}
 {gt text='View pages list' assign='templatetitle'}
 
 {include file='admin/menu.tpl'}
@@ -8,12 +8,11 @@
 
     <h2>{$templatetitle}</h2>
 
-    {configgetvar name='multilingual' assign='multilingual'}
-    {if ($multilingual OR ($enablecategorization AND $numproperties > 0))}
+    {if ($modvars.ZConfig.multilingual OR ($modvars.Pages.enablecategorization AND $numproperties > 0))}
     <form class="z-form" action="{modurl modname='Pages' type='admin' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset>
             <div id="pages_multicategory_filter">
-                {if ($enablecategorization && $numproperties > 0)}
+                {if ($modvars.Pages.enablecategorization && $numproperties > 0)}
                 <label for="pages_property">{gt text='Category'}</label>
                 {gt text='Choose a category' assign='lblDef'}
                 {nocache}
@@ -38,7 +37,7 @@
                 </div>
                 {/nocache}
                 {/if}
-                {if $multilingual}
+                {if $modvars.ZConfig.multilingual}
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <label for="pages_language">{gt text='Language'}</label>
                 {nocache}
@@ -53,15 +52,15 @@
     </form>
     {/if}
 
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text='ID'}</th>
                 <th>{gt text='Title'}</th>
-                {if $enablecategorization}
+                {if $modvars.Pages.enablecategorization}
                 <th>{gt text='Category'}</th>
                 {/if}
-                {if $multilingual}
+                {if $modvars.ZConfig.multilingual}
                 <th>{gt text='Language'}</th>
                 {/if}
                 <th>{gt text='Actions'}</th>
@@ -72,10 +71,10 @@
             <tr class="{cycle values='z-odd,z-even'}">
                 <td>{$page.pageid|safehtml}</td>
                 <td>{$page.title|safehtml}</td>
-                {if $enablecategorization}
+                {if $modvars.Pages.enablecategorization}
                 <td>{assignedcategorieslist item=$page}</td>
                 {/if}
-                {if $multilingual}
+                {if $modvars.ZConfig.multilingual}
                 <td>{$page.language|getlanguagename|safehtml}</td>
                 {/if}
                 <td>
@@ -87,13 +86,13 @@
             </tr>
             {foreachelse}
             {assign var='colspan' value=3}
-            {if $enablecategorization}
+            {if $modvars.Pages.enablecategorization}
             {assign var='colspan' value=$colspan+1}
             {/if}
-            {if $multilingual}
+            {if $modvars.ZConfig.multilingual}
             {assign var='colspan' value=$colspan+1}
             {/if}
-            <tr class="z-admintableempty"><td colspan="{$colspan}">{gt text='No pages found.'}</td></tr>
+            <tr class="z-datatableempty"><td colspan="{$colspan}">{gt text='No pages found.'}</td></tr>
             {/foreach}
         </tbody>
     </table>

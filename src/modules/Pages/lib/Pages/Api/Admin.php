@@ -281,8 +281,8 @@ class Pages_Api_Admin extends Zikula_Api
      */
     public function checkuniquepermalink($args)
     {
-        $pntable  = DBUtil::getTables();
-        $pagescol = $pntable['pages_column'];
+        $table  = DBUtil::getTables();
+        $pagescol = $table['pages_column'];
         $where    = "WHERE $pagescol[urltitle] = '" . DataUtil::formatForStore($args['urltitle']) . "'";
         if (isset($args['pageid']) && $args['pageid']) {
             $where .= " AND $pagescol[pageid] != " . DataUtil::formatForStore((int)($args['pageid']));
