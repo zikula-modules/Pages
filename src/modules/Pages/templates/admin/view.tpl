@@ -10,7 +10,9 @@
 
     {if ($modvars.ZConfig.multilingual OR ($modvars.Pages.enablecategorization AND $numproperties > 0))}
     <form class="z-form" action="{modurl modname='Pages' type='admin' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
-        <fieldset>
+        <fieldset{if $filter_active} class='filteractive'{/if}>
+            {if $filter_active}{gt text='active' assign=filteractive}{else}{gt text='inactive" assign=filteractive}{/if}
+            <legend>{gt text='Filter %1$s, %2$s page listed' plural='Filter %1$s, %2$s pages listed' count=$pager.numitems tag1=$filteractive tag2=$pager.numitems}</legend>
             <div id="pages_multicategory_filter">
                 {if ($modvars.Pages.enablecategorization && $numproperties > 0)}
                 <label for="pages_property">{gt text='Category'}</label>
@@ -44,9 +46,11 @@
                 {languagelist id='pages_language' name='language' all=true installed=true selected=$language}
                 {/nocache}
                 {/if}
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <input name="submit" type="submit" value="{gt text='Filter'}" />
-                <input name="clear" type="submit" value="{gt text='Reset'}" />
+                &nbsp;&nbsp;
+                <span class="z-nowrap z-buttons">
+                    <input class='z-bt-filter' name="submit" type="submit" value="{gt text='Filter'}" />
+                    <a href="{modurl modname="Pages" type='admin' func='view'}" title="{gt text="Clear"}">{img modname=core src="button_cancel.gif" set="icons/extrasmall" __alt="Clear" __title="Clear"} {gt text="Clear"}</a>
+                </span>
             </div>
         </fieldset>
     </form>
@@ -57,12 +61,14 @@
             <tr>
                 <th>{gt text='ID'}</th>
                 <th>{gt text='Title'}</th>
+                <th>{gt text='Creator'}</th>
                 {if $modvars.Pages.enablecategorization}
                 <th>{gt text='Category'}</th>
                 {/if}
                 {if $modvars.ZConfig.multilingual}
                 <th>{gt text='Language'}</th>
                 {/if}
+                <th>{gt text='Created'}</th>
                 <th>{gt text='Actions'}</th>
             </tr>
         </thead>
@@ -71,12 +77,15 @@
             <tr class="{cycle values='z-odd,z-even'}">
                 <td>{$page.pageid|safehtml}</td>
                 <td>{$page.title|safehtml}</td>
+                {usergetvar uid=$page.cr_uid name='uname' assign='uname'}
+                <td>{$uname|safehtml}</td>
                 {if $modvars.Pages.enablecategorization}
                 <td>{assignedcategorieslist item=$page}</td>
                 {/if}
                 {if $modvars.ZConfig.multilingual}
                 <td>{$page.language|getlanguagename|safehtml}</td>
                 {/if}
+                <td>{$page.cr_date|dateformat|safehtml}</td>
                 <td>
                     {assign var='options' value=$page.options}
                     {section name='options' loop=$options}
@@ -85,7 +94,7 @@
                 </td>
             </tr>
             {foreachelse}
-            {assign var='colspan' value=3}
+            {assign var='colspan' value=4}
             {if $modvars.Pages.enablecategorization}
             {assign var='colspan' value=$colspan+1}
             {/if}

@@ -264,7 +264,6 @@ class Pages_Controller_Admin extends Zikula_Controller
         $language = FormUtil::getPassedValue('language', isset($args['language']) ? $args['language'] : null, 'POST');
         $property = FormUtil::getPassedValue('pages_property', isset($args['pages_property']) ? $args['pages_property'] : null, 'POST');
         $category = FormUtil::getPassedValue("pages_{$property}_category", isset($args["pages_{$property}_category"]) ? $args["pages_{$property}_category"] : null, 'POST');
-        $clear    = FormUtil::getPassedValue('clear', false, 'POST');
         $purge    = FormUtil::getPassedValue('purge', false, 'GET');
 
         if ($purge) {
@@ -275,10 +274,8 @@ class Pages_Controller_Admin extends Zikula_Controller
             }
             return System::redirect(strpos(System::serverGetVar('HTTP_REFERER'), 'purge') ? ModUtil::url('Pages', 'admin', 'view') : System::serverGetVar('HTTP_REFERER'));
         }
-        if ($clear) {
-            $property = null;
-            $category = null;
-        }
+
+        $this->view->assign('filter_active', (empty($language) && empty($property) && empty($category)) ? false : true);
 
         // get module vars for later use
         $modvars = $this->getVars();
