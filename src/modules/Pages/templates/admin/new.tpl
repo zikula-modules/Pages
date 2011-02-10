@@ -17,14 +17,14 @@
                     <label for="pages_title">{gt text='Title'}</label>
                     <input id="pages_title" class="z-form-text" name="page[title]" type="text" size="32" maxlength="255" />
                 </div>
-                {if $showpermalinkinput}
+                {if $modvars.Pages.showpermalinkinput}
                 <div class="z-formrow">
                     <label for="pages_urltitle">{gt text='PermaLink URL title'}</label>
                     <input id="pages_urltitle" class="z-form-text" name="page[urltitle]" type="text" size="32" maxlength="255" />
                     <em class="z-sub z-formnote">{gt text='(Blank = auto-generate)'}</em>
                 </div>
                 {/if}
-                {if $enablecategorization}
+                {if $modvars.Pages.enablecategorization}
                 <div class="z-formrow">
                     <label>{gt text='Category'}</label>
                     {gt text='Choose a category' assign='lblDef'}
@@ -35,8 +35,7 @@
                     {/nocache}
                 </div>
                 {/if}
-                {configgetvar name='multilingual' assign='multilingual'}
-                {if $multilingual}
+                {if $modvars.ZConfig.multilingual}
                 <div class="z-formrow">
                     <label for="pages_language">{gt text='Language'}</label>
                     {languagelist id='pages_language' name='page[language]' all=true installed=true selected=$lang}
@@ -53,32 +52,32 @@
                 <div id="pages_settings_details">
                     <div class="z-formrow">
                         <label for="pages_displaywrapper">{gt text='Display additional information'}</label>
-                        <input id="pages_displaywrapper" type="checkbox" name="page[displaywrapper]" value="1"{if $def_displaywrapper} checked="checked"{/if} />
+                        <input id="pages_displaywrapper" type="checkbox" name="page[displaywrapper]" value="1"{if $modvars.Pages.def_displaywrapper} checked="checked"{/if} />
                     </div>
                     <div class="z-formrow">
                         <label for="pages_displaytitle">{gt text='Display page title'}</label>
-                        <input id="pages_displaytitle" type="checkbox" name="page[displaytitle]" value="1"{if $def_displaytitle} checked="checked"{/if} />
+                        <input id="pages_displaytitle" type="checkbox" name="page[displaytitle]" value="1"{if $modvars.Pages.def_displaytitle} checked="checked"{/if} />
                     </div>
                     <div class="z-formrow">
                         <label for="pages_displaycreated">{gt text='Display page creation date'}</label>
-                        <input id="pages_displaycreated" type="checkbox" name="page[displaycreated]" value="1"{if $def_displaycreated} checked="checked"{/if} />
+                        <input id="pages_displaycreated" type="checkbox" name="page[displaycreated]" value="1"{if $modvars.Pages.def_displaycreated} checked="checked"{/if} />
                     </div>
                     <div class="z-formrow">
                         <label for="pages_displayupdated">{gt text='Display page update date'}</label>
-                        <input id="pages_displayupdated" type="checkbox" name="page[displayupdated]" value="1"{if $def_displayupdated} checked="checked"{/if} />
+                        <input id="pages_displayupdated" type="checkbox" name="page[displayupdated]" value="1"{if $modvars.Pages.def_displayupdated} checked="checked"{/if} />
                     </div>
                     <div class="z-formrow">
                         <label for="pages_displaytextinfo">{gt text='Display page text statistics'}</label>
-                        <input id="pages_displaytextinfo" type="checkbox" name="page[displaytextinfo]" value="1"{if $def_displaytextinfo} checked="checked"{/if} />
+                        <input id="pages_displaytextinfo" type="checkbox" name="page[displaytextinfo]" value="1"{if $modvars.Pages.def_displaytextinfo} checked="checked"{/if} />
                     </div>
                     <div class="z-formrow">
                         <label for="pages_displayprint">{gt text='Display page print link'}</label>
-                        <input id="pages_displayprint" type="checkbox" name="page[displayprint]" value="1"{if $def_displayprint} checked="checked"{/if} />
+                        <input id="pages_displayprint" type="checkbox" name="page[displayprint]" value="1"{if $modvars.Pages.def_displayprint} checked="checked"{/if} />
                     </div>
                 </div>
             </fieldset>
 
-            {*modcallhooks hookobject='item' hookaction='new' module='Pages'*}
+           {notifydisplayhooks eventname='pages.hook.pages.ui.edit' area='modulehook_area.pages.pages' subject=null id=null caller="Pages"}
 
             <div class="z-formbuttons">
                 {button src='button_ok.gif' set='icons/small' __alt='Create' __title='Create'}

@@ -10,31 +10,31 @@
 
     <form id="pages_admin_modifyform" class="z-form" action="{modurl modname='Pages' type='admin' func='update'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="url" value="{$returnurl|safetext}" />
+            <input type="hidden" name="url" value="{$item.returnurl|safetext}" />
             <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Pages'}" />
-            <input type="hidden" name="page[pageid]" value="{$pageid|safetext}" />
+            <input type="hidden" name="page[pageid]" value="{$item.pageid|safetext}" />
             <fieldset>
                 <legend>{gt text='Content'}</legend>
                 <div class="z-formrow">
                     <label for="pages_title">{gt text='Title'}</label>
-                    <input id="pages_title" class="z-form-text" name="page[title]" type="text" size="32" maxlength="255" value="{$title|safehtml}" />
+                    <input id="pages_title" class="z-form-text" name="page[title]" type="text" size="32" maxlength="255" value="{$item.title|safehtml}" />
                 </div>
-                {if $showpermalinkinput}
+                {if $modvars.Pages.showpermalinkinput}
                 <div class="z-formrow">
                     <label for="pages_urltitle">{gt text='PermaLink URL title'}</label>
-                    <input id="pages_urltitle" class="z-form-text" name="page[urltitle]" type="text" size="32" maxlength="255" value="{$urltitle|safetext}" />
+                    <input id="pages_urltitle" class="z-form-text" name="page[urltitle]" type="text" size="32" maxlength="255" value="{$item.urltitle|safetext}" />
                     <em class="z-sub z-formnote">{gt text='(Blank = auto-generate)'}</em>
                 </div>
                 {/if}
-                {if $enablecategorization}
+                {if $modvars.Pages.enablecategorization}
                 <div class="z-formrow">
                     <label>{gt text='Category'}</label>
                     {gt text='Choose a category' assign='lblDef'}
                     {nocache}
                     {foreach from=$catregistry key='property' item='category'}
-                    {array_field_isset array=$__CATEGORIES__ field=$property assign='catExists'}
+                    {array_field_isset array=$item.__CATEGORIES__ field=$property assign='catExists'}
                     {if $catExists}
-                    {array_field_isset array=$__CATEGORIES__.$property field='id' returnValue=1 assign='selectedValue'}
+                    {array_field_isset array=$item.__CATEGORIES__.$property field='id' returnValue=1 assign='selectedValue'}
                     {else}
                     {assign var='selectedValue' value=0}
                     {/if}
@@ -43,16 +43,15 @@
                     {/nocache}
                 </div>
                 {/if}
-                {configgetvar name='multilingual' assign='multilingual'}
-                {if $multilingual}
+                {if $modvars.ZConfig.multilingual}
                 <div class="z-formrow">
                     <label for="pages_language">{gt text='Language'}</label>
-                    {languagelist id='pages_language' name='page[language]' all=true installed=true selected=$language}
+                    {languagelist id='pages_language' name='page[language]' all=true installed=true selected=$item.language}
                 </div>
                 {/if}
                 <div class="z-formrow">
                     <label for="pages_content">{gt text='Content'}</label>
-                    <textarea id="pages_content" class="z-form-text" name="page[content]" rows="10" cols="50">{$content|safetext}</textarea>
+                    <textarea id="pages_content" class="z-form-text" name="page[content]" rows="10" cols="50">{$item.content|safetext}</textarea>
                     <em class="z-sub z-formnote">{gt text='If you want multiple pages you can write &lt;!--pagebreak--&gt; where you want to cut.'}</em>
                 </div>
             </fieldset>
@@ -61,43 +60,43 @@
                 <div id="pages_settings_details">
                     <div class="z-formrow">
                         <label for="pages_displaywrapper">{gt text='Display additional information'}</label>
-                        <input id="pages_displaywrapper" type="checkbox" name="page[displaywrapper]" value="1" {if $displaywrapper} checked="checked"{/if} />
+                        <input id="pages_displaywrapper" type="checkbox" name="page[displaywrapper]" value="1" {if $item.displaywrapper} checked="checked"{/if} />
                     </div>
                     <div class="z-formrow">
                         <label for="pages_displaytitle">{gt text='Display page title'}</label>
-                        <input id="pages_displaytitle" type="checkbox" name="page[displaytitle]" value="1"{if $displaytitle} checked="checked"{/if} />
+                        <input id="pages_displaytitle" type="checkbox" name="page[displaytitle]" value="1"{if $item.displaytitle} checked="checked"{/if} />
                     </div>
                     <div class="z-formrow">
                         <label for="pages_displaycreated">{gt text='Display page creation date'}</label>
-                        <input id="pages_displaycreated" type="checkbox" name="page[displaycreated]" value="1"{if $displaycreated} checked="checked"{/if} />
+                        <input id="pages_displaycreated" type="checkbox" name="page[displaycreated]" value="1"{if $item.displaycreated} checked="checked"{/if} />
                     </div>
                     <div class="z-formrow">
                         <label for="pages_displayupdated">{gt text='Display page update date'}</label>
-                        <input id="pages_displayupdated" type="checkbox" name="page[displayupdated]" value="1"{if $displayupdated} checked="checked"{/if} />
+                        <input id="pages_displayupdated" type="checkbox" name="page[displayupdated]" value="1"{if $item.displayupdated} checked="checked"{/if} />
                     </div>
                     <div class="z-formrow">
                         <label for="pages_displaytextinfo">{gt text='Display page text statistics'}</label>
-                        <input id="pages_displaytextinfo" type="checkbox" name="page[displaytextinfo]" value="1"{if $displaytextinfo} checked="checked"{/if} />
+                        <input id="pages_displaytextinfo" type="checkbox" name="page[displaytextinfo]" value="1"{if $item.displaytextinfo} checked="checked"{/if} />
                     </div>
                     <div class="z-formrow">
                         <label for="pages_displayprint">{gt text='Display page print link'}</label>
-                        <input id="pages_displayprint" type="checkbox" name="page[displayprint]" value="1"{if $displayprint} checked="checked"{/if} />
+                        <input id="pages_displayprint" type="checkbox" name="page[displayprint]" value="1"{if $item.displayprint} checked="checked"{/if} />
                     </div>
                 </div>
             </fieldset>
             <fieldset class="z-formrow">
                 <legend>{gt text='Meta data'}</legend>
                 <ul>
-                    {usergetvar name='uname' uid=$cr_uid assign='username'}
+                    {usergetvar name='uname' uid=$item.cr_uid assign='username'}
                     <li>{gt text='Created by %s' tag1=$username}</li>
-                    <li>{gt text='Created on %s' tag1=$cr_date|dateformat}</li>
-                    {usergetvar name='uname' uid=$lu_uid assign='username'}
+                    <li>{gt text='Created on %s' tag1=$item.cr_date|dateformat}</li>
+                    {usergetvar name='uname' uid=$item.lu_uid assign='username'}
                     <li>{gt text='Last update by %s' tag1=$username}</li>
-                    <li>{gt text='Updated on %s' tag1=$lu_date|dateformat}</li>
+                    <li>{gt text='Updated on %s' tag1=$item.lu_date|dateformat}</li>
                 </ul>
             </fieldset>
 
-            {*modcallhooks hookobject='item' hookaction='modify' hookid=$pageid module='Pages'*}
+            {notifydisplayhooks eventname='pages.hook.pages.ui.edit' area='modulehook_area.pages.pages' subject=$item id=$item.pageid caller="Pages"}
 
             <div class="z-formbuttons">
                 {button src='button_ok.gif' set='icons/small' __alt='Update' __title='Update'}

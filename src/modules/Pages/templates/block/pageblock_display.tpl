@@ -1,3 +1,3 @@
 <div>
-    {$content}{*$content|modcallhooks:'Pages'*}
+    {$content|notifyfilters:'pages.hook.pagesfilter.ui.filter'}
 </div>

@@ -141,16 +141,12 @@ class Pages_Controller_User extends Zikula_Controller
         // assign various useful template variables
         $this->view->assign('startnum', $startnum);
         $this->view->assign('lang', $lang);
-        $this->view->assign($modvars);
-        $this->view->assign('shorturls', System::getVar('shorturls'));
-        $this->view->assign('shorturlstype', System::getVar('shorturlstype'));
 
         // If categorization is enabled, show a
         // list of subcategories of an specific property
         if ($modvars['enablecategorization'] && !isset($catFilter)) {
             // Assign the current action to the template
             $this->view->assign('action', 'subcatslist');
-
             $this->view->assign('listrootcats', $listrootcats);
             $this->view->assign('listproperties', $listproperties);
             $this->view->assign('listcategories', $listcategories);
@@ -182,9 +178,9 @@ class Pages_Controller_User extends Zikula_Controller
             // Loop through each item and display it.
             $pages = array();
             foreach ($items as $item) {
-                if (SecurityUtil::checkPermission('Pages::', "$item[title]::$item[pageid]", ACCESS_OVERVIEW)) {
-                    $this->view->assign($item);
-                    if (SecurityUtil::checkPermission('Pages::', "$item[title]::$item[pageid]", ACCESS_READ)) {
+                if (SecurityUtil::checkPermission('Pages::', "{$item['title']}::{$item['pageid']}", ACCESS_OVERVIEW)) {
+                    $this->view->assign('item', $item);
+                    if (SecurityUtil::checkPermission('Pages::', "{$item['title']}::{$item['pageid']}", ACCESS_READ)) {
                         $pages[] = $this->view->fetch('user/rowread.tpl', $item['pageid']);
                     } else {
                         $pages[] = $this->view->fetch('user/rowoverview.tpl', $item['pageid']);
@@ -294,7 +290,7 @@ class Pages_Controller_User extends Zikula_Controller
         }
 
         // Assign details of the item.
-        $this->view->assign($item);
+        $this->view->assign('item', $item);
 
         $this->view->assign('shorturls', System::getVar('shorturls'));
         $this->view->assign('shorturlstype', System::getVar('shorturlstype'));
