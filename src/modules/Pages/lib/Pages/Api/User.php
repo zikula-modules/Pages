@@ -125,22 +125,14 @@ class Pages_Api_User extends Zikula_Api
                 'level'           => ACCESS_READ);
 
         $orderby = $pagescolumn['pageid'];
-
         if (isset($args['order']) && !empty($args['order'])) {
-            $order = $args['order'];
-
-            $p = strpos($order, ' ');
-            if ($p > 0) {
-                $f = strtolower(StringUtil::left($order, $p));
-                $orderDirection = strtolower(substr($order, $p + 1));
-                if ($orderDirection != 'asc' && $orderDirection != 'desc') {
-                    $orderDirection = 'desc';
-                }
-                $orderby = $pagescolumn[$f] . ' ' . $orderDirection;
-            } else {
-                $orderby = $pagescolumn[strtolower($order)];
-            }
+            $orderby = $pagescolumn[strtolower($args['order'])];
         }
+        $orderdir = 'DESC';
+        if (isset($args['orderdir']) && !empty($args['orderdir'])) {
+            $orderdir = $args['orderdir'];
+        }
+        $orderby = $orderby . ' ' . $orderdir;
 
         // get the objects from the db
         $objArray = DBUtil::selectObjectArray('pages', $where, $orderby, $args['startnum']-1, $args['numitems'], '', $permFilter, $args['catFilter']);

@@ -258,13 +258,49 @@ class Pages_Controller_Admin extends Zikula_Controller
         if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
-
+        // initialize sort array - used to display sort classes and urls
+        $sort = array();
+        $fields = array('pageid', 'title', 'cr_date'); // possible sort fields
+        foreach ($fields as $field) {
+            $sort['class'][$field] = 'z-order-unsorted'; // default values
+        }
+        
         // Get parameters from whatever input we need.
-        $startnum = (int)FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GET');
+        $startnum = (int)FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GETPOST');
         $language = FormUtil::getPassedValue('language', isset($args['language']) ? $args['language'] : null, 'POST');
-        $property = FormUtil::getPassedValue('pages_property', isset($args['pages_property']) ? $args['pages_property'] : null, 'POST');
-        $category = FormUtil::getPassedValue("pages_{$property}_category", isset($args["pages_{$property}_category"]) ? $args["pages_{$property}_category"] : null, 'POST');
-        $purge    = FormUtil::getPassedValue('purge', false, 'GET');
+        $property = FormUtil::getPassedValue('pages_property', isset($args['pages_property']) ? $args['pages_property'] : null, 'GETPOST');
+        $category = FormUtil::getPassedValue("pages_{$property}_category", isset($args["pages_{$property}_category"]) ? $args["pages_{$property}_category"] : null, 'GETPOST');
+        $purge = FormUtil::getPassedValue('purge', false, 'GET');
+        $orderby = FormUtil::getPassedValue('orderby', isset($args['orderby']) ? $args['orderby'] : 'pageid', 'GETPOST');
+        $original_sdir = FormUtil::getPassedValue('sdir', isset($args['sdir']) ? $args['sdir'] : 1, 'GETPOST');
+
+        $this->view->assign('startnum', $startnum);
+        $this->view->assign('orderby', $orderby);
+        $this->view->assign('sdir', $original_sdir);
+
+        $sdir = $original_sdir ? 0 : 1; //if true change to false, if false change to true
+        // change class for selected 'orderby' field to asc/desc
+        if ($sdir == 0) {
+            $sort['class'][$orderby] = 'z-order-desc';
+            $orderdir = 'DESC';
+        }
+        if ($sdir == 1) {
+            $sort['class'][$orderby] = 'z-order-asc';
+            $orderdir = 'ASC';
+        }
+        // complete initialization of sort array, adding urls
+        foreach ($fields as $field) {
+            $sort['url'][$field] = ModUtil::url('Pages', 'admin', 'view', array(
+                'language' => $language,
+                'pages_property' => $property,
+                "pages_{$property}_category" => $category,
+                //'filtercats_serialized' => serialize($filtercats),
+                'orderby' => $field,
+                'sdir' => $sdir));
+        }
+        $this->view->assign('sort', $sort);
+
+        $this->view->assign('filter_active', (empty($language) && empty($property) && empty($category)) ? false : true);
 
         if ($purge) {
             if (ModUtil::apiFunc('Pages', 'admin', 'purgepermalinks')) {
@@ -274,9 +310,7 @@ class Pages_Controller_Admin extends Zikula_Controller
             }
             return System::redirect(strpos(System::serverGetVar('HTTP_REFERER'), 'purge') ? ModUtil::url('Pages', 'admin', 'view') : System::serverGetVar('HTTP_REFERER'));
         }
-
-        $this->view->assign('filter_active', (empty($language) && empty($property) && empty($category)) ? false : true);
-
+        
         // get module vars for later use
         $modvars = $this->getVars();
 
@@ -307,7 +341,8 @@ class Pages_Controller_Admin extends Zikula_Controller
         $items = ModUtil::apiFunc('Pages', 'user', 'getall',
                 array('startnum' => $startnum,
                 'numitems' => $modvars['itemsperpage'],
-                'order'    => 'pageid',
+                'order'    => $orderby,
+                'orderdir' => $orderdir,
                 'ignoreml' => ($multilingual ? false : true),
                 'language' => $language,
                 'category' => isset($catFilter) ? $catFilter : null,

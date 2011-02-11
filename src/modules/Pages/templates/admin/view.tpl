@@ -13,6 +13,9 @@
         <fieldset{if $filter_active} class='filteractive'{/if}>
             {if $filter_active}{gt text='active' assign=filteractive}{else}{gt text='inactive" assign=filteractive}{/if}
             <legend>{gt text='Filter %1$s, %2$s page listed' plural='Filter %1$s, %2$s pages listed' count=$pager.numitems tag1=$filteractive tag2=$pager.numitems}</legend>
+            <input type="hidden" name="startnum" value="{$startnum}" />
+            <input type="hidden" name="orderby" value="{$orderby}" />
+            <input type="hidden" name="sdir" value="{$sdir}" />
             <div id="pages_multicategory_filter">
                 {if ($modvars.Pages.enablecategorization && $numproperties > 0)}
                 <label for="pages_property">{gt text='Category'}</label>
@@ -59,8 +62,8 @@
     <table class="z-datatable">
         <thead>
             <tr>
-                <th>{gt text='ID'}</th>
-                <th>{gt text='Title'}</th>
+                <th><a class='{$sort.class.pageid}' href='{$sort.url.pageid|safetext}'>{gt text='ID'}</a></th>
+                <th><a class='{$sort.class.title}' href='{$sort.url.title|safetext}'>{gt text='Title'}</a></th>
                 <th>{gt text='Creator'}</th>
                 {if $modvars.Pages.enablecategorization}
                 <th>{gt text='Category'}</th>
@@ -68,7 +71,7 @@
                 {if $modvars.ZConfig.multilingual}
                 <th>{gt text='Language'}</th>
                 {/if}
-                <th>{gt text='Created'}</th>
+                <th><a class='{$sort.class.cr_date}' href='{$sort.url.cr_date|safetext}'>{gt text='Created'}</a></th>
                 <th>{gt text='Actions'}</th>
             </tr>
         </thead>
