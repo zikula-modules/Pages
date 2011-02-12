@@ -91,15 +91,17 @@ class Pages_Api_User extends Zikula_Api
             return array();
         }
 
-        $args['catFilter'] = array();
+        $catFilter = array();
         if (isset($args['category']) && !empty($args['category'])){
             if (is_array($args['category'])) {
-                $args['catFilter'] = $args['category'];
+                $catFilter = $args['category'];
             } elseif (isset($args['property'])) {
                 $property = $args['property'];
-                $args['catFilter'][$property] = $args['category'];
+                $catFilter[$property] = $args['category'];
             }
-            $args['catFilter']['__META__'] = array('module' => 'Pages');
+            $catFilter['__META__'] = array('module' => 'Pages');
+        } elseif (isset($args['catfilter'])) {
+            $catFilter = $args['catfilter'];
         }
 
         // populate an array with each part of the where clause and then implode the array if there is a need.
@@ -135,7 +137,7 @@ class Pages_Api_User extends Zikula_Api
         $orderby = $orderby . ' ' . $orderdir;
 
         // get the objects from the db
-        $objArray = DBUtil::selectObjectArray('pages', $where, $orderby, $args['startnum']-1, $args['numitems'], '', $permFilter, $args['catFilter']);
+        $objArray = DBUtil::selectObjectArray('pages', $where, $orderby, $args['startnum']-1, $args['numitems'], '', $permFilter, $catFilter);
 
         // check for an error with the database code, and if so set an appropriate
         // error message and return
@@ -159,20 +161,21 @@ class Pages_Api_User extends Zikula_Api
      */
     public function countitems($args)
     {
-        $args['catFilter'] = array();
-
+        $catFilter = array();
         if (isset($args['category']) && !empty($args['category'])){
             if (is_array($args['category'])) {
-                $args['catFilter'] = $args['category'];
+                $catFilter = $args['category'];
             } elseif (isset($args['property'])) {
                 $property = $args['property'];
-                $args['catFilter'][$property] = $args['category'];
+                $catFilter[$property] = $args['category'];
             }
-            $args['catFilter']['__META__'] = array('module' => 'Pages');
+            $catFilter['__META__'] = array('module' => 'Pages');
+        } elseif (isset($args['catfilter'])) {
+            $catFilter = $args['catfilter'];
         }
 
         // return the number of items
-        return DBUtil::selectObjectCount('pages', '', 'pageid', false, $args['catFilter']);
+        return DBUtil::selectObjectCount('pages', '', 'pageid', false, $catFilter);
     }
 
     /**

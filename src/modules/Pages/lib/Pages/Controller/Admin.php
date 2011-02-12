@@ -268,8 +268,6 @@ class Pages_Controller_Admin extends Zikula_Controller
         // Get parameters from whatever input we need.
         $startnum = (int)FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GETPOST');
         $language = FormUtil::getPassedValue('language', isset($args['language']) ? $args['language'] : null, 'POST');
-        $property = FormUtil::getPassedValue('pages_property', isset($args['pages_property']) ? $args['pages_property'] : null, 'GETPOST');
-        $category = FormUtil::getPassedValue("pages_{$property}_category", isset($args["pages_{$property}_category"]) ? $args["pages_{$property}_category"] : null, 'GETPOST');
         $purge = FormUtil::getPassedValue('purge', false, 'GET');
         $orderby = FormUtil::getPassedValue('orderby', isset($args['orderby']) ? $args['orderby'] : 'pageid', 'GETPOST');
         $original_sdir = FormUtil::getPassedValue('sdir', isset($args['sdir']) ? $args['sdir'] : 1, 'GETPOST');
@@ -288,19 +286,22 @@ class Pages_Controller_Admin extends Zikula_Controller
             $sort['class'][$orderby] = 'z-order-asc';
             $orderdir = 'ASC';
         }
+        $filtercats = FormUtil::getPassedValue('pages', null, 'POST');
+        $filtercats_serialized = FormUtil::getPassedValue('filtercats_serialized', false, 'GET');
+        $filtercats = $filtercats_serialized ? unserialize($filtercats_serialized) : $filtercats;
+        $catsarray = Pages_Util::formatCategoryFilter($filtercats);
+
         // complete initialization of sort array, adding urls
         foreach ($fields as $field) {
             $sort['url'][$field] = ModUtil::url('Pages', 'admin', 'view', array(
                 'language' => $language,
-                'pages_property' => $property,
-                "pages_{$property}_category" => $category,
-                //'filtercats_serialized' => serialize($filtercats),
+                'filtercats_serialized' => serialize($filtercats),
                 'orderby' => $field,
                 'sdir' => $sdir));
         }
         $this->view->assign('sort', $sort);
 
-        $this->view->assign('filter_active', (empty($language) && empty($property) && empty($category)) ? false : true);
+        $this->view->assign('filter_active', (empty($language) && empty($catsarray)) ? false : true);
 
         if ($purge) {
             if (ModUtil::apiFunc('Pages', 'admin', 'purgepermalinks')) {
@@ -310,29 +311,13 @@ class Pages_Controller_Admin extends Zikula_Controller
             }
             return System::redirect(strpos(System::serverGetVar('HTTP_REFERER'), 'purge') ? ModUtil::url('Pages', 'admin', 'view') : System::serverGetVar('HTTP_REFERER'));
         }
-        
-        // get module vars for later use
+
+        // get module vars
         $modvars = $this->getVars();
 
         if ($modvars['enablecategorization']) {
             $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'pages');
-            $properties  = array_keys($catregistry);
-
-            // Validate and build the category filter - mateo
-            if (!empty($property) && in_array($property, $properties) && !empty($category)) {
-                $catFilter = array($property => $category);
-            }
-
-            // Assign a default property - mateo
-            if (empty($property) || !in_array($property, $properties)) {
-                $property = $properties[0];
-            }
-
-            // plan ahead for ML features
-            $propArray = array();
-            foreach ($properties as $prop) {
-                $propArray[$prop] = $prop;
-            }
+            $this->view->assign('catregistry', $catregistry);
         }
 
         $multilingual = System::getVar('multilingual', false);
@@ -345,7 +330,8 @@ class Pages_Controller_Admin extends Zikula_Controller
                 'orderdir' => $orderdir,
                 'ignoreml' => ($multilingual ? false : true),
                 'language' => $language,
-                'category' => isset($catFilter) ? $catFilter : null,
+                'category' => null,
+                'catfilter' => isset($catsarray) ? $catsarray : null,
                 'catregistry'  => isset($catregistry) ? $catregistry : null));
 
         if (!$items) {
@@ -386,19 +372,22 @@ class Pages_Controller_Admin extends Zikula_Controller
         $this->view->assign('lang', ZLanguage::getLanguageCode());
         $this->view->assign('language', $language);
 
-        // Assign the categories information if enabled
-        if ($modvars['enablecategorization']) {
-            $this->view->assign('catregistry', $catregistry);
-            $this->view->assign('numproperties', count($propArray));
-            $this->view->assign('properties', $propArray);
-            $this->view->assign('property', $property);
-            $this->view->assign('category', $category);
-        }
-
         // Assign the information required to create the pager
-        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Pages', 'user', 'countitems', array('category' => isset($catFilter) ? $catFilter : null)),
-                'itemsperpage' => $modvars['itemsperpage']));
+        $this->view->assign('pager', array(
+            'numitems' => ModUtil::apiFunc('Pages', 'user', 'countitems', array('catfilter' => isset($catsarray) ? $catsarray : null)),
+            'itemsperpage' => $modvars['itemsperpage']));
 
+        $selectedcategories = array();
+        if (is_array($filtercats)) {
+            $catsarray = $filtercats['__CATEGORIES__'];
+            foreach ($catsarray as $propname => $propid) {
+                if ($propid > 0) {
+                    $selectedcategories[$propname] = $propid; // removes categories set to 'all'
+                }
+            }
+        }
+        $this->view->assign('selectedcategories', $selectedcategories);
+        
         // Return the output that has been generated by this function
         return $this->view->fetch('admin/view.tpl');
     }

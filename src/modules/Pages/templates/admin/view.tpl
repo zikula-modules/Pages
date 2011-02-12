@@ -8,7 +8,7 @@
 
     <h2>{$templatetitle}</h2>
 
-    {if ($modvars.ZConfig.multilingual OR ($modvars.Pages.enablecategorization AND $numproperties > 0))}
+    {if ($modvars.ZConfig.multilingual OR $modvars.Pages.enablecategorization)}
     <form class="z-form" action="{modurl modname='Pages' type='admin' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset{if $filter_active} class='filteractive'{/if}>
             {if $filter_active}{gt text='active' assign=filteractive}{else}{gt text='inactive" assign=filteractive}{/if}
@@ -17,33 +17,11 @@
             <input type="hidden" name="orderby" value="{$orderby}" />
             <input type="hidden" name="sdir" value="{$sdir}" />
             <div id="pages_multicategory_filter">
-                {if ($modvars.Pages.enablecategorization && $numproperties > 0)}
-                <label for="pages_property">{gt text='Category'}</label>
-                {gt text='Choose a category' assign='lblDef'}
-                {nocache}
-                {if $numproperties gt 1}
-                {html_options id='pages_property' name='pages_property' options=$properties selected=$property}
-                {else}
-                <input type="hidden" id="pages_property" name="pages_property" value="{$property}" />
-                {/if}
-                <div id="pages_category_selectors">
-                    {foreach from=$catregistry key='prop' item='cat'}
-                    {assign var='propref' value=$prop|string_format:'pages_%s_category'}
-                    {if $property eq $prop}
-                    {assign var='selectedValue' value=$category}
-                    {else}
-                    {assign var='selectedValue' value=0}
-                    {/if}
-                    <noscript>
-                        <div class="property_selector_noscript"><label for="{$propref}">{$prop}</label>:</div>
-                    </noscript>
-                    {selector_category category=$cat name=$propref selectedValue=$selectedValue allValue=0 allText=$lblDef editLink=false}
-                    {/foreach}
-                </div>
-                {/nocache}
+                {if $modvars.Pages.enablecategorization}
+                <span id='categoryfilter'>{include file='admin/filtercats.tpl'}</span>
                 {/if}
                 {if $modvars.ZConfig.multilingual}
-                &nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;
                 <label for="pages_language">{gt text='Language'}</label>
                 {nocache}
                 {languagelist id='pages_language' name='language' all=true installed=true selected=$language}
