@@ -79,9 +79,9 @@
 
            {notifydisplayhooks eventname='pages.hook.pages.ui.edit' area='modulehook_area.pages.pages' subject=null id=null caller="Pages"}
 
-            <div class="z-formbuttons">
-                {button src='button_ok.gif' set='icons/small' __alt='Create' __title='Create'}
-                <a href="{modurl modname='Pages' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel'}</a>
+            <div class="z-formbuttons z-buttons">
+                {button src='button_ok.gif' set='icons/extrasmall' __alt='Create' __title='Create' __text='Create'}
+                <a href="{modurl modname='Pages' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel'  __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </div>
     </form>

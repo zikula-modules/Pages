@@ -58,9 +58,9 @@
                 </div>
             </fieldset>
 
-            <div class="z-formbuttons">
-                {button src='button_ok.gif' set='icons/small' __alt='Save' __title='Save'}
-                <a href="{modurl modname='Pages' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel'}</a>
+            <div class="z-formbuttons z-buttons">
+                {button src='button_ok.gif' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
+                <a href="{modurl modname='Pages' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel'  __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </div>
     </form>
