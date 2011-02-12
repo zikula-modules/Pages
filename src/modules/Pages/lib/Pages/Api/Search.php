@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Internal callback class used to check permissions to each Page
  * @package Zikula_Value_Addons
@@ -6,6 +7,7 @@
  */
 class pages_result_checker
 {
+
     var $enablecategorization;
 
     function Pages_result_checker()
@@ -25,17 +27,19 @@ class pages_result_checker
         }
         return $ok;
     }
+
 }
 
 class Pages_Api_Search extends Zikula_Api
 {
+
     /**
      * Search plugin info
      */
     public function info()
     {
         return array('title' => 'Pages',
-                'functions' => array('pages' => 'search'));
+            'functions' => array('pages' => 'search'));
     }
 
     /**
@@ -66,22 +70,22 @@ class Pages_Api_Search extends Zikula_Api
         $searchTable = $table['search_result'];
         $searchColumn = $table['search_result_column'];
 
-        $where = search_construct_where($args,
-                array($pagescolumn['title'],
-                $pagescolumn['content']),
-                null);
+        $where = Search_Api_User::construct_where($args,
+                        array($pagescolumn['title'],
+                            $pagescolumn['content']),
+                        null);
 
         $sessionId = session_id();
 
         /*
-    // define the permission filter to apply
-    $permFilter = array(array('realm'           => 0,
-                              'component_left'  => 'Pages',
-                              'component_right' => 'Page',
-                              'instance_left'   => 'title',
-                              'instance_right'  => 'pageid',
-                              'level'           => ACCESS_READ));
-        */
+          // define the permission filter to apply
+          $permFilter = array(array('realm'           => 0,
+          'component_left'  => 'Pages',
+          'component_right' => 'Page',
+          'instance_left'   => 'title',
+          'instance_right'  => 'pageid',
+          'level'           => ACCESS_READ));
+         */
 
         // get the objects from the db
         $permChecker = new pages_result_checker();
@@ -94,18 +98,20 @@ class Pages_Api_Search extends Zikula_Api
 
         $insertSql =
                 "INSERT INTO $searchTable
-  ($searchColumn[title],
+                ($searchColumn[title],
                 $searchColumn[text],
                 $searchColumn[extra],
                 $searchColumn[created],
                 $searchColumn[module],
                 $searchColumn[session])
-VALUES ";
+                VALUES ";
 
         // Process the result set and insert into search result table
         foreach ($objArray as $obj) {
             if ($addcategorytitletopermalink) {
-                $extra = serialize(array('pageid' => $obj['pageid'], 'cat' => isset($obj['__CATEGORIES__']['Main']['name']) ? $obj['__CATEGORIES__']['Main']['name'] : null));
+                $extra = serialize(array(
+                    'pageid' => $obj['pageid'],
+                    'cat' => isset($obj['__CATEGORIES__']['Main']['name']) ? $obj['__CATEGORIES__']['Main']['name'] : null));
             } else {
                 $extra = serialize(array('pageid' => $obj['pageid']));
             }
@@ -134,12 +140,13 @@ VALUES ";
     public function search_check(&$args)
     {
         $datarow = &$args['datarow'];
-        $extra   = unserialize($datarow['extra']);
+        $extra = unserialize($datarow['extra']);
 
         $datarow['url'] = ModUtil::url('pages', 'user', 'display',
-                array('pageid' => $extra['pageid'],
-                'cat'    => $extra['cat']));
+                        array('pageid' => $extra['pageid'],
+                            'cat' => $extra['cat']));
 
         return true;
     }
+
 }
