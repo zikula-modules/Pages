@@ -286,7 +286,7 @@ class Pages_Controller_Admin extends Zikula_Controller
             $sort['class'][$orderby] = 'z-order-asc';
             $orderdir = 'ASC';
         }
-        $filtercats = FormUtil::getPassedValue('pages', null, 'POST');
+        $filtercats = FormUtil::getPassedValue('pages', null, 'GETPOST');
         $filtercats_serialized = FormUtil::getPassedValue('filtercats_serialized', false, 'GET');
         $filtercats = $filtercats_serialized ? unserialize($filtercats_serialized) : $filtercats;
         $catsarray = Pages_Util::formatCategoryFilter($filtercats);
