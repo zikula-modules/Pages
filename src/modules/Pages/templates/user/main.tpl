@@ -2,18 +2,18 @@
 {pagesetvar name='title' value=$templatetitle}
 {insert name='getstatusmsg'}
 
-{if $enablecategorization}
+{if $modvars.Pages.enablecategorization}
 <h2>{$templatetitle}</h2>
 <p>{gt text='Available categories:'}</p>
 {foreach from=$propertiesdata item='property'}
 <ul>
     {foreach from=$property.subcategories item='category'}
     {* get the category name and description avoiding E_ALL errors *}
-    {array_field_isset assign='categoryname' array=$category.display_name field=$lang returnValue=1}
+    {array_field_isset assign='categoryname' array=$category.display_name field=$modvars.ZConfig.language_i18n returnValue=1}
     {if $categoryname eq ''}{assign var='categoryname' value=$category.name}{/if}
-    {array_field_isset assign="categorydesc" array=$category.display_desc field=$lang returnValue=1}
+    {array_field_isset assign="categorydesc" array=$category.display_desc field=$modvars.ZConfig.language_i18n returnValue=1}
 
-    {if $shorturls and $shorturlstype eq 0}
+    {if $modvars.ZConfig.shorturls and $modvars.ZConfig.shorturlstype eq 0}
     <li><a href="{modurl modname='Pages' func='view' prop=$property.name cat=$category.path|replace:$property.rootcat.path:''}" title="{$categorydesc}">{$categoryname}</a></li>
     {else}
     <li><a href="{modurl modname='Pages' func='view' prop=$property.name cat=$category.id}" title="{$categorydesc}">{$categoryname}</a></li>
