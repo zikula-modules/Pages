@@ -27,7 +27,12 @@ class Pages_Controller_User extends Zikula_Controller
                 $rootcat = CategoryUtil::getCategoryByID($catregistry[$property]);
                 if (!empty($rootcat)) {
                     $rootcat['path'] .= '/'; // add this to make the relative paths of the subcategories with ease - mateo
-                    $subcategories    = CategoryUtil::getCategoriesByParentID($rootcat['id']);
+                    $subcategories = CategoryUtil::getCategoriesByParentID($rootcat['id']);
+                    foreach ($subcategories as $k => $category) {
+                        $subcategories[$k]['count'] = ModUtil::apiFunc('Pages', 'user', 'countitems', array(
+                            'category' => $category['id'],
+                            'property' => $property));
+                    }
                     $propertiesdata[] = array('name' => $property,
                             'rootcat' => $rootcat,
                             'subcategories' => $subcategories);

@@ -19,7 +19,7 @@
             {/if}
             {if $item.__CATEGORIES__}
             <li>{gt text='Categories'}:
-                {foreach from=$item.__CATEGORIES__ key='property' item='category'}
+                {foreach from=$item.__CATEGORIES__ key='property' item='category' name='cats'}
                 {if $category.accessible}
                 {if $modvars.ZConfig.shorturls and $modvars.ZConfig.shorturlstype eq 0}
                 <a href="{modurl modname='Pages' func='view' prop=$property cat=$category.path_relative}" title="{$category.display_desc.$lang}">{$category.display_name.$lang}</a>
@@ -27,6 +27,7 @@
                 <a href="{modurl modname='Pages' func='view' prop=$property cat=$category.id}" title="{$category.display_desc.$lang}">{$category.display_name.$lang}</a>
                 {/if}
                 {/if}
+                {if $smarty.foreach.cats.last}{else}, {/if}
                 {/foreach}
             </li>
             {/if}
