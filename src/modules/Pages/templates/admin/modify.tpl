@@ -85,15 +85,17 @@
                 </div>
             </fieldset>
             <fieldset class="z-formrow">
-                <legend>{gt text='Meta data'}</legend>
-                <ul>
-                    {usergetvar name='uname' uid=$item.cr_uid assign='username'}
-                    <li>{gt text='Created by %s' tag1=$username}</li>
-                    <li>{gt text='Created on %s' tag1=$item.cr_date|dateformat}</li>
-                    {usergetvar name='uname' uid=$item.lu_uid assign='username'}
-                    <li>{gt text='Last update by %s' tag1=$username}</li>
-                    <li>{gt text='Updated on %s' tag1=$item.lu_date|dateformat}</li>
-                </ul>
+                <legend><a id="pages_meta_collapse" href="javascript:void(0);">{gt text='Meta data'}</a></legend>
+                <div id="pages_meta_details">
+                    <ul>
+                        {usergetvar name='uname' uid=$item.cr_uid assign='username'}
+                        <li>{gt text='Created by %s' tag1=$username}</li>
+                        <li>{gt text='Created on %s' tag1=$item.cr_date|dateformat}</li>
+                        {usergetvar name='uname' uid=$item.lu_uid assign='username'}
+                        <li>{gt text='Last update by %s' tag1=$username}</li>
+                        <li>{gt text='Updated on %s' tag1=$item.lu_date|dateformat}</li>
+                    </ul>
+                </div>
             </fieldset>
 
             {notifydisplayhooks eventname='pages.hook.pages.ui.edit' area='modulehook_area.pages.pages' subject=$item id=$item.pageid caller="Pages"}
