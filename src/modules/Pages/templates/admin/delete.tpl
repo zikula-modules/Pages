@@ -2,7 +2,7 @@
 {include file='admin/menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='editdelete.gif' set='icons/large' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname='core' src='editdelete.png' set='icons/large' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 
@@ -14,8 +14,8 @@
             <input type="hidden" name="confirmation" value="1" />
             <input type="hidden" name="pageid" value="{$pageid|safetext}" />
             <div class="z-formbuttons">
-                {button src='button_ok.gif' set='icons/small' __alt='Confirm deletion?' __title='Confirm deletion?'}
-                <a href="{modurl modname=Pages type=admin func=view}">{img modname='core' src='button_cancel.gif' set='icons/small'  __alt='Cancel' __title='Cancel'}</a>
+                {button src='button_ok.png' set='icons/small' __alt='Confirm deletion?' __title='Confirm deletion?'}
+                <a href="{modurl modname=Pages type=admin func=view}">{img modname='core' src='button_cancel.png' set='icons/small'  __alt='Cancel' __title='Cancel'}</a>
             </div>
         </div>
     </form>

@@ -4,7 +4,7 @@
 {include file='admin/menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='windowlist.gif' set='icons/large' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname='core' src='windowlist.png' set='icons/large' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 
@@ -30,7 +30,7 @@
                 &nbsp;&nbsp;
                 <span class="z-nowrap z-buttons">
                     <input class='z-bt-filter' name="submit" type="submit" value="{gt text='Filter'}" />
-                    <a href="{modurl modname="Pages" type='admin' func='view'}" title="{gt text="Clear"}">{img modname=core src="button_cancel.gif" set="icons/extrasmall" __alt="Clear" __title="Clear"} {gt text="Clear"}</a>
+                    <a href="{modurl modname="Pages" type='admin' func='view'}" title="{gt text="Clear"}">{img modname=core src="button_cancel.png" set="icons/extrasmall" __alt="Clear" __title="Clear"} {gt text="Clear"}</a>
                 </span>
             </div>
         </fieldset>

@@ -52,7 +52,7 @@
         {/if}
         {if $item.displayprint}
         <span class="pages_page_printerlink">
-            <a href="{modurl modname='Pages' func='display' pageid=$item.pageid theme='Printer'}">{img modname='core' src='printer1.gif' set='icons/small' __alt='Print page'}</a>
+            <a href="{modurl modname='Pages' func='display' pageid=$item.pageid theme='Printer'}">{img modname='core' src='printer.png' set='icons/small' __alt='Print page'}</a>
         </span>
         {/if}
     </div>

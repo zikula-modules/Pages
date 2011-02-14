@@ -4,7 +4,7 @@
 {include file='admin/menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='filenew.gif' set='icons/large' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname='core' src='filenew.png' set='icons/large' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 
@@ -80,8 +80,8 @@
            {notifydisplayhooks eventname='pages.hook.pages.ui.edit' area='modulehook_area.pages.pages' subject=null id=null caller="Pages"}
 
             <div class="z-formbuttons z-buttons">
-                {button src='button_ok.gif' set='icons/extrasmall' __alt='Create' __title='Create' __text='Create'}
-                <a href="{modurl modname='Pages' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel'  __title='Cancel'} {gt text='Cancel'}</a>
+                {button src='button_ok.png' set='icons/extrasmall' __alt='Create' __title='Create' __text='Create'}
+                <a href="{modurl modname='Pages' type='admin' func='view'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel'  __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </div>
     </form>
