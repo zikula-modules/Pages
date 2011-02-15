@@ -4,8 +4,7 @@
 {include file='admin/menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='edit.png' set='icons/large' alt=$templatetitle}</div>
-
+    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
     <h2>{$templatetitle}</h2>
 
     <form id="pages_admin_modifyform" class="z-form" action="{modurl modname='Pages' type='admin' func='update'}" method="post" enctype="application/x-www-form-urlencoded">

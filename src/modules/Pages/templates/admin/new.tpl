@@ -4,8 +4,7 @@
 {include file='admin/menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='filenew.png' set='icons/large' alt=$templatetitle}</div>
-
+    <div class="z-adminpageicon">{icon type="new" size="large"}</div>
     <h2>{$templatetitle}</h2>
 
     <form id="pages_admin_newform" class="z-form" action="{modurl modname='Pages' type='admin' func='create'}" method="post" enctype="application/x-www-form-urlencoded">

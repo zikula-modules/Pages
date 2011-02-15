@@ -254,7 +254,7 @@ class Pages_Api_Admin extends Zikula_Api
         if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_READ)) {
             $links[] = array('url'  => ModUtil::url('Pages', 'admin', 'view'),
                     'text' => $this->__('Pages list'),
-                    'class' => 'z-icon-es-list');
+                    'class' => 'z-icon-es-view');
         }
         if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADD)) {
             $links[] = array('url'  => ModUtil::url('Pages', 'admin', 'newitem'),

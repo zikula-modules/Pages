@@ -343,7 +343,7 @@ class Pages_Controller_Admin extends Zikula_Controller
         {
             $options = array();
             $options[] = array('url'   => ModUtil::url('Pages', 'user', 'display', array('pageid' => $item['pageid'])),
-                    'image' => 'demo.png',
+                    'image' => 'kview.png',
                     'title' => $this->__('View'));
 
             if (SecurityUtil::checkPermission('Pages::', "$item[title]::$item[pageid]", ACCESS_EDIT)) {
