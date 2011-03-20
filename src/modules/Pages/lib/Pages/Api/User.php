@@ -1,5 +1,5 @@
 <?php
-class Pages_Api_User extends Zikula_Api
+class Pages_Api_User extends Zikula_AbstractApi
 {
     /**
      * get a specific item

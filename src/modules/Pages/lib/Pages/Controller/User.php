@@ -1,5 +1,5 @@
 <?php
-class Pages_Controller_User extends Zikula_Controller
+class Pages_Controller_User extends Zikula_AbstractController
 {
     /**
      * the main user function

@@ -30,7 +30,7 @@ class pages_result_checker
 
 }
 
-class Pages_Api_Search extends Zikula_Api
+class Pages_Api_Search extends Zikula_AbstractApi
 {
 
     /**

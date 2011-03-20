@@ -1,5 +1,5 @@
 <?php
-class Pages_Controller_Admin extends Zikula_Controller
+class Pages_Controller_Admin extends Zikula_AbstractController
 {
     /**
      * the main administration function

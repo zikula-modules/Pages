@@ -1,5 +1,5 @@
 <?php
-class Pages_Installer extends Zikula_Installer
+class Pages_Installer extends Zikula_AbstractInstaller
 {
     /**
      * init pages module

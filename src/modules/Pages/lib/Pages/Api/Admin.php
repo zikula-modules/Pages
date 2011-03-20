@@ -1,5 +1,5 @@
 <?php
-class Pages_Api_Admin extends Zikula_Api
+class Pages_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * create a new page
