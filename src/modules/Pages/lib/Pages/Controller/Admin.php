@@ -65,7 +65,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
 
         $page = FormUtil::getPassedValue('page', isset($args['page']) ? $args['page'] : null, 'POST');
 
-        $validators = $this->notifyHooks('pages.hook.pages.validate.edit', $page, null, array(), new Zikula_Collection_HookValidationProviders())->getData();
+        $validators = $this->notifyHooks('pages.hook.pages.validate.edit', $page, null, array(), new Zikula_Hook_ValidationProviders())->getData();
         if (!$validators->hasErrors()) {
             $pageid = ModUtil::apiFunc('Pages', 'admin', 'create', $page);
             if ($pageid != false) {
@@ -163,7 +163,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerArgsError();
         }
 
-        $validators = $this->notifyHooks('pages.hook.pages.validate.edit', $page, $page['pageid'], array(), new Zikula_Collection_HookValidationProviders())->getData();
+        $validators = $this->notifyHooks('pages.hook.pages.validate.edit', $page, $page['pageid'], array(), new Zikula_Hook_ValidationProviders())->getData();
         if (!$validators->hasErrors()) {
             if (ModUtil::apiFunc('Pages', 'admin', 'update', $page)) {
                 // Success
