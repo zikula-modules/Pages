@@ -58,10 +58,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
      */
     public function create($args)
     {
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError (ModUtil::url('Pages', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         $page = FormUtil::getPassedValue('page', isset($args['page']) ? $args['page'] : null, 'POST');
 
@@ -147,10 +144,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
      */
     public function update($args)
     {
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Pages', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         $page = FormUtil::getPassedValue('page', isset($args['page']) ? $args['page'] : null, 'POST');
         $url  = FormUtil::getPassedValue('url', isset($args['url']) ? $args['url'] : null, 'POST');
@@ -231,10 +225,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
 
         // If we get here it means that the user has confirmed the action
 
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Pages', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         // Delete the page
         if (ModUtil::apiFunc('Pages', 'admin', 'delete', array('pageid' => $pageid))) {
@@ -422,10 +413,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Pages', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         // Update module variables
         $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 25, 'POST');

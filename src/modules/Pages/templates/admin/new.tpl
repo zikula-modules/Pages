@@ -9,7 +9,7 @@
 
     <form id="pages_admin_newform" class="z-form" action="{modurl modname='Pages' type='admin' func='create'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Pages'}" />
+            <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
             <fieldset>
                 <legend>{gt text='Content'}</legend>
                 <div class="z-formrow">

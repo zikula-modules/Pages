@@ -10,7 +10,7 @@
     <form id="pages_admin_modifyform" class="z-form" action="{modurl modname='Pages' type='admin' func='update'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="url" value="{$item.returnurl|safetext}" />
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Pages'}" />
+            <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
             <input type="hidden" name="page[pageid]" value="{$item.pageid|safetext}" />
             <fieldset>
                 <legend>{gt text='Content'}</legend>

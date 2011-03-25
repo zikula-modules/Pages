@@ -9,7 +9,7 @@
 
     <form class="z-form" action="{modurl modname='Pages' type='admin' func='delete'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Pages'}" />
+            <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
             <input type="hidden" name="confirmation" value="1" />
             <input type="hidden" name="pageid" value="{$pageid|safetext}" />
             <div class="z-formbuttons">
