@@ -8,10 +8,7 @@ class Pages_Controller_User extends Zikula_AbstractController
      */
     public function main()
     {
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_READ), LogUtil::getErrorMsgPermission());
 
         // Create output object
         $enablecategorization = ModUtil::getVar('Pages', 'enablecategorization');
@@ -54,10 +51,7 @@ class Pages_Controller_User extends Zikula_AbstractController
      */
     public function view($args)
     {
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_OVERVIEW)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
 
         $lang = ZLanguage::getLanguageCode();
 

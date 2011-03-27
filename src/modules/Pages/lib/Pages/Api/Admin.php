@@ -15,10 +15,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', "$args[title]::", ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', $args['title'] . '::', ACCESS_ADD), LogUtil::getErrorMsgPermission());
 
         // defaults
         if (!isset($args['language'])) {
@@ -91,10 +88,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('No such page found.'));
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', "$item[title]::$item[pageid]", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', $item['title'] . '::' . $item['pageid'], ACCESS_DELETE), LogUtil::getErrorMsgPermission());
 
         if (!DBUtil::deleteObjectByID('pages', $args['pageid'], 'pageid')) {
             return LogUtil::registerError($this->__('Error! Deletion attempt failed.'));
@@ -123,21 +117,14 @@ class Pages_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        // Check page to update exists, and get information for
-        // security check
+        // Check page to update exists, and get information for security check
         $item = ModUtil::apiFunc('Pages', 'user', 'get', array('pageid' => $args['pageid']));
 
         if ($item == false) {
             return LogUtil::registerError($this->__('No such page found.'));
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', "$item[title]::$item[pageid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
-        if (!SecurityUtil::checkPermission('Pages::', "$args[title]::$item[pageid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', $args['title'] . '::' . $item['pageid'], ACCESS_EDIT), LogUtil::getErrorMsgPermission());
 
         // set some defaults
         if (!isset($args['language'])) {
@@ -199,10 +186,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
      */
     public function purgepermalinks($args)
     {
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
 
         // disable categorization to do this (if enabled)
         $catenabled = ModUtil::getVar('Pages', 'enablecategorization');

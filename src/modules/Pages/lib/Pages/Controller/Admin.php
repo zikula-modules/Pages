@@ -8,10 +8,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
      */
     public function main()
     {
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_EDIT), LogUtil::getErrorMsgPermission());
 
         // Create output object
         $this->view->setCaching(false);
@@ -27,10 +24,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
      */
     public function newitem()
     {
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADD), LogUtil::getErrorMsgPermission());
 
         // Get the module configuration vars
         $modvars = $this->getVars();
@@ -103,10 +97,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerError($this->__('No such page found.'), 404);
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', "$item[title]::$pageid", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', $item['title'] . '::' . $pageid, ACCESS_EDIT), LogUtil::getErrorMsgPermission());
 
         // Get the module configuration vars
         $modvars = $this->getVars();
@@ -205,10 +196,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerError($this->__('No such page found.'), 404);
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', "$item[title]::$pageid", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', $item['title'] . '::' . $pageid, ACCESS_DELETE), LogUtil::getErrorMsgPermission());
 
         // Check for confirmation.
         if (empty($confirmation)) {
@@ -245,10 +233,8 @@ class Pages_Controller_Admin extends Zikula_AbstractController
      */
     public function view($args)
     {
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_EDIT), LogUtil::getErrorMsgPermission());
+
         // initialize sort array - used to display sort classes and urls
         $sort = array();
         $fields = array('pageid', 'title', 'cr_date'); // possible sort fields
@@ -391,10 +377,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
      */
     public function modifyconfig()
     {
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
 
         $this->view->setCaching(false);
 
@@ -408,10 +391,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
      */
     public function updateconfig()
     {
-        // Security check
-        if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
 
         $this->checkCsrfToken();
 
