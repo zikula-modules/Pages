@@ -10,7 +10,7 @@
     {if ($modvars.ZConfig.multilingual OR $modvars.Pages.enablecategorization)}
     <form class="z-form" action="{modurl modname='Pages' type='admin' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset{if $filter_active} class='filteractive'{/if}>
-            {if $filter_active}{gt text='active' assign=filteractive}{else}{gt text='inactive" assign=filteractive}{/if}
+            {if $filter_active}{gt text='active' assign='filteractive'}{else}{gt text='inactive' assign='filteractive'}{/if}
             <legend>{gt text='Filter %1$s, %2$s page listed' plural='Filter %1$s, %2$s pages listed' count=$pager.numitems tag1=$filteractive tag2=$pager.numitems}</legend>
             <input type="hidden" name="startnum" value="{$startnum}" />
             <input type="hidden" name="orderby" value="{$orderby}" />
@@ -29,7 +29,7 @@
                 &nbsp;&nbsp;
                 <span class="z-nowrap z-buttons">
                     <input class='z-bt-filter' name="submit" type="submit" value="{gt text='Filter'}" />
-                    <a href="{modurl modname="Pages" type='admin' func='view'}" title="{gt text="Clear"}">{img modname=core src="button_cancel.png" set="icons/extrasmall" __alt="Clear" __title="Clear"} {gt text="Clear"}</a>
+                    <a href="{modurl modname="Pages" type='admin' func='view'}" title="{gt text="Clear"}">{img modname='core' src="button_cancel.png" set="icons/extrasmall" __alt="Clear" __title="Clear"} {gt text="Clear"}</a>
                 </span>
             </div>
         </fieldset>
@@ -86,5 +86,5 @@
         </tbody>
     </table>
 
-    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' shift=1}
+    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>

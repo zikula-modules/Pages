@@ -41,5 +41,5 @@
 
 {modurl modname='Pages' func='view' startnum=$startnum assign='returnurl'}
 
-{pager show='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' shift=1}
+{pager show='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 {/if}
