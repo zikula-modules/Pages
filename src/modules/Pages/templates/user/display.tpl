@@ -11,11 +11,11 @@
         <ul>
             {if $item.displaycreated and $item.cr_uid}
             {usergetvar name='uname' uid=$item.cr_uid assign='cr_uname'}
-            <li>{gt text='Created by %1$s on %2$s' tag1=$cr_uname|userprofilelink tag2=$item.cr_date|dateformat}</li>
+            <li>{gt text='Created by %1$s on %2$s' tag1=$cr_uname|profilelinkbyuname tag2=$item.cr_date|dateformat}</li>
             {/if}
             {if $item.displayupdated and $item.lu_uid}
             {usergetvar name='uname' uid=$item.lu_uid assign='lu_uname'}
-            <li>{gt text='Last update by %1$s on %2$s' tag1=$lu_uname|userprofilelink tag2=$item.lu_date|dateformat}</li>
+            <li>{gt text='Last update by %1$s on %2$s' tag1=$lu_uname|profilelinkbyuname tag2=$item.lu_date|dateformat}</li>
             {/if}
             {if $item.__CATEGORIES__}
             <li>{gt text='Categories'}:
