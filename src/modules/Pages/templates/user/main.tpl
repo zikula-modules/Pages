@@ -14,9 +14,9 @@
     {array_field_isset assign="categorydesc" array=$category.display_desc field=$modvars.ZConfig.language_i18n returnValue=1}
 
     {if $modvars.ZConfig.shorturls and $modvars.ZConfig.shorturlstype eq 0}
-    <li><a href="{modurl modname='Pages' func='view' prop=$property.name cat=$category.path|replace:$property.rootcat.path:''}" title="{$categorydesc}">{$categoryname}</a> ({gt text='%s page' plural='%s pages' count=$category.count tag1=$category.count})</li>
+    <li><a href="{modurl modname='Pages' type='user' func='view' prop=$property.name cat=$category.path|replace:$property.rootcat.path:''}" title="{$categorydesc}">{$categoryname}</a> ({gt text='%s page' plural='%s pages' count=$category.count tag1=$category.count})</li>
     {else}
-    <li><a href="{modurl modname='Pages' func='view' prop=$property.name cat=$category.id}" title="{$categorydesc}">{$categoryname}</a> ({gt text='%s page' plural='%s pages' count=$category.count tag1=$category.count})</li>
+    <li><a href="{modurl modname='Pages' type='user' func='view' prop=$property.name cat=$category.id}" title="{$categorydesc}">{$categoryname}</a> ({gt text='%s page' plural='%s pages' count=$category.count tag1=$category.count})</li>
     {/if}
     {/foreach}
 </ul>

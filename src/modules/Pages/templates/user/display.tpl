@@ -22,9 +22,9 @@
                 {foreach from=$item.__CATEGORIES__ key='property' item='category' name='cats'}
                 {if $category.accessible}
                 {if $modvars.ZConfig.shorturls and $modvars.ZConfig.shorturlstype eq 0}
-                <a href="{modurl modname='Pages' func='view' prop=$property cat=$category.path_relative}" title="{$category.display_desc.$lang}">{$category.display_name.$lang}</a>
+                <a href="{modurl modname='Pages' type='user' func='view' prop=$property cat=$category.path_relative}" title="{$category.display_desc.$lang}">{$category.display_name.$lang}</a>
                 {else}
-                <a href="{modurl modname='Pages' func='view' prop=$property cat=$category.id}" title="{$category.display_desc.$lang}">{$category.display_name.$lang}</a>
+                <a href="{modurl modname='Pages' type='user' func='view' prop=$property cat=$category.id}" title="{$category.display_desc.$lang}">{$category.display_name.$lang}</a>
                 {/if}
                 {/if}
                 {if $smarty.foreach.cats.last}{else}, {/if}
@@ -52,7 +52,7 @@
         {/if}
         {if $item.displayprint}
         <span class="pages_page_printerlink">
-            <a href="{modurl modname='Pages' func='display' pageid=$item.pageid theme='Printer'}">{img modname='core' src='printer.png' set='icons/small' __alt='Print page'}</a>
+            <a href="{modurl modname='Pages' type='user' func='display' pageid=$item.pageid theme='Printer'}">{img modname='core' src='printer.png' set='icons/small' __alt='Print page'}</a>
         </span>
         {/if}
     </div>
@@ -60,6 +60,6 @@
 
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='page'}
 
-    {modurl modname='Pages' func='display' pageid=$item.pageid assign='returnurl'}
+    {modurl modname='Pages' type='user' func='display' pageid=$item.pageid assign='returnurl'}
     {notifydisplayhooks eventname='pages.hook.pages.ui.view' area='modulehook_area.pages.pages' subject=$item id=$item.pageid}
 </div>
