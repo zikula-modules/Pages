@@ -35,6 +35,8 @@ class Pages_Installer extends Zikula_AbstractInstaller
         $this->setVars($modvars);
 
         HookUtil::registerHookSubscriberBundles($this->version);
+        
+        $this->createIntroPage();
 
         // initialisation successful
         return true;
@@ -292,5 +294,26 @@ class Pages_Installer extends Zikula_AbstractInstaller
         }
 
         return true;
+    }
+    
+    private function createIntroPage()
+    {
+        $page = array(
+            'title'          => 'Welcome to Pages content manager',
+            'urltitle'       => 'welcome-to-pages-content-manager',
+            'content'        => "This is a sample demonstration page. You can use Pages to create simple content pages. It is excellent if you only need basic html for your pages. You can utilize the Scribite module as well to WYSIWYG content creation. It is well suited to informational articles, documents and other 'long term' type content items.<br /><br />Pages is a hookable module which allows you to Hook EZComments or other hook providers to extend the capabilities of your content.",
+            'counter'        => 0,
+            'displaywrapper' => 1,
+            'displaytitle'   => 1,
+            'displaycreated' => 1,
+            'displayupdated' => 1,
+            'displaytextinfo' => 1,
+            'displayprint'   => 1,
+            'language'       => 'en');
+
+        // Insert the default article and preserve the standard fields
+        if (!($obj = DBUtil::insertObject($page, 'pages', 'pageid'))) {
+            LogUtil::registerStatus($this->__('Warning! Could not create the introductory page.'));
+        }
     }
 }
