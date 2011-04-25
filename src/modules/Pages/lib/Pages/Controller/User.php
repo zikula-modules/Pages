@@ -223,10 +223,10 @@ class Pages_Controller_User extends Zikula_AbstractController
 
         // Regardless of caching, we need to increment the read count and set the cache ID
         if (isset($pageid)) {
-            $this->view->cache_id = $pageid.'|'.$page;
+            $this->view->setCache_Id($pageid.'|'.$page);
             $incrementresult = ModUtil::apiFunc('Pages', 'user', 'incrementreadcount', array('pageid' => $pageid));
         } else {
-            $this->view->cache_id = $title.'|'.$page;
+            $this->view->setCache_Id($title.'|'.$page);
             $incrementresult = ModUtil::apiFunc('Pages', 'user', 'incrementreadcount', array('title' => $title));
         }
         if ($incrementresult === false) {
