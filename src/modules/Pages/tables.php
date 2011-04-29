@@ -11,6 +11,8 @@ function Pages_tables()
     $table['pages'] = DBUtil::getLimitedTablename('pages');
     $table['pages_column'] = array ('pageid'         => 'pn_pageid',
                                       'title'          => 'pn_title',
+                                      'metadescription'   => 'pn_metadescription',
+                                      'metakeywords'      => 'pn_metakeywords',
                                       'urltitle'       => 'pn_urltitle',
                                       'content'        => 'pn_content',
                                       'counter'        => 'pn_counter',
@@ -23,6 +25,8 @@ function Pages_tables()
                                       'language'       => 'pn_language');
     $table['pages_column_def'] = array('pageid'         => 'I AUTOINCREMENT PRIMARY',
                                          'title'          => "X NOTNULL DEFAULT ''",
+                                         'metadescription'   => "X NOTNULL DEFAULT ''",
+                                         'metakeywords'      => "X NOTNULL DEFAULT ''",
                                          'urltitle'       => "X NOTNULL DEFAULT ''",
                                          'content'        => "X NOTNULL DEFAULT ''",
                                          'counter'        => "I NOTNULL DEFAULT '0'",

@@ -1,6 +1,13 @@
 {pagesetvar name='title' value=$item.title}
 {insert name='getstatusmsg'}
 
+{if $item.metadescription ne ''}
+    {setmetatag name='description' value=$item.metadescription|safehtml}
+{/if}
+{if $item.metakeywords ne ''}
+    {setmetatag name='keywords' value=$item.metakeywords|safehtml}
+{/if}
+
 <div class="pages_page_container">
     {if $item.displaytitle}
     <h2>{$item.title|safehtml}</h2>

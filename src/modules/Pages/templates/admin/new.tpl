@@ -47,6 +47,17 @@
                 </div>
             </fieldset>
             <fieldset>
+                <legend>{gt text='Meta tags'}</legend>
+                <div class="z-formrow">
+                    <label for="pages_metadescription">{gt text='Description'}</label>
+                    <input id="pages_metadescription" class="z-form-text" name="page[metadescription]" type="text" size="32" maxlength="255" />
+                </div>
+                <div class="z-formrow">
+                    <label for="pages_metakeywords">{gt text='Keywords'}</label>
+                    <textarea id="pages_metakeywords" class="z-form-text" name="page[metakeywords]" rows="4" cols="50" maxlength="255"></textarea>
+                </div>
+            </fieldset>
+            <fieldset>
                 <legend><a id="pages_settings_collapse" href="javascript:void(0);">{gt text='Specific page settings'}</a></legend>
                 <div id="pages_settings_details">
                     <div class="z-formrow">
