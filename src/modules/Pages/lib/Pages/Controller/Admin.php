@@ -53,11 +53,12 @@ class Pages_Controller_Admin extends Zikula_AbstractController
 
         $page = FormUtil::getPassedValue('page', isset($args['page']) ? $args['page'] : null, 'POST');
 
-        $validators = $this->notifyHooks('pages.hook.pages.validate.edit', $page, null, array(), new Zikula_Hook_ValidationProviders())->getData();
+        $validators = $this->notifyHooks(new Zikula_ValidationHook('pages.hook.pages.validate.edit', new Zikula_Hook_ValidationProviders()))->getValidators();
         if (!$validators->hasErrors()) {
             $pageid = ModUtil::apiFunc('Pages', 'admin', 'create', $page);
             if ($pageid != false) {
-                $this->notifyHooks('pages.hook.pages.process.edit', $page, $pageid);
+                $url = new Zikula_ModUrl('Pages', 'user', 'display', ZLanguage::getLanguageCode(), array('pageid' => $pageid));
+                $this->notifyHooks(new Zikula_ProcessHook('pages.hook.pages.process.edit', $pageid, $url));
                 LogUtil::registerStatus($this->__('Done! Page created.'));
             }
         } else {
@@ -145,12 +146,13 @@ class Pages_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerArgsError();
         }
 
-        $validators = $this->notifyHooks('pages.hook.pages.validate.edit', $page, $page['pageid'], array(), new Zikula_Hook_ValidationProviders())->getData();
+        $validators = $this->notifyHooks(new Zikula_ValidationHook('pages.hook.pages.validate.edit', new Zikula_Hook_ValidationProviders()))->getValidators();
         if (!$validators->hasErrors()) {
             if (ModUtil::apiFunc('Pages', 'admin', 'update', $page)) {
                 // Success
                 LogUtil::registerStatus($this->__('Done! Page updated.'));
-                $this->notifyHooks('pages.hook.pages.process.edit', $page, $page['pageid']);
+                $url = new Zikula_ModUrl('Pages', 'user', 'display', ZLanguage::getLanguageCode(), array('pageid' => $page['pageid']));
+                $this->notifyHooks(new Zikula_ProcessHook('pages.hook.pages.process.edit', $page['pageid'], $url));
             }
         }
 
@@ -216,7 +218,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
         if (ModUtil::apiFunc('Pages', 'admin', 'delete', array('pageid' => $pageid))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Page deleted.'));
-            $this->notifyHooks('pages.hook.pages.process.delete', $item, $pageid);
+            $this->notifyHooks(new Zikula_ProcessHook('pages.hook.pages.process.delete', $pageid));
         }
 
         return System::redirect(ModUtil::url('Pages', 'admin', 'view'));

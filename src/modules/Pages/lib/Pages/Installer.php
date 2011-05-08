@@ -34,7 +34,7 @@ class Pages_Installer extends Zikula_AbstractInstaller
         // set up module variables
         $this->setVars($modvars);
 
-        HookUtil::registerHookSubscriberBundles($this->version);
+        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
         
         $this->createIntroPage();
 
@@ -103,7 +103,7 @@ class Pages_Installer extends Zikula_AbstractInstaller
             case '2.4':
             case '2.4.1':
             case '2.4.2':
-                HookUtil::registerHookSubscriberBundles($this->version);
+                HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
 
             // further upgrade routines
         }
