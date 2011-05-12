@@ -77,7 +77,7 @@ class Pages_Block_Pageslist extends Zikula_Controller_AbstractBlock
         }
 
         // Create output object
-        $this->view->setCache_Id($blockinfo['bid']);
+        $this->view->setCacheId($blockinfo['bid']);
 
         // Display each item, permissions permitting
         $shown_results = 0;
