@@ -61,5 +61,5 @@
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='page'}
 
     {modurl modname='Pages' func='display' pageid=$item.pageid assign='returnurl'}
-    {notifydisplayhooks eventname='pages.hook.pages.ui.view' area='modulehook_area.pages.pages' subject=$item id=$item.pageid}
+    {notifydisplayhooks eventname='pages.hook.pages.ui.view' subject=$item id=$item.pageid}
 </div>

@@ -18,7 +18,7 @@ class Pages_Version extends Zikula_AbstractVersion
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.pages.pages', $this->__('Pages Hooks'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber_area.ui.pages.pages', 'ui', $this->__('Pages Hooks'));
         $bundle->addType('ui.view', 'pages.hook.pages.ui.view');
         $bundle->addType('ui.edit', 'pages.hook.pages.ui.edit');
         $bundle->addType('ui.delete', 'pages.hook.pages.ui.delete');
@@ -28,7 +28,7 @@ class Pages_Version extends Zikula_AbstractVersion
         $bundle->addType('process.delete', 'pages.hook.pages.process.delete');
         $this->registerHookSubscriberBundle($bundle);
 
-        $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.pages.pagesfilter', $this->__('Pages Filter Hooks'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber_area.filter.pages.pagesfilter', 'filter', $this->__('Pages Filter Hooks'));
         $bundle->addType('ui.filter', 'pages.hook.pagesfilter.ui.filter');
         $this->registerHookSubscriberBundle($bundle);
     }

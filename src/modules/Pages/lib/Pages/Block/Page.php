@@ -61,7 +61,7 @@ class Pages_Block_Page extends Zikula_Controller_AbstractBlock
         }
 
         // create the output object
-        $this->view->setCache_Id($item['pageid']);
+        $this->view->setCacheId($item['pageid']);
 
         // assign the item
         $this->view->assign($item);

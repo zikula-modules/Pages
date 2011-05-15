@@ -34,7 +34,7 @@ class Pages_Installer extends Zikula_AbstractInstaller
         // set up module variables
         $this->setVars($modvars);
 
-        HookUtil::registerHookSubscriberBundles($this->version);
+        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
 
         // initialisation successful
         return true;
@@ -101,7 +101,7 @@ class Pages_Installer extends Zikula_AbstractInstaller
             case '2.4':
             case '2.4.1':
             case '2.4.2':
-                HookUtil::registerHookSubscriberBundles($this->version);
+                HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
 
             // further upgrade routines
         }
@@ -128,7 +128,7 @@ class Pages_Installer extends Zikula_AbstractInstaller
         DBUtil::deleteWhere('categories_registry', "crg_modname = 'Pages'");
         DBUtil::deleteWhere('categories_mapobj', "cmo_modname = 'Pages'");
 
-        HookUtil::unregisterHookSubscriberBundles($this->version);
+        HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
 
         // Deletion successful
         return true;
