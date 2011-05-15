@@ -9,7 +9,7 @@
 
     <form id="pages_admin_newform" class="z-form" action="{modurl modname='Pages' type='admin' func='create'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Pages'}" />
+            <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
             <fieldset>
                 <legend>{gt text='Content'}</legend>
                 <div class="z-formrow">
@@ -44,6 +44,17 @@
                     <label for="pages_content">{gt text='Content'}</label>
                     <textarea id="pages_content" class="z-form-text" name="page[content]" rows="10" cols="50"></textarea>
                     <em class="z-sub z-formnote">{gt text='If you want multiple pages you can write &lt;!--pagebreak--&gt; where you want to cut.'}</em>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{gt text='Meta tags'}</legend>
+                <div class="z-formrow">
+                    <label for="pages_metadescription">{gt text='Description'}</label>
+                    <input id="pages_metadescription" class="z-form-text" name="page[metadescription]" type="text" size="32" maxlength="255" />
+                </div>
+                <div class="z-formrow">
+                    <label for="pages_metakeywords">{gt text='Keywords'}</label>
+                    <textarea id="pages_metakeywords" class="z-form-text" name="page[metakeywords]" rows="4" cols="50" maxlength="255"></textarea>
                 </div>
             </fieldset>
             <fieldset>

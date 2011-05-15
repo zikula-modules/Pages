@@ -14,9 +14,9 @@
     {array_field_isset assign='categorydesc' array=$listcategories[k][i].display_desc field=$lang returnValue=1}
 
     {if $modvars.ZConfig.shorturls and $modvars.ZConfig.shorturlstype eq 0}
-    <li><a href="{modurl modname='Pages' func='view' prop=$listproperties[k] cat=$listcategories[k][i].path|replace:$listrootcats[k].path:''}" title="{$categorydesc}">{$categoryname}</a></li>
+    <li><a href="{modurl modname='Pages' type='user' func='view' prop=$listproperties[k] cat=$listcategories[k][i].path|replace:$listrootcats[k].path:''}" title="{$categorydesc}">{$categoryname}</a></li>
     {else}
-    <li><a href="{modurl modname='Pages' func='view' prop=$listproperties[k] cat=$listcategories[k][i].id}" title="{$categorydesc}">{$categoryname}</a></li>
+    <li><a href="{modurl modname='Pages' type='user' func='view' prop=$listproperties[k] cat=$listcategories[k][i].id}" title="{$categorydesc}">{$categoryname}</a></li>
     {/if}
     {/section}
     {/section}
@@ -39,7 +39,7 @@
     {/foreach}
 </ul>
 
-{modurl modname='Pages' func='view' startnum=$startnum assign='returnurl'}
+{modurl modname='Pages' type='user' func='view' startnum=$startnum assign='returnurl'}
 
-{pager show='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' shift=1}
+{pager show='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 {/if}

@@ -10,7 +10,7 @@
     <form id="pages_admin_modifyform" class="z-form" action="{modurl modname='Pages' type='admin' func='update'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="url" value="{$item.returnurl|safetext}" />
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Pages'}" />
+            <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
             <input type="hidden" name="page[pageid]" value="{$item.pageid|safetext}" />
             <fieldset>
                 <legend>{gt text='Content'}</legend>
@@ -52,6 +52,17 @@
                     <label for="pages_content">{gt text='Content'}</label>
                     <textarea id="pages_content" class="z-form-text" name="page[content]" rows="10" cols="50">{$item.content|safetext}</textarea>
                     <em class="z-sub z-formnote">{gt text='If you want multiple pages you can write &lt;!--pagebreak--&gt; where you want to cut.'}</em>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{gt text='Meta tags'}</legend>
+                <div class="z-formrow">
+                    <label for="pages_metadescription">{gt text='Description'}</label>
+                    <input id="pages_metadescription" class="z-form-text" name="page[metadescription]" type="text" size="32" maxlength="255" value="{$item.metadescription|safehtml}" />
+                </div>
+                <div class="z-formrow">
+                    <label for="pages_metakeywords">{gt text='Keywords'}</label>
+                    <textarea id="pages_metakeywords" class="z-form-text" name="page[metakeywords]" rows="4" cols="50" maxlength="255">{$item.metakeywords|safehtml}</textarea>
                 </div>
             </fieldset>
             <fieldset>

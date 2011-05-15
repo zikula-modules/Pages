@@ -13,6 +13,12 @@ class Pages_Version extends Zikula_AbstractVersion
         $meta['capabilities'] = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
         $meta['securityschema'] = array('Pages::' => 'Page name::Page ID',
                 'Pages:category:' => 'Category ID::');
+        // Module depedencies
+        $meta['dependencies'] = array(
+                array('modname'    => 'Scribite',
+                      'minversion' => '4.2.1',
+                      'maxversion' => '',
+                      'status'     => ModUtil::DEPENDENCY_RECOMMENDED));
         return $meta;
     }
 
