@@ -108,7 +108,7 @@
                 </div>
             </fieldset>
 
-            {notifydisplayhooks eventname='pages.hook.pages.ui.edit' id=$item.pageid}
+            {notifydisplayhooks eventname='pages.ui_hooks.pages.form_edit' id=$item.pageid}
 
             <div class="z-formbuttons z-buttons">
                 {button src='button_ok.png' set='icons/extrasmall' __alt='Update' __title='Update' __text='Update'}

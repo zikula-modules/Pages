@@ -87,7 +87,7 @@
                 </div>
             </fieldset>
 
-           {notifydisplayhooks eventname='pages.hook.pages.ui.edit' id=null}
+           {notifydisplayhooks eventname='pages.ui_hooks.pages.form_edit' id=null}
 
             <div class="z-formbuttons z-buttons">
                 {button src='button_ok.png' set='icons/extrasmall' __alt='Create' __title='Create' __text='Create'}
