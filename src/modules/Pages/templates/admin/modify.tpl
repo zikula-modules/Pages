@@ -62,7 +62,7 @@
                 </div>
                 <div class="z-formrow">
                     <label for="pages_metakeywords">{gt text='Keywords'}</label>
-                    <textarea id="pages_metakeywords" class="z-form-text" name="page[metakeywords]" rows="4" cols="50" maxlength="255">{$item.metakeywords|safehtml}</textarea>
+                    <textarea id="pages_metakeywords" class="z-form-text" name="page[metakeywords]" rows="4" cols="50">{$item.metakeywords|safehtml}</textarea>
                 </div>
             </fieldset>
             <fieldset>
