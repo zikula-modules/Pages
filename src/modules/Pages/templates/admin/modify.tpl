@@ -31,9 +31,9 @@
                     {gt text='Choose a category' assign='lblDef'}
                     {nocache}
                     {foreach from=$catregistry key='property' item='category'}
-                    {array_field_isset array=$item.__CATEGORIES__ field=$property assign='catExists'}
+                    {array_field array=$item.__CATEGORIES__ field=$property assign='catExists'}
                     {if $catExists}
-                    {array_field_isset array=$item.__CATEGORIES__.$property field='id' returnValue=1 assign='selectedValue'}
+                    {array_field array=$item.__CATEGORIES__.$property field='id' returnValue=1 assign='selectedValue'}
                     {else}
                     {assign var='selectedValue' value=0}
                     {/if}

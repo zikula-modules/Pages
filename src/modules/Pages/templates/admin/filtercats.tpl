@@ -2,7 +2,7 @@
 {gt text="All These Categories" assign="allText"}
 {nocache}
 {foreach from=$catregistry key='property' item='category'}
-    {array_field_isset assign="selectedValue" array=$selectedcategories field=$property returnValue=1}
+    {array_field assign="selectedValue" array=$selectedcategories field=$property returnValue=1}
     {selector_category
         editLink=0
         category=$category

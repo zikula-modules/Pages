@@ -9,9 +9,9 @@
     {section loop=$listproperties name='k'}
     {section loop=$listcategories[k] name='i'}
     {* get the category name and description avoiding E_ALL errors *}
-    {array_field_isset assign='categoryname' array=$listcategories[k][i].display_name field=$lang returnValue=1}
+    {array_field assign='categoryname' array=$listcategories[k][i].display_name field=$lang returnValue=1}
     {if $categoryname eq ''}{assign var='categoryname' value=$listcategories[k][i].name}{/if}
-    {array_field_isset assign='categorydesc' array=$listcategories[k][i].display_desc field=$lang returnValue=1}
+    {array_field assign='categorydesc' array=$listcategories[k][i].display_desc field=$lang returnValue=1}
 
     {if $modvars.ZConfig.shorturls and $modvars.ZConfig.shorturlstype eq 0}
     <li><a href="{modurl modname='Pages' type='user' func='view' prop=$listproperties[k] cat=$listcategories[k][i].path|replace:$listrootcats[k].path:''}" title="{$categorydesc}">{$categoryname}</a></li>
@@ -24,7 +24,7 @@
 {else}
 {if $modvars.Pages.enablecategorization and $category}
 {* get the category name avoiding E_ALL errors *}
-{array_field_isset assign='categoryname' array=$category.display_name field=$lang returnValue=1}
+{array_field assign='categoryname' array=$category.display_name field=$lang returnValue=1}
 {if $categoryname eq ''}{assign var='categoryname' value=$category.name}{/if}
 <h2>{gt text='Category: %s' tag1=$categoryname} </h2>
 <p>{gt text='Pages published under this category:'}</p>
