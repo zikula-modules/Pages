@@ -33,7 +33,7 @@
                     {foreach from=$catregistry key='property' item='category'}
                     {array_field array=$item.__CATEGORIES__ field=$property assign='catExists'}
                     {if $catExists}
-                    {array_field array=$item.__CATEGORIES__.$property field='id' returnValue=1 assign='selectedValue'}
+                    {array_field array=$item.__CATEGORIES__.$property field='id' assign='selectedValue'}
                     {else}
                     {assign var='selectedValue' value=0}
                     {/if}
