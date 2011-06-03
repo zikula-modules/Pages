@@ -1,4 +1,4 @@
-{if $modvars.Pages.enablecategorization and $modvars.ZConfig.shorturls and $modvars.ZConfig.shorturlstype eq 0 and $modvars.Pages.addcategorytitletopermalink}
+{if $modvars.Pages.enablecategorization and $modvars.ZConfig.shorturls and $modvars.Pages.addcategorytitletopermalink}
 {assign var='prop' value=$properties.0}
 <a href="{modurl modname='Pages' type='user' func='display' pageid=$item.pageid cat=$item.__CATEGORIES__.$prop.path_relative}">{$item.title|safehtml}</a>
 {else}

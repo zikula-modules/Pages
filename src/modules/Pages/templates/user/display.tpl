@@ -28,7 +28,7 @@
             <li>{gt text='Categories'}:
                 {foreach from=$item.__CATEGORIES__ key='property' item='category' name='cats'}
                 {if $category.accessible}
-                {if $modvars.ZConfig.shorturls and $modvars.ZConfig.shorturlstype eq 0}
+                {if $modvars.ZConfig.shorturls}
                 <a href="{modurl modname='Pages' type='user' func='view' prop=$property cat=$category.path_relative}" title="{$category.display_desc.$lang}">{$category.display_name.$lang}</a>
                 {else}
                 <a href="{modurl modname='Pages' type='user' func='view' prop=$property cat=$category.id}" title="{$category.display_desc.$lang}">{$category.display_name.$lang}</a>

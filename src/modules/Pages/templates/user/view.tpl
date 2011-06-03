@@ -13,7 +13,7 @@
     {if $categoryname eq ''}{assign var='categoryname' value=$listcategories[k][i].name}{/if}
     {array_field assign='categorydesc' array=$listcategories[k][i].display_desc field=$lang}
 
-    {if $modvars.ZConfig.shorturls and $modvars.ZConfig.shorturlstype eq 0}
+    {if $modvars.ZConfig.shorturls}
     <li><a href="{modurl modname='Pages' type='user' func='view' prop=$listproperties[k] cat=$listcategories[k][i].path|replace:$listrootcats[k].path:''}" title="{$categorydesc}">{$categoryname}</a></li>
     {else}
     <li><a href="{modurl modname='Pages' type='user' func='view' prop=$listproperties[k] cat=$listcategories[k][i].id}" title="{$categorydesc}">{$categoryname}</a></li>
