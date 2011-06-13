@@ -250,11 +250,6 @@ class Pages_Api_User extends Zikula_AbstractApi
             }
         }
 
-        // don't display the function name if either displaying an page or the normal overview
-        if ($args['func'] == 'main' || $args['func'] == 'display') {
-            $args['func'] = '';
-        }
-
         // construct the custom url part
         if (empty($args['func']) && empty($vars)) {
             return $args['modname'] . '/';
