@@ -39,7 +39,5 @@
     {/foreach}
 </ul>
 
-{modurl modname='Pages' type='user' func='view' startnum=$startnum assign='returnurl'}
-
 {pager show='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 {/if}

@@ -22,5 +22,5 @@
 </ul>
 {/foreach}
 {else}
-{modfunc modname='Pages' func='view'}
+{modfunc modname='Pages' type='user' func='view'}
 {/if}
