@@ -23,7 +23,7 @@
                 &nbsp;&nbsp;
                 <label for="pages_language">{gt text='Language'}</label>
                 {nocache}
-                {languagelist id='pages_language' name='language' all=true installed=true selected=$language}
+                {html_select_languages id='pages_language' name='language' all=true installed=true selected=$language}
                 {/nocache}
                 {/if}
                 &nbsp;&nbsp;

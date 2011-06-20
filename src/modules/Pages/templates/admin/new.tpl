@@ -37,7 +37,7 @@
                 {if $modvars.ZConfig.multilingual}
                 <div class="z-formrow">
                     <label for="pages_language">{gt text='Language'}</label>
-                    {languagelist id='pages_language' name='page[language]' all=true installed=true selected=$lang}
+                    {html_select_languages id='pages_language' name='page[language]' all=true installed=true selected=$lang}
                 </div>
                 {/if}
                 <div class="z-formrow">
