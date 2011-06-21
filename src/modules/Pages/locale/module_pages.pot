@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Zikula 1.2.x\n"
+"Project-Id-Version: Zikula 1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-23 16:31+0000\n"
+"POT-Creation-Date: 2011-06-21 20:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,378 +16,440 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: pnadmin.php:55 pnadmin.php:144 pnadmin.php:316 pnuserapi.php:50
-#: pnuserapi.php:172 pnuser.php:34 pnuser.php:97 pnuser.php:288
-#, php-format
-msgid "Error! Unable to load class [%s]"
-msgstr ""
-
-#: pnadmin.php:93
-msgid "Done! Page created."
-msgstr ""
-
-#: pnadmin.php:125 pnadmin.php:237 pnuser.php:271 pnuser.php:303
-#: pnuser.php:311 pnadminapi.php:107 pnadminapi.php:152
-msgid "No such page found."
-msgstr ""
-
-#: pnadmin.php:196
-msgid "Done! Page updated."
-msgstr ""
-
-#: pnadmin.php:268
-msgid "Done! Page deleted."
-msgstr ""
-
-#: pnadmin.php:299
-msgid "Purging of the pemalinks was successful"
-msgstr ""
-
-#: pnadmin.php:301
-msgid "Purging of the pemalinks has failed"
-msgstr ""
-
-#: pnadmin.php:360
-msgid "View"
-msgstr ""
-
-#: pnadmin.php:365 pntemplates/pages_user_display.htm:45
-msgid "Edit"
-msgstr ""
-
-#: pnadmin.php:370
-msgid "Delete"
-msgstr ""
-
-#: pnadmin.php:486
-msgid "Done! Module configuration updated."
-msgstr ""
-
-#: pnversion.php:16 pninit.php:289
-msgid "Static pages"
-msgstr ""
-
-#: pnversion.php:17
-msgid "Manager of the static pages of the site."
-msgstr ""
-
-#. ! this defines the module's url
-#: pnversion.php:20
-msgid "pages"
-msgstr ""
-
-#: pnsearchapi.php:101 pnsearchapi.php:132 pnuserapi.php:165
+#: lib/Pages/Api/User.php:145 lib/Pages/Api/Search.php:94
+#: lib/Pages/Api/Search.php:127
 msgid "Error! Could not load any page."
 msgstr ""
 
-#: pnblocks/pageslist.php:39 pntemplates/pages_user_view.htm:2
-#: pntemplates/pages_user_view.htm:33
-msgid "Pages list"
-msgstr ""
-
-#: pnblocks/pageslist.php:40
-msgid "Display a list of pages"
-msgstr ""
-
-#: pnblocks/page.php:32
-msgid "Show page"
-msgstr ""
-
-#: pnblocks/page.php:33
-msgid "Show a page in a block"
-msgstr ""
-
-#: pnuser.php:126
-msgid "Invalid category passed."
-msgstr ""
-
-#: pnuser.php:200 pntemplates/pages_admin_view.htm:97
-msgid "No pages found."
-msgstr ""
-
-#: pnadminapi.php:67 pnadminapi.php:198
+#: lib/Pages/Api/Admin.php:53 lib/Pages/Api/Admin.php:162
 msgid "The permalinks retrieved from the title has to be unique!"
 msgstr ""
 
-#: pnadminapi.php:69 pnadminapi.php:200
+#: lib/Pages/Api/Admin.php:55 lib/Pages/Api/Admin.php:164
 msgid "The permalink has to be unique!"
 msgstr ""
 
-#: pnadminapi.php:71 pnadminapi.php:202
+#: lib/Pages/Api/Admin.php:57 lib/Pages/Api/Admin.php:166
 msgid ""
 "The permalink has been removed, please update the page with a correct and "
 "unique permalink"
 msgstr ""
 
-#: pnadminapi.php:75
+#: lib/Pages/Api/Admin.php:61
 msgid "Error! Creation attempt failed."
 msgstr ""
 
-#: pnadminapi.php:116
+#: lib/Pages/Api/Admin.php:88 lib/Pages/Api/Admin.php:124
+#: lib/Pages/Controller/User.php:239 lib/Pages/Controller/User.php:268
+#: lib/Pages/Controller/User.php:276 lib/Pages/Controller/Admin.php:96
+#: lib/Pages/Controller/Admin.php:193
+msgid "No such page found."
+msgstr ""
+
+#: lib/Pages/Api/Admin.php:94
 msgid "Error! Deletion attempt failed."
 msgstr ""
 
-#: pnadminapi.php:206 pninit.php:83 pninit.php:94 pninit.php:100
-#: pninit.php:108 pninit.php:201
+#: lib/Pages/Api/Admin.php:170 lib/Pages/Installer.php:74
+#: lib/Pages/Installer.php:85 lib/Pages/Installer.php:91
+#: lib/Pages/Installer.php:99 lib/Pages/Installer.php:192
 msgid "Error! Update attempt failed."
 msgstr ""
 
-#: pnadminapi.php:284 pntemplates/pages_admin_view.htm:3
-msgid "View pages list"
+#: lib/Pages/Api/Admin.php:240 lib/Pages/Block/Pageslist.php:26
+#: templates/user/view.tpl:1 templates/user/view.tpl:32
+msgid "Pages list"
 msgstr ""
 
-#: pnadminapi.php:288 pntemplates/pages_admin_new.htm:3
+#: lib/Pages/Api/Admin.php:245 templates/admin/new.tpl:2
 msgid "Create a page"
 msgstr ""
 
-#: pnadminapi.php:292
+#: lib/Pages/Api/Admin.php:250
 msgid "Purge permalinks"
 msgstr ""
 
-#: pnadminapi.php:294 pntemplates/pages_admin_modifyconfig.htm:7
+#: lib/Pages/Api/Admin.php:253 templates/admin/modifyconfig.tpl:5
 msgid "Settings"
 msgstr ""
 
-#: pninit.php:41
+#: lib/Pages/Installer.php:30
 msgid ""
 "Warning! Could not create the default Pages category tree. If you want to "
 "use categorization for the pages, register at least one property for the "
 "module in the Category Registry."
 msgstr ""
 
-#: pninit.php:288 pntemplates/pages_admin_menu.htm:6
-#: pntemplates/pages_search_options.htm:5
+#: lib/Pages/Installer.php:273 templates/admin/menu.tpl:4
+#: templates/user/main.tpl:1 templates/search/options.tpl:3
 msgid "Pages"
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:13
-msgid "General settings"
+#: lib/Pages/Installer.php:274 lib/Pages/Version.php:7
+msgid "Static pages"
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:15
-msgid "Enable categorization"
+#: lib/Pages/Installer.php:316
+msgid "Warning! Could not create the introductory page."
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:19
-msgid "Items per page"
+#: lib/Pages/Controller/User.php:103
+msgid "Invalid category passed."
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:24
-msgid "New page defaults"
+#: lib/Pages/Controller/User.php:171 templates/admin/view.tpl:84
+msgid "No pages found."
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:26
-#: pntemplates/pages_admin_modify.htm:64 pntemplates/pages_admin_new.htm:56
-msgid "Display additional information"
+#: lib/Pages/Controller/Admin.php:63
+msgid "Done! Page created."
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:30
-#: pntemplates/pages_admin_modify.htm:68 pntemplates/pages_admin_new.htm:60
-msgid "Display page title"
+#: lib/Pages/Controller/Admin.php:66
+msgid "Error! Hook data did not validate. Page not created."
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:34
-#: pntemplates/pages_admin_modify.htm:72 pntemplates/pages_admin_new.htm:64
-msgid "Display page creation date"
+#: lib/Pages/Controller/Admin.php:151
+msgid "Done! Page updated."
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:38
-#: pntemplates/pages_admin_modify.htm:76 pntemplates/pages_admin_new.htm:68
-msgid "Display page update date"
+#: lib/Pages/Controller/Admin.php:216
+msgid "Done! Page deleted."
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:42
-#: pntemplates/pages_admin_modify.htm:80 pntemplates/pages_admin_new.htm:72
-msgid "Display page text statistics"
+#: lib/Pages/Controller/Admin.php:280
+msgid "Purging of the pemalinks was successful"
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:46
-#: pntemplates/pages_admin_modify.htm:84 pntemplates/pages_admin_new.htm:76
-msgid "Display page print link"
+#: lib/Pages/Controller/Admin.php:282
+msgid "Purging of the pemalinks has failed"
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:51
-msgid "Permalinks settings"
+#: lib/Pages/Controller/Admin.php:319
+msgid "View"
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:53
-msgid "Add category title to permalink"
+#: lib/Pages/Controller/Admin.php:324 templates/user/display.tpl:52
+msgid "Edit"
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:57
-msgid "Show permalink input field"
+#: lib/Pages/Controller/Admin.php:329
+msgid "Delete"
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:65
-msgid "Save"
+#: lib/Pages/Controller/Admin.php:424
+msgid "Done! Module configuration updated."
 msgstr ""
 
-#: pntemplates/pages_admin_modifyconfig.htm:66
-#: pntemplates/pages_admin_modify.htm:105
-#: pntemplates/pages_admin_delete.htm:19 pntemplates/pages_admin_new.htm:86
-msgid "Cancel"
+#: lib/Pages/Version.php:8
+msgid "Manager of the static pages of the site."
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:3
-msgid "Update page"
+#. ! this defines the module's url
+#: lib/Pages/Version.php:11
+msgid "pages"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:18 pntemplates/pages_admin_modify.htm:55
-#: pntemplates/pages_admin_new.htm:16 pntemplates/pages_admin_new.htm:47
+#: lib/Pages/Version.php:27
+msgid "Pages Hooks"
+msgstr ""
+
+#: lib/Pages/Version.php:37
+msgid "Pages Filter Hooks"
+msgstr ""
+
+#: lib/Pages/Block/Page.php:19
+msgid "Show page"
+msgstr ""
+
+#: lib/Pages/Block/Page.php:20
+msgid "Show a page in a block"
+msgstr ""
+
+#: lib/Pages/Block/Pageslist.php:27
+msgid "Display a list of pages"
+msgstr ""
+
+#: templates/admin/new.tpl:14 templates/admin/new.tpl:44
+#: templates/admin/modify.tpl:16 templates/admin/modify.tpl:52
 msgid "Content"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:20 pntemplates/pages_admin_view.htm:61
-#: pntemplates/pages_admin_new.htm:18
+#: templates/admin/new.tpl:16 templates/admin/modify.tpl:18
+#: templates/admin/view.tpl:43
 msgid "Title"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:25 pntemplates/pages_admin_new.htm:23
+#: templates/admin/new.tpl:21 templates/admin/modify.tpl:23
 msgid "PermaLink URL title"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:27 pntemplates/pages_admin_new.htm:25
+#: templates/admin/new.tpl:23 templates/admin/modify.tpl:25
 msgid "(Blank = auto-generate)"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:32 pntemplates/pages_admin_view.htm:18
-#: pntemplates/pages_admin_view.htm:63 pntemplates/pages_admin_new.htm:30
+#: templates/admin/new.tpl:28 templates/admin/modify.tpl:30
+#: templates/admin/view.tpl:46
 msgid "Category"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:33 pntemplates/pages_admin_view.htm:19
-#: pntemplates/pages_admin_new.htm:31
+#: templates/admin/new.tpl:29 templates/admin/modify.tpl:31
 msgid "Choose a category"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:50 pntemplates/pages_admin_view.htm:44
-#: pntemplates/pages_admin_view.htm:66 pntemplates/pages_admin_new.htm:42
+#: templates/admin/new.tpl:39 templates/admin/modify.tpl:47
+#: templates/admin/view.tpl:24 templates/admin/view.tpl:49
 msgid "Language"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:57 pntemplates/pages_admin_new.htm:49
+#: templates/admin/new.tpl:46 templates/admin/modify.tpl:54
 msgid ""
 "If you want multiple pages you can write &lt;!--pagebreak--&gt; where you "
 "want to cut."
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:61 pntemplates/pages_admin_new.htm:53
+#: templates/admin/new.tpl:50 templates/admin/modify.tpl:58
+msgid "Meta tags"
+msgstr ""
+
+#: templates/admin/new.tpl:52 templates/admin/modify.tpl:60
+msgid "Description"
+msgstr ""
+
+#: templates/admin/new.tpl:56 templates/admin/modify.tpl:64
+msgid "Keywords"
+msgstr ""
+
+#: templates/admin/new.tpl:61 templates/admin/modify.tpl:69
 msgid "Specific page settings"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:90
+#: templates/admin/new.tpl:64 templates/admin/modify.tpl:72
+#: templates/admin/modifyconfig.tpl:24
+msgid "Display additional information"
+msgstr ""
+
+#: templates/admin/new.tpl:68 templates/admin/modify.tpl:76
+#: templates/admin/modifyconfig.tpl:28
+msgid "Display page title"
+msgstr ""
+
+#: templates/admin/new.tpl:72 templates/admin/modify.tpl:80
+#: templates/admin/modifyconfig.tpl:32
+msgid "Display page creation date"
+msgstr ""
+
+#: templates/admin/new.tpl:76 templates/admin/modify.tpl:84
+#: templates/admin/modifyconfig.tpl:36
+msgid "Display page update date"
+msgstr ""
+
+#: templates/admin/new.tpl:80 templates/admin/modify.tpl:88
+#: templates/admin/modifyconfig.tpl:40
+msgid "Display page text statistics"
+msgstr ""
+
+#: templates/admin/new.tpl:84 templates/admin/modify.tpl:92
+#: templates/admin/modifyconfig.tpl:44
+msgid "Display page print link"
+msgstr ""
+
+#: templates/admin/new.tpl:93
+msgid "Create"
+msgstr ""
+
+#: templates/admin/new.tpl:94 templates/admin/modify.tpl:115
+#: templates/admin/delete.tpl:17 templates/admin/modifyconfig.tpl:62
+msgid "Cancel"
+msgstr ""
+
+#: templates/admin/modify.tpl:2
+msgid "Update page"
+msgstr ""
+
+#: templates/admin/modify.tpl:98
 msgid "Meta data"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:93
+#: templates/admin/modify.tpl:102
 #, php-format
 msgid "Created by %s"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:94
+#: templates/admin/modify.tpl:103
 #, php-format
 msgid "Created on %s"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:96
+#: templates/admin/modify.tpl:105
 #, php-format
 msgid "Last update by %s"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:97
+#: templates/admin/modify.tpl:106
 #, php-format
 msgid "Updated on %s"
 msgstr ""
 
-#: pntemplates/pages_admin_modify.htm:104
+#: templates/admin/modify.tpl:114
 msgid "Update"
 msgstr ""
 
-#: pntemplates/pages_admin_view.htm:50
+#: templates/admin/filtercats.tpl:2
+msgid "All These Categories"
+msgstr ""
+
+#: templates/admin/filtercats.tpl:17
+msgid "Select Multiple"
+msgstr ""
+
+#: templates/admin/view.tpl:2
+msgid "View pages list"
+msgstr ""
+
+#: templates/admin/view.tpl:13
+msgid "active"
+msgstr ""
+
+#: templates/admin/view.tpl:13
+msgid "inactive"
+msgstr ""
+
+#: templates/admin/view.tpl:14
+#, php-format
+msgid "Filter %1$s, %2$s page listed"
+msgid_plural "Filter %1$s, %2$s pages listed"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/admin/view.tpl:31
 msgid "Filter"
 msgstr ""
 
-#: pntemplates/pages_admin_view.htm:51
-msgid "Reset"
+#: templates/admin/view.tpl:32
+msgid "Clear"
 msgstr ""
 
-#: pntemplates/pages_admin_view.htm:60
+#: templates/admin/view.tpl:42
 msgid "ID"
 msgstr ""
 
-#: pntemplates/pages_admin_view.htm:68
+#: templates/admin/view.tpl:44
+msgid "Creator"
+msgstr ""
+
+#: templates/admin/view.tpl:51
+msgid "Created"
+msgstr ""
+
+#: templates/admin/view.tpl:52
 msgid "Actions"
 msgstr ""
 
-#: pntemplates/pages_admin_delete.htm:2
+#: templates/admin/delete.tpl:1
 msgid "Delete page"
 msgstr ""
 
-#: pntemplates/pages_admin_delete.htm:10
+#: templates/admin/delete.tpl:8
 msgid "Do you really want to delete this page?"
 msgstr ""
 
-#: pntemplates/pages_admin_delete.htm:18
+#: templates/admin/delete.tpl:16
 msgid "Confirm deletion?"
 msgstr ""
 
-#: pntemplates/pages_block_pageblock_modify.htm:4
-msgid "Page ID"
+#: templates/admin/modifyconfig.tpl:11
+msgid "General settings"
 msgstr ""
 
-#: pntemplates/pages_user_display.htm:15
+#: templates/admin/modifyconfig.tpl:13
+msgid "Enable categorization"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:17
+msgid "Items per page"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:22
+msgid "New page defaults"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:49
+msgid "Permalinks settings"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:51
+msgid "Add category title to permalink"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:55
+msgid "Show permalink input field"
+msgstr ""
+
+#: templates/admin/modifyconfig.tpl:61
+msgid "Save"
+msgstr ""
+
+#: templates/user/display.tpl:21
 #, php-format
 msgid "Created by %1$s on %2$s"
 msgstr ""
 
-#: pntemplates/pages_user_display.htm:19
+#: templates/user/display.tpl:25
 #, php-format
 msgid "Last update by %1$s on %2$s"
 msgstr ""
 
-#: pntemplates/pages_user_display.htm:22
+#: templates/user/display.tpl:28
 msgid "Categories"
 msgstr ""
 
-#: pntemplates/pages_user_display.htm:49
+#: templates/user/display.tpl:56
 #, php-format
 msgid "%s total words in this text"
 msgstr ""
 
-#: pntemplates/pages_user_display.htm:51
+#: templates/user/display.tpl:58
 #, php-format
 msgid "%s reads"
 msgstr ""
 
-#: pntemplates/pages_user_display.htm:55
+#: templates/user/display.tpl:62
 msgid "Print page"
 msgstr ""
 
-#: pntemplates/pages_user_view.htm:7 pntemplates/pages_user_main.htm:2
+#: templates/user/view.tpl:6
 msgid "Contents"
 msgstr ""
 
-#: pntemplates/pages_user_view.htm:8 pntemplates/pages_user_main.htm:8
+#: templates/user/view.tpl:7 templates/user/main.tpl:7
 msgid "Available categories:"
 msgstr ""
 
-#: pntemplates/pages_user_view.htm:30
+#: templates/user/view.tpl:29
 #, php-format
 msgid "Category: %s"
 msgstr ""
 
-#: pntemplates/pages_user_view.htm:31
+#: templates/user/view.tpl:30
 msgid "Pages published under this category:"
 msgstr ""
 
-#: pntemplates/pages_user_view.htm:34
+#: templates/user/view.tpl:33
 msgid "Available pages:"
 msgstr ""
 
-#: pntemplates/pages_block_pageslist_modify.htm:4
+#: templates/user/main.tpl:17 templates/user/main.tpl:19
+#, php-format
+msgid "%s page"
+msgid_plural "%s pages"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/block/pageslist_modify.tpl:2
 msgid "Number of pages to display"
 msgstr ""
 
-#: pntemplates/pages_admin_new.htm:85
-msgid "Create"
+#: templates/block/pageblock_modify.tpl:2
+msgid "Page ID"
 msgstr ""
