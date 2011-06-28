@@ -43,7 +43,7 @@
     {/if}
 
     <div class="pages_page_body">
-        {$item.content|notifyfilters:'pages.hook.pagesfilter.ui.filter'|safehtml}
+        {$item.content|notifyfilters:'pages.filter_hooks.pages.filter'|safehtml}
     </div>
 
     {if $item.displayprint or $item.displaytextinfo or $item.displayeditlink}

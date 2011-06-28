@@ -1,3 +1,3 @@
 <div>
-    {$content|notifyfilters:'pages.hook.pagesfilter.ui.filter'}
+    {$content|notifyfilters:'pages.filter_hooks.pages.filter'}
 </div>
