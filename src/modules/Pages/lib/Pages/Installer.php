@@ -104,6 +104,8 @@ class Pages_Installer extends Zikula_AbstractInstaller
             case '2.4.1':
             case '2.4.2':
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+                // set defaults for modvars that should have been set in 2.2 upgrade
+                $this->resetModVars();
 
             // further upgrade routines
         }
@@ -314,6 +316,21 @@ class Pages_Installer extends Zikula_AbstractInstaller
         // Insert the default article and preserve the standard fields
         if (!($obj = DBUtil::insertObject($page, 'pages', 'pageid'))) {
             LogUtil::registerStatus($this->__('Warning! Could not create the introductory page.'));
+        }
+    }
+    
+    private function resetModVars()
+    {
+        $vars = array('def_displaywrapper' => true,
+            'def_displaytitle' => true,
+            'def_displaycreated' => true,
+            'def_displayupdated' => true,
+            'def_displaytextinfo' => true,
+            'def_displayprint' => true);
+        foreach ($vars as $name => $value) {
+            if (!isset($this->getVar($name, null))) {
+                $this->setVar($name, $value);
+            }
         }
     }
 }
