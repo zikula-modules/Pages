@@ -328,7 +328,8 @@ class Pages_Installer extends Zikula_AbstractInstaller
             'def_displaytextinfo' => true,
             'def_displayprint' => true);
         foreach ($vars as $name => $value) {
-            if (!isset($this->getVar($name, null))) {
+            $currentValue = $this->getVar($name, null);
+            if (!isset($currentValue)) {
                 $this->setVar($name, $value);
             }
         }
