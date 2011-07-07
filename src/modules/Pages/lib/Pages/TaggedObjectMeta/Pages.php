@@ -16,6 +16,7 @@ class Pages_TaggedObjectMeta_Pages extends Tag_AbstractTaggedObjectMeta
         parent::__construct($objectId, $areaId, $module, $objectUrl);
 
         $page = ModUtil::apiFunc('Pages', 'user', 'get', array('pageid' => $this->getObjectId()));
+        // the Api checks for perms and there is nothing else to check
         if ($page) {
             $this->setObjectAuthor(UserUtil::getVar('uname', $page['cr_uid']));
             $this->setObjectDate($page['cr_date']);
