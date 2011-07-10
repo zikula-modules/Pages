@@ -129,8 +129,8 @@ class Pages_Installer extends Zikula_AbstractInstaller
 
         // Delete entries from category registry
         ModUtil::dbInfoLoad('Categories');
-        DBUtil::deleteWhere('categories_registry', "crg_modname = 'Pages'");
-        DBUtil::deleteWhere('categories_mapobj', "cmo_modname = 'Pages'");
+        DBUtil::deleteWhere('categories_registry', "modname = 'Pages'");
+        DBUtil::deleteWhere('categories_mapobj', "modname = 'Pages'");
 
         HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
 
