@@ -53,11 +53,6 @@ class Pages_Installer extends Zikula_AbstractInstaller
             DBUtil::renameColumn('pages', 'pn_artid', 'pageid');
         }
 
-        // update table
-        if (!DBUtil::changeTable('pages')) {
-            return false;
-        }
-
         switch ($oldversion)
         {
             // 1.0 shipped with .7x
@@ -103,10 +98,44 @@ class Pages_Installer extends Zikula_AbstractInstaller
             case '2.4':
             case '2.4.1':
             case '2.4.2':
+                $prefix = $this->serviceManager['prefix'];
+                $connection = Doctrine_Manager::getInstance()->getConnection('default');
+                $sqlStatements = array();
+                // N.B. statements generated with PHPMyAdmin
+                $sqlStatements[] = 'RENAME TABLE ' . $prefix . '_pages' . " TO `pages`";
+                $sqlStatements[] = "ALTER TABLE `pages` 
+CHANGE `pn_pageid` `pageid` INT( 11 ) NOT NULL AUTO_INCREMENT ,
+CHANGE `pn_title` `title` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+CHANGE `pn_content` `content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+CHANGE `pn_counter` `counter` INT( 11 ) NOT NULL DEFAULT '0',
+CHANGE `pn_language` `language` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+CHANGE `pn_urltitle` `urltitle` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+CHANGE `pn_displaywrapper` `displaywrapper` TINYINT( 4 ) NOT NULL DEFAULT '1',
+CHANGE `pn_displaytitle` `displaytitle` TINYINT( 4 ) NOT NULL DEFAULT '1',
+CHANGE `pn_displaycreated` `displaycreated` TINYINT( 4 ) NOT NULL DEFAULT '1',
+CHANGE `pn_displayupdated` `displayupdated` TINYINT( 4 ) NOT NULL DEFAULT '1',
+CHANGE `pn_displaytextinfo` `displaytextinfo` TINYINT( 4 ) NOT NULL DEFAULT '1',
+CHANGE `pn_displayprint` `displayprint` TINYINT( 4 ) NOT NULL DEFAULT '1',
+CHANGE `pn_obj_status` `obj_status` CHAR( 1 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'A',
+CHANGE `pn_cr_date` `cr_date` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00',
+CHANGE `pn_cr_uid` `cr_uid` INT( 11 ) NOT NULL DEFAULT '0',
+CHANGE `pn_lu_date` `lu_date` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00',
+CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
+                foreach ($sqlStatements as $sql) {
+                    $stmt = $connection->prepare($sql);
+                    try {
+                        $stmt->execute();
+                    } catch (Exception $e) {
+                        echo $e->getMessage(); die;
+                    }   
+                }
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 // set defaults for modvars that should have been set in 2.2 upgrade
                 $this->resetModVars();
-
+                // update table
+                if (!DBUtil::changeTable('pages')) {
+                    return '2.4.2';
+                }
             // further upgrade routines
         }
 

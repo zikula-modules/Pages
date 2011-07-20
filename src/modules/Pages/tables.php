@@ -8,21 +8,21 @@ function Pages_tables()
     $table = array();
 
     // Full table definition
-    $table['pages'] = DBUtil::getLimitedTablename('pages');
-    $table['pages_column'] = array ('pageid'         => 'pn_pageid',
-                                      'title'          => 'pn_title',
-                                      'metadescription'   => 'pn_metadescription',
-                                      'metakeywords'      => 'pn_metakeywords',
-                                      'urltitle'       => 'pn_urltitle',
-                                      'content'        => 'pn_content',
-                                      'counter'        => 'pn_counter',
-                                      'displaywrapper' => 'pn_displaywrapper',
-                                      'displaytitle'   => 'pn_displaytitle',
-                                      'displaycreated' => 'pn_displaycreated',
-                                      'displayupdated' => 'pn_displayupdated',
-                                      'displaytextinfo' => 'pn_displaytextinfo',
-                                      'displayprint'   => 'pn_displayprint',
-                                      'language'       => 'pn_language');
+    $table['pages'] = 'pages';
+    $table['pages_column'] = array ('pageid'         => 'pageid',
+                                      'title'          => 'title',
+                                      'metadescription'   => 'metadescription',
+                                      'metakeywords'      => 'metakeywords',
+                                      'urltitle'       => 'urltitle',
+                                      'content'        => 'content',
+                                      'counter'        => 'counter',
+                                      'displaywrapper' => 'displaywrapper',
+                                      'displaytitle'   => 'displaytitle',
+                                      'displaycreated' => 'displaycreated',
+                                      'displayupdated' => 'displayupdated',
+                                      'displaytextinfo' => 'displaytextinfo',
+                                      'displayprint'   => 'displayprint',
+                                      'language'       => 'language');
     $table['pages_column_def'] = array('pageid'         => 'I AUTOINCREMENT PRIMARY',
                                          'title'          => "X NOTNULL DEFAULT ''",
                                          'metadescription'   => "X NOTNULL DEFAULT ''",
@@ -43,7 +43,7 @@ function Pages_tables()
     $table['pages_primary_key_column'] = 'pageid';
 
     // add standard data fields
-    ObjectUtil::addStandardFieldsToTableDefinition($table['pages_column'], 'pn_');
+    ObjectUtil::addStandardFieldsToTableDefinition($table['pages_column']);
     ObjectUtil::addStandardFieldsToTableDataDefinition($table['pages_column_def']);
 
     // old tables for upgrade/renaming purposes
