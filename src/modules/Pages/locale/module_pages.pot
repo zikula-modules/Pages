@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-21 20:18+0000\n"
+"POT-Creation-Date: 2011-07-21 21:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,9 +50,9 @@ msgstr ""
 msgid "Error! Deletion attempt failed."
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:170 lib/Pages/Installer.php:74
-#: lib/Pages/Installer.php:85 lib/Pages/Installer.php:91
-#: lib/Pages/Installer.php:99 lib/Pages/Installer.php:192
+#: lib/Pages/Api/Admin.php:170 lib/Pages/Installer.php:69
+#: lib/Pages/Installer.php:80 lib/Pages/Installer.php:86
+#: lib/Pages/Installer.php:94 lib/Pages/Installer.php:222
 msgid "Error! Update attempt failed."
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Pages list"
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:245 templates/admin/new.tpl:2
+#: lib/Pages/Api/Admin.php:245 templates/admin/new.tpl:6
 msgid "Create a page"
 msgstr ""
 
@@ -69,7 +69,7 @@ msgstr ""
 msgid "Purge permalinks"
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:253 templates/admin/modifyconfig.tpl:5
+#: lib/Pages/Api/Admin.php:253 templates/admin/modifyconfig.tpl:4
 msgid "Settings"
 msgstr ""
 
@@ -80,16 +80,16 @@ msgid ""
 "module in the Category Registry."
 msgstr ""
 
-#: lib/Pages/Installer.php:273 templates/admin/menu.tpl:4
-#: templates/user/main.tpl:1 templates/search/options.tpl:3
+#: lib/Pages/Installer.php:303 templates/user/main.tpl:1
+#: templates/search/options.tpl:3
 msgid "Pages"
 msgstr ""
 
-#: lib/Pages/Installer.php:274 lib/Pages/Version.php:7
+#: lib/Pages/Installer.php:304 lib/Pages/Version.php:7
 msgid "Static pages"
 msgstr ""
 
-#: lib/Pages/Installer.php:316
+#: lib/Pages/Installer.php:346
 msgid "Warning! Could not create the introductory page."
 msgstr ""
 
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Invalid category passed."
 msgstr ""
 
-#: lib/Pages/Controller/User.php:171 templates/admin/view.tpl:84
+#: lib/Pages/Controller/User.php:171 templates/admin/view.tpl:83
 msgid "No pages found."
 msgstr ""
 
@@ -170,128 +170,128 @@ msgstr ""
 msgid "Display a list of pages"
 msgstr ""
 
-#: templates/admin/new.tpl:14 templates/admin/new.tpl:44
-#: templates/admin/modify.tpl:16 templates/admin/modify.tpl:52
+#: templates/admin/new.tpl:13 templates/admin/new.tpl:43
+#: templates/admin/modify.tpl:15 templates/admin/modify.tpl:51
 msgid "Content"
 msgstr ""
 
-#: templates/admin/new.tpl:16 templates/admin/modify.tpl:18
-#: templates/admin/view.tpl:43
+#: templates/admin/new.tpl:15 templates/admin/modify.tpl:17
+#: templates/admin/view.tpl:42
 msgid "Title"
 msgstr ""
 
-#: templates/admin/new.tpl:21 templates/admin/modify.tpl:23
+#: templates/admin/new.tpl:20 templates/admin/modify.tpl:22
 msgid "PermaLink URL title"
 msgstr ""
 
-#: templates/admin/new.tpl:23 templates/admin/modify.tpl:25
+#: templates/admin/new.tpl:22 templates/admin/modify.tpl:24
 msgid "(Blank = auto-generate)"
 msgstr ""
 
-#: templates/admin/new.tpl:28 templates/admin/modify.tpl:30
-#: templates/admin/view.tpl:46
+#: templates/admin/new.tpl:27 templates/admin/modify.tpl:29
+#: templates/admin/view.tpl:45
 msgid "Category"
 msgstr ""
 
-#: templates/admin/new.tpl:29 templates/admin/modify.tpl:31
+#: templates/admin/new.tpl:28 templates/admin/modify.tpl:30
 msgid "Choose a category"
 msgstr ""
 
-#: templates/admin/new.tpl:39 templates/admin/modify.tpl:47
-#: templates/admin/view.tpl:24 templates/admin/view.tpl:49
+#: templates/admin/new.tpl:38 templates/admin/modify.tpl:46
+#: templates/admin/view.tpl:23 templates/admin/view.tpl:48
 msgid "Language"
 msgstr ""
 
-#: templates/admin/new.tpl:46 templates/admin/modify.tpl:54
+#: templates/admin/new.tpl:45 templates/admin/modify.tpl:53
 msgid ""
 "If you want multiple pages you can write &lt;!--pagebreak--&gt; where you "
 "want to cut."
 msgstr ""
 
-#: templates/admin/new.tpl:50 templates/admin/modify.tpl:58
+#: templates/admin/new.tpl:49 templates/admin/modify.tpl:57
 msgid "Meta tags"
 msgstr ""
 
-#: templates/admin/new.tpl:52 templates/admin/modify.tpl:60
+#: templates/admin/new.tpl:51 templates/admin/modify.tpl:59
 msgid "Description"
 msgstr ""
 
-#: templates/admin/new.tpl:56 templates/admin/modify.tpl:64
+#: templates/admin/new.tpl:55 templates/admin/modify.tpl:63
 msgid "Keywords"
 msgstr ""
 
-#: templates/admin/new.tpl:61 templates/admin/modify.tpl:69
+#: templates/admin/new.tpl:60 templates/admin/modify.tpl:68
 msgid "Specific page settings"
 msgstr ""
 
-#: templates/admin/new.tpl:64 templates/admin/modify.tpl:72
+#: templates/admin/new.tpl:63 templates/admin/modify.tpl:71
 #: templates/admin/modifyconfig.tpl:24
 msgid "Display additional information"
 msgstr ""
 
-#: templates/admin/new.tpl:68 templates/admin/modify.tpl:76
+#: templates/admin/new.tpl:67 templates/admin/modify.tpl:75
 #: templates/admin/modifyconfig.tpl:28
 msgid "Display page title"
 msgstr ""
 
-#: templates/admin/new.tpl:72 templates/admin/modify.tpl:80
+#: templates/admin/new.tpl:71 templates/admin/modify.tpl:79
 #: templates/admin/modifyconfig.tpl:32
 msgid "Display page creation date"
 msgstr ""
 
-#: templates/admin/new.tpl:76 templates/admin/modify.tpl:84
+#: templates/admin/new.tpl:75 templates/admin/modify.tpl:83
 #: templates/admin/modifyconfig.tpl:36
 msgid "Display page update date"
 msgstr ""
 
-#: templates/admin/new.tpl:80 templates/admin/modify.tpl:88
+#: templates/admin/new.tpl:79 templates/admin/modify.tpl:87
 #: templates/admin/modifyconfig.tpl:40
 msgid "Display page text statistics"
 msgstr ""
 
-#: templates/admin/new.tpl:84 templates/admin/modify.tpl:92
+#: templates/admin/new.tpl:83 templates/admin/modify.tpl:91
 #: templates/admin/modifyconfig.tpl:44
 msgid "Display page print link"
 msgstr ""
 
-#: templates/admin/new.tpl:93
+#: templates/admin/new.tpl:92
 msgid "Create"
 msgstr ""
 
-#: templates/admin/new.tpl:94 templates/admin/modify.tpl:115
-#: templates/admin/delete.tpl:17 templates/admin/modifyconfig.tpl:62
+#: templates/admin/new.tpl:93 templates/admin/modify.tpl:114
+#: templates/admin/delete.tpl:16 templates/admin/modifyconfig.tpl:62
 msgid "Cancel"
 msgstr ""
 
-#: templates/admin/modify.tpl:2
+#: templates/admin/modify.tpl:6
 msgid "Update page"
 msgstr ""
 
-#: templates/admin/modify.tpl:98
+#: templates/admin/modify.tpl:97
 msgid "Meta data"
 msgstr ""
 
-#: templates/admin/modify.tpl:102
+#: templates/admin/modify.tpl:101
 #, php-format
 msgid "Created by %s"
 msgstr ""
 
-#: templates/admin/modify.tpl:103
+#: templates/admin/modify.tpl:102
 #, php-format
 msgid "Created on %s"
 msgstr ""
 
-#: templates/admin/modify.tpl:105
+#: templates/admin/modify.tpl:104
 #, php-format
 msgid "Last update by %s"
 msgstr ""
 
-#: templates/admin/modify.tpl:106
+#: templates/admin/modify.tpl:105
 #, php-format
 msgid "Updated on %s"
 msgstr ""
 
-#: templates/admin/modify.tpl:114
+#: templates/admin/modify.tpl:113
 msgid "Update"
 msgstr ""
 
@@ -303,59 +303,59 @@ msgstr ""
 msgid "Select Multiple"
 msgstr ""
 
-#: templates/admin/view.tpl:2
+#: templates/admin/view.tpl:6
 msgid "View pages list"
 msgstr ""
 
-#: templates/admin/view.tpl:13
+#: templates/admin/view.tpl:12
 msgid "active"
 msgstr ""
 
-#: templates/admin/view.tpl:13
+#: templates/admin/view.tpl:12
 msgid "inactive"
 msgstr ""
 
-#: templates/admin/view.tpl:14
+#: templates/admin/view.tpl:13
 #, php-format
 msgid "Filter %1$s, %2$s page listed"
 msgid_plural "Filter %1$s, %2$s pages listed"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/admin/view.tpl:31
+#: templates/admin/view.tpl:30
 msgid "Filter"
 msgstr ""
 
-#: templates/admin/view.tpl:32
+#: templates/admin/view.tpl:31
 msgid "Clear"
 msgstr ""
 
-#: templates/admin/view.tpl:42
+#: templates/admin/view.tpl:41
 msgid "ID"
 msgstr ""
 
-#: templates/admin/view.tpl:44
+#: templates/admin/view.tpl:43
 msgid "Creator"
 msgstr ""
 
-#: templates/admin/view.tpl:51
+#: templates/admin/view.tpl:50
 msgid "Created"
 msgstr ""
 
-#: templates/admin/view.tpl:52
+#: templates/admin/view.tpl:51
 msgid "Actions"
 msgstr ""
 
-#: templates/admin/delete.tpl:1
+#: templates/admin/delete.tpl:4
 msgid "Delete page"
 msgstr ""
 
-#: templates/admin/delete.tpl:8
+#: templates/admin/delete.tpl:7
 msgid "Do you really want to delete this page?"
 msgstr ""
 
-#: templates/admin/delete.tpl:16
-msgid "Confirm deletion?"
+#: templates/admin/delete.tpl:15
+msgid "Confirm"
 msgstr ""
 
 #: templates/admin/modifyconfig.tpl:11
