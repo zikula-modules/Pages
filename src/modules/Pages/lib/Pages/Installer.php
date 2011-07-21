@@ -126,7 +126,6 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
                     try {
                         $stmt->execute();
                     } catch (Exception $e) {
-                        echo $e->getMessage(); die;
                     }   
                 }
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
