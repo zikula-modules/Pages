@@ -285,6 +285,8 @@ class Pages_Controller_User extends Zikula_AbstractController
         // Display Admin Edit Link
         if (SecurityUtil::checkPermission('Pages::Page', "{$item['title']}::{$item['pageid']}", ACCESS_EDIT)) {
             $item['displayeditlink'] = true;
+        } else {
+            $item['displayeditlink'] = false;                
         }
 
         // Assign details of the item.
