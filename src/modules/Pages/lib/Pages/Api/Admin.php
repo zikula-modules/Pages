@@ -47,7 +47,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
             $urltitlecreatedfromtitle = true;
         }
 
-        if (ModUtil::apiFunc('pages', 'admin', 'checkuniquepermalink', $args) == false) {
+        if (ModUtil::apiFunc('Pages', 'admin', 'checkuniquepermalink', $args) == false) {
             $args['urltitle'] = '';
             if ($urltitlecreatedfromtitle == true) {
                 LogUtil::registerStatus($this->__('The permalinks retrieved from the title has to be unique!'));
@@ -156,7 +156,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
             $urltitlecreatedfromtitle = true;
         }
 
-        if (ModUtil::apiFunc('pages', 'admin', 'checkuniquepermalink', $args) == false) {
+        if (ModUtil::apiFunc('Pages', 'admin', 'checkuniquepermalink', $args) == false) {
             $args['urltitle'] = '';
             if($urltitlecreatedfromtitle == true) {
                 LogUtil::registerStatus($this->__('The permalinks retrieved from the title has to be unique!'));

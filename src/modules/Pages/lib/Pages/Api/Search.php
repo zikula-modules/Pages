@@ -137,12 +137,12 @@ class Pages_Api_Search extends Zikula_AbstractApi
      * Access checking is ignored since access check has
      * already been done. But we do add a URL to the found item
      */
-    public function search_check(&$args)
+    public function search_check($args)
     {
         $datarow = &$args['datarow'];
         $extra = unserialize($datarow['extra']);
 
-        $datarow['url'] = ModUtil::url('pages', 'user', 'display',
+        $datarow['url'] = ModUtil::url('Pages', 'user', 'display',
                         array('pageid' => $extra['pageid'],
                             'cat' => $extra['cat']));
 
