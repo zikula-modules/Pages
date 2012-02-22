@@ -85,6 +85,9 @@ class Pages_Block_Page extends Zikula_Controller_AbstractBlock
         // assign the block vars
         $this->view->assign($vars);
 
+		$pages = ModUtil::apiFunc('Pages', 'user', 'getall');
+		$this->view->assign('pages', $pages);
+
         // Return output
         return $this->view->fetch('block/pageblock_modify.tpl');
     }
