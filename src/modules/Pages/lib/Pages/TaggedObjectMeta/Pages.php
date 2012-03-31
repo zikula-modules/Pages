@@ -11,9 +11,9 @@
 class Pages_TaggedObjectMeta_Pages extends Tag_AbstractTaggedObjectMeta
 {
 
-    function __construct($objectId, $areaId, $module, $objectUrl)
+    function __construct($objectId, $areaId, $module, $urlString = null, Zikula_ModUrl $urlObject = null)
     {
-        parent::__construct($objectId, $areaId, $module, $objectUrl);
+        parent::__construct($objectId, $areaId, $module, $urlString, $urlObject);
 
         $page = ModUtil::apiFunc('Pages', 'user', 'get', array('pageid' => $this->getObjectId()));
         // the Api checks for perms and there is nothing else to check
@@ -21,8 +21,6 @@ class Pages_TaggedObjectMeta_Pages extends Tag_AbstractTaggedObjectMeta
             $this->setObjectAuthor(UserUtil::getVar('uname', $page['cr_uid']));
             $this->setObjectDate($page['cr_date']);
             $this->setObjectTitle($page['title']);
-            // do not use default objectURL to compensate for shortUrl handling
-            $this->setObjectUrl(ModUtil::url('Pages', 'user', 'display', array('pageid' => $this->getObjectId())));
         }
     }
 
