@@ -14,11 +14,6 @@ class Pages_Api_User extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        // check for the parse parameter
-        if (!isset($args['parse']) || !is_bool($args['parse']))  {
-            $args['parse'] = false;
-        }
-
         // define the permission filter to apply
         $permFilter   = array();
         $permFilter[] = array('component_left'  => 'Pages',
@@ -42,17 +37,6 @@ class Pages_Api_User extends Zikula_AbstractApi
             if (!CategoryUtil::hasCategoryAccess($item['__CATEGORIES__'], 'Pages')) {
                 return false;
             }
-        }
-
-
-        // if the parse parameter was true lets get the template source using our custom resource
-        if ($args['parse']) {
-            $view = Zikula_View::getInstance($this->getName());
-            $view->force_compile = true;
-            //$this->view->register_resource('pagesvar');
-            $resourceid = 'pagesitem'.$item['pageid'].$item['language'];
-            $GLOBALS[$resourceid] =& $item['content'];
-            $item['content'] = $view->fetch("pagesvar:$resourceid", $item['pageid'], $item['pageid']);
         }
 
         return $item;
@@ -346,4 +330,45 @@ class Pages_Api_User extends Zikula_AbstractApi
                 'titlefield'  => 'title',
                 'itemid'      => 'pageid');
     }
+
+    /**
+     * Clear cache for given item. Can be called from other modules to clear an item cache.
+     *
+     * @param $item - the item: array with data or id of the item
+     */
+    public function clearItemCache($item)
+    {
+        if ($item && !is_array($item)) {
+            $item = ModUtil::apiFunc('Pages', 'user', 'get', array('sid' => $item));
+        }
+        if ($item) {
+            // Clear View_cache
+            $cache_ids = array();
+            $cache_ids[] = $item['sid'];
+            $cache_ids[] = 'view';
+            $cache_ids[] = 'main';
+            $view = Zikula_View::getInstance('Pages');
+            foreach ($cache_ids as $cache_id) {
+                $view->clear_cache(null, $cache_id);
+            }
+
+            // Clear Theme_cache
+            $cache_ids = array();
+            $cache_ids[] = 'Pages/user/display/pageid_'.$item['pageid']; // for given page Id, according to new cache_id structure in Zikula 1.3.2.dev (1.3.3)
+            $cache_ids[] = 'homepage'; // for homepage (it can be adjustment in module settings)
+            $cache_ids[] = 'Pages/user/view'; // view function (pages list)
+            $cache_ids[] = 'Pages/user/main'; // main function
+            $theme = Zikula_View_Theme::getInstance();
+            //if (Zikula_Core::VERSION_NUM > '1.3.2') {
+            if (method_exists($theme, 'clear_cacheid_allthemes')) {
+                $theme->clear_cacheid_allthemes($cache_ids);
+            } else {
+                // clear cache for current theme only
+                foreach ($cache_ids as $cache_id) {
+                    $theme->clear_cache(null, $cache_id);
+                }
+            }
+        }
+    }
+
 }
