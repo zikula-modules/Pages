@@ -62,8 +62,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
         }
 
         // An item was created, so we clear all cached pages of the items list.
-        $render = Zikula_View::getInstance('Pages');
-        $render->clear_cache('user/view.tpl');
+        ModUtil::apiFunc('Pages', 'user', 'clearItemCache', $args);
 
         // Return the id of the newly created item to the calling process
         return $args['pageid'];
@@ -94,10 +93,8 @@ class Pages_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! Deletion attempt failed.'));
         }
 
-        // The item has been modified, so we clear all cached pages of this item.
-        $render = Zikula_View::getInstance('Pages');
-        $render->clear_cache(null, $args['pageid']);
-        $render->clear_cache('user/view.tpl');
+        // The item has been deleted, so we clear all cached pages of this item.
+        ModUtil::apiFunc('Pages', 'user', 'clearItemCache', $item);
 
         return true;
     }
@@ -171,10 +168,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
         }
 
         // The item has been modified, so we clear all cached pages of this item.
-        $render = Zikula_View::getInstance('Pages');
-        $render->clear_cache(null, $args['pageid']);
-        $render->clear_cache(null, $item['urltitle']);
-        $render->clear_cache('user/view.tpl');
+        ModUtil::apiFunc('Pages', 'user', 'clearItemCache', $item);
 
         return true;
     }
