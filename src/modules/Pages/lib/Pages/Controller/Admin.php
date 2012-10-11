@@ -134,7 +134,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         $page = FormUtil::getPassedValue('page', isset($args['page']) ? $args['page'] : null, 'POST');
-        $url  = FormUtil::getPassedValue('url', isset($args['url']) ? $args['url'] : null, 'POST');
+        $returnurl  = FormUtil::getPassedValue('url', isset($args['url']) ? $args['url'] : null, 'POST');
         if (!empty($page['objectid'])) {
             $page['pageid'] = $page['objectid'];
         }
@@ -158,11 +158,11 @@ class Pages_Controller_Admin extends Zikula_AbstractController
         ModUtil::apiFunc('PageLock', 'user', 'releaseLock',
                 array('lockName' => "Pagespage{$page['pageid']}"));
 
-        if (!isset($url)) {
+        if (!isset($returnurl)) {
             return System::redirect(ModUtil::url('Pages', 'admin', 'view'));
         }
 
-        return System::redirect($url);
+        return System::redirect($returnurl);
     }
 
     /**
