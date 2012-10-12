@@ -245,6 +245,18 @@ class Pages_Controller_User extends Zikula_AbstractController
             return LogUtil::registerError($this->__('No such page found.'), 404);
         }
 
+        // get the categories registered for the Pages
+        $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'pages');
+
+        // Get the page
+        if (isset($pageid)) {
+            $item = ModUtil::apiFunc('Pages', 'user', 'get', array('pageid' => $pageid, 'catregistry' => (isset($catregistry)) ? $catregistry : null));
+        } else {
+            $item = ModUtil::apiFunc('Pages', 'user', 'get', array('title' => $title, 'catregistry' => (isset($catregistry)) ? $catregistry : null));
+            System::queryStringSetVar('pageid', $item['pageid']);
+            $pageid = $item['pageid'];
+        }
+        
         // determine which template to render this page with
         // A specific template may exist for this page (based on page id)
         if (isset($pageid) && $this->view->template_exists('user/display_' . $pageid . '.tpl')) {
@@ -256,17 +268,6 @@ class Pages_Controller_User extends Zikula_AbstractController
         // check if the contents are cached.
         if ($this->view->is_cached($template)) {
             return $this->view->fetch($template);
-        }
-
-        // get the categories registered for the Pages
-        $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'pages');
-
-        // Get the page
-        if (isset($pageid)) {
-            $item = ModUtil::apiFunc('Pages', 'user', 'get', array('pageid' => $pageid, 'catregistry' => (isset($catregistry)) ? $catregistry : null));
-        } else {
-            $item = ModUtil::apiFunc('Pages', 'user', 'get', array('title' => $title, 'catregistry' => (isset($catregistry)) ? $catregistry : null));
-            System::queryStringSetVar('pageid', $item['pageid']);
         }
 
         // The return value of the function is checked here
