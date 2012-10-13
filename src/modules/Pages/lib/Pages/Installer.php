@@ -1,8 +1,30 @@
 <?php
+/**
+ * Copyright Pages Team 2012
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Pages
+ * @link https://github.com/zikula-modules/Pages
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
+
+/**
+ * Provides module installation and upgrade services.
+ */
 class Pages_Installer extends Zikula_AbstractInstaller
 {
     /**
-     * init pages module
+     * initialise the template module
+     *
+     * This function is only ever called once during the lifetime of a particular
+     * module instance
+     *
+     * @return boolean
      */
     public function install()
     {
@@ -43,7 +65,14 @@ class Pages_Installer extends Zikula_AbstractInstaller
     }
 
     /**
-     * upgrade the pages module
+     * Upgrade the errors module from an old version
+     *
+     * This function must consider all the released versions of the module!
+     * If the upgrade fails at some point, it returns the last upgraded version.
+     *
+     * @param string $oldversion Version number string to upgrade from.
+     *
+     * @return mixed True on success, last valid version string or false if fails.
      */
     public function upgrade($oldversion)
     {
@@ -143,7 +172,12 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
     }
 
     /**
-     * delete the pages module
+     * delete the errors module
+     *
+     * This function is only ever called once during the lifetime of a particular
+     * module instance
+     *
+     * @return boolean
      */
     public function uninstall()
     {
@@ -354,7 +388,8 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
             'def_displaycreated' => true,
             'def_displayupdated' => true,
             'def_displaytextinfo' => true,
-            'def_displayprint' => true);
+            'def_displayprint' => true
+        );
         foreach ($vars as $name => $value) {
             $currentValue = $this->getVar($name, null);
             if (!isset($currentValue)) {
