@@ -135,7 +135,10 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
                 if (!DBUtil::changeTable('pages')) {
                     return '2.4.2';
                 }
-            // further upgrade routines
+            case '2.5.0':
+                // no changes
+            case '2.5.1':
+                // future upgrades
         }
 
         // Update successful
