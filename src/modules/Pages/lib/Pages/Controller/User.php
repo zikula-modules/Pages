@@ -204,6 +204,8 @@ class Pages_Controller_User extends Zikula_AbstractController
     /**
      * display item
      *
+     * @param $args array Arguments array.
+     *
      * @return string html string
      */
     public function display($args)
@@ -230,8 +232,12 @@ class Pages_Controller_User extends Zikula_AbstractController
         }
 
         $accesslevel = ACCESS_READ;
-        if (SecurityUtil::checkPermission('Pages::', "::", ACCESS_COMMENT)) $accesslevel = ACCESS_COMMENT;
-        if (SecurityUtil::checkPermission('Pages::', "::", ACCESS_EDIT)) $accesslevel = ACCESS_EDIT;
+        if (SecurityUtil::checkPermission('Pages::', "::", ACCESS_COMMENT)) {
+            $accesslevel = ACCESS_COMMENT;
+        }
+        if (SecurityUtil::checkPermission('Pages::', "::", ACCESS_EDIT)) {
+            $accesslevel = ACCESS_EDIT;
+        }
 
         // Regardless of caching, we need to increment the read count and set the cache ID
         if (isset($pageid)) {
@@ -250,9 +256,11 @@ class Pages_Controller_User extends Zikula_AbstractController
 
         // Get the page
         if (isset($pageid)) {
-            $item = ModUtil::apiFunc('Pages', 'user', 'get', array('pageid' => $pageid, 'catregistry' => (isset($catregistry)) ? $catregistry : null));
+            $params = array('pageid' => $pageid, 'catregistry' => (isset($catregistry)) ? $catregistry : null);
+            $item = ModUtil::apiFunc('Pages', 'user', 'get', $params);
         } else {
-            $item = ModUtil::apiFunc('Pages', 'user', 'get', array('title' => $title, 'catregistry' => (isset($catregistry)) ? $catregistry : null));
+            $params = array('title' => $title, 'catregistry' => (isset($catregistry)) ? $catregistry : null);
+            $item = ModUtil::apiFunc('Pages', 'user', 'get', $params);
             System::queryStringSetVar('pageid', $item['pageid']);
             $pageid = $item['pageid'];
         }
@@ -302,8 +310,8 @@ class Pages_Controller_User extends Zikula_AbstractController
         $this->view->assign('lang', ZLanguage::getLanguageCode());
 
         // Now lets assign the informatation to create a pager for the review
-        $this->view->assign('pager', array('numitems' => $numitems,
-                'itemsperpage' => 1));
+        $pager =  array('numitems' => $numitems, 'itemsperpage' => 1);
+        $this->view->assign('pager', $pager);
 
         return $this->view->fetch($template);
     }
