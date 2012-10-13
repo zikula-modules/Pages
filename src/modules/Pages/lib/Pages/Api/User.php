@@ -1,9 +1,25 @@
 <?php
+/**
+ * Copyright Pages Team 2012
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Pages
+ * @link https://github.com/zikula-modules/Pages
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
+
 class Pages_Api_User extends Zikula_AbstractApi
 {
     /**
      * get a specific item
+     *
      * @param $args['pageid'] id of example item to get
+     *
      * @return mixed item array, or false on failure
      */
     public function get($args)
@@ -44,6 +60,9 @@ class Pages_Api_User extends Zikula_AbstractApi
 
     /**
      * get all pages
+     *
+     * @param array $args Arguments array.
+     *
      * @return mixed array of items, or false on failure
      */
     public function getall($args)
@@ -65,8 +84,7 @@ class Pages_Api_User extends Zikula_AbstractApi
             $args['category'] = null;
         }
 
-        if (!is_numeric($args['startnum']) ||
-                !is_numeric($args['numitems'])) {
+        if (!is_numeric($args['startnum']) || !is_numeric($args['numitems'])) {
             return LogUtil::registerArgsError();
         }
 
@@ -76,7 +94,7 @@ class Pages_Api_User extends Zikula_AbstractApi
         }
 
         $catFilter = array();
-        if (isset($args['category']) && !empty($args['category'])){
+        if (isset($args['category']) && !empty($args['category'])) {
             if (is_array($args['category'])) {
                 $catFilter = $args['category'];
             } elseif (isset($args['property'])) {
@@ -121,7 +139,16 @@ class Pages_Api_User extends Zikula_AbstractApi
         $orderby = $orderby . ' ' . $orderdir;
 
         // get the objects from the db
-        $objArray = DBUtil::selectObjectArray('pages', $where, $orderby, $args['startnum']-1, $args['numitems'], '', $permFilter, $catFilter);
+        $objArray = DBUtil::selectObjectArray(
+            'pages',
+            $where,
+            $orderby,
+            $args['startnum']-1,
+            $args['numitems'],
+            '',
+            $permFilter,
+            $catFilter
+        );
 
         // check for an error with the database code, and if so set an appropriate
         // error message and return
@@ -141,6 +168,9 @@ class Pages_Api_User extends Zikula_AbstractApi
 
     /**
      * utility function to count the number of items held by this module
+     *
+     *
+     *
      * @return integer number of items held by this module
      */
     public function countitems($args)
@@ -184,7 +214,8 @@ class Pages_Api_User extends Zikula_AbstractApi
     /**
      * form custom url string
      *
-     * @author Mark West
+     * @param array $args Arguments array.
+     *
      * @return string custom url string
      */
     public function encodeurl($args)
@@ -249,7 +280,8 @@ class Pages_Api_User extends Zikula_AbstractApi
     /**
      * decode the custom url string
      *
-     * @author Mark West
+     * @param array $args Arguments array.
+     *
      * @return bool true if successful, false otherwise
      */
     public function decodeurl($args)
@@ -299,7 +331,7 @@ class Pages_Api_User extends Zikula_AbstractApi
                 ($args['vars'][$varscount-2] == 'page') ? $pagersize = 2 : $pagersize = 0;
                 $category = array_slice($args['vars'], 0, $varscount - 1 - $pagersize);
                 System::queryStringSetVar('cat', implode('/',$category));
-                array_splice($args['vars'], 0,  $varscount - 1 - $pagersize);
+                array_splice($args['vars'], 0, $varscount - 1 - $pagersize);
             }
             if (is_numeric($args['vars'][$nextvar])) {
                 System::queryStringSetVar('pageid', $args['vars'][$nextvar]);
@@ -317,6 +349,8 @@ class Pages_Api_User extends Zikula_AbstractApi
 
     /**
      * get meta data for the module
+     *
+     * @return array
      */
     public function getmodulemeta()
     {

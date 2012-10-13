@@ -1,4 +1,17 @@
 <?php
+/**
+ * Copyright Pages Team 2012
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Pages
+ * @link https://github.com/zikula-modules/Pages
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 /**
  * Internal callback class used to check permissions to each Page
@@ -30,20 +43,35 @@ class pages_result_checker
 
 }
 
+/**
+ * The search for items.
+ */
 class Pages_Api_Search extends Zikula_AbstractApi
 {
 
     /**
-     * Search plugin info
+     * The search for items.
+     *
+     * @return array
      */
     public function info()
     {
-        return array('title' => 'Pages',
-            'functions' => array('pages' => 'search'));
+        return array(
+            'title' => 'Pages',
+            'functions' => array('pages' => 'search')
+        );
     }
 
     /**
-     * Search form component
+     * Render the search form component for Users.
+     *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * boolean 'active' Indicates that the Users module is an active part of the search(?).
+     *
+     * @param array $args All parameters passed to this function.
+     *
+     * @return string The rendered template for the Users search component.
      */
     public function options($args)
     {
@@ -59,7 +87,16 @@ class Pages_Api_Search extends Zikula_AbstractApi
     }
 
     /**
-     * Search plugin main function
+     * Perform a search.
+     *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * ? $args['q'] ?.
+     * ? $args[?]   ?.
+     *
+     * @param array $args All parameters passed to this function.
+     *
+     * @return bool True on success or null result, false on error.
      */
     public function search($args)
     {
@@ -70,10 +107,14 @@ class Pages_Api_Search extends Zikula_AbstractApi
         $searchTable = $table['search_result'];
         $searchColumn = $table['search_result_column'];
 
-        $where = Search_Api_User::construct_where($args,
-                        array($pagescolumn['title'],
-                            $pagescolumn['content']),
-                        null);
+        $where = Search_Api_User::construct_where(
+            $args,
+            array(
+                $pagescolumn['title'],
+                $pagescolumn['content']
+            ),
+            null
+        );
 
         $sessionId = session_id();
 
@@ -132,21 +173,27 @@ class Pages_Api_Search extends Zikula_AbstractApi
     }
 
     /**
-     * Do last minute access checking and assign URL to items
+     * Do last minute access checking and assign URL to items.
      *
      * Access checking is ignored since access check has
-     * already been done. But we do add a URL to the found item
+     * already been done. But we do add a URL to the found user.
+     *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * array $args['datarow'] ?.
+     *
+     * @param array $args The search results.
+     *
+     * @return bool True.
      */
     public function search_check($args)
     {
         $datarow = &$args['datarow'];
         $extra = unserialize($datarow['extra']);
 
-        $datarow['url'] = ModUtil::url('Pages', 'user', 'display',
-                        array('pageid' => $extra['pageid'],
-                            'cat' => $extra['cat']));
+        $params = array('pageid' => $extra['pageid'], 'cat' => $extra['cat']);
+        $datarow['url'] = ModUtil::url('Pages', 'user', 'display', $params);
 
         return true;
     }
-
 }
