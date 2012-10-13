@@ -6,167 +6,168 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Zikula 1.x\n"
+"Project-Id-Version: Zikula component\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-13 08:35-0400\n"
+"POT-Creation-Date: 2012-10-13 14:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib/Pages/Api/Admin.php:53 lib/Pages/Api/Admin.php:159
+#: lib/Pages/Api/Admin.php:67 lib/Pages/Api/Admin.php:173
 msgid "The permalinks retrieved from the title has to be unique!"
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:55 lib/Pages/Api/Admin.php:161
+#: lib/Pages/Api/Admin.php:69 lib/Pages/Api/Admin.php:175
 msgid "The permalink has to be unique!"
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:57 lib/Pages/Api/Admin.php:163
+#: lib/Pages/Api/Admin.php:71 lib/Pages/Api/Admin.php:177
 msgid ""
 "The permalink has been removed, please update the page with a correct and "
 "unique permalink"
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:61
+#: lib/Pages/Api/Admin.php:75
 msgid "Error! Creation attempt failed."
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:87 lib/Pages/Api/Admin.php:121
-#: lib/Pages/Controller/Admin.php:96 lib/Pages/Controller/Admin.php:193
-#: lib/Pages/Controller/User.php:251 lib/Pages/Controller/User.php:283
-#: lib/Pages/Controller/User.php:291
+#: lib/Pages/Api/Admin.php:101 lib/Pages/Api/Admin.php:135
+#: lib/Pages/Controller/Admin.php:110 lib/Pages/Controller/Admin.php:207
+#: lib/Pages/Controller/User.php:265 lib/Pages/Controller/User.php:297
+#: lib/Pages/Controller/User.php:305
 msgid "No such page found."
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:93
+#: lib/Pages/Api/Admin.php:107
 msgid "Error! Deletion attempt failed."
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:167 lib/Pages/Installer.php:69
-#: lib/Pages/Installer.php:80 lib/Pages/Installer.php:86
-#: lib/Pages/Installer.php:94 lib/Pages/Installer.php:225
+#: lib/Pages/Api/Admin.php:181 lib/Pages/Installer.php:98
+#: lib/Pages/Installer.php:109 lib/Pages/Installer.php:115
+#: lib/Pages/Installer.php:123 lib/Pages/Installer.php:256
 msgid "Error! Update attempt failed."
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:234 lib/Pages/Block/Pageslist.php:26
+#: lib/Pages/Api/Admin.php:248 lib/Pages/Block/Pageslist.php:41
 #: templates/user/view.tpl:1 templates/user/view.tpl:32
 msgid "Pages list"
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:239 templates/admin/new.tpl:6
+#: lib/Pages/Api/Admin.php:253 templates/admin/new.tpl:6
 msgid "Create a page"
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:244
+#: lib/Pages/Api/Admin.php:258
 msgid "Purge permalinks"
 msgstr ""
 
-#: lib/Pages/Api/Admin.php:247 templates/admin/modifyconfig.tpl:4
+#: lib/Pages/Api/Admin.php:261 templates/admin/modifyconfig.tpl:4
 msgid "Settings"
 msgstr ""
 
-#: lib/Pages/Api/Search.php:94 lib/Pages/Api/Search.php:127
-#: lib/Pages/Api/User.php:129
+#: lib/Pages/Api/Search.php:135 lib/Pages/Api/Search.php:168
+#: lib/Pages/Api/User.php:156
 msgid "Error! Could not load any page."
 msgstr ""
 
-#: lib/Pages/Block/Page.php:19
+#: lib/Pages/Block/Page.php:41
 msgid "Show page"
 msgstr ""
 
-#: lib/Pages/Block/Page.php:20
+#: lib/Pages/Block/Page.php:42
 msgid "Show a page in a block"
 msgstr ""
 
-#: lib/Pages/Block/Pageslist.php:27
+#: lib/Pages/Block/Pageslist.php:42
 msgid "Display a list of pages"
 msgstr ""
 
-#: lib/Pages/Controller/Admin.php:63
+#: lib/Pages/Controller/Admin.php:77
 msgid "Done! Page created."
 msgstr ""
 
-#: lib/Pages/Controller/Admin.php:66
+#: lib/Pages/Controller/Admin.php:80
 msgid "Error! Hook data did not validate. Page not created."
 msgstr ""
 
-#: lib/Pages/Controller/Admin.php:151
+#: lib/Pages/Controller/Admin.php:165
 msgid "Done! Page updated."
 msgstr ""
 
-#: lib/Pages/Controller/Admin.php:216
+#: lib/Pages/Controller/Admin.php:230
 msgid "Done! Page deleted."
 msgstr ""
 
-#: lib/Pages/Controller/Admin.php:280
+#: lib/Pages/Controller/Admin.php:294
 msgid "Purging of the pemalinks was successful"
 msgstr ""
 
-#: lib/Pages/Controller/Admin.php:282
+#: lib/Pages/Controller/Admin.php:296
 msgid "Purging of the pemalinks has failed"
 msgstr ""
 
-#: lib/Pages/Controller/Admin.php:319
+#: lib/Pages/Controller/Admin.php:333
 msgid "View"
 msgstr ""
 
-#: lib/Pages/Controller/Admin.php:324 templates/user/display.tpl:52
+#: lib/Pages/Controller/Admin.php:338 templates/user/display.tpl:52
 msgid "Edit"
 msgstr ""
 
-#: lib/Pages/Controller/Admin.php:329
+#: lib/Pages/Controller/Admin.php:343
 msgid "Delete"
 msgstr ""
 
-#: lib/Pages/Controller/Admin.php:424
+#: lib/Pages/Controller/Admin.php:438
 msgid "Done! Module configuration updated."
 msgstr ""
 
-#: lib/Pages/Controller/User.php:105
+#: lib/Pages/Controller/User.php:119
 msgid "Invalid category passed."
 msgstr ""
 
-#: lib/Pages/Controller/User.php:173 templates/admin/view.tpl:83
+#: lib/Pages/Controller/User.php:187 templates/admin/view.tpl:83
 msgid "No pages found."
 msgstr ""
 
-#: lib/Pages/Installer.php:30
+#: lib/Pages/Installer.php:52
 msgid ""
 "Warning! Could not create the default Pages category tree. If you want to "
 "use categorization for the pages, register at least one property for the "
 "module in the Category Registry."
 msgstr ""
 
-#: lib/Pages/Installer.php:306 templates/search/options.tpl:3
+#: lib/Pages/Installer.php:337 templates/search/options.tpl:3
 #: templates/user/main.tpl:1
 msgid "Pages"
 msgstr ""
 
-#: lib/Pages/Installer.php:307 lib/Pages/Version.php:7
+#: lib/Pages/Installer.php:338 lib/Pages/Version.php:31
 msgid "Static pages"
 msgstr ""
 
-#: lib/Pages/Installer.php:349
+#: lib/Pages/Installer.php:380
 msgid "Warning! Could not create the introductory page."
 msgstr ""
 
-#: lib/Pages/Version.php:8
+#: lib/Pages/Version.php:32
 msgid "Manager of the static pages of the site."
 msgstr ""
 
 #. ! this defines the module's url
-#: lib/Pages/Version.php:11
+#: lib/Pages/Version.php:35
 msgid "pages"
 msgstr ""
 
-#: lib/Pages/Version.php:28
+#: lib/Pages/Version.php:61
 msgid "Pages Hooks"
 msgstr ""
 
-#: lib/Pages/Version.php:38
+#: lib/Pages/Version.php:75
 msgid "Pages Filter Hooks"
 msgstr ""
 
