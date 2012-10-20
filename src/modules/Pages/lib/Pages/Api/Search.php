@@ -102,38 +102,28 @@ class Pages_Api_Search extends Zikula_AbstractApi
     {
         ModUtil::dbInfoLoad('Search');
         $table = DBUtil::getTables();
-        $pagestable = $table['pages'];
-        $pagescolumn = $table['pages_column'];
         $searchTable = $table['search_result'];
         $searchColumn = $table['search_result_column'];
 
-        $where = Search_Api_User::construct_where(
-            $args,
-            array(
-                $pagescolumn['title'],
-                $pagescolumn['content']
-            ),
-            null
-        );
+
+        // this is a bit of a hacky way to ustilize this API for Doctrine calls.
+        // the 'a' prefix is the table alias in CalendarEventRepository
+        $where = Search_Api_User::construct_where($args, array(
+            'p.title',
+            'p.content'), null);
+        if (!empty($where)) {
+            $where = trim(substr(trim($where), 1, -1));
+        }
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('p')
+            ->from('Pages_Entity_Pages', 'p')
+            ->add('where', $where);
+        $objArray = $qb->getQuery()->getArrayResult();
+
+
 
         $sessionId = session_id();
 
-        /*
-          // define the permission filter to apply
-          $permFilter = array(array('realm'           => 0,
-          'component_left'  => 'Pages',
-          'component_right' => 'Page',
-          'instance_left'   => 'title',
-          'instance_right'  => 'pageid',
-          'level'           => ACCESS_READ));
-         */
-
-        // get the objects from the db
-        $permChecker = new pages_result_checker();
-        $objArray = DBUtil::selectObjectArrayFilter('pages', $where, 'pageid', 1, -1, '', $permChecker);
-        if ($objArray === false) {
-            return LogUtil::registerError($this->__('Error! Could not load any page.'));
-        }
 
         $addcategorytitletopermalink = ModUtil::getVar('Pages', 'addcategorytitletopermalink');
 
@@ -150,9 +140,14 @@ class Pages_Api_Search extends Zikula_AbstractApi
         // Process the result set and insert into search result table
         foreach ($objArray as $obj) {
             if ($addcategorytitletopermalink) {
-                $extra = serialize(array(
-                    'pageid' => $obj['pageid'],
-                    'cat' => isset($obj['__CATEGORIES__']['Main']['name']) ? $obj['__CATEGORIES__']['Main']['name'] : null));
+                $cat = isset($obj['__CATEGORIES__']['Main']['name']) ? $obj['__CATEGORIES__']['Main']['name'] : null;
+                $extra = serialize(
+                    array(
+                        'pageid' => $obj['pageid'],
+                        'cat'    => $cat
+                    )
+
+                );
             } else {
                 $extra = serialize(array('pageid' => $obj['pageid']));
             }
@@ -160,7 +155,7 @@ class Pages_Api_Search extends Zikula_AbstractApi
                     . '\'' . DataUtil::formatForStore($obj['title']) . '\', '
                     . '\'' . DataUtil::formatForStore($obj['content']) . '\', '
                     . '\'' . DataUtil::formatForStore($extra) . '\', '
-                    . '\'' . DataUtil::formatForStore($obj['cr_date']) . '\', '
+                    . '\'' . DateUtil::formatDatetime($obj['cr_date']) . '\', '
                     . '\'' . 'Pages' . '\', '
                     . '\'' . DataUtil::formatForStore($sessionId) . '\')';
             $insertResult = DBUtil::executeSQL($sql);
