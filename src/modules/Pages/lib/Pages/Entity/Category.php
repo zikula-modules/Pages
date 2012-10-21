@@ -35,11 +35,21 @@ class Pages_Entity_Category extends Zikula_Doctrine2_Entity_EntityCategory
      */
     private $entity;
 
+    /**
+     * Set entity
+     *
+     * @return Pages_Entity_Page
+     */
     public function getEntity()
     {
         return $this->entity;
     }
 
+    /**
+     * Set entity
+     *
+     * @param Pages_Entity_Page $entity
+     */
     public function setEntity($entity)
     {
         $this->entity = $entity;

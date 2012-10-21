@@ -112,8 +112,8 @@ class Pages_Installer extends Zikula_AbstractInstaller
                     }
                 }
                 $this->setVar('itemsperpage', 25);
-
             case '2.0':
+                // no changes
             case '2.1':
                 $this->setVar('enablecategorization', true);
                 $this->setVar('addcategorytitletopermalink', true);
@@ -138,7 +138,9 @@ class Pages_Installer extends Zikula_AbstractInstaller
                 }
 
             case '2.4':
+                // no changes
             case '2.4.1':
+                // no changes
             case '2.4.2':
                 $prefix = $this->serviceManager['prefix'];
                 $connection = Doctrine_Manager::getInstance()->getConnection('default');
@@ -270,7 +272,7 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
         // migrate our categories
         $categorymap = array();
         foreach ($categories as $category) {
-            $cat = new Categories_DBObject_Category ();
+            $cat = new Categories_DBObject_Category();
             $cat->setDataField('parent_id', $rootcat['id']);
             $cat->setDataField('name', $category[0]);
             $cat->setDataField('display_name', array($lang => $category[0]));
@@ -318,7 +320,7 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
 
         if (count($obj) == 0) {
             // nothing to do
-            return;
+            return false;
         }
 
         foreach ($obj as $pageid) {
@@ -361,6 +363,8 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
 
     /**
      * create the category tree
+     *
+     * @throws Zikula_Exception_Forbidden If Root category not found.
      *
      * @return boolean
      */

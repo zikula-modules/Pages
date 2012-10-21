@@ -13,6 +13,7 @@
  * information regarding copyright and licensing.
  */
 
+/** @noinspection PhpDocSignatureInspection */
 class Pages_Controller_User extends Zikula_AbstractController
 {
 
@@ -94,6 +95,8 @@ class Pages_Controller_User extends Zikula_AbstractController
 
     /**
      * view items
+     *
+     * @param array $args Arguments.
      *
      * @return string html string
      */
@@ -181,6 +184,7 @@ class Pages_Controller_User extends Zikula_AbstractController
 
 
         // Get the page
+        $accesslevel = 0;
         if (isset($pageid)) {
             $item = new Pages_ContentType_Page();
             $item->findById($pageid);

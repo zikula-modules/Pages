@@ -110,7 +110,7 @@ class Pages_ContentType_Pages
         $query = $this->_qb->getQuery();
         if ($this->_pager) {
             $this->_numberOfItems = \DoctrineExtensions\Paginate\Paginate::getTotalQueryResults($query);
-            $paginateQuery = \DoctrineExtensions\Paginate\Paginate::getPaginateQuery($query, $this->_startNumber , $this->_itemsPerPage); // Step 2 and 3
+            $paginateQuery = \DoctrineExtensions\Paginate\Paginate::getPaginateQuery($query, $this->_startNumber, $this->_itemsPerPage); // Step 2 and 3
             return $paginateQuery->getResult();
         } else {
             //$query->setFirstResult($this->_startNumber)

@@ -36,7 +36,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
      * @param 'pageid' the id of the item to be modified
      * @return string HTML output
      */
-    public function modify($args)
+    public function modify()
     {
         $form = FormUtil::newForm($this->name, $this);
         return $form->execute('admin/modify.tpl', new Pages_Handler_Modify());
@@ -79,13 +79,13 @@ class Pages_Controller_Admin extends Zikula_AbstractController
         $startnum = (int)FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 1, 'GETPOST');
         $language = FormUtil::getPassedValue('language', isset($args['language']) ? $args['language'] : null, 'POST');
         $orderby = FormUtil::getPassedValue('orderby', isset($args['orderby']) ? $args['orderby'] : 'pageid', 'GETPOST');
-        $original_sdir = FormUtil::getPassedValue('sdir', isset($args['sdir']) ? $args['sdir'] : 'ASC', 'GETPOST');
+        $originalSdir = FormUtil::getPassedValue('sdir', isset($args['sdir']) ? $args['sdir'] : 'ASC', 'GETPOST');
 
         $this->view->assign('startnum', $startnum);
         $this->view->assign('orderby', $orderby);
-        $this->view->assign('sdir', $original_sdir);
+        $this->view->assign('sdir', $originalSdir);
 
-        $sdir = $original_sdir ? 0 : 1; //if true change to false, if false change to true
+        $sdir = $originalSdir ? 0 : 1; //if true change to false, if false change to true
         // change class for selected 'orderby' field to asc/desc
         if ($sdir == 0) {
             $sort['class'][$orderby] = 'z-order-desc';
@@ -96,17 +96,19 @@ class Pages_Controller_Admin extends Zikula_AbstractController
             $orderdir = 'ASC';
         }
         $filtercats = FormUtil::getPassedValue('pages', null, 'GETPOST');
-        $filtercats_serialized = FormUtil::getPassedValue('filtercats_serialized', false, 'GET');
-        $filtercats = $filtercats_serialized ? unserialize($filtercats_serialized) : $filtercats;
+        $filtercatsSerialized = FormUtil::getPassedValue('filtercats_serialized', false, 'GET');
+        $filtercats = $filtercatsSerialized ? unserialize($filtercatsSerialized) : $filtercats;
         $catsarray = Pages_Util::formatCategoryFilter($filtercats);
 
         // complete initialization of sort array, adding urls
         foreach ($fields as $field) {
-            $sort['url'][$field] = ModUtil::url('Pages', 'admin', 'view', array(
+            $params = array(
                 'language' => $language,
                 'filtercats_serialized' => serialize($filtercats),
                 'orderby' => $field,
-                'sdir' => $sdir));
+                'sdir' => $sdir
+            );
+            $sort['url'][$field] = ModUtil::url('Pages', 'admin', 'view', $params);
         }
         $this->view->assign('sort', $sort);
 

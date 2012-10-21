@@ -138,153 +138,279 @@ class Pages_Entity_Page extends Zikula_EntityAccess
         return $this->pageid;
     }
 
+    /**
+     * Get page title
+     *
+     * @return string
+     */
     public function getTitle()
     {
         return $this->title;
     }
 
+    /**
+     * Get meta description
+     *
+     * @return string
+     */
     public function getMetadescription()
     {
         return $this->metadescription;
     }
 
-
+    /**
+     * Get meta keywords
+     *
+     * @return string
+     */
     public function getMetakeywords()
     {
         return $this->metakeywords;
     }
 
+    /**
+     * Get url title
+     *
+     * @return string
+     */
     public function getUrltitle()
     {
         return $this->urltitle;
     }
 
-
+    /**
+     * Get content
+     *
+     * @return string
+     */
     public function getContent()
     {
         return $this->content;
     }
 
+    /**
+     * Get counter
+     *
+     * @return int
+     */
     public function getCounter()
     {
         return $this->counter;
     }
 
+    /**
+     * Get display wrapper
+     *
+     * @return bool
+     */
     public function getDisplaywrapper()
     {
         return $this->displaywrapper;
     }
 
+    /**
+     * Get display title
+     *
+     * @return bool
+     */
     public function getDisplaytitle()
     {
         return $this->displaytitle;
     }
 
+    /**
+     * Get display created
+     *
+     * @return bool
+     */
     public function getDisplaycreated()
     {
         return $this->displaycreated;
     }
 
-
-
+    /**
+     * Get display updated
+     *
+     * @return bool
+     */
     public function getdisplayupdated()
     {
         return $this->displayupdated;
     }
 
+    /**
+     * Get display text info
+     *
+     * @return bool
+     */
     public function getdisplaytextinfo()
     {
         return $this->displaytextinfo;
     }
 
+    /**
+     * Get display print
+     *
+     * @return bool
+     */
     public function getdisplayprint()
     {
         return $this->displayprint;
     }
 
+    /**
+     * Get page language
+     *
+     * @return string
+     */
     public function getLanguage()
     {
         return $this->language;
     }
 
-
-
+    /**
+     * Set page id
+     *
+     * @param int $pageid
+     */
     public function setpageid($pageid)
     {
         $this->pageid = $pageid;
     }
 
+    /**
+     * Set page title
+     *
+     * @param string $title
+     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
+    /**
+     * Set page meta description
+     *
+     * @param string $metadescription
+     */
     public function setMetadescription($metadescription)
     {
         $this->metadescription = $metadescription;
     }
 
-
+    /**
+     * Set page meta keywords
+     *
+     * @param string $metakeywords
+     */
     public function setMetakeywords($metakeywords)
     {
         $this->metakeywords = $metakeywords;
     }
 
+    /**
+     * Set page url title
+     *
+     * @param string $urltitle
+     */
     public function setUrltitle($urltitle)
     {
         $this->urltitle = $urltitle;
     }
 
-
+    /**
+     * Set page content
+     *
+     * @param string $content
+     */
     public function setContent($content)
     {
         $this->content = $content;
     }
 
+    /**
+     * Set page counter
+     *
+     * @param int $counter
+     */
     public function setCounter($counter)
     {
         $this->counter = $counter;
     }
 
+    /**
+     * Set page display wrapper
+     *
+     * @param bool $displaywrapper
+     */
     public function setDisplaywrapper($displaywrapper)
     {
         $this->displaywrapper = $displaywrapper;
     }
 
+    /**
+     * Set if title should be shown
+     *
+     * @param bool $displaytitle
+     */
     public function setDisplaytitle($displaytitle)
     {
         $this->displaytitle = $displaytitle;
     }
 
+    /**
+     * Set if the creator name and the creation time should be shown.
+     *
+     * @param bool $displaycreated
+     */
     public function setDisplaycreated($displaycreated)
     {
         $this->displaycreated = $displaycreated;
     }
 
-
+    /**
+     * Set if the updater name and the update time should be shown.
+     *
+     * @param bool $displayupdated
+     */
     public function setDisplayupdated($displayupdated)
     {
         $this->displayupdated = $displayupdated;
     }
 
+    /**
+     * Set if the text info should be shown.
+     *
+     * @param bool $displaytextinfo
+     */
     public function setDisplaytextinfo($displaytextinfo)
     {
         $this->displaytextinfo = $displaytextinfo;
     }
 
+    /**
+     * Set if print link should shown
+     *
+     * @param bool $displayprint
+     */
     public function setDisplayprint($displayprint)
     {
         $this->displayprint = $displayprint;
     }
 
+    /**
+     * Set page language
+     *
+     * @param $language
+     */
     public function setLanguage($language)
     {
         $this->language = $language;
     }
 
-
-
-
+    /**
+     * Increment page counter
+     */
     public function incrementCounter()
     {
         $this->counter++;
@@ -299,7 +425,13 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     private $cr_uid;
 
-    public function getCr_uid() {
+    /**
+     * Set creator uid
+     *
+     * @return mixed
+     */
+    public function getCr_uid()
+    {
         return $this->cr_uid;
     }
 
@@ -312,7 +444,13 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     private $cr_date;
 
-    public function getCr_date() {
+    /**
+     * Get creation time
+     *
+     * @return datetime
+     */
+    public function getCr_date()
+    {
         return $this->cr_date;
     }
 
@@ -325,7 +463,13 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     private $lu_uid;
 
-    public function getLu_uid() {
+    /**
+     * Get last udate uid
+     *
+     * @return mixed
+     */
+    public function getLu_uid()
+    {
         return $this->lu_uid;
     }
 
@@ -338,7 +482,13 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     private $lu_date;
 
-    public function getLu_date() {
+    /**
+     * Get last update date
+     *
+     * @return datetime
+     */
+    public function getLu_date()
+    {
         return $this->lu_date;
     }
 
@@ -350,15 +500,33 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     private $categories;
 
-    public function getCategories() {
+    /**
+     * Get page categories
+     *
+     * @return Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getCategories()
+    {
         return $this->categories;
     }
 
-    public function setCategories($categories) {
+    /**
+     * Set page categories
+     *
+     * @param $categories
+     */
+    public function setCategories($categories)
+    {
         $this->categories = $categories;
     }
 
-    public function getCategories2() {
+    /**
+     * Get page categories2
+     *
+     * @return string
+     */
+    public function getCategories2()
+    {
         $output = array();
         foreach ($this->categories as $category) {
             $test = $category->toArray();
@@ -375,11 +543,19 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     private $obj_status = 'A';
 
-    public function getObj_status() {
+    /**
+     * Get object status
+     *
+     * @return string
+     */
+    public function getObj_status()
+    {
         return $this->obj_status;
     }
 
-
+    /**
+     * Constuct
+     */
     public function __construct()
     {
         $this->categories = new Doctrine\Common\Collections\ArrayCollection();

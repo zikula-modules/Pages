@@ -33,8 +33,7 @@ class pages_result_checker
     function checkResult(&$item)
     {
         $ok = SecurityUtil::checkPermission('Pages::', "$item[title]::$item[pageid]", ACCESS_OVERVIEW);
-        if ($this->enablecategorization)
-        {
+        if ($this->enablecategorization) {
             ObjectUtil::expandObjectWithCategories($item, 'pages', 'pageid');
             $ok = $ok && CategoryUtil::hasCategoryAccess($item['__CATEGORIES__'], 'Pages');
         }
@@ -108,9 +107,7 @@ class Pages_Api_Search extends Zikula_AbstractApi
 
         // this is a bit of a hacky way to ustilize this API for Doctrine calls.
         // the 'a' prefix is the table alias in CalendarEventRepository
-        $where = Search_Api_User::construct_where($args, array(
-            'p.title',
-            'p.content'), null);
+        $where = Search_Api_User::construct_where($args, array('p.title', 'p.content'), null);
         if (!empty($where)) {
             $where = trim(substr(trim($where), 1, -1));
         }
@@ -146,7 +143,6 @@ class Pages_Api_Search extends Zikula_AbstractApi
                         'pageid' => $obj['pageid'],
                         'cat'    => $cat
                     )
-
                 );
             } else {
                 $extra = serialize(array('pageid' => $obj['pageid']));

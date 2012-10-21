@@ -80,7 +80,7 @@ class Pages_Block_Pageslist extends Zikula_Controller_AbstractBlock
 
         // Check for no items returned
         if (empty($items)) {
-            return;
+            return false;
         }
 
         // Call the modules API to get the numitems
