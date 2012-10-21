@@ -30,8 +30,8 @@ class Pages_Installer extends Zikula_AbstractInstaller
     {
         // create table
         $entities = array(
-            'Pages_Entity_Pages',
-            'Pages_Entity_Categories'
+            'Pages_Entity_Page',
+            'Pages_Entity_Category'
         );
         try {
             DoctrineHelper::createSchema($this->entityManager, $entities);
@@ -182,7 +182,7 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
             case '2.5.1':
                 // create categories table
                 try {
-                    DoctrineHelper::createSchema($this->entityManager, array('Pages_Entity_Categories'));
+                    DoctrineHelper::createSchema($this->entityManager, array('Pages_Entity_Category'));
                 } catch (Exception $e) {
                     LogUtil::registerStatus($e->getMessage());
                     return false;
@@ -226,8 +226,8 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
     {
         // drop table
         $entities = array(
-            'Pages_Entity_Pages',
-            'Pages_Entity_Categories'
+            'Pages_Entity_Page',
+            'Pages_Entity_Category'
         );
         DoctrineHelper::dropSchema($this->entityManager, $entities);
 
@@ -423,7 +423,7 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
             'content'         => $content,
             'language'        => ZLanguage::getLanguageCode()
         );
-        $page = new Pages_Entity_Pages();
+        $page = new Pages_Entity_Page();
         $page->merge($data);
         $this->entityManager->persist($page);
         $this->entityManager->flush();

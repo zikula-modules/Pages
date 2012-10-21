@@ -22,16 +22,16 @@ use Doctrine\ORM\Mapping as ORM;
  * Annotations define the entity mappings to database.
  *
  * @ORM\Entity
- * @ORM\Table(name="pages_categories",
+ * @ORM\Table(name="pages_category",
  *            uniqueConstraints={@ORM\UniqueConstraint(name="cat_unq",columns={"registryId", "categoryId", "entityId"})})
  */
-class Pages_Entity_Categories extends Zikula_Doctrine2_Entity_EntityCategory
+class Pages_Entity_Category extends Zikula_Doctrine2_Entity_EntityCategory
 {
     
     /**
-     * @ORM\ManyToOne(targetEntity="Pages_Entity_Pages", inversedBy="categories")
+     * @ORM\ManyToOne(targetEntity="Pages_Entity_Page", inversedBy="categories")
      * @ORM\JoinColumn(name="entityId", referencedColumnName="pageid")
-     * @var Pages_Entity_Pages
+     * @var Pages_Entity_Page
      */
     private $entity;
 

@@ -28,7 +28,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
             SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission()
         );
 
-        $pages = $this->entityManager->getRepository('Pages_Entity_Pages')->findAll();
+        $pages = $this->entityManager->getRepository('Pages_Entity_Page')->findAll();
         foreach ($pages as $page) {
             $perma = strtolower(DataUtil::formatPermalink($page->getUrltitle()));
             if ($page->getUrltitle() != $perma) {
@@ -89,7 +89,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('count(p)')
-            ->from('Pages_Entity_Pages', 'p')
+            ->from('Pages_Entity_Page', 'p')
             ->where('p.urltitle = :urltitle')
             ->setParameter('urltitle', $args['urltitle']);
         if (isset($args['pageid']) && $args['pageid']) {

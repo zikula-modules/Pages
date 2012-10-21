@@ -85,7 +85,7 @@ class Pages_Api_User extends Zikula_AbstractApi
 
             $qb = $this->entityManager->createQueryBuilder();
             $qb->select('count(p)')
-                ->from('Pages_Entity_Pages', 'p')
+                ->from('Pages_Entity_Page', 'p')
                 ->join('p.categories', 'c')
                 ->where('c.category = :categories')
                 ->setParameter('categories', $args['category']);
@@ -93,7 +93,7 @@ class Pages_Api_User extends Zikula_AbstractApi
         }
 
         $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('count(p)')->from('Pages_Entity_Pages', 'p');
+        $qb->select('count(p)')->from('Pages_Entity_Page', 'p');
         return  $qb->getQuery()->getSingleScalarResult();
     }
 

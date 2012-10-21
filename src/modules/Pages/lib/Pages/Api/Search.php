@@ -116,7 +116,7 @@ class Pages_Api_Search extends Zikula_AbstractApi
         }
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('p')
-            ->from('Pages_Entity_Pages', 'p')
+            ->from('Pages_Entity_Page', 'p')
             ->add('where', $where);
         $objArray = $qb->getQuery()->getArrayResult();
 

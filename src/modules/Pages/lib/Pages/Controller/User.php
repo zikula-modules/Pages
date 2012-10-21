@@ -126,7 +126,7 @@ class Pages_Controller_User extends Zikula_AbstractController
 
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('p')
-            ->from('Pages_Entity_Pages', 'p')
+            ->from('Pages_Entity_Page', 'p')
             ->join('p.categories', 'c')
             ->where('c.category = :categories')
             ->setParameter('categories', $cat);

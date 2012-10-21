@@ -30,7 +30,7 @@ class Pages_ContentType_Pages
         $em = ServiceUtil::getService('doctrine.entitymanager');
         $this->_qb = $em->createQueryBuilder();
         $this->_qb->select('p')
-                  ->from('Pages_Entity_Pages', 'p')
+                  ->from('Pages_Entity_Page', 'p')
                   ->leftJoin('p.categories', 'c');
 
         $this->_itemsPerPage = ModUtil::getVar('Pages', 'itemsperpage', 25);

@@ -25,7 +25,7 @@ use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
  * @ORM\Entity
  * @ORM\Table(name="pages")
  */
-class Pages_Entity_Pages extends Zikula_EntityAccess
+class Pages_Entity_Page extends Zikula_EntityAccess
 {
 
     /**
@@ -344,7 +344,7 @@ class Pages_Entity_Pages extends Zikula_EntityAccess
 
 
     /**
-     * @ORM\OneToMany(targetEntity="Pages_Entity_Categories",
+     * @ORM\OneToMany(targetEntity="Pages_Entity_Category",
      *                mappedBy="entity", cascade={"all"},
      *                orphanRemoval=true, indexBy="categoryRegistryId")
      */

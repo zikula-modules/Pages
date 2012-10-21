@@ -50,7 +50,7 @@ class Pages_ContentType_Page
             $where['urltitle'] = $args['title'];
         }
 
-        $this->_page = $this->entityManager->getRepository('Pages_Entity_Pages')->findOneBy($where);
+        $this->_page = $this->entityManager->getRepository('Pages_Entity_Page')->findOneBy($where);
         if (!$this->_page) {
             return LogUtil::registerArgsError();
         }
@@ -73,7 +73,7 @@ class Pages_ContentType_Page
      */
     public function findById($id)
     {
-        $this->_page = $this->entityManager->find('Pages_Entity_Pages', $id);
+        $this->_page = $this->entityManager->find('Pages_Entity_Page', $id);
         if (!$this->_page) {
             return LogUtil::registerArgsError();
         }
@@ -92,7 +92,7 @@ class Pages_ContentType_Page
      */
     public function create()
     {
-        $this->_page = new Pages_Entity_Pages();
+        $this->_page = new Pages_Entity_Page();
     }
 
     /**
