@@ -122,7 +122,6 @@ class Pages_Controller_Admin extends Zikula_AbstractController
             $this->view->assign('catregistry', $catregistry);
         }
 
-
         $pages = new Pages_ContentType_Pages();
         $pages->setStartNumber($startnum);
         $pages->setLanguage($language);
@@ -181,6 +180,6 @@ class Pages_Controller_Admin extends Zikula_AbstractController
     public function modifyconfig()
     {
         $form = FormUtil::newForm($this->name, $this);
-        return $form->execute('admin/modifyconfig.tpl', new Pages_Handler_Modifyconfig());
+        return $form->execute('admin/modifyconfig.tpl', new Pages_Handler_ModifyConfig());
     }
 }

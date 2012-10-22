@@ -193,7 +193,7 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
                 // then delete old data
                 $connection = $this->entityManager->getConnection();
                 $sqls = array();
-                $sqls[] = "INSERT INTO pages_categories (entityId, registryId, categoryId) SELECT obj_id, reg_id, category_id FROM categories_mapobj WHERE modname = 'Pages' AND tablename = 'pages'";
+                $sqls[] = "INSERT INTO pages_category (entityId, registryId, categoryId) SELECT obj_id, reg_id, category_id FROM categories_mapobj WHERE modname = 'Pages' AND tablename = 'pages'";
                 $sqls[] = "DELETE FROM categories_mapobj WHERE modname = 'Pages' AND tablename = 'pages'";
 
                 // update category registry data to change tablename to EntityName

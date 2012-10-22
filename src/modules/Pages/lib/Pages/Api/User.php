@@ -41,10 +41,6 @@ class Pages_Api_User extends Zikula_AbstractApi
      */
     public function getall($args)
     {
-        if (!is_numeric($args['startnum']) || !is_numeric($args['numitems'])) {
-            return LogUtil::registerArgsError();
-        }
-
         $pages = new Pages_ContentType_Pages();
         if (isset($args['startnum']) && !empty($args['category'])) {
             $pages->setStartNumber($args['startnum']);
