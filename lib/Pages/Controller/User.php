@@ -164,7 +164,6 @@ class Pages_Controller_User extends Zikula_AbstractController
         $page     = FormUtil::getPassedValue('page', isset($args['page']) ? $args['page'] : null, 'REQUEST');
         $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
 
-
         if (!empty($objectid)) {
             $pageid = $objectid;
         }
@@ -182,7 +181,6 @@ class Pages_Controller_User extends Zikula_AbstractController
             $page = 1;
         }
 
-
         // Get the page
         $accesslevel = 0;
         if (isset($pageid)) {
@@ -196,8 +194,6 @@ class Pages_Controller_User extends Zikula_AbstractController
             System::queryStringSetVar('pageid', $item['pageid']);
             $pageid = $item['pageid'];
         }
-
-
 
         // Regardless of caching, we need to increment the read count and set the cache ID
         if (isset($pageid)) {
@@ -229,7 +225,7 @@ class Pages_Controller_User extends Zikula_AbstractController
             return LogUtil::registerError($this->__('No such page found.'), 404);
         }
 
-        // Explode the review into an array of seperate pages
+        // Explode the page into an array of seperate pages based upon the pagebreak
         $allpages = explode('<!--pagebreak-->', $item['content']);
 
         // validates that the requested page exists
@@ -237,7 +233,7 @@ class Pages_Controller_User extends Zikula_AbstractController
             return LogUtil::registerError($this->__('No such page found.'), 404);
         }
 
-        // Set the item bodytext to be the required page
+        // Set the item content to be the required page
         // nb arrays start from zero pages from one
         //$item['content'] = trim($allpages[$page-1]);
         $numitems = count($allpages);
@@ -252,8 +248,6 @@ class Pages_Controller_User extends Zikula_AbstractController
 
         // Assign details of the item.
         $this->view->assign('item', $item);
-
-
         $this->view->assign('lang', ZLanguage::getLanguageCode());
 
         // Now lets assign the informatation to create a pager for the review
