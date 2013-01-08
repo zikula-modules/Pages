@@ -15,9 +15,6 @@
 
 class Pages_Api_User extends Zikula_AbstractApi
 {
-
-
-
     /**
      * get a specific item
      *
@@ -212,7 +209,8 @@ class Pages_Api_User extends Zikula_AbstractApi
                 System::queryStringSetVar('startnum', $args['vars'][$varscount-1]);
                 // extract the category path
                 $cat = implode('/', array_slice($args['vars'], 1, $varscount - $pagersize - 1));
-                System::queryStringSetVar('cat', $cat);
+                $category = CategoryUtil::getCategoryByPath($cat, 'name');
+                System::queryStringSetVar('cat', $category['id']);
             }
         }
 
@@ -225,8 +223,9 @@ class Pages_Api_User extends Zikula_AbstractApi
             $varscount = count($args['vars']);
             if (ModUtil::getVar('Pages', 'addcategorytitletopermalink') && !empty($args['vars'][$nextvar+1])) {
                 ($args['vars'][$varscount-2] == 'page') ? $pagersize = 2 : $pagersize = 0;
-                $category = array_slice($args['vars'], 0, $varscount - 1 - $pagersize);
-                System::queryStringSetVar('cat', implode('/', $category));
+                $cat = array_slice($args['vars'], 0, $varscount - 1 - $pagersize);
+                $category = CategoryUtil::getCategoryByPath($cat, 'name');
+                System::queryStringSetVar('cat', implode('/', $category['id']));
                 array_splice($args['vars'], 0, $varscount - 1 - $pagersize);
             }
 
