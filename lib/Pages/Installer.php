@@ -413,13 +413,13 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
     private function createIntroPage()
     {
         $content = $this->__(
-            'This is a sample demonstration page. You can use Pages to create simple content pages. It is excellent '.
-            'if you only need basic html for your pages. You can utilize the Scribite module as well to WYSIWYG '.
-            'content creation. It is well suited to informational articles, documents and other "long term" type '.
+            'This is a demonstration page. You can use Pages to create simple static content pages. It is excellent '.
+            'if you only need basic html for your pages. You can also utilize the Scribite module for WYSIWYG '.
+            'content creation. It is well suited for informational articles, documents and other "long term" type '.
             'content items.'.
             '<br /><br />'.
-            'Pages is a hookable module which allows you to Hook EZComments or other hook providers to extend the '.
-            'capabilities of your content.'
+            'Pages is a hookable module which allows you to hook EZComments or other hook providers to extend the '.
+            'capabilities of your module.'
         );
         $data = array(
             'title'           => $this->__('Welcome to Pages content manager'),
