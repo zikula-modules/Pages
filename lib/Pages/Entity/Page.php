@@ -128,7 +128,7 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     /**
      * The following are annotations which define the language field.
      *
-     * @ORM\Column(type="string", length="30")
+     * @ORM\Column(type="string", length=30)
      */
     private $language = '';
 
