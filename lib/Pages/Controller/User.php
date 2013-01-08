@@ -235,7 +235,7 @@ class Pages_Controller_User extends Zikula_AbstractController
 
         // Set the item content to be the required page
         // nb arrays start from zero pages from one
-        //$item['content'] = trim($allpages[$page-1]);
+        $item['content'] = trim($allpages[$page-1]);
         $numitems = count($allpages);
         unset($allpages);
 
