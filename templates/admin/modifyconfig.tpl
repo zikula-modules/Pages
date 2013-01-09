@@ -60,7 +60,5 @@
         {formbutton class="z-bt-ok" commandName="save" __text="Save"}
         {formbutton class="z-bt-cancel" commandName="cancel" __text="Cancel"}
     </div>
-
-
 {/form}
 {adminfooter}

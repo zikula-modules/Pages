@@ -4,7 +4,6 @@
 
 <h2>{gt text='Category: %s' tag1=$categoryname} </h2>
 <p>{gt text='Pages published under this category:'}</p>
-
 <ul>
     {foreach item='page' from=$pages}
     {include file='user/pagelink.tpl'}

@@ -8,9 +8,6 @@
 
 {form cssClass="z-form"}
 {formvalidationsummary}
-
-
-
     <fieldset>
         <legend>{gt text='Content'}</legend>
         <div class="z-formrow">
@@ -107,7 +104,5 @@
         {formbutton class="z-bt-delete" commandName="remove" __text="Remove"}
         {formbutton class="z-bt-cancel" commandName="cancel" __text="Cancel"}
     </div>
-
-
 {/form}
 {adminfooter}
