@@ -23,7 +23,7 @@ class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
      *
      * When set this handler is in edit mode.
      *
-     * @var Pages_ContentType_Page
+     * @var Pages_Repository_Page
      */
     private $_page;
 
@@ -46,7 +46,7 @@ class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
         }
 
         // Get the page
-        $this->_page = new Pages_ContentType_Page();
+        $this->_page = new Pages_Repository_Page();
         if (empty($pageid)) {
             $this->_page->create();
         } else {
@@ -70,7 +70,6 @@ class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
         // assign the item to the template
         $view->assign($item);
         $view->assign('page', $this->_page->get());
-
 
         // now we've got this far let's lock the page for editing
         $params = array(
@@ -134,7 +133,6 @@ class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
         );
         $this->notifyHooks(new Zikula_ProcessHook('pages.ui_hooks.pages.process_edit', $data['pageid'], $url));
 
-
         // now release the page lock
         ModUtil::apiFunc('PageLock', 'user', 'releaseLock', array('lockName' => "Pagespage{$data['pageid']}"));
 
@@ -142,5 +140,4 @@ class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
 
         return System::redirect($returnUrl);
     }
-
 }
