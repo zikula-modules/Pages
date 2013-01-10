@@ -33,7 +33,7 @@ class Pages_Controller_User extends Zikula_AbstractController
         $startnum = (int)FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 1, 'GET');
         $this->view->assign('startnum', $startnum);
 
-        $pages = new Pages_Repository_Pages();
+        $pages = new Pages_Access_Pages();
         $pages->setStartNumber($startnum);
         $pages->setOrder('title');
         $pages->enablePager();
@@ -177,7 +177,7 @@ class Pages_Controller_User extends Zikula_AbstractController
         // Get the page
         $accesslevel = 0;
         if (isset($pageid)) {
-            $item = new Pages_Repository_Page();
+            $item = new Pages_Access_Page();
             $item->findById($pageid);
             $accesslevel = $item->getAccessLevel();
             $item = $item->get();

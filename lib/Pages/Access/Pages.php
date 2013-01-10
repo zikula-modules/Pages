@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-class Pages_Repository_Pages
+class Pages_Access_Pages
 {
 
     private $_qb;

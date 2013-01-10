@@ -23,7 +23,7 @@ class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
      *
      * When set this handler is in edit mode.
      *
-     * @var Pages_Repository_Page
+     * @var Pages_Access_Page
      */
     private $_page;
 
@@ -46,7 +46,7 @@ class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
         }
 
         // Get the page
-        $this->_page = new Pages_Repository_Page();
+        $this->_page = new Pages_Access_Page();
         if (empty($pageid)) {
             $this->_page->create();
         } else {

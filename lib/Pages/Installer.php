@@ -209,6 +209,7 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
                     }
                 }
             case '2.6.0':
+            case '2.6.1':
                 // future upgrades
         }
 

@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-class Pages_Repository_Page
+class Pages_Access_Page
 {
     private $_page;
     public $entityManager;

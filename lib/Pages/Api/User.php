@@ -24,7 +24,7 @@ class Pages_Api_User extends Zikula_AbstractApi
      */
     public function get($args)
     {
-        $page = new Pages_Repository_Page();
+        $page = new Pages_Access_Page();
         $page->find($args);
         return $page->toArray();
     }
@@ -38,7 +38,7 @@ class Pages_Api_User extends Zikula_AbstractApi
      */
     public function getall($args)
     {
-        $pages = new Pages_Repository_Pages();
+        $pages = new Pages_Access_Pages();
         if (isset($args['startnum']) && !empty($args['category'])) {
             $pages->setStartNumber($args['startnum']);
         }
@@ -99,7 +99,7 @@ class Pages_Api_User extends Zikula_AbstractApi
      */
     public function incrementreadcount($args)
     {
-        $page = new Pages_Repository_Page();
+        $page = new Pages_Access_Page();
         $page->find($args);
         return $page->incrementReadCount();
     }
