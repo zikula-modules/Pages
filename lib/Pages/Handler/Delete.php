@@ -23,7 +23,7 @@ class Pages_Handler_Delete extends Zikula_Form_AbstractHandler
      *
      * When set this handler is in edit mode.
      *
-     * @var Pages_ContentType_Page
+     * @var Pages_Access_Page
      */
     private $_page;
 
@@ -50,7 +50,7 @@ class Pages_Handler_Delete extends Zikula_Form_AbstractHandler
         }
 
         // Get the existing page
-        $this->_page = new Pages_ContentType_Page();
+        $this->_page = new Pages_Access_Page();
         $this->_page->findById($pageid);
         $item = $this->_page->toArray();
 
@@ -90,5 +90,4 @@ class Pages_Handler_Delete extends Zikula_Form_AbstractHandler
 
 
     }
-
 }

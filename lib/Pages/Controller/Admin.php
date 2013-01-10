@@ -122,7 +122,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
             $this->view->assign('catregistry', $catregistry);
         }
 
-        $pages = new Pages_ContentType_Pages();
+        $pages = new Pages_Access_Pages();
         $pages->setStartNumber($startnum);
         $pages->setLanguage($language);
         $pages->setOrder($orderby, $orderdir);

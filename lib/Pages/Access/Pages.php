@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-class Pages_ContentType_Pages
+class Pages_Access_Pages
 {
 
     private $_qb;
@@ -96,8 +96,6 @@ class Pages_ContentType_Pages
             $this->_qb->andWhere('c.category = :categories')
                       ->setParameter('categories', $category);
         }
-
-
     }
 
     /**
@@ -142,9 +140,5 @@ class Pages_ContentType_Pages
             'numitems'     => $this->_numberOfItems
         );
     }
-
-
-
-
 
 }

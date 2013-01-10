@@ -16,7 +16,6 @@
 /** @noinspection PhpDocSignatureInspection */
 class Pages_Controller_User extends Zikula_AbstractController
 {
-
     /**
      * list all pages
      *
@@ -34,7 +33,7 @@ class Pages_Controller_User extends Zikula_AbstractController
         $startnum = (int)FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 1, 'GET');
         $this->view->assign('startnum', $startnum);
 
-        $pages = new Pages_ContentType_Pages();
+        $pages = new Pages_Access_Pages();
         $pages->setStartNumber($startnum);
         $pages->setOrder('title');
         $pages->enablePager();
@@ -45,8 +44,6 @@ class Pages_Controller_User extends Zikula_AbstractController
 
         return $this->view->fetch('user/listpages.tpl');
     }
-
-
 
     /**
      * the main user function
@@ -112,7 +109,6 @@ class Pages_Controller_User extends Zikula_AbstractController
         $prop     = (string)FormUtil::getPassedValue('prop', isset($args['prop']) ? $args['prop'] : null, 'GET');
         $cat      = (string)FormUtil::getPassedValue('cat', isset($args['cat']) ? $args['cat'] : null, 'GET');
 
-
         $this->view->assign('startnum', $startnum);
         $itemsperpage = $this->getVar('itemsperpage');
 
@@ -125,8 +121,6 @@ class Pages_Controller_User extends Zikula_AbstractController
             $this->view->assign('categoryname', $category['name']);
         }
 
-
-
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('p')
             ->from('Pages_Entity_Page', 'p')
@@ -135,7 +129,6 @@ class Pages_Controller_User extends Zikula_AbstractController
             ->setParameter('categories', $cat);
         $pages = $qb->getQuery()->getArrayResult();
         $this->view->assign('pages', $pages);
-
 
         // assign the values for the smarty plugin to produce a pager
         $pager = array(
@@ -184,7 +177,7 @@ class Pages_Controller_User extends Zikula_AbstractController
         // Get the page
         $accesslevel = 0;
         if (isset($pageid)) {
-            $item = new Pages_ContentType_Page();
+            $item = new Pages_Access_Page();
             $item->findById($pageid);
             $accesslevel = $item->getAccessLevel();
             $item = $item->get();
