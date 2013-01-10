@@ -13,9 +13,8 @@
  * information regarding copyright and licensing.
  */
 
-class Pages_ContentType_Page
+class Pages_Access_Page
 {
-
     private $_page;
     public $entityManager;
 
@@ -37,7 +36,6 @@ class Pages_ContentType_Page
      */
     public function find($args)
     {
-
         // Argument check
         if ((!isset($args['pageid']) || !is_numeric($args['pageid'])) && !isset($args['title'])) {
             return LogUtil::registerArgsError();
@@ -61,7 +59,6 @@ class Pages_ContentType_Page
         }
 
         return true;
-
     }
 
     /**
@@ -213,5 +210,4 @@ class Pages_ContentType_Page
         $this->entityManager->flush();
         return true;
     }
-
 }
