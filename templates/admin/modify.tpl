@@ -95,9 +95,11 @@
         </div>
     </fieldset>
 
-    {*if is_numeric($pageid)}
+    {if !empty($pageid)}
     {notifydisplayhooks eventname='pages.ui_hooks.pages.form_edit' id=$pageid}
-    {/if*}
+    {else}
+    {notifydisplayhooks eventname='pages.ui_hooks.pages.form_edit' id=null}
+    {/if}
 
     <div class="z-formbuttons z-buttons">
         {formbutton class="z-bt-ok" commandName="save" __text="Save"}
