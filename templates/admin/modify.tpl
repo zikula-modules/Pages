@@ -9,7 +9,6 @@
 {form cssClass="z-form"}
 {formvalidationsummary}
     <fieldset>
-        <legend>{gt text='Content'}</legend>
         <div class="z-formrow">
             {formlabel for="title" __text='Title'}
             {formtextinput id="title" maxLength="255" mandatory=true}
@@ -35,6 +34,8 @@
             {formlanguageselector id="language"}
         </div>
         {/if}
+    </fieldset>
+    <fieldset class="z-linear">
         <div class="z-formrow">
             {formlabel for="content" __text='Content'}
             {formtextinput textMode="multiline" id="content" rows="10" cols="50"}
@@ -49,7 +50,8 @@
         </div>
         <div class="z-formrow">
             {formlabel for="metakeywords" __text='Keywords'}
-            {formtextinput textMode="multiline" id="metakeywords" rows="4" cols="50"}
+            {* formtextinput textMode="multiline" id="metakeywords" rows="4" cols="50" *}
+            <textarea id="metakeywords" class="z-form-text noeditor" name="metakeywords" rows="4" cols="50">{$metakeywords|safehtml}</textarea>
         </div>
     </fieldset>
     <fieldset>
@@ -100,8 +102,7 @@
     {else}
     {notifydisplayhooks eventname='pages.ui_hooks.pages.form_edit' id=null}
     {/if}
-
-    <div class="z-formbuttons z-buttons">
+<div class="z-buttonrow z-buttons z-center">
         {formbutton class="z-bt-ok" commandName="save" __text="Save"}
         {formbutton class="z-bt-delete" commandName="remove" __text="Remove"}
         {formbutton class="z-bt-cancel" commandName="cancel" __text="Cancel"}
