@@ -9,6 +9,7 @@
 {form cssClass="z-form"}
 {formvalidationsummary}
     <fieldset>
+        <legend>{gt text='Content'}</legend>
         <div class="z-formrow">
             {formlabel for="title" __text='Title'}
             {formtextinput id="title" maxLength="255" mandatory=true}
@@ -34,11 +35,9 @@
             {formlanguageselector id="language"}
         </div>
         {/if}
-    </fieldset>
-    <fieldset class="z-linear">
         <div class="z-formrow">
             {formlabel for="content" __text='Content'}
-            {formtextinput textMode="multiline" id="content" rows="10" cols="50"}
+            {formtextinput textMode="multiline" id="content" rows="10" cols="50" width="97%"}
             <em class="z-sub z-formnote">{gt text='If you want multiple pages you can write &lt;!--pagebreak--&gt; where you want to cut.'}</em>
         </div>
     </fieldset>
@@ -50,8 +49,7 @@
         </div>
         <div class="z-formrow">
             {formlabel for="metakeywords" __text='Keywords'}
-            {* formtextinput textMode="multiline" id="metakeywords" rows="4" cols="50" *}
-            <textarea id="metakeywords" class="z-form-text noeditor" name="metakeywords" rows="4" cols="50">{$metakeywords|safehtml}</textarea>
+            {formtextinput textMode="multiline" id="metakeywords" rows="4" cols="50" cssClass="noeditor"}
         </div>
     </fieldset>
     <fieldset>
