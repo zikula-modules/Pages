@@ -37,7 +37,7 @@
         {/if}
         <div class="z-formrow">
             {formlabel for="content" __text='Content'}
-            {formtextinput textMode="multiline" id="content" rows="10" cols="50"}
+            {formtextinput textMode="multiline" id="content" rows="10" cols="50" width="97%"}
             <em class="z-sub z-formnote">{gt text='If you want multiple pages you can write &lt;!--pagebreak--&gt; where you want to cut.'}</em>
         </div>
     </fieldset>
@@ -49,7 +49,7 @@
         </div>
         <div class="z-formrow">
             {formlabel for="metakeywords" __text='Keywords'}
-            {formtextinput textMode="multiline" id="metakeywords" rows="4" cols="50"}
+            {formtextinput textMode="multiline" id="metakeywords" rows="4" cols="50" cssClass="noeditor"}
         </div>
     </fieldset>
     <fieldset>
@@ -100,8 +100,7 @@
     {else}
     {notifydisplayhooks eventname='pages.ui_hooks.pages.form_edit' id=null}
     {/if}
-
-    <div class="z-formbuttons z-buttons">
+<div class="z-buttonrow z-buttons z-center">
         {formbutton class="z-bt-ok" commandName="save" __text="Save"}
         {formbutton class="z-bt-delete" commandName="remove" __text="Remove"}
         {formbutton class="z-bt-cancel" commandName="cancel" __text="Cancel"}
