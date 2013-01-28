@@ -33,7 +33,7 @@ class Pages_Version extends Zikula_AbstractVersion
         $meta['version'] = '2.6.1';
         //! this defines the module's url
         $meta['url'] = $this->__('pages');
-        $meta['core_min'] = '1.3.0'; // requires minimum 1.3.0 or later
+        $meta['core_min'] = '1.3.6'; // requires minimum 1.3.0 or later
         $meta['core_max'] = '1.3.99'; // Fixed to 1.3.x range
         $meta['capabilities'] = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
         $meta['securityschema'] = array('Pages::' => 'Page name::Page ID',
