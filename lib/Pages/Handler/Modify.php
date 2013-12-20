@@ -16,7 +16,7 @@
 /**
  * This class provides a handler to modify or create a page.
  */
-class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
+class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
 {
     /**
      * Page.
@@ -36,7 +36,7 @@ class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
      *
      * @throws Zikula_Exception_Forbidden If the current user does not have adequate permissions to perform this function.
      */
-    function initialize(Zikula_Form_View $view)
+    public function initialize(Zikula_Form_View $view)
     {
         $pageid   = FormUtil::getPassedValue('pageid', isset($args['pageid']) ? $args['pageid'] : null, 'GET');
         $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
@@ -63,13 +63,13 @@ class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
 
         if ($this->getVar('enablecategorization', true)) {
             // load and assign registred categories
-            $categories  = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'Pages', 'id');
+            $categories  = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'Page');
             $view->assign('registries', $categories);
         }
 
         // assign the item to the template
         $view->assign($item);
-        $view->assign('page', $this->_page->get());
+//        $view->assign('page', $this->_page->get());
 
         // now we've got this far let's lock the page for editing
         $params = array(
@@ -89,7 +89,7 @@ class Pages_Handler_Modify extends Zikula_Form_AbstractHandler
      *
      * @return boolean|void
      */
-    function handleCommand(Zikula_Form_View $view, &$args)
+    public function handleCommand(Zikula_Form_View $view, &$args)
     {
         if ($args['commandName'] == 'cancel') {
             $url = ModUtil::url($this->name, 'admin', 'view');

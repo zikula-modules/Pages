@@ -25,7 +25,7 @@
         {foreach from=$registries item="registryCid" key="registryId"}
             <div class="z-formrow">
                 {formlabel for="category_`$registryId`" __text="Category"}
-                {formcategoryselector id="category_`$registryId`" category=$registryCid dataField="categories" group="page" registryId=$registryId doctrine2=true}
+                {formcategoryselector id="category_`$registryId`" category=$registryCid dataField="categories" registryId=$registryId doctrine2=true}
             </div>
         {/foreach}
         {/if}

@@ -400,7 +400,7 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
         $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/Pages');
         if ($rootcat) {
             // create an entry in the categories registry to the Main property
-            if (!CategoryRegistryUtil::insertEntry('Pages', 'Pages', 'Main', $rootcat['id'])) {
+            if (!CategoryRegistryUtil::insertEntry('Pages', 'Page', 'Main', $rootcat['id'])) {
                 throw new Zikula_Exception("Cannot insert Category Registry entry.");
             }
         } else {
