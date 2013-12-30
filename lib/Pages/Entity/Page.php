@@ -29,7 +29,7 @@ class Pages_Entity_Page extends Zikula_EntityAccess
 {
 
     /**
-     * The following are annotations which define the fid field.
+     * pageid
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -37,92 +37,92 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     private $pageid;
     /**
-     * The following are annotations which define the title field.
+     * title
      *
      * @ORM\Column(type="text")
      */
     private $title = '';
     /**
-     * The following are annotations which define the metadescription field.
+     * metadescription
      *
      * @ORM\Column(type="text")
      */
     private $metadescription = '';
     /**
-     * The following are annotations which define the metakeywords field.
+     * metakeywords
      *
      * @ORM\Column(type="text")
      */
     private $metakeywords = '';
     /**
-     * The following are annotations which define the urltitle field.
+     * urltitle
      *
      * @ORM\Column(type="text")
      */
     private $urltitle = '';
     /**
-     * The following are annotations which define the content field.
+     * content
      *
      * @ORM\Column(type="text")
      */
     private $content = '';
     /**
-     * The following are annotations which define the counter field.
+     * counter
      *
      * @ORM\Column(type="integer")
      */
     private $counter = 0;
     /**
-     * The following are annotations which define the displaywrapper field.
+     * displaywrapper
      *
      * @ORM\Column(type="boolean")
      */
     private $displaywrapper = true;
     /**
-     * The following are annotations which define the displaytitle field.
+     * displaytitle
      *
      * @ORM\Column(type="boolean")
      */
     private $displaytitle = true;
     /**
-     * The following are annotations which define the displaycreated field.
+     * displaycreated
      *
      * @ORM\Column(type="boolean")
      */
     private $displaycreated = true;
     /**
-     * The following are annotations which define the displayupdated field.
+     * displayupdated
      *
      * @ORM\Column(type="boolean")
      */
     private $displayupdated = true;
     /**
-     * The following are annotations which define the displaytextinfo field.
+     * displaytextinfo
      *
      * @ORM\Column(type="boolean")
      */
     private $displaytextinfo = true;
     /**
-     * The following are annotations which define the displayprint field.
+     * displayprint
      *
      * @ORM\Column(type="boolean")
      */
     private $displayprint = true;
     /**
-     * The following are annotations which define the language field.
+     * language
      *
      * @ORM\Column(type="string", length=30)
      */
     private $language = '';
     /**
-     * The following are annotations which define the id field.
+     * cr_uid
      *
      * @ORM\Column(type="integer")
      * @ZK\StandardFields(type="userid", on="create")
      */
     private $cr_uid;
     /**
-     * The following are annotations which define the id field.
+     * cr_date
      *
      * @var datetime
      * @ORM\Column(type="datetime")
@@ -130,14 +130,14 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     private $cr_date;
     /**
-     * The following are annotations which define the id field.
+     * lu_uid
      *
      * @ORM\Column(type="integer")
      * @ZK\StandardFields(type="userid", on="update")
      */
     private $lu_uid;
     /**
-     * The following are annotations which define the id field.
+     * lu_date
      *
      * @var datetime
      * @ORM\Column(type="datetime")
@@ -145,26 +145,33 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     private $lu_date;
     /**
+     * categories
+     *
      * @ORM\OneToMany(targetEntity="Pages_Entity_Category",
      *                mappedBy="entity", cascade={"all"},
      *                orphanRemoval=true, indexBy="categoryRegistryId")
      */
     private $categories;
     /**
-     * The following are annotations which define the counter field.
+     * obj_status
      *
      * @ORM\Column(type="string", length=1)
      */
     private $obj_status = 'A';
 
     /**
-     * Constuct
+     * Constuctor
      */
     public function __construct()
     {
         $this->categories = new Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * get pageid
+     *
+     * @return integer
+     */
     public function getPageid()
     {
         return $this->pageid;
@@ -401,16 +408,6 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
-     * Set page id
-     *
-     * @param int $pageid
-     */
-    public function setpageid($pageid)
-    {
-        $this->pageid = $pageid;
-    }
-
-    /**
      * Set if the updater name and the update time should be shown.
      *
      * @param bool $displayupdated
@@ -451,7 +448,7 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     /**
      * Set creator uid
      *
-     * @return mixed
+     * @return int
      */
     public function getCr_uid()
     {
@@ -471,7 +468,7 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     /**
      * Get last update uid
      *
-     * @return mixed
+     * @return int
      */
     public function getLu_uid()
     {
