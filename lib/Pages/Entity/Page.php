@@ -36,102 +36,134 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $pageid;
-    
     /**
      * The following are annotations which define the title field.
      *
      * @ORM\Column(type="text")
      */
     private $title = '';
-
     /**
      * The following are annotations which define the metadescription field.
      *
      * @ORM\Column(type="text")
      */
     private $metadescription = '';
-
     /**
      * The following are annotations which define the metakeywords field.
      *
      * @ORM\Column(type="text")
      */
     private $metakeywords = '';
-
-
     /**
      * The following are annotations which define the urltitle field.
      *
      * @ORM\Column(type="text")
      */
     private $urltitle = '';
-
-
     /**
      * The following are annotations which define the content field.
      *
      * @ORM\Column(type="text")
      */
     private $content = '';
-
     /**
      * The following are annotations which define the counter field.
      *
      * @ORM\Column(type="integer")
      */
     private $counter = 0;
-
     /**
      * The following are annotations which define the displaywrapper field.
      *
      * @ORM\Column(type="boolean")
      */
     private $displaywrapper = true;
-
     /**
      * The following are annotations which define the displaytitle field.
      *
      * @ORM\Column(type="boolean")
      */
     private $displaytitle = true;
-
     /**
      * The following are annotations which define the displaycreated field.
      *
      * @ORM\Column(type="boolean")
      */
     private $displaycreated = true;
-
     /**
      * The following are annotations which define the displayupdated field.
      *
      * @ORM\Column(type="boolean")
      */
     private $displayupdated = true;
-
     /**
      * The following are annotations which define the displaytextinfo field.
      *
      * @ORM\Column(type="boolean")
      */
     private $displaytextinfo = true;
-
-
     /**
      * The following are annotations which define the displayprint field.
      *
      * @ORM\Column(type="boolean")
      */
     private $displayprint = true;
-
-
     /**
      * The following are annotations which define the language field.
      *
      * @ORM\Column(type="string", length=30)
      */
     private $language = '';
+    /**
+     * The following are annotations which define the id field.
+     *
+     * @ORM\Column(type="integer")
+     * @ZK\StandardFields(type="userid", on="create")
+     */
+    private $cr_uid;
+    /**
+     * The following are annotations which define the id field.
+     *
+     * @var datetime
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $cr_date;
+    /**
+     * The following are annotations which define the id field.
+     *
+     * @ORM\Column(type="integer")
+     * @ZK\StandardFields(type="userid", on="update")
+     */
+    private $lu_uid;
+    /**
+     * The following are annotations which define the id field.
+     *
+     * @var datetime
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $lu_date;
+    /**
+     * @ORM\OneToMany(targetEntity="Pages_Entity_Category",
+     *                mappedBy="entity", cascade={"all"},
+     *                orphanRemoval=true, indexBy="categoryRegistryId")
+     */
+    private $categories;
+    /**
+     * The following are annotations which define the counter field.
+     *
+     * @ORM\Column(type="string", length=1)
+     */
+    private $obj_status = 'A';
 
+    /**
+     * Constuct
+     */
+    public function __construct()
+    {
+        $this->categories = new Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function getPageid()
     {
@@ -149,6 +181,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
+     * Set page title
+     *
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
      * Get meta description
      *
      * @return string
@@ -156,6 +198,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     public function getMetadescription()
     {
         return $this->metadescription;
+    }
+
+    /**
+     * Set page meta description
+     *
+     * @param string $metadescription
+     */
+    public function setMetadescription($metadescription)
+    {
+        $this->metadescription = $metadescription;
     }
 
     /**
@@ -169,6 +221,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
+     * Set page meta keywords
+     *
+     * @param string $metakeywords
+     */
+    public function setMetakeywords($metakeywords)
+    {
+        $this->metakeywords = $metakeywords;
+    }
+
+    /**
      * Get url title
      *
      * @return string
@@ -176,6 +238,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     public function getUrltitle()
     {
         return $this->urltitle;
+    }
+
+    /**
+     * Set page url title
+     *
+     * @param string $urltitle
+     */
+    public function setUrltitle($urltitle)
+    {
+        $this->urltitle = $urltitle;
     }
 
     /**
@@ -189,6 +261,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
+     * Set page content
+     *
+     * @param string $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
      * Get counter
      *
      * @return int
@@ -196,6 +278,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     public function getCounter()
     {
         return $this->counter;
+    }
+
+    /**
+     * Set page counter
+     *
+     * @param int $counter
+     */
+    public function setCounter($counter)
+    {
+        $this->counter = $counter;
     }
 
     /**
@@ -209,6 +301,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
+     * Set page display wrapper
+     *
+     * @param bool $displaywrapper
+     */
+    public function setDisplaywrapper($displaywrapper)
+    {
+        $this->displaywrapper = $displaywrapper;
+    }
+
+    /**
      * Get display title
      *
      * @return bool
@@ -219,6 +321,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
+     * Set if title should be shown
+     *
+     * @param bool $displaytitle
+     */
+    public function setDisplaytitle($displaytitle)
+    {
+        $this->displaytitle = $displaytitle;
+    }
+
+    /**
      * Get display created
      *
      * @return bool
@@ -226,6 +338,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     public function getDisplaycreated()
     {
         return $this->displaycreated;
+    }
+
+    /**
+     * Set if the creator name and the creation time should be shown.
+     *
+     * @param bool $displaycreated
+     */
+    public function setDisplaycreated($displaycreated)
+    {
+        $this->displaycreated = $displaycreated;
     }
 
     /**
@@ -269,6 +391,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
+     * Set page language
+     *
+     * @param $language
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+    /**
      * Set page id
      *
      * @param int $pageid
@@ -276,96 +408,6 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     public function setpageid($pageid)
     {
         $this->pageid = $pageid;
-    }
-
-    /**
-     * Set page title
-     *
-     * @param string $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * Set page meta description
-     *
-     * @param string $metadescription
-     */
-    public function setMetadescription($metadescription)
-    {
-        $this->metadescription = $metadescription;
-    }
-
-    /**
-     * Set page meta keywords
-     *
-     * @param string $metakeywords
-     */
-    public function setMetakeywords($metakeywords)
-    {
-        $this->metakeywords = $metakeywords;
-    }
-
-    /**
-     * Set page url title
-     *
-     * @param string $urltitle
-     */
-    public function setUrltitle($urltitle)
-    {
-        $this->urltitle = $urltitle;
-    }
-
-    /**
-     * Set page content
-     *
-     * @param string $content
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-    }
-
-    /**
-     * Set page counter
-     *
-     * @param int $counter
-     */
-    public function setCounter($counter)
-    {
-        $this->counter = $counter;
-    }
-
-    /**
-     * Set page display wrapper
-     *
-     * @param bool $displaywrapper
-     */
-    public function setDisplaywrapper($displaywrapper)
-    {
-        $this->displaywrapper = $displaywrapper;
-    }
-
-    /**
-     * Set if title should be shown
-     *
-     * @param bool $displaytitle
-     */
-    public function setDisplaytitle($displaytitle)
-    {
-        $this->displaytitle = $displaytitle;
-    }
-
-    /**
-     * Set if the creator name and the creation time should be shown.
-     *
-     * @param bool $displaycreated
-     */
-    public function setDisplaycreated($displaycreated)
-    {
-        $this->displaycreated = $displaycreated;
     }
 
     /**
@@ -399,31 +441,12 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
-     * Set page language
-     *
-     * @param $language
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-    }
-
-    /**
      * Increment page counter
      */
     public function incrementCounter()
     {
         $this->counter++;
     }
-
-
-    /**
-     * The following are annotations which define the id field.
-     *
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="create")
-     */
-    private $cr_uid;
 
     /**
      * Set creator uid
@@ -436,15 +459,6 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
-     * The following are annotations which define the id field.
-     *
-     * @var datetime
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     */
-    private $cr_date;
-
-    /**
      * Get creation time
      *
      * @return datetime
@@ -454,17 +468,8 @@ class Pages_Entity_Page extends Zikula_EntityAccess
         return $this->cr_date;
     }
 
-
     /**
-     * The following are annotations which define the id field.
-     *
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="update")
-     */
-    private $lu_uid;
-
-    /**
-     * Get last udate uid
+     * Get last update uid
      *
      * @return mixed
      */
@@ -472,15 +477,6 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     {
         return $this->lu_uid;
     }
-
-    /**
-     * The following are annotations which define the id field.
-     *
-     * @var datetime
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     */
-    private $lu_date;
 
     /**
      * Get last update date
@@ -491,14 +487,6 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     {
         return $this->lu_date;
     }
-
-
-    /**
-     * @ORM\OneToMany(targetEntity="Pages_Entity_Category",
-     *                mappedBy="entity", cascade={"all"},
-     *                orphanRemoval=true, indexBy="categoryRegistryId")
-     */
-    private $categories;
 
     /**
      * Get page categories
@@ -521,29 +509,6 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
-     * Get page categories2
-     *
-     * @return string
-     */
-    public function getCategories2()
-    {
-        $output = array();
-        foreach ($this->categories as $category) {
-            $test = $category->toArray();
-            $output[] = $test['category']['name'];
-        }
-        return implode(', ', $output);
-    }
-
-
-    /**
-     * The following are annotations which define the counter field.
-     *
-     * @ORM\Column(type="string", length=1)
-     */
-    private $obj_status = 'A';
-
-    /**
      * Get object status
      *
      * @return string
@@ -551,14 +516,6 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     public function getObj_status()
     {
         return $this->obj_status;
-    }
-
-    /**
-     * Constuct
-     */
-    public function __construct()
-    {
-        $this->categories = new Doctrine\Common\Collections\ArrayCollection();
     }
 
 
