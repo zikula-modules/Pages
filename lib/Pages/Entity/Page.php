@@ -18,9 +18,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 
 /**
- * Events entity class.
- *
- * Annotations define the entity mappings to database.
+ * Page entity class.
  *
  * @ORM\Entity
  * @ORM\Table(name="pages")
