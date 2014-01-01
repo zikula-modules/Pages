@@ -176,6 +176,16 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     }
 
     /**
+     * 'fake' setter so formcategoryselector doesn't blow up
+     *
+     * @param $pageid
+     */
+    public function setPageid($pageid)
+    {
+        // do nothing
+    }
+
+    /**
      * Get page title
      *
      * @return string
