@@ -69,7 +69,7 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
 
         // assign the item to the template
         $view->assign($item);
-//        $view->assign('page', $this->_page->get());
+        $view->assign('page', $this->_page->get());
 
         // now we've got this far let's lock the page for editing
         $params = array(
