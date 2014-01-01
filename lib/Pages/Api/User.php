@@ -311,7 +311,7 @@ class Pages_Api_User extends Zikula_AbstractApi
      */
     public function getCategories()
     {
-        $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'pages');
+        $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'Page');
         $properties  = array_keys($catregistry);
 
         $propertiesdata = array();

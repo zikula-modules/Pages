@@ -118,7 +118,7 @@ class Pages_Controller_Admin extends Zikula_AbstractController
         $modvars = $this->getVars();
 
         if ($modvars['enablecategorization']) {
-            $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'pages');
+            $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'Page');
             $this->view->assign('catregistry', $catregistry);
         }
 
