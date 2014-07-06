@@ -1,3 +1,6 @@
+Pages 3.0.0
+  * Bootstrap support added
+
 Pages 2.6.1
   * ContentType folder name also being used for plugins for Content, issue #21
   * class names in user/display template corrected, issue #22
