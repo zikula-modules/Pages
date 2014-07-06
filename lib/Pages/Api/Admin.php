@@ -44,7 +44,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
      *
      * @return array array of admin links
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
 
