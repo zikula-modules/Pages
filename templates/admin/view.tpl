@@ -1,13 +1,13 @@
 {ajaxheader modname='Pages' filename='pages.js'}
-
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="view" size="small"}
-    <h3>{gt text='View pages list'}</h3>
-</div>
+<h3>
+    <span class="fa fa-list"></span>
+    {gt text='View pages list'}
+</h3>
+
 
 {if ($modvars.ZConfig.multilingual OR $modvars.Pages.enablecategorization)}
-<form class="z-form" action="{modurl modname='Pages' type='admin' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form form-inline" action="{modurl modname='Pages' type='admin' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset{if $filter_active} class='filteractive'{/if}>
         {if $filter_active}{gt text='active' assign='filteractive'}{else}{gt text='inactive' assign='filteractive'}{/if}
         <legend>{gt text='Filter %1$s, %2$s page listed' plural='Filter %1$s, %2$s pages listed' count=$pager.numitems tag1=$filteractive tag2=$pager.numitems}</legend>
@@ -26,16 +26,16 @@
             {/nocache}
             {/if}
             &nbsp;&nbsp;
-            <span class="z-nowrap z-buttons">
-                <input class='z-bt-filter' name="submit" type="submit" value="{gt text='Filter'}" />
-                <a href="{modurl modname="Pages" type='admin' func='view'}" title="{gt text="Clear"}">{img modname='core' src="button_cancel.png" set="icons/extrasmall" __alt="Clear" __title="Clear"} {gt text="Clear"}</a>
-            </span>
+            <button class="btn btn-default btn-sm" name="submit" type="submit" >
+                <i class="fa fa-filter"></i>{gt text='Filter'}
+            </button>
+            <a href="{modurl modname="Pages" type='admin' func='view'}" title="{gt text="Clear"}" class="btn btn-default btn-sm"><i class="fa fa-times"></i> {gt text="Clear"}</a>
         </div>
     </fieldset>
 </form>
 {/if}
 
-<table class="z-datatable">
+<table class="table table-striped">
     <thead>
         <tr>
             <th><a class='{$sort.class.pageid}' href='{$sort.url.pageid|safetext}'>{gt text='ID'}</a></th>
@@ -53,7 +53,7 @@
     </thead>
     <tbody>
         {foreach from=$pages item='page'}
-        <tr class="{cycle values='z-odd,z-even'}">
+        <tr>
             <td>{$page.pageid|safehtml}</td>
             <td>{$page.title|safehtml}</td>
             {usergetvar uid=$page.cr_uid name='uname' assign='uname'}
@@ -65,10 +65,10 @@
             <td>{$page.language|getlanguagename|safehtml|default:'All'}</td>
             {/if}
             <td>{$page.cr_date|dateformat|safehtml}</td>
-            <td>
-                <a href="{modurl modname='Pages' type='user'  func='display' pageid=$page.pageid}">{img modname='core' set='icons/extrasmall' src='kview.png' __title='View' __alt='View'}</a>
-                <a href="{modurl modname='Pages' type='admin' func='modify'  pageid=$page.pageid}">{img modname='core' set='icons/extrasmall' src='xedit.png' __title='Edit' __alt='Edit'}</a>
-                <a href="{modurl modname='Pages' type='admin' func='delete'  pageid=$page.pageid}">{img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.png' __title='Delete' __alt='Delete'}</a>
+            <td class="actions">
+                <a href="{modurl modname='Pages' type='user'  func='display' pageid=$page.pageid}" class="fa fa-eye"></a>
+                <a href="{modurl modname='Pages' type='admin' func='modify'  pageid=$page.pageid}" class="fa fa-pencil"></a>
+                <a href="{modurl modname='Pages' type='admin' func='delete'  pageid=$page.pageid}" class="fa fa-trash-o"></a>
             </td>
         </tr>
         {foreachelse}
@@ -79,7 +79,11 @@
         {if $modvars.ZConfig.multilingual}
         {assign var='colspan' value=$colspan+1}
         {/if}
-        <tr class="z-datatableempty"><td colspan="{$colspan}">{gt text='No pages found.'}</td></tr>
+        <tr>
+            <td colspan="{$colspan}">
+                {gt text='No pages found.'}
+            </td>
+        </tr>
         {/foreach}
     </tbody>
 </table>

@@ -1,17 +1,17 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="delete" size="small"}
-    <h3>{gt text='Delete page'}</h3>
-</div>
+<h3>
+    <span class="fa fa-trash-o"></span>
+    {gt text='Delete page'}
+</h3>
 
-<p class="z-warningmsg">{gt text='Do you really want to delete this page?'}</p>
+<p class="alert alert-warning">{gt text='Do you really want to delete this page?'}</p>
 
-{form cssClass="z-form"}
+{form cssClass="form"}
     {formvalidationsummary}
 
-    <div class="z-formbuttons z-buttons">
-        {formbutton class="z-bt-ok" commandName="save" __text="Delete"}
-        {formbutton class="z-bt-cancel" commandName="cancel" __text="Cancel"}
+    <div class="">
+        {formbutton class="btn btn-danger" commandName="save" __text="Delete"}
+        {formbutton class="btn btn-default" commandName="cancel" __text="Cancel"}
     </div>
 {/form}
 {adminfooter}

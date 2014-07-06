@@ -1,88 +1,106 @@
-{ajaxheader modname='Pages' filename='pages.js'}
+{pageaddvar name='javascript' value='modules/Pages/javascript/Zikula.Pages.Admin.Modify.js'}
 
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="edit" size="small"}
-    <h3>{gt text='Update page'}</h3>
-</div>
+<h3>
+    <span class="fa fa-edit"></span>
+    {gt text='Update page'}
+</h3>
 
-{form cssClass="z-form"}
+{form cssClass="form-horizontal"}
 {formvalidationsummary}
     <fieldset>
         <legend>{gt text='Content'}</legend>
-        <div class="z-formrow">
-            {formlabel for="title" __text='Title'}
-            {formtextinput id="title" maxLength="255" mandatory=true}
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3" for="title" __text='Title'}
+            <div class="col-lg-9">
+                {formtextinput id="title" cssClass="form-control" maxLength="255" mandatory=true}
+            </div>
         </div>
         {if $modvars.Pages.showpermalinkinput}
-        <div class="z-formrow">
-            {formlabel for="urltitle" __text='PermaLink URL title'}
-            {formtextinput id="urltitle" maxLength="255"}
-            <em class="z-sub z-formnote">{gt text='(Blank = auto-generate)'}</em>
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3" for="urltitle" __text='PermaLink URL title'}
+            <div class="col-lg-9">
+                {formtextinput id="urltitle" cssClass="form-control" maxLength="255"}
+                <span class="help-block">{gt text='(Blank = auto-generate)'}</span>
+            </div>
         </div>
         {/if}
         {if $modvars.Pages.enablecategorization}
         {foreach from=$registries item="registryCid" key="registryId"}
-            <div class="z-formrow">
-                {formlabel for="category_`$registryId`" __text="Category"}
+            <div class="form-group">
+                {formlabel cssClass="col-lg-3" for="category_`$registryId`" __text="Category"}
                 {formcategoryselector id="category_`$registryId`" category=$registryCid dataField="categories" group='page' registryId=$registryId doctrine2=true includeEmptyElement=true}
             </div>
         {/foreach}
         {/if}
         {if $modvars.ZConfig.multilingual}
-        <div class="z-formrow">
-            {formlabel for="language" __text='Language'}
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3" for="language" __text='Language'}
             {formlanguageselector id="language"}
         </div>
         {/if}
-        <div class="z-formrow">
-            {formlabel for="content" __text='Content'}
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3" for="content" __text='Content'}
             {formtextinput textMode="multiline" id="content" rows="10" cols="50"}
-            <em class="z-sub z-formnote">{gt text='If you want multiple pages you can write &lt;!--pagebreak--&gt; where you want to cut.'}</em>
+            <em class="help-block">{gt text='If you want multiple pages you can write &lt;!--pagebreak--&gt; where you want to cut.'}</em>
         </div>
     </fieldset>
     <fieldset>
         <legend>{gt text='Meta tags'}</legend>
-        <div class="z-formrow">
-            {formlabel for="metadescription" __text='Description'}
-            {formtextinput id="metadescription" maxLength="255"}
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3" for="metadescription" __text='Description'}
+            <div class="col-lg-9">
+                {formtextinput id="metadescription" cssClass="form-control" maxLength="255"}
+            </div>
         </div>
-        <div class="z-formrow">
-            {formlabel for="metakeywords" __text='Keywords'}
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3" for="metakeywords" __text='Keywords'}
             {formtextinput textMode="multiline" id="metakeywords" rows="4" cols="50"}
         </div>
     </fieldset>
     <fieldset>
-        <legend><a id="pages_settings_collapse" href="javascript:void(0);">{gt text='Specific page settings'}</a></legend>
+        <legend><a id="pages_settings_collapse" href="#"><i class="fa fa-plus hide"></i> {gt text='Specific page settings'}</a></legend>
         <div id="pages_settings_details">
-            <div class="z-formrow">
-                {formlabel for="displaywrapper" __text='Display additional information'}
-                {formcheckbox id="displaywrapper"}
+            <div class="form-group">
+                {formlabel cssClass="col-lg-3" for="displaywrapper" __text='Display additional information'}
+                <div class="col-lg-9">
+                    {formcheckbox id="displaywrapper"}
+                </div>
             </div>
-            <div class="z-formrow">
-                {formlabel for="displaytitle" __text='Display page title'}
-                {formcheckbox id="displaytitle"}
+            <div class="form-group">
+                {formlabel cssClass="col-lg-3" for="displaytitle" __text='Display page title'}
+                <div class="col-lg-9">
+                    {formcheckbox id="displaytitle"}
+                </div>
             </div>
-            <div class="z-formrow">
-                {formlabel for="displaycreated" __text='Display page creation date'}
-                {formcheckbox id="displaycreated"}
+            <div class="form-group">
+                {formlabel cssClass="col-lg-3" for="displaycreated" __text='Display page creation date'}
+                <div class="col-lg-9">
+                    {formcheckbox id="displaycreated"}
+                </div>
             </div>
-            <div class="z-formrow">
-                {formlabel for="displayupdated" __text='Display page update date'}
-                {formcheckbox id="displayupdated"}
+            <div class="form-group">
+                {formlabel cssClass="col-lg-3" for="displayupdated" __text='Display page update date'}
+                <div class="col-lg-9">
+                    {formcheckbox id="displayupdated"}
+                </div>
             </div>
-            <div class="z-formrow">
-                {formlabel for="displaytextinfo" __text='Display page text statistics'}
-                {formcheckbox id="displaytextinfo"}
+            <div class="form-group">
+                {formlabel cssClass="col-lg-3" for="displaytextinfo" __text='Display page text statistics'}
+                <div class="col-lg-9">
+                    {formcheckbox id="displaytextinfo"}
+                </div>
             </div>
-            <div class="z-formrow">
-                {formlabel for="displayprint" __text='Display page print link'}
-                {formcheckbox id="displayprint"}
+            <div class="form-group">
+                {formlabel cssClass="col-lg-3" for="displayprint" __text='Display page print link'}
+                <div class="col-lg-9">
+                    {formcheckbox id="displayprint"}
+                </div>
             </div>
         </div>
     </fieldset>
-    <fieldset class="z-formrow">
-        <legend><a id="pages_meta_collapse" href="javascript:void(0);">{gt text='Meta data'}</a></legend>
+    <fieldset>
+        <legend><a id="pages_meta_collapse" href="#"><i class="fa fa-plus hide"></i> {gt text='Meta data'}</a></legend>
         <div id="pages_meta_details">
             <ul>
                 {usergetvar name='uname' uid=$cr_uid assign='username'}
@@ -101,10 +119,12 @@
     {notifydisplayhooks eventname='pages.ui_hooks.pages.form_edit' id=null}
     {/if}
 
-    <div class="z-formbuttons z-buttons">
-        {formbutton class="z-bt-ok" commandName="save" __text="Save"}
-        {formbutton class="z-bt-delete" commandName="remove" __text="Remove"}
-        {formbutton class="z-bt-cancel" commandName="cancel" __text="Cancel"}
+    <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-9">
+            {formbutton class="btn btn-success" commandName="save" __text="Save"}
+            {formbutton class="btn btn-danger" commandName="remove" __text="Remove"}
+            {formbutton class="btn btn-default" commandName="cancel" __text="Cancel"}
+        </div>
     </div>
 {/form}
 {adminfooter}

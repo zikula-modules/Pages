@@ -36,6 +36,7 @@ class Pages_Api_Admin extends Zikula_AbstractApi
             }
         }
         $this->entityManager->flush();
+
         return true;
     }
 
@@ -52,26 +53,26 @@ class Pages_Api_Admin extends Zikula_AbstractApi
             $links[] = array(
                 'url'  => ModUtil::url('Pages', 'admin', 'view'),
                 'text' => $this->__('Pages list'),
-                'class' => 'z-icon-es-view'
+                'icon' => 'list'
             );
         }
         if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADD)) {
             $links[] = array(
                 'url'  => ModUtil::url('Pages', 'admin', 'modify'),
                 'text' => $this->__('Create a page'),
-                'class' => 'z-icon-es-new'
+                'icon' => 'plus'
             );
         }
         if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN)) {
             $links[] = array(
                 'url'  => ModUtil::url('Pages', 'admin', 'purge'),
                 'text' => $this->__('Purge permalinks'),
-                'class' => 'z-icon-es-regenerate'
+                'icon' => 'refresh'
             );
             $links[] = array(
                 'url'  => ModUtil::url('Pages', 'admin', 'modifyconfig'),
                 'text' => $this->__('Settings'),
-                'class' => 'z-icon-es-config'
+                'icon' => 'wrench'
             );
         }
 

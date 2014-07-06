@@ -1,17 +1,24 @@
-{ajaxheader modname='Pages' filename='chosen/chosen.proto.min.js'}
-{pageaddvar name='stylesheet' value='modules/Pages/javascript/chosen/chosen.css'}
+{pageaddvar name='javascript' value='modules/Pages/javascript/select2/select2.min.js'}
+{pageaddvar name='stylesheet' value='modules/Pages/javascript/select2/select2.css'}
+{pageaddvar name='stylesheet' value='modules/Pages/javascript/select2/select2-bootstrap.css'}
 
-<div id="chosenCss" class="z-formrow">
-    <label for="htmlpages_pid">{gt text='Page' domain='module_pages'}</label>    
-    <select id="htmlpages_pid" name='pid' class="chzn-select">
-        {foreach from=$pages item="page"}
+<div class="form-group">
+    <label for="htmlpages_pid" class="col-lg-3 control-label">
+        {gt text='Page' domain='module_pages'}
+    </label>
+    <div class="col-lg-9">
+        <select id="htmlpages_pid" name='pid' class="form-control">
+            {foreach from=$pages item="page"}
             <option value="{$page.pageid|safehtml}" {if isset($pid) && $page.pageid == $pid}selected="selected"{/if} >
                 {$page.title|safehtml}
             </option>
-        {/foreach}
-    </select>
+            {/foreach}
+        </select>
+    </div>
 </div>
 
 <script type="text/javascript">
-    New Chosen($("chzn_select_field"),{no_results_text: "No results matched"});
+    jQuery('#htmlpages_pid').select2({
+        "formatNoMatches": function () { return "{{gt text="No match found"}}"; }
+    });
 </script>

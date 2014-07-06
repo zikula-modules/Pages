@@ -37,6 +37,7 @@ class pages_result_checker
             ObjectUtil::expandObjectWithCategories($item, 'pages', 'pageid');
             $ok = $ok && CategoryUtil::hasCategoryAccess($item['__CATEGORIES__'], 'Pages');
         }
+
         return $ok;
     }
 
