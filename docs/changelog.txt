@@ -1,3 +1,16 @@
+Pages 2.6.1
+  * ContentType folder name also being used for plugins for Content, issue #21
+  * class names in user/display template corrected, issue #22
+  * category id in short url mode fixed, issue #18
+  * pagebreak on article display fixed, issue #20
+  * getLink -> getLinks
+  * Pages access class to Access instead of Repository renamed, which was confusing.
+  * Hook display corrected
+  * Pagination fixed - DoctrineExtensions Paginator was merged into Doctrine ORM
+  * Correct category registry entry set
+  * Required group parameter in plugin set
+  * Fake setter set so form plugin doesn't fail 
+
 Pages 2.6.0
   * DBUtil migrated to Doctrine2
 
