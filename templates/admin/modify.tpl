@@ -50,12 +50,14 @@
         <div class="form-group">
             {formlabel cssClass="col-lg-3" for="metadescription" __text='Description'}
             <div class="col-lg-9">
-                {formtextinput id="metadescription" cssClass="form-control" maxLength="255"}
+                {formtextinput textMode="multiline" id="metadescription" rows="2" cols="50" cssClass="form-control noeditor"}
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3" for="metakeywords" __text='Keywords'}
-            {formtextinput textMode="multiline" id="metakeywords" rows="4" cols="50"}
+            <div class="col-lg-9">
+                {formtextinput textMode="multiline" id="metakeywords" rows="2" cols="50" cssClass="form-control noeditor"}
+            </div>
         </div>
     </fieldset>
     <fieldset>
