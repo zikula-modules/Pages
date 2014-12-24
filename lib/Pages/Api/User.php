@@ -24,7 +24,7 @@ class Pages_Api_User extends Zikula_AbstractApi
      */
     public function get($args)
     {
-        $page = new Pages_Access_Page();
+        $page = new Pages_Access_Page($this->getEntityManager());
         $page->find($args);
         return $page->toArray();
     }
@@ -99,7 +99,7 @@ class Pages_Api_User extends Zikula_AbstractApi
      */
     public function incrementreadcount($args)
     {
-        $page = new Pages_Access_Page();
+        $page = new Pages_Access_Page($this->getEntityManager());
         $page->find($args);
         return $page->incrementReadCount();
     }
@@ -144,12 +144,19 @@ class Pages_Api_User extends Zikula_AbstractApi
             }
             // get the item (will be cached by doctrine)
             if (isset($args['args']['pageid'])) {
-                $item = ModUtil::apiFunc('Pages', 'user', 'get', array('pageid' => $args['args']['pageid']));
+                $findBy = array('pageid' => $args['args']['pageid']);
             } else {
-                $item = ModUtil::apiFunc('Pages', 'user', 'get', array('title' => $args['args']['title']));
+                $findBy = array('title' => $args['args']['title']);
             }
-            if (ModUtil::getVar('Pages', 'addcategorytitletopermalink') && isset($args['args']['cat'])) {
-                $vars = $args['args']['cat'].'/'.$item['urltitle'];
+            $page = new Pages_Access_Page($this->getEntityManager());
+            $page->find($findBy);
+            $item = $page->get();
+            /**
+             * @var Pages_Entity_Category $category
+             */
+            $category = $page->get()->getCategories()->first();
+            if (ModUtil::getVar('Pages', 'addcategorytitletopermalink') && $category) {
+                $vars = $category->getCategory()->getName() .'/'.$item['urltitle'];
             } else {
                 $vars = $item['urltitle'];
             }
@@ -221,11 +228,12 @@ class Pages_Api_User extends Zikula_AbstractApi
             $nextvar = 0;
             // remove any category path down to the leaf category
             $varscount = count($args['vars']);
-            if (ModUtil::getVar('Pages', 'addcategorytitletopermalink') && !empty($args['vars'][$nextvar+1])) {
+
+            if (ModUtil::getVar('Pages', 'addcategorytitletopermalink') && count($args['vars']) == 4 || count($args['vars']) == 2) {
                 ($args['vars'][$varscount-2] == 'page') ? $pagersize = 2 : $pagersize = 0;
                 $cat = array_slice($args['vars'], 0, $varscount - 1 - $pagersize);
                 $category = CategoryUtil::getCategoryByPath($cat, 'name');
-                System::queryStringSetVar('cat', implode('/', $category['id']));
+                System::queryStringSetVar('cat', $category['id']);
                 array_splice($args['vars'], 0, $varscount - 1 - $pagersize);
             }
 

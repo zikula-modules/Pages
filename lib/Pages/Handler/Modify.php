@@ -46,7 +46,7 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
         }
 
         // Get the page
-        $this->_page = new Pages_Access_Page();
+        $this->_page = new Pages_Access_Page($this->getEntityManager());
         if (empty($pageid)) {
             $this->_page->create();
         } else {
@@ -93,6 +93,12 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
+        if ($this->_page->get()) {
+            // DO NOT REMOVE!! This is important to be called before ->getValues() below.
+            $this->_page->findById($this->_page->getId());
+            $view->assign('page', $this->_page->get());
+        }
+
         // load form values
         $data = $view->getValues();
         $data['pageid'] = $this->_page->getId();

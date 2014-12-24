@@ -496,7 +496,7 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     /**
      * Get page categories
      *
-     * @return Doctrine\Common\Collections\ArrayCollection
+     * @return Doctrine\Common\Collections\ArrayCollection|Pages_Entity_Category[]
      */
     public function getCategories()
     {
@@ -522,6 +522,4 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     {
         return $this->obj_status;
     }
-
-
 }

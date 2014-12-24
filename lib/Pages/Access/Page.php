@@ -25,9 +25,9 @@ class Pages_Access_Page
      */
     public $entityManager;
 
-    public function __construct()
+    public function __construct(\Doctrine\ORM\EntityManagerInterface $entityManager)
     {
-        $this->entityManager = ServiceUtil::getService('doctrine.entitymanager');
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -199,7 +199,9 @@ class Pages_Access_Page
         } else {
             $this->entityManager->persist($this->_page);
         }
+
         $this->entityManager->flush();
+
         return true;
     }
 
