@@ -71,12 +71,14 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
         $view->assign($item);
         $view->assign('page', $this->_page->get());
 
-        // now we've got this far let's lock the page for editing
-        $params = array(
-            'lockName' => "Pagespage{$pageid}",
-            'returnUrl' => ModUtil::url('Pages', 'admin', 'view')
-        );
-        ModUtil::apiFunc('PageLock', 'user', 'pageLock', $params);
+        if (!empty($pageid)) {
+            // now we've got this far let's lock the page for editing
+            $params = array(
+                'lockName' => "Pagespage{$pageid}",
+                'returnUrl' => ModUtil::url('Pages', 'admin', 'view')
+            );
+            ModUtil::apiFunc('PageLock', 'user', 'pageLock', $params);
+        }
 
         return true;
     }
@@ -93,7 +95,7 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
     {
         // load form values
         $data = $view->getValues();
-        $data['pageid'] = $this->_page->getid();
+        $data['pageid'] = $this->_page->getId();
 
         if ($args['commandName'] == 'cancel') {
             // now release the page lock

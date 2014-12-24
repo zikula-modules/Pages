@@ -15,17 +15,20 @@
 
 class Pages_Access_Page
 {
+    /**
+     * @var Pages_Entity_Page
+     */
     private $_page;
-    public $entityManager;
 
     /**
-     * construct
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
+    public $entityManager;
+
     public function __construct()
     {
         $this->entityManager = ServiceUtil::getService('doctrine.entitymanager');
     }
-
 
     /**
      * find
@@ -153,7 +156,7 @@ class Pages_Access_Page
     }
 
     /**
-     * return page as array
+     * increments read counter.
      *
      * @return array
      */
@@ -191,7 +194,11 @@ class Pages_Access_Page
         }
 
         $this->_page->merge($data);
-        $this->entityManager->persist($this->_page);
+        if (isset($data['pageid'])) {
+            $this->entityManager->merge($this->_page);
+        } else {
+            $this->entityManager->persist($this->_page);
+        }
         $this->entityManager->flush();
         return true;
     }
