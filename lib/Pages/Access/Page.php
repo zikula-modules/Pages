@@ -188,9 +188,6 @@ class Pages_Access_Page
             } else {
                 return LogUtil::registerError(__('The permalink has to be unique!'));
             }
-            return LogUtil::registerError(
-                __('The permalink has been removed, please update the page with a correct and unique permalink')
-            );
         }
 
         $this->_page->merge($data);
