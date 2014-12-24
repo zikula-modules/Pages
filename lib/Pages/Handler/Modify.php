@@ -91,24 +91,32 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
+        // load form values
+        $data = $view->getValues();
+        $data['pageid'] = $this->_page->getid();
+
         if ($args['commandName'] == 'cancel') {
+            // now release the page lock
+            ModUtil::apiFunc('PageLock', 'user', 'releaseLock', array('lockName' => "Pagespage{$data['pageid']}"));
+
             $url = ModUtil::url($this->name, 'admin', 'view');
             return $view->redirect($url);
         } else if ($args['commandName'] == 'remove') {
+            // now release the page lock
+            ModUtil::apiFunc('PageLock', 'user', 'releaseLock', array('lockName' => "Pagespage{$data['pageid']}"));
+
             $this->_page->remove();
+
             $url = ModUtil::url($this->name, 'admin', 'view');
             return $view->redirect($url);
         }
 
         // check for valid form
         if (!$view->isValid()) {
+            // Do NOT release Lock.
             return LogUtil::registerError('Validation failed!');
         }
 
-        // load form values
-        $data = $view->getValues();
-
-        $data['pageid'] = $this->_page->getid();
         $ok = $this->_page->set($data);
         if (!$ok) {
             return LogUtil::registerError('Page save failed!');
