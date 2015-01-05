@@ -46,7 +46,7 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
         }
 
         // Get the page
-        $this->_page = new Pages_Access_Page();
+        $this->_page = new Pages_Access_Page($this->getEntityManager());
         if (empty($pageid)) {
             $this->_page->create();
         } else {
@@ -71,12 +71,14 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
         $view->assign($item);
         $view->assign('page', $this->_page->get());
 
-        // now we've got this far let's lock the page for editing
-        $params = array(
-            'lockName' => "Pagespage{$pageid}",
-            'returnUrl' => ModUtil::url('Pages', 'admin', 'view')
-        );
-        ModUtil::apiFunc('PageLock', 'user', 'pageLock', $params);
+        if (!empty($pageid)) {
+            // now we've got this far let's lock the page for editing
+            $params = array(
+                'lockName' => "Pagespage{$pageid}",
+                'returnUrl' => ModUtil::url('Pages', 'admin', 'view')
+            );
+            ModUtil::apiFunc('PageLock', 'user', 'pageLock', $params);
+        }
 
         return true;
     }
@@ -91,24 +93,38 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
+        if ($this->_page->get()) {
+            // DO NOT REMOVE!! This is important to be called before ->getValues() below.
+            $this->_page->findById($this->_page->getId());
+            $view->assign('page', $this->_page->get());
+        }
+
+        // load form values
+        $data = $view->getValues();
+        $data['pageid'] = $this->_page->getId();
+
         if ($args['commandName'] == 'cancel') {
+            // now release the page lock
+            ModUtil::apiFunc('PageLock', 'user', 'releaseLock', array('lockName' => "Pagespage{$data['pageid']}"));
+
             $url = ModUtil::url($this->name, 'admin', 'view');
             return $view->redirect($url);
         } else if ($args['commandName'] == 'remove') {
+            // now release the page lock
+            ModUtil::apiFunc('PageLock', 'user', 'releaseLock', array('lockName' => "Pagespage{$data['pageid']}"));
+
             $this->_page->remove();
+
             $url = ModUtil::url($this->name, 'admin', 'view');
             return $view->redirect($url);
         }
 
         // check for valid form
         if (!$view->isValid()) {
+            // Do NOT release Lock.
             return LogUtil::registerError('Validation failed!');
         }
 
-        // load form values
-        $data = $view->getValues();
-
-        $data['pageid'] = $this->_page->getid();
         $ok = $this->_page->set($data);
         if (!$ok) {
             return LogUtil::registerError('Page save failed!');

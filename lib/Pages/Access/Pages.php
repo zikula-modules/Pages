@@ -66,7 +66,7 @@ class Pages_Access_Pages
 
 
     /**
-     * set start number
+     * set language
      *
      * @param string $language Language code.
      *
@@ -75,7 +75,7 @@ class Pages_Access_Pages
     public function setLanguage($language)
     {
         $multilingual = System::getVar('multilingual', false);
-        if (!empty($language) && !$multilingual) {
+        if (!empty($language) && $multilingual) {
             $this->_qb->andWhere('p.language = :language')
                       ->setParameter('language', $language);
         }

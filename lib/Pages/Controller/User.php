@@ -177,7 +177,7 @@ class Pages_Controller_User extends Zikula_AbstractController
         // Get the page
         $accesslevel = 0;
         if (isset($pageid)) {
-            $item = new Pages_Access_Page();
+            $item = new Pages_Access_Page($this->getEntityManager());
             $item->findById($pageid);
             $accesslevel = $item->getAccessLevel();
             $item = $item->get();
