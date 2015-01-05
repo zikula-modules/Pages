@@ -50,7 +50,7 @@ class Pages_Handler_Delete extends Zikula_Form_AbstractHandler
         }
 
         // Get the existing page
-        $this->_page = new Pages_Access_Page();
+        $this->_page = new Pages_Access_Page($this->getEntityManager());
         $this->_page->findById($pageid);
         $item = $this->_page->toArray();
 
