@@ -94,7 +94,10 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
         if ($this->_page->get()) {
-            // DO NOT REMOVE!! This is important to be called before ->getValues() below.
+            // DO NOT REMOVE!! This is important to be called before ->getValues() below, although
+            // `$this->_page` still contains the reference to the page. However, due to Doctrine-related
+            // behaviour, this referenced is outdated and must be refreshed. There are problems with saving
+            // the categories otherwise.
             $this->_page->findById($this->_page->getId());
             $view->assign('page', $this->_page->get());
         }
