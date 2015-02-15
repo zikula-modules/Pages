@@ -13,8 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-use Doctrine\ORM\Tools\Pagination\Paginator;
-
 class Pages_Access_Pages
 {
 
@@ -108,10 +106,10 @@ class Pages_Access_Pages
     public function get()
     {
         $query = $this->_qb->getQuery();
-        $paginator = new Paginator($query);
         if ($this->_pager) {
-            $this->_numberOfItems = count($paginator);
-            return $paginator;
+            $this->_numberOfItems = \DoctrineExtensions\Paginate\Paginate::getTotalQueryResults($query);
+            $paginateQuery = \DoctrineExtensions\Paginate\Paginate::getPaginateQuery($query, $this->_startNumber, $this->_itemsPerPage); // Step 2 and 3
+            return $paginateQuery->getResult();
         } else {
             //$query->setFirstResult($this->_startNumber)
             //      ->setMaxResults($this->_itemsPerPage);
