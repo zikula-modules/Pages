@@ -29,20 +29,26 @@
         {foreach from=$registries item="registryCid" key="registryId"}
             <div class="form-group">
                 {formlabel cssClass="col-lg-3" for="category_`$registryId`" __text="Category"}
-                {formcategoryselector id="category_`$registryId`" category=$registryCid dataField="categories" group='page' registryId=$registryId doctrine2=true includeEmptyElement=true}
+                <div class="col-lg-9">
+                    {formcategoryselector id="category_`$registryId`" category=$registryCid dataField="categories" group='page' registryId=$registryId doctrine2=true includeEmptyElement=true cssClass='form-control' editLink=false}
+                </div>
             </div>
         {/foreach}
         {/if}
         {if $modvars.ZConfig.multilingual}
         <div class="form-group">
             {formlabel cssClass="col-lg-3" for="language" __text='Language'}
-            {formlanguageselector id="language"}
+            <div class="col-lg-9">
+                {formlanguageselector id="language" cssClass='form-control'}
+            </div>
         </div>
         {/if}
         <div class="form-group">
             {formlabel cssClass="col-lg-3" for="content" __text='Content'}
-            {formtextinput textMode="multiline" id="content" rows="10" cols="50"}
-            <em class="help-block">{gt text='If you want multiple pages you can write &lt;!--pagebreak--&gt; where you want to cut.'}</em>
+            <div class="col-lg-9">
+                {formtextinput textMode="multiline" id="content"  cssClass="form-control"}
+                <em class="help-block">{gt text='If you want multiple pages you can write &lt;!--pagebreak--&gt; where you want to cut.'}</em>
+            </div>
         </div>
     </fieldset>
     <fieldset>
