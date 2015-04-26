@@ -431,6 +431,11 @@ CHANGE `pn_lu_uid` `lu_uid` INT( 11 ) NOT NULL DEFAULT '0'";
         $page = new Pages_Entity_Page();
         $page->merge($data);
         $this->entityManager->persist($page);
+        $category = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/Pages/Category1');
+        $catEntity = $this->entityManager->getReference('Zikula_Doctrine2_Entity_Category', $category['id']);
+        $registryId = CategoryRegistryUtil::getRegisteredModuleCategory('Pages', 'Page', 'Main');
+        $categoryRelation = new Pages_Entity_Category($registryId, $catEntity, $page);
+        $page->setCategories(array($categoryRelation));
         $this->entityManager->flush();
     }
     
