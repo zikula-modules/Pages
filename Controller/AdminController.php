@@ -12,7 +12,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\PagesModule\Controller;
 
 use Zikula_View;
@@ -28,11 +27,10 @@ use Pages_Access_Pages;
 use ZLanguage;
 use System;
 use Pages_Handler_ModifyConfig;
-
 class AdminController extends \Zikula_AbstractController
 {
 
-    public function postInitialize()
+    public function postInitializeAction()
     {
     
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
@@ -43,7 +41,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string HTML output
      */
-    public function main()
+    public function mainAction()
     {
     
         $this->redirect(ModUtil::url('Pages', 'admin', 'view'));
@@ -55,7 +53,7 @@ class AdminController extends \Zikula_AbstractController
      * @param 'pageid' the id of the item to be modified
      * @return string HTML output
      */
-    public function modify()
+    public function modifyAction()
     {
     
         $form = FormUtil::newForm($this->name, $this);
@@ -67,7 +65,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return mixed string HTML output if no confirmation otherwise true
      */
-    public function delete()
+    public function deleteAction()
     {
     
         $form = FormUtil::newForm($this->name, $this);
@@ -81,7 +79,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string HTML output
      */
-    public function view($args)
+    public function viewAction($args)
     {
     
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_EDIT), LogUtil::getErrorMsgPermission());
@@ -162,7 +160,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string HTML output
      */
-    public function purge()
+    public function purgeAction()
     {
     
         if (ModUtil::apiFunc('Pages', 'admin', 'purgepermalinks')) {
@@ -179,7 +177,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string HTML output string
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
     
         $form = FormUtil::newForm($this->name, $this);

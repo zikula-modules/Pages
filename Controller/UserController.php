@@ -12,7 +12,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\PagesModule\Controller;
 
 use SecurityUtil;
@@ -24,7 +23,6 @@ use ZLanguage;
 use CategoryUtil;
 use Pages_Access_Page;
 use System;
-
 /** @noinspection PhpDocSignatureInspection */
 class UserController extends \Zikula_AbstractController
 {
@@ -36,7 +34,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return string html string
      */
-    public function listPages($args)
+    public function listPagesAction($args)
     {
     
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_READ), LogUtil::getErrorMsgPermission());
@@ -59,7 +57,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return string html string
      */
-    public function main($args)
+    public function mainAction($args)
     {
     
         if (!$this->getVar('enablecategorization')) {
@@ -76,7 +74,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return string html string
      */
-    public function categories()
+    public function categoriesAction()
     {
     
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_READ), LogUtil::getErrorMsgPermission());
@@ -99,7 +97,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return string html string
      */
-    public function view($args)
+    public function viewAction($args)
     {
     
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
@@ -136,7 +134,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return string html string
      */
-    public function display($args)
+    public function displayAction($args)
     {
     
         $pageid = FormUtil::getPassedValue('pageid', isset($args['pageid']) ? $args['pageid'] : null, 'REQUEST');
