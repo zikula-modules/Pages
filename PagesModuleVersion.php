@@ -25,7 +25,6 @@ use Zikula\Module\SearchModule\AbstractSearchable;
  */
 class PagesModuleVersion extends \Zikula_AbstractVersion
 {
-
     /**
      * Meta data
      *
@@ -49,7 +48,10 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
             HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true),
             AbstractSearchable::SEARCHABLE => array('class' => 'Zikula\PagesModule\Helper\SearchHelper')
         );
-        $meta['securityschema'] = array($this->name . '::' => 'Page name::Page ID', $this->name . ':category:' => 'Category ID::');
+        $meta['securityschema'] = array(
+            $this->name . '::' => 'Page name::Page ID',
+            $this->name . ':category:' => 'Category ID::'
+        );
         // Module depedencies
         $meta['dependencies'] = array(
             array(
