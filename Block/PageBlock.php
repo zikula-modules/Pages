@@ -96,7 +96,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
         // assign the item
         $this->view->assign($item);
         // Populate block info and pass to theme
-        $blockinfo['content'] = $this->view->fetch('block/pageblock_display.tpl');
+        $blockinfo['content'] = $this->view->fetch('Block/pageblock_display.tpl');
         return BlockUtil::themeBlock($blockinfo);
     }
     
@@ -118,7 +118,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
         // Get all pages and assign them
         $pages = ModUtil::apiFunc($this->name, 'user', 'getall');
         $this->view->assign('pages', $pages);
-        return $this->view->fetch('block/pageblock_modify.tpl');
+        return $this->view->fetch('Block/pageblock_modify.tpl');
     }
     
     /**
@@ -138,7 +138,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
         // write back the new contents
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
         // clear the block cache
-        $this->view->clear_cache('block/pageslist.tpl');
+        $this->view->clear_cache('Block/pageslist.tpl');
         return $blockinfo;
     }
 

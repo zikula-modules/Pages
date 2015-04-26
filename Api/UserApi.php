@@ -283,12 +283,12 @@ class UserApi extends \Zikula_AbstractApi
             // Clear Theme_cache
             $cacheIds = array();
             // for given page Id, according to new cacheId structure in Zikula 1.3.2.dev (1.3.3)
-            $cacheIds[] = 'Pages/user/display/pageid_' . $item['pageid'];
+            $cacheIds[] = 'Pages/User/display/pageid_' . $item['pageid'];
             $cacheIds[] = 'homepage';
             // for homepage (it can be adjustment in module settings)
-            $cacheIds[] = 'Pages/user/view';
+            $cacheIds[] = 'Pages/User/view';
             // view function (pages list)
-            $cacheIds[] = 'Pages/user/main';
+            $cacheIds[] = 'Pages/User/main';
             // main function
             $theme = Zikula_View_Theme::getInstance();
             //if (Zikula_Core::VERSION_NUM > '1.3.2') {

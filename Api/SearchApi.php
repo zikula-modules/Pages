@@ -107,7 +107,7 @@ class SearchApi extends \Zikula_AbstractApi
             // we can return it easily when required
             $render = Zikula_View::getInstance($this->name);
             $render->assign('active', !isset($args['active']) || isset($args['active']['Pages']));
-            return $render->fetch('search/options.tpl');
+            return $render->fetch('Search/options.tpl');
         }
         return '';
     }

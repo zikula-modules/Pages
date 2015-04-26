@@ -16,7 +16,7 @@
         <input type="hidden" name="sdir" value="{$sdir}" />
         <div id="pages_multicategory_filter">
             {if $modvars.$module.enablecategorization}
-            <span id='categoryfilter'>{include file='admin/filtercats.tpl'}</span>
+            <span id='categoryfilter'>{include file='Admin/filtercats.tpl'}</span>
             {/if}
             {if $modvars.ZConfig.multilingual}
             &nbsp;&nbsp;

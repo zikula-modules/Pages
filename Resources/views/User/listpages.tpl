@@ -6,7 +6,7 @@
 <p>{gt text='Available pages:'}</p>
 <ul>
     {foreach item='page' from=$pages}
-    {include file='user/pagelink.tpl'}
+    {include file='User/pagelink.tpl'}
     {/foreach}
 </ul>
 
