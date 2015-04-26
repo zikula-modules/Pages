@@ -17,11 +17,11 @@ namespace Zikula\PagesModule\Controller;
 use SecurityUtil;
 use LogUtil;
 use FormUtil;
-use Zikula\PagesModule\Access\PagesAccess;
+use Zikula\PagesModule\Manager\PageCollectionManager;
 use ModUtil;
 use ZLanguage;
 use CategoryUtil;
-use Zikula\PagesModule\Access\PageAccess;
+use Zikula\PagesModule\Manager\PageManager;
 use System;
 
 class UserController extends \Zikula_AbstractController
@@ -40,7 +40,7 @@ class UserController extends \Zikula_AbstractController
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ), LogUtil::getErrorMsgPermission());
         $startnum = (int) FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 1, 'GET');
         $this->view->assign('startnum', $startnum);
-        $pages = new PagesAccess();
+        $pages = new PageCollectionManager();
         $pages->setStartNumber($startnum);
         $pages->setOrder('title');
         $pages->enablePager();
@@ -162,7 +162,7 @@ class UserController extends \Zikula_AbstractController
         // Get the page
         $accesslevel = 0;
         if (isset($pageid)) {
-            $item = new PageAccess($this->getEntityManager());
+            $item = new PageManager($this->getEntityManager());
             $item->findById($pageid);
             $accesslevel = $item->getAccessLevel();
             $item = $item->get();

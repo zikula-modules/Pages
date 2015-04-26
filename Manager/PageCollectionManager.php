@@ -13,15 +13,18 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\PagesModule\Access;
+namespace Zikula\PagesModule\Manager;
 
 use ServiceUtil;
 use ModUtil;
 use System;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-class PagesAccess
+class PageCollectionManager
 {
+    /**
+     * @var \Doctrine\ORM\QueryBuilder
+     */
     private $_qb;
     private $_itemsPerPage;
     private $_startNumber = 1;

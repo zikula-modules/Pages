@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\PagesModule\Access;
+namespace Zikula\PagesModule\Manager;
 
 use LogUtil;
 use SecurityUtil;
@@ -21,7 +21,7 @@ use Zikula\PagesModule\Entity\PageEntity;
 use DataUtil;
 use ModUtil;
 
-class PageAccess
+class PageManager
 {
     /**
      * @var PageEntity

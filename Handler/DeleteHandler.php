@@ -17,7 +17,7 @@ namespace Zikula\PagesModule\Handler;
 
 use FormUtil;
 use LogUtil;
-use Zikula\PagesModule\Access\PageAccess;
+use Zikula\PagesModule\Manager\PageManager;
 use SecurityUtil;
 use Zikula_Exception_Forbidden;
 use ModUtil;
@@ -34,7 +34,7 @@ class DeleteHandler extends \Zikula_Form_AbstractHandler
      *
      * When set this handler is in edit mode.
      *
-     * @var PageAccess
+     * @var PageManager
      */
     private $_page;
     /**
@@ -59,7 +59,7 @@ class DeleteHandler extends \Zikula_Form_AbstractHandler
             return LogUtil::registerArgsError();
         }
         // Get the existing page
-        $this->_page = new PageAccess($this->getEntityManager());
+        $this->_page = new PageManager($this->getEntityManager());
         $this->_page->findById($pageid);
         $item = $this->_page->toArray();
         if ($item === false) {

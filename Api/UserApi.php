@@ -15,8 +15,8 @@
 
 namespace Zikula\PagesModule\Api;
 
-use Zikula\PagesModule\Access\PageAccess;
-use Zikula\PagesModule\Access\PagesAccess;
+use Zikula\PagesModule\Manager\PageManager;
+use Zikula\PagesModule\Manager\PageCollectionManager;
 use LogUtil;
 use ModUtil;
 use System;
@@ -38,8 +38,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function get($args)
     {
-    
-        $page = new PageAccess($this->getEntityManager());
+        $page = new PageManager($this->getEntityManager());
         $page->find($args);
         return $page->toArray();
     }
@@ -53,8 +52,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getall($args)
     {
-    
-        $pages = new PagesAccess();
+        $pages = new PageCollectionManager();
         if (isset($args['startnum']) && !empty($args['category'])) {
             $pages->setStartNumber($args['startnum']);
         }
@@ -85,7 +83,6 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function countitems($args)
     {
-    
         if (isset($args['category']) && !empty($args['category'])) {
             if (is_array($args['category'])) {
                 $args['category'] = $args['category']['Main'][0];
@@ -112,8 +109,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function incrementreadcount($args)
     {
-    
-        $page = new PageAccess($this->getEntityManager());
+        $page = new PageManager($this->getEntityManager());
         $page->find($args);
         return $page->incrementReadCount();
     }
@@ -127,7 +123,6 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function encodeurl($args)
     {
-    
         // check we have the required input
         if (!isset($args['modname']) || !isset($args['func']) || !isset($args['args'])) {
             return LogUtil::registerArgsError();
@@ -159,7 +154,7 @@ class UserApi extends \Zikula_AbstractApi
             } else {
                 $findBy = array('title' => $args['args']['title']);
             }
-            $page = new PageAccess($this->getEntityManager());
+            $page = new PageManager($this->getEntityManager());
             $page->find($findBy);
             $item = $page->get();
             /**
@@ -196,7 +191,6 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function decodeurl($args)
     {
-    
         // check we actually have some vars to work with...
         if (!isset($args['vars'])) {
             return LogUtil::registerArgsError();
@@ -263,7 +257,6 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getmodulemeta()
     {
-    
         return array('viewfunc' => 'view', 'displayfunc' => 'display', 'newfunc' => 'new', 'createfunc' => 'create', 'modifyfunc' => 'modify', 'updatefunc' => 'update', 'deletefunc' => 'delete', 'titlefield' => 'title', 'itemid' => 'pageid');
     }
     
@@ -274,7 +267,6 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function clearItemCache($item)
     {
-    
         if ($item && !is_array($item)) {
             $item = ModUtil::apiFunc($this->name, 'user', 'get', array('sid' => $item));
         }
@@ -318,7 +310,6 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getCategories()
     {
-    
         $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'Page');
         $properties = array_keys($catregistry);
         $propertiesdata = array();

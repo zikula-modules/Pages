@@ -26,7 +26,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="pages")
  */
-class PageEntity extends \Zikula_EntityAccess
+class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
 {
 
     /**

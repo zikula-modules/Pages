@@ -21,7 +21,7 @@ use SecurityUtil;
 use LogUtil;
 use \Zikula\PagesModule\Util as PagesUtil;
 use CategoryRegistryUtil;
-use Zikula\PagesModule\Access\PagesAccess;
+use Zikula\PagesModule\Manager\PageCollectionManager;
 use ZLanguage;
 use System;
 
@@ -124,7 +124,7 @@ class AdminController extends \Zikula_AbstractController
             $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'Page');
             $this->view->assign('catregistry', $catregistry);
         }
-        $pages = new PagesAccess();
+        $pages = new PageCollectionManager();
         $pages->setStartNumber($startnum);
         $pages->setLanguage($language);
         $pages->setOrder($orderby, $orderdir);

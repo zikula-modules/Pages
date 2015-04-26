@@ -16,7 +16,7 @@
 namespace Zikula\PagesModule\Handler;
 
 use FormUtil;
-use Zikula\PagesModule\Access\PageAccess;
+use Zikula\PagesModule\Manager\PageManager;
 use LogUtil;
 use SecurityUtil;
 use Zikula_Exception_Forbidden;
@@ -40,7 +40,7 @@ class ModifyHandler extends \Zikula_Form_AbstractHandler
      *
      * When set this handler is in edit mode.
      *
-     * @var PageAccess
+     * @var PageManager
      */
     private $_page;
 
@@ -62,7 +62,7 @@ class ModifyHandler extends \Zikula_Form_AbstractHandler
             $pageid = $objectid;
         }
         // Get the page
-        $this->_page = new PageAccess($this->getEntityManager());
+        $this->_page = new PageManager($this->getEntityManager());
         if (empty($pageid)) {
             $this->_page->create();
         } else {
