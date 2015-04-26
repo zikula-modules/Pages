@@ -32,18 +32,18 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
      * @param int $areaId A blockinfo structure.
      * @param string $module Module.
      * @param string $urlString Url.
-     * @param Zikula_ModUrl $urlObject Url object.
+     * @param \Zikula_ModUrl $urlObject Url object.
      */
     public function __construct(
         $objectId,
         $areaId,
         $module,
         $urlString = null,
-        Zikula_ModUrl $urlObject = null
+        \Zikula_ModUrl $urlObject = null
     ) {
     
         parent::__construct($objectId, $areaId, $module, $urlString, $urlObject);
-        $page = ModUtil::apiFunc('Pages', 'user', 'get', array('pageid' => $this->getObjectId()));
+        $page = ModUtil::apiFunc('ZikulaPagesModule', 'user', 'get', array('pageid' => $this->getObjectId()));
         // the Api checks for perms and there is nothing else to check
         if ($page) {
             $this->setObjectAuthor(UserUtil::getVar('uname', $page['cr_uid']));

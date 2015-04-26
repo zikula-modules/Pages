@@ -22,7 +22,6 @@ use ModUtil;
 
 class AdminApi extends \Zikula_AbstractApi
 {
-
     /**
      * Purge the permalink fields in the Pages table
      *
@@ -30,9 +29,8 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function purgepermalinks()
     {
-    
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
-        $pages = $this->entityManager->getRepository('Pages_Entity_Page')->findAll();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+        $pages = $this->entityManager->getRepository('ZikulaPagesModule:PageEntity')->findAll();
         foreach ($pages as $page) {
             $perma = strtolower(DataUtil::formatPermalink($page->getUrltitle()));
             if ($page->getUrltitle() != $perma) {
@@ -50,17 +48,16 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getLinks()
     {
-    
         $links = array();
-        if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('Pages', 'admin', 'view'), 'text' => $this->__('Pages list'), 'icon' => 'list');
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view'), 'text' => $this->__('Pages list'), 'icon' => 'list');
         }
-        if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('Pages', 'admin', 'modify'), 'text' => $this->__('Create a page'), 'icon' => 'plus');
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'modify'), 'text' => $this->__('Create a page'), 'icon' => 'plus');
         }
-        if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('Pages', 'admin', 'purge'), 'text' => $this->__('Purge permalinks'), 'icon' => 'refresh');
-            $links[] = array('url' => ModUtil::url('Pages', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'purge'), 'text' => $this->__('Purge permalinks'), 'icon' => 'refresh');
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
         }
         return $links;
     }
@@ -74,9 +71,11 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function checkuniquepermalink($args)
     {
-    
         $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('count(p)')->from('Pages_Entity_Page', 'p')->where('p.urltitle = :urltitle')->setParameter('urltitle', $args['urltitle']);
+        $qb->select('count(p)')
+            ->from('ZikulaPagesModule:PageEntity', 'p')
+            ->where('p.urltitle = :urltitle')
+            ->setParameter('urltitle', $args['urltitle']);
         if (isset($args['pageid']) && $args['pageid']) {
             $qb->andWhere('p.pageid != :pageid')->setParameter('pageid', $args['pageid']);
         }

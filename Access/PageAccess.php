@@ -17,24 +17,23 @@ namespace Zikula\PagesModule\Access;
 
 use LogUtil;
 use SecurityUtil;
-use Pages_Entity_Page;
+use Zikula\PagesModule\Entity\PageEntity;
 use DataUtil;
 use ModUtil;
 
 class PageAccess
 {
-
     /**
-     * @var Pages_Entity_Page
+     * @var PageEntity
      */
     private $_page;
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
     public $entityManager;
+
     public function __construct(\Doctrine\ORM\EntityManagerInterface $entityManager)
     {
-    
         $this->entityManager = $entityManager;
     }
     
@@ -47,7 +46,6 @@ class PageAccess
      */
     public function find($args)
     {
-    
         // Argument check
         if ((!isset($args['pageid']) || !is_numeric($args['pageid'])) && !isset($args['title'])) {
             return LogUtil::registerArgsError();
@@ -58,7 +56,7 @@ class PageAccess
         } else {
             $where['urltitle'] = $args['title'];
         }
-        $this->_page = $this->entityManager->getRepository('Pages_Entity_Page')->findOneBy($where);
+        $this->_page = $this->entityManager->getRepository('ZikulaPagesModule:PageEntity')->findOneBy($where);
         if (!$this->_page) {
             return LogUtil::registerArgsError();
         }
@@ -72,14 +70,13 @@ class PageAccess
     /**
      * find
      *
-     * @param int id Page id.
+     * @param $id integer Page id.
      *
      * @return boolean
      */
     public function findById($id)
     {
-    
-        $this->_page = $this->entityManager->find('Pages_Entity_Page', $id);
+        $this->_page = $this->entityManager->find('ZikulaPagesModule:PageEntity', $id);
         if (!$this->_page) {
             return LogUtil::registerArgsError();
         }
@@ -96,8 +93,7 @@ class PageAccess
      */
     public function create()
     {
-    
-        $this->_page = new Pages_Entity_Page();
+        $this->_page = new PageEntity();
     }
     
     /**
@@ -107,7 +103,6 @@ class PageAccess
      */
     public function toArray()
     {
-    
         if (!$this->_page) {
             return false;
         }
@@ -121,7 +116,6 @@ class PageAccess
      */
     public function getId()
     {
-    
         return $this->_page->getPageId();
     }
     
@@ -132,7 +126,6 @@ class PageAccess
      */
     public function get()
     {
-    
         return $this->_page;
     }
     
@@ -143,14 +136,13 @@ class PageAccess
      */
     public function getAccessLevel()
     {
-    
         $pageid = $this->_page->getPageid();
         $title = $this->_page->getTitle();
-        if (SecurityUtil::checkPermission('Pages::Page', "{$title}::{$pageid}", ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('ZikulaPagesModule::Page', "{$title}::{$pageid}", ACCESS_READ)) {
             $accessLevel = ACCESS_READ;
-            if (SecurityUtil::checkPermission('Pages::', "{$title}::{$pageid}", ACCESS_COMMENT)) {
+            if (SecurityUtil::checkPermission('ZikulaPagesModule::', "{$title}::{$pageid}", ACCESS_COMMENT)) {
                 $accessLevel = ACCESS_COMMENT;
-                if (SecurityUtil::checkPermission('Pages::', "{$title}::{$pageid}", ACCESS_EDIT)) {
+                if (SecurityUtil::checkPermission('ZikulaPagesModule::', "{$title}::{$pageid}", ACCESS_EDIT)) {
                     $accessLevel = ACCESS_EDIT;
                 }
             }
@@ -167,7 +159,6 @@ class PageAccess
      */
     public function incrementReadCount()
     {
-    
         $this->_page->incrementCounter();
         $this->entityManager->flush();
         return true;
@@ -182,14 +173,13 @@ class PageAccess
      */
     public function set($data)
     {
-    
         // define the permalink title if not present
         $urltitlecreatedfromtitle = false;
         if (!isset($data['urltitle']) || empty($data['urltitle'])) {
             $data['urltitle'] = DataUtil::formatPermalink($data['title']);
             $urltitlecreatedfromtitle = true;
         }
-        if (ModUtil::apiFunc('Pages', 'admin', 'checkuniquepermalink', $data) === false) {
+        if (ModUtil::apiFunc('ZikulaPagesModule', 'admin', 'checkuniquepermalink', $data) === false) {
             $data['urltitle'] = '';
             if ($urltitlecreatedfromtitle == true) {
                 return LogUtil::registerError(__('The permalinks retrieved from the title has to be unique!'));
@@ -214,7 +204,6 @@ class PageAccess
      */
     public function remove()
     {
-    
         $this->entityManager->remove($this->_page);
         $this->entityManager->flush();
         return true;

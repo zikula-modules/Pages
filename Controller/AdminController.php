@@ -17,16 +17,14 @@ namespace Zikula\PagesModule\Controller;
 use Zikula_View;
 use ModUtil;
 use FormUtil;
-use Pages_Handler_Modify;
-use Pages_Handler_Delete;
 use SecurityUtil;
 use LogUtil;
-use Pages_Util;
+use \Zikula\PagesModule\Util as PagesUtil;
 use CategoryRegistryUtil;
-use Pages_Access_Pages;
+use Zikula\PagesModule\Access\PagesAccess;
 use ZLanguage;
 use System;
-use Pages_Handler_ModifyConfig;
+
 class AdminController extends \Zikula_AbstractController
 {
 
@@ -44,7 +42,7 @@ class AdminController extends \Zikula_AbstractController
     public function mainAction()
     {
     
-        $this->redirect(ModUtil::url('Pages', 'admin', 'view'));
+        $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
     }
     
     /**
@@ -57,7 +55,7 @@ class AdminController extends \Zikula_AbstractController
     {
     
         $form = FormUtil::newForm($this->name, $this);
-        return $form->execute('admin/modify.tpl', new Pages_Handler_Modify());
+        return $form->execute('admin/modify.tpl', new \Zikula\PagesModule\Handler\ModifyHandler());
     }
     
     /**
@@ -69,7 +67,7 @@ class AdminController extends \Zikula_AbstractController
     {
     
         $form = FormUtil::newForm($this->name, $this);
-        return $form->execute('admin/delete.tpl', new Pages_Handler_Delete());
+        return $form->execute('admin/delete.tpl', new \Zikula\PagesModule\Handler\DeleteHandler());
     }
     
     /**
@@ -82,7 +80,7 @@ class AdminController extends \Zikula_AbstractController
     public function viewAction($args)
     {
     
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Pages::', '::', ACCESS_EDIT), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_EDIT), LogUtil::getErrorMsgPermission());
         // initialize sort array - used to display sort classes and urls
         $sort = array();
         $fields = array('pageid', 'title', 'cr_date');
@@ -112,21 +110,21 @@ class AdminController extends \Zikula_AbstractController
         $filtercats = FormUtil::getPassedValue('pages', null, 'GETPOST');
         $filtercatsSerialized = FormUtil::getPassedValue('filtercats_serialized', false, 'GET');
         $filtercats = $filtercatsSerialized ? unserialize($filtercatsSerialized) : $filtercats;
-        $catsarray = Pages_Util::formatCategoryFilter($filtercats);
+        $catsarray = PagesUtil::formatCategoryFilter($filtercats);
         // complete initialization of sort array, adding urls
         foreach ($fields as $field) {
             $params = array('language' => $language, 'filtercats_serialized' => serialize($filtercats), 'orderby' => $field, 'sdir' => $sdir);
-            $sort['url'][$field] = ModUtil::url('Pages', 'admin', 'view', $params);
+            $sort['url'][$field] = ModUtil::url($this->name, 'admin', 'view', $params);
         }
         $this->view->assign('sort', $sort);
         $this->view->assign('filter_active', empty($language) && empty($catsarray) ? false : true);
         // get module vars
         $modvars = $this->getVars();
         if ($modvars['enablecategorization']) {
-            $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'Page');
+            $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'Page');
             $this->view->assign('catregistry', $catregistry);
         }
-        $pages = new Pages_Access_Pages();
+        $pages = new PagesAccess();
         $pages->setStartNumber($startnum);
         $pages->setLanguage($language);
         $pages->setOrder($orderby, $orderdir);
@@ -158,18 +156,18 @@ class AdminController extends \Zikula_AbstractController
     /**
      * purge permalinks
      *
-     * @return string HTML output
+     * @return void
      */
     public function purgeAction()
     {
     
-        if (ModUtil::apiFunc('Pages', 'admin', 'purgepermalinks')) {
+        if (ModUtil::apiFunc($this->name, 'admin', 'purgepermalinks')) {
             LogUtil::registerStatus($this->__('Purging of the pemalinks was successful'));
         } else {
             LogUtil::registerError($this->__('Purging of the pemalinks has failed'));
         }
-        $url = strpos(System::serverGetVar('HTTP_REFERER'), 'purge') ? ModUtil::url('Pages', 'admin', 'view') : System::serverGetVar('HTTP_REFERER');
-        return System::redirect($url);
+        $url = strpos(System::serverGetVar('HTTP_REFERER'), 'purge') ? ModUtil::url($this->name, 'admin', 'view') : System::serverGetVar('HTTP_REFERER');
+        return \System::redirect($url);
     }
     
     /**
@@ -181,7 +179,7 @@ class AdminController extends \Zikula_AbstractController
     {
     
         $form = FormUtil::newForm($this->name, $this);
-        return $form->execute('admin/modifyconfig.tpl', new Pages_Handler_ModifyConfig());
+        return $form->execute('admin/modifyconfig.tpl', new \Zikula\PagesModule\Handler\ModifyConfigHandler());
     }
 
 }

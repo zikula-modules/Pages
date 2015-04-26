@@ -11,7 +11,7 @@
 
 {checkpermission component="ISHA::" instance=".*" level="ACCESS_ADMIN" assign="auth"}
 {if $auth}
-    <a class="btn btn-default btn-small" href="{modurl modname='Pages' type='admin' func='modify' pageid=$item.pageid}" title="Edit page">
+    <a class="btn btn-default btn-small" href="{modurl modname='ZikulaPagesModule' type='admin' func='modify' pageid=$item.pageid}" title="Edit page">
         <i class="fa fa-edit"></i> {gt text="Edit page"}
     </a>
     <br />
@@ -29,7 +29,7 @@
         <li>{gt text='Last update by %1$s on %2$s' tag1=$lu_uname|profilelinkbyuname tag2=$item.lu_date|dateformat}</li>
         {/if}
 
-        {if $modvars.Pages.enablecategorization && isset($item.categories)}
+        {if $modvars.$module.enablecategorization && isset($item.categories)}
         <li>{gt text='Categories'}:
             {foreach from=$item.categories key='property' item='c' name='cats'}
             {if isset($c.category.displayName.$lang)}
@@ -38,9 +38,9 @@
             {assign var='name' value=$c.category.name}
             {/if}
             {if $modvars.ZConfig.shorturls}
-            <a href="{modurl modname='Pages' type='user' func='view' prop='Main' cat=$c.category.name}" title="{$c.category.name}">{$c.category.name}</a>
+            <a href="{modurl modname='ZikulaPagesModule' type='user' func='view' prop='Main' cat=$c.category.name}" title="{$c.category.name}">{$c.category.name}</a>
             {else}
-            <a href="{modurl modname='Pages' type='user' func='view' cat=$c.category.Id}" title="{$name}">{$name}</a>
+            <a href="{modurl modname='ZikulaPagesModule' type='user' func='view' cat=$c.category.Id}" title="{$name}">{$name}</a>
             {/if}
             {if $smarty.foreach.cats.last}{else}, {/if}
             {/foreach}
@@ -55,7 +55,7 @@
 {if $item.displayprint or $item.displaytextinfo or $displayeditlink}
 <div class="pages_page_footer">
     {if $displayeditlink}
-    <a href="{modurl modname='Pages' type='admin' func='modify' pageid=$item.pageid}">{gt text='Edit'}</a>
+    <a href="{modurl modname='ZikulaPagesModule' type='admin' func='modify' pageid=$item.pageid}">{gt text='Edit'}</a>
     <span class="text_separator">|</span>
     {/if}
     {if $item.displaytextinfo}
@@ -65,7 +65,7 @@
     {/if}
     {if $item.displayprint}
     <span class="pages_page_printerlink">
-        <a href="{modurl modname='Pages' type='user' func='display' pageid=$item.pageid theme='Printer'}">{img modname='core' src='printer.png' set='icons/small' __alt='Print page'}</a>
+        <a href="{modurl modname='ZikulaPagesModule' type='user' func='display' pageid=$item.pageid theme='Printer'}">{img modname='core' src='printer.png' set='icons/small' __alt='Print page'}</a>
     </span>
     {/if}
 </div>

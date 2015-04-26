@@ -12,9 +12,13 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+namespace Zikula\PagesModule\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Page entity class.
@@ -22,11 +26,6 @@ use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
  * @ORM\Entity
  * @ORM\Table(name="pages")
  */
-
-namespace Zikula\PagesModule\Entity;
-
-use Doctrine;
-
 class PageEntity extends \Zikula_EntityAccess
 {
 
@@ -126,7 +125,7 @@ class PageEntity extends \Zikula_EntityAccess
     /**
      * cr_date
      *
-     * @var datetime
+     * @var \DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
@@ -141,7 +140,7 @@ class PageEntity extends \Zikula_EntityAccess
     /**
      * lu_date
      *
-     * @var datetime
+     * @var \DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
@@ -149,7 +148,7 @@ class PageEntity extends \Zikula_EntityAccess
     /**
      * categories
      *
-     * @ORM\OneToMany(targetEntity="Pages_Entity_Category",
+     * @ORM\OneToMany(targetEntity="Zikula\PagesModule\Entity\CategoryEntity",
      *                mappedBy="entity", cascade={"all"},
      *                orphanRemoval=true, indexBy="categoryRegistryId")
      */
@@ -166,7 +165,7 @@ class PageEntity extends \Zikula_EntityAccess
     public function __construct()
     {
     
-        $this->categories = new Doctrine\Common\Collections\ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
     
     /**
@@ -499,7 +498,7 @@ class PageEntity extends \Zikula_EntityAccess
     /**
      * Get creation time
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getCr_date()
     {
@@ -521,7 +520,7 @@ class PageEntity extends \Zikula_EntityAccess
     /**
      * Get last update date
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getLu_date()
     {
@@ -532,7 +531,7 @@ class PageEntity extends \Zikula_EntityAccess
     /**
      * Get page categories
      *
-     * @return Doctrine\Common\Collections\ArrayCollection|Pages_Entity_Category[]
+     * @return \Doctrine\Common\Collections\ArrayCollection|\Zikula\PagesModule\Entity\CategoryEntity[]
      */
     public function getCategories()
     {

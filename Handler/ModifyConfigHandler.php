@@ -29,16 +29,15 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
     /**
      * Initialise the form handler
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param \Zikula_Form_View $view Reference to Form render object.
      *
      * @return boolean
      *
      * @throws Zikula_Exception_Forbidden If the current user does not have adequate permissions to perform this function.
      */
-    public function initialize(Zikula_Form_View $view)
+    public function initialize(\Zikula_Form_View $view)
     {
-    
-        if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
         }
         $view->assign($this->getVars());
@@ -48,14 +47,13 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
     /**
      * Handle form submission.
      *
-     * @param Zikula_Form_View $view  Reference to Form render object.
+     * @param \Zikula_Form_View $view  Reference to Form render object.
      * @param array            &$args Arguments of the command.
      *
      * @return boolean|void
      */
-    public function handleCommand(Zikula_Form_View $view, &$args)
+    public function handleCommand(\Zikula_Form_View $view, &$args)
     {
-    
         if ($args['commandName'] == 'cancel') {
             $returnUrl = ModUtil::url($this->name, 'admin', 'modifyconfig');
             return $view->redirect($returnUrl);

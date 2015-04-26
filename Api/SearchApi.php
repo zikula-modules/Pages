@@ -38,7 +38,7 @@ class checkerresult
     public function Pages_result_checker()
     {
     
-        $this->enablecategorization = ModUtil::getVar('Pages', 'enablecategorization');
+        $this->enablecategorization = ModUtil::getVar('ZikulaPagesModule', 'enablecategorization');
     }
     
     // This method is called by DBUtil::selectObjectArrayFilter() for each and every search result.
@@ -46,10 +46,10 @@ class checkerresult
     public function checkResult(&$item)
     {
     
-        $ok = SecurityUtil::checkPermission('Pages::', "{$item['title']}::{$item['pageid']}", ACCESS_OVERVIEW);
+        $ok = SecurityUtil::checkPermission('ZikulaPagesModule::', "{$item['title']}::{$item['pageid']}", ACCESS_OVERVIEW);
         if ($this->enablecategorization) {
             ObjectUtil::expandObjectWithCategories($item, 'pages', 'pageid');
-            $ok = $ok && CategoryUtil::hasCategoryAccess($item['__CATEGORIES__'], 'Pages');
+            $ok = $ok && CategoryUtil::hasCategoryAccess($item['__CATEGORIES__'], 'ZikulaPagesModule');
         }
         return $ok;
     }
@@ -102,10 +102,10 @@ class SearchApi extends \Zikula_AbstractApi
     public function options($args)
     {
     
-        if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_READ)) {
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
             // Create output object - this object will store all of our output so that
             // we can return it easily when required
-            $render = Zikula_View::getInstance('Pages');
+            $render = Zikula_View::getInstance($this->name);
             $render->assign('active', !isset($args['active']) || isset($args['active']['Pages']));
             return $render->fetch('search/options.tpl');
         }
@@ -138,11 +138,11 @@ class SearchApi extends \Zikula_AbstractApi
             $where = trim(substr(trim($where), 1, -1));
         }
         $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('p')->from('Pages_Entity_Page', 'p')->add('where', $where);
+        $qb->select('p')->from('Zikula\PagesModule\Entity\PageEntity', 'p')->add('where', $where);
         $objArray = $qb->getQuery()->getArrayResult();
         $sessionId = session_id();
-        $addcategorytitletopermalink = ModUtil::getVar('Pages', 'addcategorytitletopermalink');
-        $insertSql = "INSERT INTO {$searchTable}\r\n                ({$searchColumn['title']},\r\n                {$searchColumn['text']},\r\n                {$searchColumn['extra']},\r\n                {$searchColumn['created']},\r\n                {$searchColumn['module']},\r\n                {$searchColumn['session']})\r\n                VALUES ";
+        $addcategorytitletopermalink = ModUtil::getVar($this->name, 'addcategorytitletopermalink');
+        $insertSql = "INSERT INTO {$searchTable} ({$searchColumn['title']}, {$searchColumn['text']}, {$searchColumn['extra']}, {$searchColumn['created']}, {$searchColumn['module']}, {$searchColumn['session']}) VALUES ";
         // Process the result set and insert into search result table
         foreach ($objArray as $obj) {
             if ($addcategorytitletopermalink) {
@@ -180,7 +180,7 @@ class SearchApi extends \Zikula_AbstractApi
         $datarow =& $args['datarow'];
         $extra = unserialize($datarow['extra']);
         $params = array('pageid' => $extra['pageid'], 'cat' => $extra['cat']);
-        $datarow['url'] = ModUtil::url('Pages', 'user', 'display', $params);
+        $datarow['url'] = ModUtil::url($this->name, 'user', 'display', $params);
         return true;
     }
 

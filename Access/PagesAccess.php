@@ -12,35 +12,31 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-use Doctrine\ORM\Tools\Pagination\Paginator;
-
-
 
 namespace Zikula\PagesModule\Access;
 
 use ServiceUtil;
 use ModUtil;
 use System;
-use Paginator;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class PagesAccess
 {
-
     private $_qb;
     private $_itemsPerPage;
     private $_startNumber = 1;
     private $_pager = false;
     private $_numberOfItems = 0;
+
     /**
      * construct
      */
     public function __construct()
     {
-    
         $em = ServiceUtil::getService('doctrine.entitymanager');
         $this->_qb = $em->createQueryBuilder();
-        $this->_qb->select('p')->from('Pages_Entity_Page', 'p')->leftJoin('p.categories', 'c');
-        $this->_itemsPerPage = ModUtil::getVar('Pages', 'itemsperpage', 25);
+        $this->_qb->select('p')->from('ZikulaPagesModule:PageEntity', 'p')->leftJoin('p.categories', 'c');
+        $this->_itemsPerPage = ModUtil::getVar('ZikulaPagesModule', 'itemsperpage', 25);
     }
     
     /**
@@ -52,7 +48,6 @@ class PagesAccess
      */
     public function setStartNumber($startNumber)
     {
-    
         $this->_startNumber = $startNumber - 1;
     }
     
@@ -66,7 +61,6 @@ class PagesAccess
      */
     public function setOrder($orderBy, $orderDirection = 'ASC')
     {
-    
         $this->_qb->orderBy('p.' . $orderBy, $orderDirection);
     }
     
@@ -79,7 +73,6 @@ class PagesAccess
      */
     public function setLanguage($language)
     {
-    
         $multilingual = System::getVar('multilingual', false);
         if (!empty($language) && $multilingual) {
             $this->_qb->andWhere('p.language = :language')->setParameter('language', $language);
@@ -95,7 +88,6 @@ class PagesAccess
      */
     public function setCategory($category)
     {
-    
         if (is_array($category)) {
             $this->_qb->andWhere('c.category in (:categories)')->setParameter('categories', $category);
         } else {
@@ -112,7 +104,6 @@ class PagesAccess
      */
     public function get()
     {
-    
         $query = $this->_qb->getQuery();
         $paginator = new Paginator($query);
         if ($this->_pager) {
@@ -132,7 +123,6 @@ class PagesAccess
      */
     public function enablePager()
     {
-    
         $this->_pager = true;
     }
     
@@ -143,7 +133,6 @@ class PagesAccess
      */
     public function getPager()
     {
-    
         return array('itemsperpage' => $this->_itemsPerPage, 'numitems' => $this->_numberOfItems);
     }
 

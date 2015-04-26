@@ -16,7 +16,7 @@
 namespace Zikula\PagesModule\Handler;
 
 use FormUtil;
-use Pages_Access_Page;
+use Zikula\PagesModule\Access\PageAccess;
 use LogUtil;
 use SecurityUtil;
 use Zikula_Exception_Forbidden;
@@ -32,7 +32,7 @@ use System;
 /**
  * This class provides a handler to modify or create a page.
  */
-class ModifyHandler extends \\Zikula_Form_AbstractHandler
+class ModifyHandler extends \Zikula_Form_AbstractHandler
 {
 
     /**
@@ -40,21 +40,21 @@ class ModifyHandler extends \\Zikula_Form_AbstractHandler
      *
      * When set this handler is in edit mode.
      *
-     * @var Pages_Access_Page
+     * @var PageAccess
      */
     private $_page;
+
     /**
      * Initialise the form handler
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param \Zikula_Form_View $view Reference to Form render object.
      *
      * @return boolean
      *
      * @throws Zikula_Exception_Forbidden If the current user does not have adequate permissions to perform this function.
      */
-    public function initialize(Zikula_Form_View $view)
+    public function initialize(\Zikula_Form_View $view)
     {
-    
         $pageid = FormUtil::getPassedValue('pageid', isset($args['pageid']) ? $args['pageid'] : null, 'GET');
         $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
         // At this stage we check to see if we have been passed $objectid
@@ -62,7 +62,7 @@ class ModifyHandler extends \\Zikula_Form_AbstractHandler
             $pageid = $objectid;
         }
         // Get the page
-        $this->_page = new Pages_Access_Page($this->getEntityManager());
+        $this->_page = new PageAccess($this->getEntityManager());
         if (empty($pageid)) {
             $this->_page->create();
         } else {
@@ -72,12 +72,12 @@ class ModifyHandler extends \\Zikula_Form_AbstractHandler
         if ($item === false) {
             return LogUtil::registerError($this->__('No such page found.'), 404);
         }
-        if (!SecurityUtil::checkPermission('Pages::', $item['title'] . '::' . $pageid, ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission($this->name . '::', $item['title'] . '::' . $pageid, ACCESS_EDIT)) {
             throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
         }
         if ($this->getVar('enablecategorization', true)) {
             // load and assign registred categories
-            $categories = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'Page');
+            $categories = CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'Page');
             $view->assign('registries', $categories);
         }
         // assign the item to the template
@@ -85,7 +85,7 @@ class ModifyHandler extends \\Zikula_Form_AbstractHandler
         $view->assign('page', $this->_page->get());
         if (!empty($pageid)) {
             // now we've got this far let's lock the page for editing
-            $params = array('lockName' => "Pagespage{$pageid}", 'returnUrl' => ModUtil::url('Pages', 'admin', 'view'));
+            $params = array('lockName' => "Pagespage{$pageid}", 'returnUrl' => ModUtil::url($this->name, 'admin', 'view'));
             ModUtil::apiFunc('PageLock', 'user', 'pageLock', $params);
         }
         return true;
@@ -94,14 +94,13 @@ class ModifyHandler extends \\Zikula_Form_AbstractHandler
     /**
      * Handle form submission.
      *
-     * @param Zikula_Form_View $view  Reference to Form render object.
+     * @param \Zikula_Form_View $view  Reference to Form render object.
      * @param array            &$args Arguments of the command.
      *
      * @return boolean|void
      */
-    public function handleCommand(Zikula_Form_View $view, &$args)
+    public function handleCommand(\Zikula_Form_View $view, &$args)
     {
-    
         if ($this->_page->get()) {
             // DO NOT REMOVE!! This is important to be called before ->getValues() below, although
             // `$this->_page` still contains the reference to the page. However, due to Doctrine-related
@@ -147,12 +146,12 @@ class ModifyHandler extends \\Zikula_Form_AbstractHandler
         }
         // Success
         LogUtil::registerStatus($this->__('Done! Page updated.'));
-        $url = new Zikula_ModUrl('Pages', 'user', 'display', ZLanguage::getLanguageCode(), array('pageid' => $data['pageid']));
+        $url = new Zikula_ModUrl($this->name, 'user', 'display', ZLanguage::getLanguageCode(), array('pageid' => $data['pageid']));
         $this->notifyHooks(new Zikula_ProcessHook('pages.ui_hooks.pages.process_edit', $data['pageid'], $url));
         // now release the page lock
         ModUtil::apiFunc('PageLock', 'user', 'releaseLock', array('lockName' => "Pagespage{$data['pageid']}"));
-        $returnUrl = ModUtil::url('Pages', 'user', 'display', array('pageid' => $data['pageid']));
-        return System::redirect($returnUrl);
+        $returnUrl = ModUtil::url($this->name, 'user', 'display', array('pageid' => $data['pageid']));
+        return \System::redirect($returnUrl);
     }
 
 }

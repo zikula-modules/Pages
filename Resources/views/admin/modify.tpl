@@ -16,7 +16,7 @@
                 {formtextinput id="title" cssClass="form-control" maxLength="255" mandatory=true}
             </div>
         </div>
-        {if $modvars.Pages.showpermalinkinput}
+        {if $modvars.$module.showpermalinkinput}
         <div class="form-group">
             {formlabel cssClass="col-lg-3" for="urltitle" __text='PermaLink URL title'}
             <div class="col-lg-9">
@@ -25,7 +25,7 @@
             </div>
         </div>
         {/if}
-        {if $modvars.Pages.enablecategorization}
+        {if $modvars.$module.enablecategorization}
         {foreach from=$registries item="registryCid" key="registryId"}
             <div class="form-group">
                 {formlabel cssClass="col-lg-3" for="category_`$registryId`" __text="Category"}

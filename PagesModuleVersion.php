@@ -17,7 +17,7 @@ namespace Zikula\PagesModule;
 
 use HookUtil;
 use ModUtil;
-use Zikula_HookManager_SubscriberBundle;
+use Zikula\Component\HookDispatcher\SubscriberBundle;
 
 /**
  * Provides metadata for this module to the Extensions module.
@@ -34,10 +34,10 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
      */
     public function getMetaData()
     {
-    
         $meta = array();
+        $meta['oldnames'] = 'Pages';
         $meta['displayname'] = $this->__('Static pages');
-        $meta['description'] = $this->__('Manager of the static pages of the site.');
+        $meta['description'] = $this->__('Manage static pages of the site.');
         $meta['version'] = '3.0.0';
         //! this defines the module's url
         $meta['url'] = $this->__('pages');
@@ -45,9 +45,17 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
         // requires minimum 1.4.0 or later
         $meta['core_max'] = '1.4.99';
         $meta['capabilities'] = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
-        $meta['securityschema'] = array('Pages::' => 'Page name::Page ID', 'Pages:category:' => 'Category ID::');
+        $meta['securityschema'] = array($this->name . '::' => 'Page name::Page ID', $this->name . ':category:' => 'Category ID::');
         // Module depedencies
-        $meta['dependencies'] = array(array('modname' => 'Scribite', 'minversion' => '4.3.0', 'maxversion' => '', 'status' => ModUtil::DEPENDENCY_RECOMMENDED));
+        $meta['dependencies'] = array(
+            array(
+                'modname' => 'Scribite',
+                'minversion' => '4.3.0',
+                'maxversion' => '',
+                'reason' => __('To allow WYSIWYG page editing.'),
+                'status' => ModUtil::DEPENDENCY_RECOMMENDED
+            )
+        );
         return $meta;
     }
     
@@ -58,8 +66,7 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
      */
     protected function setupHookBundles()
     {
-    
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.pages.ui_hooks.pages', 'ui_hooks', $this->__('Pages Hooks'));
+        $bundle = new SubscriberBundle($this->name, 'subscriber.pages.ui_hooks.pages', 'ui_hooks', $this->__('Pages Hooks'));
         $bundle->addEvent('display_view', 'pages.ui_hooks.pages.display_view');
         $bundle->addEvent('form_edit', 'pages.ui_hooks.pages.form_edit');
         $bundle->addEvent('form_delete', 'pages.ui_hooks.pages.form_delete');
@@ -68,7 +75,7 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
         $bundle->addEvent('process_edit', 'pages.ui_hooks.pages.process_edit');
         $bundle->addEvent('process_delete', 'pages.ui_hooks.pages.process_delete');
         $this->registerHookSubscriberBundle($bundle);
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.pages.filter_hooks.pagesfilter', 'filter_hooks', $this->__('Pages Filter Hooks'));
+        $bundle = new SubscriberBundle($this->name, 'subscriber.pages.filter_hooks.pagesfilter', 'filter_hooks', $this->__('Pages Filter Hooks'));
         $bundle->addEvent('filter', 'pages.filter_hooks.pages.filter');
         $this->registerHookSubscriberBundle($bundle);
     }

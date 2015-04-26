@@ -46,7 +46,16 @@ class PageslistBlock extends \Zikula_Controller_AbstractBlock
     public function info()
     {
     
-        return array('module' => 'Pages', 'text_type' => $this->__('Pages list'), 'text_type_long' => $this->__('Display a list of pages'), 'allow_multiple' => true, 'form_content' => false, 'form_refresh' => false, 'show_preview' => true, 'admin_tableless' => true);
+        return array(
+            'module' => $this->name,
+            'text_type' => $this->__('Pages list'),
+            'text_type_long' => $this->__('Display a list of pages'),
+            'allow_multiple' => true,
+            'form_content' => false,
+            'form_refresh' => false,
+            'show_preview' => true,
+            'admin_tableless' => true
+        );
     }
     
     /**
@@ -70,17 +79,17 @@ class PageslistBlock extends \Zikula_Controller_AbstractBlock
             $vars['numitems'] = 5;
         }
         // Check if the htmlpages module is available.
-        if (!ModUtil::available('Pages')) {
+        if (!ModUtil::available($this->name)) {
             return false;
         }
         // Call the modules API to get the items
-        $items = ModUtil::apiFunc('Pages', 'user', 'getall');
+        $items = ModUtil::apiFunc($this->name, 'user', 'getall');
         // Check for no items returned
         if (empty($items)) {
             return false;
         }
         // Call the modules API to get the numitems
-        $countitems = ModUtil::apiFunc('Pages', 'user', 'countitems');
+        $countitems = ModUtil::apiFunc($this->name, 'user', 'countitems');
         // Compare the numitems with the block setting
         if ($countitems <= $vars['numitems']) {
             $vars['numitems'] = $countitems;
@@ -91,11 +100,11 @@ class PageslistBlock extends \Zikula_Controller_AbstractBlock
         $shownResults = 0;
         $pagesitems = array();
         foreach ($items as $item) {
-            if (SecurityUtil::checkPermission('Pages::', "{$item['title']}::{$item['pageid']}", ACCESS_OVERVIEW)) {
+            if (SecurityUtil::checkPermission($this->name . '::', "{$item['title']}::{$item['pageid']}", ACCESS_OVERVIEW)) {
                 $shownResults++;
                 if ($shownResults <= $vars['numitems']) {
-                    if (SecurityUtil::checkPermission('Pages::', "{$item['title']}::{$item['pageid']}", ACCESS_READ)) {
-                        $pagesitems[] = array('url' => ModUtil::url('Pages', 'user', 'display', array('pageid' => $item['pageid'])), 'title' => $item['title']);
+                    if (SecurityUtil::checkPermission($this->name . '::', "{$item['title']}::{$item['pageid']}", ACCESS_READ)) {
+                        $pagesitems[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pageid' => $item['pageid'])), 'title' => $item['title']);
                     } else {
                         $pagesitems[] = array('title' => $item['title']);
                     }
@@ -113,7 +122,7 @@ class PageslistBlock extends \Zikula_Controller_AbstractBlock
      *
      * @param array $blockinfo a blockinfo structure
      *
-     * @return output the bock form
+     * @return string the block form
      */
     public function modify($blockinfo)
     {

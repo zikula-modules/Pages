@@ -5,9 +5,8 @@
     "license": "LGPL-3.0+",
     "authors": [
         {
-            "name": "Your name",
-            "homepage": "http://example.com/",
-            "email": "example@example.com"
+            "name": "Zikula Team",
+            "homepage": "http://www.zikula.org/"
         }
     ],
     "autoload": {

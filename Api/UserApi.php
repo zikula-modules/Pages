@@ -15,8 +15,8 @@
 
 namespace Zikula\PagesModule\Api;
 
-use Pages_Access_Page;
-use Pages_Access_Pages;
+use Zikula\PagesModule\Access\PageAccess;
+use Zikula\PagesModule\Access\PagesAccess;
 use LogUtil;
 use ModUtil;
 use System;
@@ -39,7 +39,7 @@ class UserApi extends \Zikula_AbstractApi
     public function get($args)
     {
     
-        $page = new Pages_Access_Page($this->getEntityManager());
+        $page = new PageAccess($this->getEntityManager());
         $page->find($args);
         return $page->toArray();
     }
@@ -54,7 +54,7 @@ class UserApi extends \Zikula_AbstractApi
     public function getall($args)
     {
     
-        $pages = new Pages_Access_Pages();
+        $pages = new PagesAccess();
         if (isset($args['startnum']) && !empty($args['category'])) {
             $pages->setStartNumber($args['startnum']);
         }
@@ -91,11 +91,15 @@ class UserApi extends \Zikula_AbstractApi
                 $args['category'] = $args['category']['Main'][0];
             }
             $qb = $this->entityManager->createQueryBuilder();
-            $qb->select('count(p)')->from('Pages_Entity_Page', 'p')->join('p.categories', 'c')->where('c.category = :categories')->setParameter('categories', $args['category']);
+            $qb->select('count(p)')
+                ->from('ZikulaPagesModule:PageEntity', 'p')
+                ->join('p.categories', 'c')
+                ->where('c.category = :categories')
+                ->setParameter('categories', $args['category']);
             return $qb->getQuery()->getSingleScalarResult();
         }
         $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('count(p)')->from('Pages_Entity_Page', 'p');
+        $qb->select('count(p)')->from('ZikulaPagesModule:PageEntity', 'p');
         return $qb->getQuery()->getSingleScalarResult();
     }
     
@@ -109,7 +113,7 @@ class UserApi extends \Zikula_AbstractApi
     public function incrementreadcount($args)
     {
     
-        $page = new Pages_Access_Page($this->getEntityManager());
+        $page = new PageAccess($this->getEntityManager());
         $page->find($args);
         return $page->incrementReadCount();
     }
@@ -155,14 +159,14 @@ class UserApi extends \Zikula_AbstractApi
             } else {
                 $findBy = array('title' => $args['args']['title']);
             }
-            $page = new Pages_Access_Page($this->getEntityManager());
+            $page = new PageAccess($this->getEntityManager());
             $page->find($findBy);
             $item = $page->get();
             /**
-             * @var Pages_Entity_Category $category
+             * @var \Zikula\PagesModule\Entity\CategoryEntity $category
              */
             $category = $page->get()->getCategories()->first();
-            if (ModUtil::getVar('Pages', 'addcategorytitletopermalink') && $category) {
+            if (ModUtil::getVar($this->name, 'addcategorytitletopermalink') && $category) {
                 $vars = $category->getCategory()->getName() . '/' . $item['urltitle'];
             } else {
                 $vars = $item['urltitle'];
@@ -232,7 +236,7 @@ class UserApi extends \Zikula_AbstractApi
             $nextvar = 0;
             // remove any category path down to the leaf category
             $varscount = count($args['vars']);
-            if (ModUtil::getVar('Pages', 'addcategorytitletopermalink') && count($args['vars']) == 4 || count($args['vars']) == 2) {
+            if (ModUtil::getVar($this->name, 'addcategorytitletopermalink') && count($args['vars']) == 4 || count($args['vars']) == 2) {
                 $args['vars'][$varscount - 2] == 'page' ? $pagersize = 2 : ($pagersize = 0);
                 $cat = array_slice($args['vars'], 0, $varscount - 1 - $pagersize);
                 $category = CategoryUtil::getCategoryByPath($cat, 'name');
@@ -272,7 +276,7 @@ class UserApi extends \Zikula_AbstractApi
     {
     
         if ($item && !is_array($item)) {
-            $item = ModUtil::apiFunc('Pages', 'user', 'get', array('sid' => $item));
+            $item = ModUtil::apiFunc($this->name, 'user', 'get', array('sid' => $item));
         }
         if ($item) {
             // Clear View_cache
@@ -280,7 +284,7 @@ class UserApi extends \Zikula_AbstractApi
             $cacheIds[] = $item['sid'];
             $cacheIds[] = 'view';
             $cacheIds[] = 'main';
-            $view = Zikula_View::getInstance('Pages');
+            $view = Zikula_View::getInstance($this->name);
             foreach ($cacheIds as $cacheId) {
                 $view->clear_cache(null, $cacheId);
             }
@@ -315,7 +319,7 @@ class UserApi extends \Zikula_AbstractApi
     public function getCategories()
     {
     
-        $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories('Pages', 'Page');
+        $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'Page');
         $properties = array_keys($catregistry);
         $propertiesdata = array();
         foreach ($properties as $property) {
@@ -325,7 +329,7 @@ class UserApi extends \Zikula_AbstractApi
                 // add this to make the relative paths of the subcategories with ease - mateo
                 $subcategories = CategoryUtil::getCategoriesByParentID($rootcat['id']);
                 foreach ($subcategories as $k => $category) {
-                    $subcategories[$k]['count'] = ModUtil::apiFunc('Pages', 'user', 'countitems', array('category' => $category['id'], 'property' => $property));
+                    $subcategories[$k]['count'] = ModUtil::apiFunc($this->name, 'user', 'countitems', array('category' => $category['id'], 'property' => $property));
                 }
                 $propertiesdata[] = array('name' => $property, 'rootcat' => $rootcat, 'subcategories' => $subcategories);
             }

@@ -46,7 +46,16 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
     public function info()
     {
     
-        return array('module' => 'Pages', 'text_type' => $this->__('Show page'), 'text_type_long' => $this->__('Show a page in a block'), 'allow_multiple' => true, 'form_content' => false, 'form_refresh' => false, 'show_preview' => true, 'admin_tableless' => true);
+        return array(
+            'module' => $this->name,
+            'text_type' => $this->__('Show page'),
+            'text_type_long' => $this->__('Show a page in a block'),
+            'allow_multiple' => true,
+            'form_content' => false,
+            'form_refresh' => false,
+            'show_preview' => true,
+            'admin_tableless' => true
+        );
     }
     
     /**
@@ -70,12 +79,12 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
             return false;
         }
         // get the page
-        $item = ModUtil::apiFunc('Pages', 'user', 'get', array('pageid' => $vars['pid']));
+        $item = ModUtil::apiFunc($this->name, 'user', 'get', array('pageid' => $vars['pid']));
         // check for a valid item
         if (!$item) {
             return false;
         }
-        if (!SecurityUtil::checkPermission('Pages::', "{$item['title']}::{$item['pageid']}", ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission($this->name . '::', "{$item['title']}::{$item['pageid']}", ACCESS_READ)) {
             return false;
         }
         // Create output object
@@ -96,7 +105,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
      *
      * @param array $blockinfo a blockinfo structure
      *
-     * @return output the bock form
+     * @return string the block form
      */
     public function modify($blockinfo)
     {
@@ -107,7 +116,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
         $this->view->assign($vars);
         // Get all pages and assign them
-        $pages = ModUtil::apiFunc('Pages', 'user', 'getall');
+        $pages = ModUtil::apiFunc($this->name, 'user', 'getall');
         $this->view->assign('pages', $pages);
         return $this->view->fetch('block/pageblock_modify.tpl');
     }

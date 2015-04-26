@@ -56,7 +56,7 @@ class Util
                 }
             }
             if (!empty($catsarray)) {
-                $catsarray['__META__']['module'] = 'Pages';
+                $catsarray['__META__']['module'] = 'ZikulaPagesModule';
             }
         } else {
             $catsarray = array();
