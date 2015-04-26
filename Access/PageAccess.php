@@ -13,23 +13,31 @@
  * information regarding copyright and licensing.
  */
 
-class Pages_Access_Page
+namespace Zikula\PagesModule\Access;
+
+use LogUtil;
+use SecurityUtil;
+use Pages_Entity_Page;
+use DataUtil;
+use ModUtil;
+
+class PageAccess
 {
+
     /**
      * @var Pages_Entity_Page
      */
     private $_page;
-
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
     public $entityManager;
-
     public function __construct(\Doctrine\ORM\EntityManagerInterface $entityManager)
     {
+    
         $this->entityManager = $entityManager;
     }
-
+    
     /**
      * find
      *
@@ -39,31 +47,28 @@ class Pages_Access_Page
      */
     public function find($args)
     {
+    
         // Argument check
         if ((!isset($args['pageid']) || !is_numeric($args['pageid'])) && !isset($args['title'])) {
             return LogUtil::registerArgsError();
         }
-
         $where = array();
         if (isset($args['pageid']) && is_numeric($args['pageid'])) {
             $where['pageid'] = $args['pageid'];
         } else {
             $where['urltitle'] = $args['title'];
         }
-
         $this->_page = $this->entityManager->getRepository('Pages_Entity_Page')->findOneBy($where);
         if (!$this->_page) {
             return LogUtil::registerArgsError();
         }
-
         // Permission check
-        if (!SecurityUtil::checkPermission('Pages:title:', $this->_page->getPageid().'::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Pages:title:', $this->_page->getPageid() . '::', ACCESS_READ)) {
             return LogUtil::registerPermissionError();
         }
-
         return true;
     }
-
+    
     /**
      * find
      *
@@ -73,28 +78,28 @@ class Pages_Access_Page
      */
     public function findById($id)
     {
+    
         $this->_page = $this->entityManager->find('Pages_Entity_Page', $id);
         if (!$this->_page) {
             return LogUtil::registerArgsError();
         }
-
         // Permission check
-        if (!SecurityUtil::checkPermission('Pages:title:', $this->_page->getPageid().'::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Pages:title:', $this->_page->getPageid() . '::', ACCESS_READ)) {
             return LogUtil::registerPermissionError();
         }
-
         return true;
     }
-
+    
     /**
      * create
      *
      */
     public function create()
     {
+    
         $this->_page = new Pages_Entity_Page();
     }
-
+    
     /**
      * return page as array
      *
@@ -102,13 +107,13 @@ class Pages_Access_Page
      */
     public function toArray()
     {
+    
         if (!$this->_page) {
             return false;
         }
-
         return $this->_page->toArray();
     }
-
+    
     /**
      * return page as array
      *
@@ -116,9 +121,10 @@ class Pages_Access_Page
      */
     public function getId()
     {
+    
         return $this->_page->getPageId();
     }
-
+    
     /**
      * return page as doctrine2 object
      *
@@ -126,10 +132,10 @@ class Pages_Access_Page
      */
     public function get()
     {
+    
         return $this->_page;
     }
-
-
+    
     /**
      * return page as array
      *
@@ -137,24 +143,23 @@ class Pages_Access_Page
      */
     public function getAccessLevel()
     {
+    
         $pageid = $this->_page->getPageid();
         $title = $this->_page->getTitle();
-
-        if (SecurityUtil::checkPermission('Pages::Page', "$title::$pageid", ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('Pages::Page', "{$title}::{$pageid}", ACCESS_READ)) {
             $accessLevel = ACCESS_READ;
-            if (SecurityUtil::checkPermission('Pages::', "$title::$pageid", ACCESS_COMMENT)) {
+            if (SecurityUtil::checkPermission('Pages::', "{$title}::{$pageid}", ACCESS_COMMENT)) {
                 $accessLevel = ACCESS_COMMENT;
-                if (SecurityUtil::checkPermission('Pages::', "$title::$pageid", ACCESS_EDIT)) {
+                if (SecurityUtil::checkPermission('Pages::', "{$title}::{$pageid}", ACCESS_EDIT)) {
                     $accessLevel = ACCESS_EDIT;
                 }
             }
         } else {
             $accessLevel = ACCESS_NONE;
         }
-
         return $accessLevel;
     }
-
+    
     /**
      * increments read counter.
      *
@@ -162,12 +167,12 @@ class Pages_Access_Page
      */
     public function incrementReadCount()
     {
+    
         $this->_page->incrementCounter();
         $this->entityManager->flush();
         return true;
     }
-
-
+    
     /**
      * return page as array
      *
@@ -177,13 +182,13 @@ class Pages_Access_Page
      */
     public function set($data)
     {
+    
         // define the permalink title if not present
         $urltitlecreatedfromtitle = false;
         if (!isset($data['urltitle']) || empty($data['urltitle'])) {
             $data['urltitle'] = DataUtil::formatPermalink($data['title']);
             $urltitlecreatedfromtitle = true;
         }
-
         if (ModUtil::apiFunc('Pages', 'admin', 'checkuniquepermalink', $data) === false) {
             $data['urltitle'] = '';
             if ($urltitlecreatedfromtitle == true) {
@@ -192,19 +197,16 @@ class Pages_Access_Page
                 return LogUtil::registerError(__('The permalink has to be unique!'));
             }
         }
-
         $this->_page->merge($data);
         if (isset($data['pageid'])) {
             $this->entityManager->merge($this->_page);
         } else {
             $this->entityManager->persist($this->_page);
         }
-
         $this->entityManager->flush();
-
         return true;
     }
-
+    
     /**
      * return page as array
      *
@@ -212,8 +214,10 @@ class Pages_Access_Page
      */
     public function remove()
     {
+    
         $this->entityManager->remove($this->_page);
         $this->entityManager->flush();
         return true;
     }
+
 }

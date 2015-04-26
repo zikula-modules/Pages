@@ -12,10 +12,18 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-class Pages_Access_Pages
+
+
+namespace Zikula\PagesModule\Access;
+
+use ServiceUtil;
+use ModUtil;
+use System;
+use Paginator;
+
+class PagesAccess
 {
 
     private $_qb;
@@ -23,21 +31,18 @@ class Pages_Access_Pages
     private $_startNumber = 1;
     private $_pager = false;
     private $_numberOfItems = 0;
-
     /**
      * construct
      */
     public function __construct()
     {
+    
         $em = ServiceUtil::getService('doctrine.entitymanager');
         $this->_qb = $em->createQueryBuilder();
-        $this->_qb->select('p')
-                  ->from('Pages_Entity_Page', 'p')
-                  ->leftJoin('p.categories', 'c');
-
+        $this->_qb->select('p')->from('Pages_Entity_Page', 'p')->leftJoin('p.categories', 'c');
         $this->_itemsPerPage = ModUtil::getVar('Pages', 'itemsperpage', 25);
     }
-
+    
     /**
      * set start number
      *
@@ -47,10 +52,10 @@ class Pages_Access_Pages
      */
     public function setStartNumber($startNumber)
     {
-        $this->_startNumber = $startNumber-1;
+    
+        $this->_startNumber = $startNumber - 1;
     }
-
-
+    
     /**
      * set order
      *
@@ -61,10 +66,10 @@ class Pages_Access_Pages
      */
     public function setOrder($orderBy, $orderDirection = 'ASC')
     {
-        $this->_qb->orderBy('p.'.$orderBy, $orderDirection);
+    
+        $this->_qb->orderBy('p.' . $orderBy, $orderDirection);
     }
-
-
+    
     /**
      * set language
      *
@@ -74,14 +79,13 @@ class Pages_Access_Pages
      */
     public function setLanguage($language)
     {
+    
         $multilingual = System::getVar('multilingual', false);
         if (!empty($language) && $multilingual) {
-            $this->_qb->andWhere('p.language = :language')
-                      ->setParameter('language', $language);
+            $this->_qb->andWhere('p.language = :language')->setParameter('language', $language);
         }
     }
-
-
+    
     /**
      * set category
      *
@@ -91,15 +95,16 @@ class Pages_Access_Pages
      */
     public function setCategory($category)
     {
+    
         if (is_array($category)) {
-            $this->_qb->andWhere('c.category in (:categories)')
-                ->setParameter('categories', $category);
-        } else if (!empty($category)) {
-            $this->_qb->andWhere('c.category = :categories')
-                      ->setParameter('categories', $category);
+            $this->_qb->andWhere('c.category in (:categories)')->setParameter('categories', $category);
+        } else {
+            if (!empty($category)) {
+                $this->_qb->andWhere('c.category = :categories')->setParameter('categories', $category);
+            }
         }
     }
-
+    
     /**
      * return page as array
      *
@@ -107,6 +112,7 @@ class Pages_Access_Pages
      */
     public function get()
     {
+    
         $query = $this->_qb->getQuery();
         $paginator = new Paginator($query);
         if ($this->_pager) {
@@ -118,7 +124,7 @@ class Pages_Access_Pages
             return $query->getResult();
         }
     }
-
+    
     /**
      * enable Pager
      *
@@ -126,10 +132,10 @@ class Pages_Access_Pages
      */
     public function enablePager()
     {
+    
         $this->_pager = true;
     }
-
-
+    
     /**
      * return page as array
      *
@@ -137,10 +143,8 @@ class Pages_Access_Pages
      */
     public function getPager()
     {
-        return array(
-            'itemsperpage' => $this->_itemsPerPage,
-            'numitems'     => $this->_numberOfItems
-        );
+    
+        return array('itemsperpage' => $this->_itemsPerPage, 'numitems' => $this->_numberOfItems);
     }
 
 }

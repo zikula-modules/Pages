@@ -13,11 +13,18 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\PagesModule\TaggedObjectMeta;
+
+use ModUtil;
+use UserUtil;
+use DateUtil;
+
 /**
  * Tagged object meta class.
  */
-class Pages_TaggedObjectMeta_Pages extends Tag_AbstractTaggedObjectMeta
+class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
 {
+
     /**
      * Construct.
      *
@@ -27,10 +34,15 @@ class Pages_TaggedObjectMeta_Pages extends Tag_AbstractTaggedObjectMeta
      * @param string $urlString Url.
      * @param Zikula_ModUrl $urlObject Url object.
      */
-    function __construct($objectId, $areaId, $module, $urlString = null, Zikula_ModUrl $urlObject = null)
-    {
+    public function __construct(
+        $objectId,
+        $areaId,
+        $module,
+        $urlString = null,
+        Zikula_ModUrl $urlObject = null
+    ) {
+    
         parent::__construct($objectId, $areaId, $module, $urlString, $urlObject);
-
         $page = ModUtil::apiFunc('Pages', 'user', 'get', array('pageid' => $this->getObjectId()));
         // the Api checks for perms and there is nothing else to check
         if ($page) {
@@ -39,7 +51,7 @@ class Pages_TaggedObjectMeta_Pages extends Tag_AbstractTaggedObjectMeta
             $this->setObjectTitle($page['title']);
         }
     }
-
+    
     /**
      * Set object title.
      *
@@ -47,9 +59,10 @@ class Pages_TaggedObjectMeta_Pages extends Tag_AbstractTaggedObjectMeta
      */
     public function setObjectTitle($title)
     {
+    
         $this->title = $title;
     }
-
+    
     /**
      * Set object date.
      *
@@ -57,9 +70,10 @@ class Pages_TaggedObjectMeta_Pages extends Tag_AbstractTaggedObjectMeta
      */
     public function setObjectDate($date)
     {
+    
         $this->date = DateUtil::formatDatetime($date, 'datetimebrief');
     }
-
+    
     /**
      * Set object author.
      *
@@ -67,6 +81,8 @@ class Pages_TaggedObjectMeta_Pages extends Tag_AbstractTaggedObjectMeta
      */
     public function setObjectAuthor($author)
     {
+    
         $this->author = $author;
     }
+
 }

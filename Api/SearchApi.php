@@ -13,31 +13,44 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\PagesModule\result;
+
+use ModUtil;
+use SecurityUtil;
+use ObjectUtil;
+use CategoryUtil;
+use Zikula_View;
+use DBUtil;
+use Search_Api_User;
+use DataUtil;
+use DateUtil;
+use LogUtil;
+
 /**
  * Internal callback class used to check permissions to each Page
  * @package Zikula_Value_Addons
  * @subpackage Pages
  */
-class pages_result_checker
+class checkerresult
 {
 
-    var $enablecategorization;
-
-    function Pages_result_checker()
+    public $enablecategorization;
+    public function Pages_result_checker()
     {
+    
         $this->enablecategorization = ModUtil::getVar('Pages', 'enablecategorization');
     }
-
+    
     // This method is called by DBUtil::selectObjectArrayFilter() for each and every search result.
     // A return value of true means "keep result" - false means "discard".
-    function checkResult(&$item)
+    public function checkResult(&$item)
     {
-        $ok = SecurityUtil::checkPermission('Pages::', "$item[title]::$item[pageid]", ACCESS_OVERVIEW);
+    
+        $ok = SecurityUtil::checkPermission('Pages::', "{$item['title']}::{$item['pageid']}", ACCESS_OVERVIEW);
         if ($this->enablecategorization) {
             ObjectUtil::expandObjectWithCategories($item, 'pages', 'pageid');
             $ok = $ok && CategoryUtil::hasCategoryAccess($item['__CATEGORIES__'], 'Pages');
         }
-
         return $ok;
     }
 
@@ -46,7 +59,22 @@ class pages_result_checker
 /**
  * The search for items.
  */
-class Pages_Api_Search extends Zikula_AbstractApi
+
+namespace Zikula\PagesModule\Api;
+
+use ModUtil;
+use SecurityUtil;
+use ObjectUtil;
+use CategoryUtil;
+use Zikula_View;
+use DBUtil;
+use Search_Api_User;
+use DataUtil;
+use DateUtil;
+use LogUtil;
+
+
+class SearchApi extends \Zikula_AbstractApi
 {
 
     /**
@@ -56,12 +84,10 @@ class Pages_Api_Search extends Zikula_AbstractApi
      */
     public function info()
     {
-        return array(
-            'title' => 'Pages',
-            'functions' => array('pages' => 'search')
-        );
+    
+        return array('title' => 'Pages', 'functions' => array('pages' => 'search'));
     }
-
+    
     /**
      * Render the search form component for Users.
      *
@@ -75,6 +101,7 @@ class Pages_Api_Search extends Zikula_AbstractApi
      */
     public function options($args)
     {
+    
         if (SecurityUtil::checkPermission('Pages::', '::', ACCESS_READ)) {
             // Create output object - this object will store all of our output so that
             // we can return it easily when required
@@ -82,10 +109,9 @@ class Pages_Api_Search extends Zikula_AbstractApi
             $render->assign('active', !isset($args['active']) || isset($args['active']['Pages']));
             return $render->fetch('search/options.tpl');
         }
-
         return '';
     }
-
+    
     /**
      * Perform a search.
      *
@@ -100,12 +126,11 @@ class Pages_Api_Search extends Zikula_AbstractApi
      */
     public function search($args)
     {
+    
         ModUtil::dbInfoLoad('Search');
         $table = DBUtil::getTables();
         $searchTable = $table['search_result'];
         $searchColumn = $table['search_result_column'];
-
-
         // this is a bit of a hacky way to ustilize this API for Doctrine calls.
         // the 'a' prefix is the table alias in CalendarEventRepository
         $where = Search_Api_User::construct_where($args, array('p.title', 'p.content'), null);
@@ -113,57 +138,28 @@ class Pages_Api_Search extends Zikula_AbstractApi
             $where = trim(substr(trim($where), 1, -1));
         }
         $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('p')
-            ->from('Pages_Entity_Page', 'p')
-            ->add('where', $where);
+        $qb->select('p')->from('Pages_Entity_Page', 'p')->add('where', $where);
         $objArray = $qb->getQuery()->getArrayResult();
-
-
-
         $sessionId = session_id();
-
-
         $addcategorytitletopermalink = ModUtil::getVar('Pages', 'addcategorytitletopermalink');
-
-        $insertSql =
-                "INSERT INTO $searchTable
-                ($searchColumn[title],
-                $searchColumn[text],
-                $searchColumn[extra],
-                $searchColumn[created],
-                $searchColumn[module],
-                $searchColumn[session])
-                VALUES ";
-
+        $insertSql = "INSERT INTO {$searchTable}\r\n                ({$searchColumn['title']},\r\n                {$searchColumn['text']},\r\n                {$searchColumn['extra']},\r\n                {$searchColumn['created']},\r\n                {$searchColumn['module']},\r\n                {$searchColumn['session']})\r\n                VALUES ";
         // Process the result set and insert into search result table
         foreach ($objArray as $obj) {
             if ($addcategorytitletopermalink) {
                 $cat = isset($obj['__CATEGORIES__']['Main']['name']) ? $obj['__CATEGORIES__']['Main']['name'] : null;
-                $extra = serialize(
-                    array(
-                        'pageid' => $obj['pageid'],
-                        'cat'    => $cat
-                    )
-                );
+                $extra = serialize(array('pageid' => $obj['pageid'], 'cat' => $cat));
             } else {
                 $extra = serialize(array('pageid' => $obj['pageid']));
             }
-            $sql = $insertSql . '('
-                    . '\'' . DataUtil::formatForStore($obj['title']) . '\', '
-                    . '\'' . DataUtil::formatForStore($obj['content']) . '\', '
-                    . '\'' . DataUtil::formatForStore($extra) . '\', '
-                    . '\'' . DateUtil::formatDatetime($obj['cr_date']) . '\', '
-                    . '\'' . 'Pages' . '\', '
-                    . '\'' . DataUtil::formatForStore($sessionId) . '\')';
+            $sql = $insertSql . '(' . '\'' . DataUtil::formatForStore($obj['title']) . '\', ' . '\'' . DataUtil::formatForStore($obj['content']) . '\', ' . '\'' . DataUtil::formatForStore($extra) . '\', ' . '\'' . DateUtil::formatDatetime($obj['cr_date']) . '\', ' . '\'' . 'Pages' . '\', ' . '\'' . DataUtil::formatForStore($sessionId) . '\')';
             $insertResult = DBUtil::executeSQL($sql);
             if (!$insertResult) {
                 return LogUtil::registerError($this->__('Error! Could not load any page.'));
             }
         }
-
         return true;
     }
-
+    
     /**
      * Do last minute access checking and assign URL to items.
      *
@@ -180,12 +176,12 @@ class Pages_Api_Search extends Zikula_AbstractApi
      */
     public function search_check($args)
     {
-        $datarow = &$args['datarow'];
+    
+        $datarow =& $args['datarow'];
         $extra = unserialize($datarow['extra']);
-
         $params = array('pageid' => $extra['pageid'], 'cat' => $extra['cat']);
         $datarow['url'] = ModUtil::url('Pages', 'user', 'display', $params);
-
         return true;
     }
+
 }

@@ -12,7 +12,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
@@ -23,7 +22,12 @@ use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
  * @ORM\Entity
  * @ORM\Table(name="pages")
  */
-class Pages_Entity_Page extends Zikula_EntityAccess
+
+namespace Zikula\PagesModule\Entity;
+
+use Doctrine;
+
+class PageEntity extends \Zikula_EntityAccess
 {
 
     /**
@@ -156,15 +160,15 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      * @ORM\Column(type="string", length=1)
      */
     private $obj_status = 'A';
-
     /**
      * Constuctor
      */
     public function __construct()
     {
+    
         $this->categories = new Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * get pageid
      *
@@ -172,9 +176,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getPageid()
     {
+    
         return $this->pageid;
     }
-
+    
     /**
      * 'fake' setter so formcategoryselector doesn't blow up
      *
@@ -182,9 +187,9 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setPageid($pageid)
     {
-        // do nothing
+    
     }
-
+    
     /**
      * Get page title
      *
@@ -192,9 +197,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getTitle()
     {
+    
         return $this->title;
     }
-
+    
     /**
      * Set page title
      *
@@ -202,9 +208,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setTitle($title)
     {
+    
         $this->title = $title;
     }
-
+    
     /**
      * Get meta description
      *
@@ -212,9 +219,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getMetadescription()
     {
+    
         return $this->metadescription;
     }
-
+    
     /**
      * Set page meta description
      *
@@ -222,9 +230,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setMetadescription($metadescription)
     {
+    
         $this->metadescription = $metadescription;
     }
-
+    
     /**
      * Get meta keywords
      *
@@ -232,9 +241,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getMetakeywords()
     {
+    
         return $this->metakeywords;
     }
-
+    
     /**
      * Set page meta keywords
      *
@@ -242,9 +252,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setMetakeywords($metakeywords)
     {
+    
         $this->metakeywords = $metakeywords;
     }
-
+    
     /**
      * Get url title
      *
@@ -252,9 +263,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getUrltitle()
     {
+    
         return $this->urltitle;
     }
-
+    
     /**
      * Set page url title
      *
@@ -262,9 +274,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setUrltitle($urltitle)
     {
+    
         $this->urltitle = $urltitle;
     }
-
+    
     /**
      * Get content
      *
@@ -272,9 +285,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getContent()
     {
+    
         return $this->content;
     }
-
+    
     /**
      * Set page content
      *
@@ -282,9 +296,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setContent($content)
     {
+    
         $this->content = $content;
     }
-
+    
     /**
      * Get counter
      *
@@ -292,9 +307,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getCounter()
     {
+    
         return $this->counter;
     }
-
+    
     /**
      * Set page counter
      *
@@ -302,9 +318,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setCounter($counter)
     {
+    
         $this->counter = $counter;
     }
-
+    
     /**
      * Get display wrapper
      *
@@ -312,9 +329,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getDisplaywrapper()
     {
+    
         return $this->displaywrapper;
     }
-
+    
     /**
      * Set page display wrapper
      *
@@ -322,9 +340,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setDisplaywrapper($displaywrapper)
     {
+    
         $this->displaywrapper = $displaywrapper;
     }
-
+    
     /**
      * Get display title
      *
@@ -332,9 +351,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getDisplaytitle()
     {
+    
         return $this->displaytitle;
     }
-
+    
     /**
      * Set if title should be shown
      *
@@ -342,9 +362,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setDisplaytitle($displaytitle)
     {
+    
         $this->displaytitle = $displaytitle;
     }
-
+    
     /**
      * Get display created
      *
@@ -352,9 +373,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getDisplaycreated()
     {
+    
         return $this->displaycreated;
     }
-
+    
     /**
      * Set if the creator name and the creation time should be shown.
      *
@@ -362,9 +384,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setDisplaycreated($displaycreated)
     {
+    
         $this->displaycreated = $displaycreated;
     }
-
+    
     /**
      * Get display updated
      *
@@ -372,9 +395,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getdisplayupdated()
     {
+    
         return $this->displayupdated;
     }
-
+    
     /**
      * Get display text info
      *
@@ -382,9 +406,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getdisplaytextinfo()
     {
+    
         return $this->displaytextinfo;
     }
-
+    
     /**
      * Get display print
      *
@@ -392,9 +417,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getdisplayprint()
     {
+    
         return $this->displayprint;
     }
-
+    
     /**
      * Get page language
      *
@@ -402,9 +428,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getLanguage()
     {
+    
         return $this->language;
     }
-
+    
     /**
      * Set page language
      *
@@ -412,9 +439,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setLanguage($language)
     {
+    
         $this->language = $language;
     }
-
+    
     /**
      * Set if the updater name and the update time should be shown.
      *
@@ -422,9 +450,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setDisplayupdated($displayupdated)
     {
+    
         $this->displayupdated = $displayupdated;
     }
-
+    
     /**
      * Set if the text info should be shown.
      *
@@ -432,9 +461,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setDisplaytextinfo($displaytextinfo)
     {
+    
         $this->displaytextinfo = $displaytextinfo;
     }
-
+    
     /**
      * Set if print link should shown
      *
@@ -442,17 +472,19 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setDisplayprint($displayprint)
     {
+    
         $this->displayprint = $displayprint;
     }
-
+    
     /**
      * Increment page counter
      */
     public function incrementCounter()
     {
+    
         $this->counter++;
     }
-
+    
     /**
      * Set creator uid
      *
@@ -460,9 +492,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getCr_uid()
     {
+    
         return $this->cr_uid;
     }
-
+    
     /**
      * Get creation time
      *
@@ -470,9 +503,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getCr_date()
     {
+    
         return $this->cr_date;
     }
-
+    
     /**
      * Get last update uid
      *
@@ -480,9 +514,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getLu_uid()
     {
+    
         return $this->lu_uid;
     }
-
+    
     /**
      * Get last update date
      *
@@ -490,9 +525,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getLu_date()
     {
+    
         return $this->lu_date;
     }
-
+    
     /**
      * Get page categories
      *
@@ -500,9 +536,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getCategories()
     {
+    
         return $this->categories;
     }
-
+    
     /**
      * Set page categories
      *
@@ -510,9 +547,10 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function setCategories($categories)
     {
+    
         $this->categories = $categories;
     }
-
+    
     /**
      * Get object status
      *
@@ -520,6 +558,8 @@ class Pages_Entity_Page extends Zikula_EntityAccess
      */
     public function getObj_status()
     {
+    
         return $this->obj_status;
     }
+
 }

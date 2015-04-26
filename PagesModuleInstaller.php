@@ -13,11 +13,24 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\PagesModule;
+
+use DoctrineHelper;
+use LogUtil;
+use HookUtil;
+use CategoryRegistryUtil;
+use CategoryUtil;
+use Zikula_Exception;
+use ZLanguage;
+use Pages_Entity_Page;
+use Pages_Entity_Category;
+
 /**
  * Provides module installation and upgrade services.
  */
-class Pages_Installer extends Zikula_AbstractInstaller
+class PagesModuleInstaller extends \Zikula_AbstractInstaller
 {
+
     /**
      * initialise the module
      *
@@ -28,48 +41,30 @@ class Pages_Installer extends Zikula_AbstractInstaller
      */
     public function install()
     {
+    
         // create table
-        $entities = array(
-            'Pages_Entity_Page',
-            'Pages_Entity_Category'
-        );
+        $entities = array('Pages_Entity_Page', 'Pages_Entity_Category');
         try {
             DoctrineHelper::createSchema($this->entityManager, $entities);
         } catch (Exception $e) {
             LogUtil::registerStatus($e->getMessage());
             return false;
         }
-
         // insert default category
         try {
             $this->createCategoryTree();
         } catch (Exception $e) {
             LogUtil::registerError($this->__f('Did not create default categories (%s).', $e->getMessage()));
         }
-
         // set up config variables
-        $modvars = array(
-            'itemsperpage' => 25,
-            'enablecategorization' => true,
-            'addcategorytitletopermalink' => true,
-            'showpermalinkinput' => true,
-            'def_displaywrapper' => true,
-            'def_displaytitle' => true,
-            'def_displaycreated' => true,
-            'def_displayupdated' => true,
-            'def_displaytextinfo' => true,
-            'def_displayprint' => true
-        );
+        $modvars = array('itemsperpage' => 25, 'enablecategorization' => true, 'addcategorytitletopermalink' => true, 'showpermalinkinput' => true, 'def_displaywrapper' => true, 'def_displaytitle' => true, 'def_displaycreated' => true, 'def_displayupdated' => true, 'def_displaytextinfo' => true, 'def_displayprint' => true);
         $this->setVars($modvars);
-
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
-        
         $this->createIntroPage();
-
         // initialisation successful
         return true;
     }
-
+    
     /**
      * Upgrade the errors module from an old version
      *
@@ -82,15 +77,13 @@ class Pages_Installer extends Zikula_AbstractInstaller
      */
     public function upgrade($oldversion)
     {
+    
         // Only support upgrade from version 2.5.1 and up. Notify users if they have a version below that one.
         if (version_compare($oldversion, '2.5.1', '<=')) {
             $this->request->getSession()->getFlashBag()->add('error', $this->__('Notice: This version does not support upgrades from versions of Pages less than 2.5.1. Please upgrade to 2.5.1 before attempting this upgrade.'));
-
             return false;
         }
-
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '2.5.1':
                 // create categories table
                 try {
@@ -103,12 +96,10 @@ class Pages_Installer extends Zikula_AbstractInstaller
                 // then delete old data
                 $connection = $this->entityManager->getConnection();
                 $sqls = array();
-                $sqls[] = "INSERT INTO pages_category (entityId, registryId, categoryId) SELECT obj_id, reg_id, category_id FROM categories_mapobj WHERE modname = 'Pages' AND tablename = 'pages'";
-                $sqls[] = "DELETE FROM categories_mapobj WHERE modname = 'Pages' AND tablename = 'pages'";
-
+                $sqls[] = 'INSERT INTO pages_category (entityId, registryId, categoryId) SELECT obj_id, reg_id, category_id FROM categories_mapobj WHERE modname = \'Pages\' AND tablename = \'pages\'';
+                $sqls[] = 'DELETE FROM categories_mapobj WHERE modname = \'Pages\' AND tablename = \'pages\'';
                 // update category registry data to change tablename to EntityName
-                $sqls[] = "UPDATE categories_registry SET tablename = 'Pages' WHERE tablename = 'pages'";
-
+                $sqls[] = 'UPDATE categories_registry SET tablename = \'Pages\' WHERE tablename = \'pages\'';
                 // do changes
                 foreach ($sqls as $sql) {
                     $stmt = $connection->prepare($sql);
@@ -121,13 +112,11 @@ class Pages_Installer extends Zikula_AbstractInstaller
             case '2.6.0':
             case '2.6.1':
             case '3.0.0':
-                // future upgrades
         }
-
         // Update successful
         return true;
     }
-
+    
     /**
      * delete the errors module
      *
@@ -138,25 +127,19 @@ class Pages_Installer extends Zikula_AbstractInstaller
      */
     public function uninstall()
     {
+    
         // drop table
-        $entities = array(
-            'Pages_Entity_Page',
-            'Pages_Entity_Category'
-        );
+        $entities = array('Pages_Entity_Page', 'Pages_Entity_Category');
         DoctrineHelper::dropSchema($this->entityManager, $entities);
-
         // Delete any module variables
         $this->delVars();
-
         // Delete entries from category registry
         CategoryRegistryUtil::deleteEntry('Pages');
-
         HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
-
         // Deletion successful
         return true;
     }
-
+    
     /**
      * create the category tree
      *
@@ -167,45 +150,25 @@ class Pages_Installer extends Zikula_AbstractInstaller
      */
     private function createCategoryTree()
     {
+    
         // create category
-        CategoryUtil::createCategory(
-            '/__SYSTEM__/Modules',
-            'Pages',
-            null,
-            $this->__('Pages'),
-            $this->__('Static pages')
-        );
+        CategoryUtil::createCategory('/__SYSTEM__/Modules', 'Pages', null, $this->__('Pages'), $this->__('Static pages'));
         // create subcategory
-        CategoryUtil::createCategory(
-            '/__SYSTEM__/Modules/Pages',
-            'Category1',
-            null,
-            $this->__('Category 1'),
-            $this->__('Initial sub-category created on install'),
-            array('color' => '#99ccff')
-        );
-        CategoryUtil::createCategory(
-            '/__SYSTEM__/Modules/Pages',
-            'Category2',
-            null,
-            $this->__('Category 2'),
-            $this->__('Initial sub-category created on install'),
-            array('color' => '#cceecc')
-        );
+        CategoryUtil::createCategory('/__SYSTEM__/Modules/Pages', 'Category1', null, $this->__('Category 1'), $this->__('Initial sub-category created on install'), array('color' => '#99ccff'));
+        CategoryUtil::createCategory('/__SYSTEM__/Modules/Pages', 'Category2', null, $this->__('Category 2'), $this->__('Initial sub-category created on install'), array('color' => '#cceecc'));
         // get the category path to insert Pages categories
         $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/Pages');
         if ($rootcat) {
             // create an entry in the categories registry to the Main property
             if (!CategoryRegistryUtil::insertEntry('Pages', 'Page', 'Main', $rootcat['id'])) {
-                throw new Zikula_Exception("Cannot insert Category Registry entry.");
+                throw new Zikula_Exception('Cannot insert Category Registry entry.');
             }
         } else {
-            $this->throwNotFound("Root category not found.");
+            $this->throwNotFound('Root category not found.');
         }
-
         return true;
     }
-
+    
     /**
      * create a sample page
      *
@@ -213,21 +176,9 @@ class Pages_Installer extends Zikula_AbstractInstaller
      */
     private function createIntroPage()
     {
-        $content = $this->__(
-            'This is a demonstration page. You can use Pages to create simple static content pages. It is excellent '.
-            'if you only need basic html for your pages. You can also utilize the Scribite module for WYSIWYG '.
-            'content creation. It is well suited for informational articles, documents and other "long term" type '.
-            'content items.'.
-            '<br /><br />'.
-            'Pages is a hookable module which allows you to hook EZComments or other hook providers to extend the '.
-            'capabilities of your module.'
-        );
-        $data = array(
-            'title'           => $this->__('Welcome to Pages content manager'),
-            'urltitle'        => $this->__('welcome-to-pages-content-manager'),
-            'content'         => $content,
-            'language'        => ZLanguage::getLanguageCode()
-        );
+    
+        $content = $this->__('This is a demonstration page. You can use Pages to create simple static content pages. It is excellent ' . 'if you only need basic html for your pages. You can also utilize the Scribite module for WYSIWYG ' . 'content creation. It is well suited for informational articles, documents and other "long term" type ' . 'content items.' . '<br /><br />' . 'Pages is a hookable module which allows you to hook EZComments or other hook providers to extend the ' . 'capabilities of your module.');
+        $data = array('title' => $this->__('Welcome to Pages content manager'), 'urltitle' => $this->__('welcome-to-pages-content-manager'), 'content' => $content, 'language' => ZLanguage::getLanguageCode());
         $page = new Pages_Entity_Page();
         $page->merge($data);
         $this->entityManager->persist($page);
@@ -238,4 +189,5 @@ class Pages_Installer extends Zikula_AbstractInstaller
         $page->setCategories(array($categoryRelation));
         $this->entityManager->flush();
     }
+
 }

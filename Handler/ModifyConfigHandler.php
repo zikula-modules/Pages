@@ -13,11 +13,19 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\PagesModule\Handler;
+
+use SecurityUtil;
+use LogUtil;
+use Zikula_Exception_Forbidden;
+use ModUtil;
+
 /**
  * This class provides a handler to modify the module settings.
  */
-class Pages_Handler_ModifyConfig extends Zikula_Form_AbstractHandler
+class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
 {
+
     /**
      * Initialise the form handler
      *
@@ -27,16 +35,16 @@ class Pages_Handler_ModifyConfig extends Zikula_Form_AbstractHandler
      *
      * @throws Zikula_Exception_Forbidden If the current user does not have adequate permissions to perform this function.
      */
-    function initialize(Zikula_Form_View $view)
+    public function initialize(Zikula_Form_View $view)
     {
+    
         if (!SecurityUtil::checkPermission('Pages::', '::', ACCESS_ADMIN)) {
             throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
         }
         $view->assign($this->getVars());
-
         return true;
     }
-
+    
     /**
      * Handle form submission.
      *
@@ -45,18 +53,17 @@ class Pages_Handler_ModifyConfig extends Zikula_Form_AbstractHandler
      *
      * @return boolean|void
      */
-    function handleCommand(Zikula_Form_View $view, &$args)
+    public function handleCommand(Zikula_Form_View $view, &$args)
     {
+    
         if ($args['commandName'] == 'cancel') {
             $returnUrl = ModUtil::url($this->name, 'admin', 'modifyconfig');
             return $view->redirect($returnUrl);
         }
-        
         // check for valid form
         if (!$view->isValid()) {
             return false;
         }
-
         // load form values
         $data = $view->getValues();
         if ($data['itemsperpage'] < 1) {
@@ -64,7 +71,6 @@ class Pages_Handler_ModifyConfig extends Zikula_Form_AbstractHandler
         }
         $this->setVars($data);
         LogUtil::registerStatus($this->__('Done! Module configuration updated.'));
-
         return true;
     }
 

@@ -13,11 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\PagesModule;
+
+
 /**
  * Provides module util.
  */
-class Pages_Util
+class Util
 {
+
     /**
      * convert categories array to proper filter info
      *
@@ -27,34 +31,37 @@ class Pages_Util
      */
     public static function formatCategoryFilter($filtercats)
     {
+    
         if (is_array($filtercats)) {
             $catsarray = is_array($filtercats['__CATEGORIES__']) ? $filtercats['__CATEGORIES__'] : array('Main' => 0);
             foreach ($catsarray as $propname => $propid) {
-                if (is_array($propid)) { // select multiple used
+                if (is_array($propid)) {
+                    // select multiple used
                     foreach ($propid as $intKey => $intId) {
                         if ($intId <= 0) {
-                            unset($catsarray[$propname][$intKey]); // removes categories set to 'all' (0)
+                            unset($catsarray[$propname][$intKey]);
                         }
                         if (empty($catsarray[$propname])) {
                             unset($catsarray[$propname]);
                         }
                     }
-                } elseif (strstr($propid, ',')) { // category Zikula.UI.SelectMultiple used
+                } elseif (strstr($propid, ',')) {
+                    // category Zikula.UI.SelectMultiple used
                     $catsarray[$propname] = explode(',', $propid);
-                    // no propid should be '0' in this case
-                } else { // single selectbox used
+                } else {
+                    // single selectbox used
                     if ($propid <= 0) {
-                        unset($catsarray[$propname]); // removes categories set to 'all' (0)
+                        unset($catsarray[$propname]);
                     }
                 }
             }
             if (!empty($catsarray)) {
-                $catsarray['__META__']['module'] = "Pages"; // required for search operation
+                $catsarray['__META__']['module'] = 'Pages';
             }
         } else {
             $catsarray = array();
         }
-
         return $catsarray;
     }
+
 }
