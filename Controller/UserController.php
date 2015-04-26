@@ -16,30 +16,39 @@
 namespace Zikula\PagesModule\Controller;
 
 use SecurityUtil;
-use LogUtil;
-use FormUtil;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 use ModUtil;
 use ZLanguage;
 use CategoryUtil;
 use Zikula\PagesModule\Manager\PageManager;
 use System;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * Class UserController
+ * @package Zikula\PagesModule\Controller
+ */
 class UserController extends \Zikula_AbstractController
 {
-
     /**
      * list all pages
      *
-     * @param array $args Arguments.
+     * @param Request $request
      *
-     * @return string html string
+     * @throws AccessDeniedException
+     *
+     * @return Response html string
      */
-    public function listPagesAction($args)
+    public function listPagesAction(Request $request)
     {
-    
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ), LogUtil::getErrorMsgPermission());
-        $startnum = (int) FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 1, 'GET');
+        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+            throw new AccessDeniedException();
+        }
+        $startnum = $request->query->get('startnum', 1);
         $this->view->assign('startnum', $startnum);
         $pages = new PageCollectionManager();
         $pages->setStartNumber($startnum);
@@ -48,64 +57,73 @@ class UserController extends \Zikula_AbstractController
         $this->view->assign('pages', $pages->get());
         // assign the values for the smarty plugin to produce a pager
         $this->view->assign('pager', $pages->getPager());
-        return $this->view->fetch('User/listpages.tpl');
+
+        return new Response($this->view->fetch('User/listpages.tpl'));
     }
     
     /**
-     * the main user function
+     * the index user function
      *
-     * @param array $args Arguments.
+     * @param Request $request
      *
-     * @return string html string
+     * @return RedirectResponse html string
      */
-    public function mainAction($args)
+    public function indexAction(Request $request)
     {
-    
         if (!$this->getVar('enablecategorization')) {
             // list all pages
-            return $this->listPagesAction($args);
+            return new RedirectResponse(\ModUtil::url($this->name, 'user', 'listPages'));
         } else {
             // show a list of the categories
-            return $this->categoriesAction();
+            return new RedirectResponse(\ModUtil::url($this->name, 'user', 'categories'));
         }
     }
     
     /**
-     * list all categories
+     * list all categories of pages
      *
-     * @return string html string
+     * @param Request $request
+     *
+     * @throws AccessDeniedException
+     *
+     * @return Response html string
      */
-    public function categoriesAction()
+    public function categoriesAction(Request $request)
     {
-    
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ), LogUtil::getErrorMsgPermission());
+        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+            throw new AccessDeniedException();
+        }
         $this->view->setCacheId('main');
         if ($this->view->is_cached('User/main.tpl')) {
-            return $this->view->fetch('User/main.tpl');
+            return new Response($this->view->fetch('User/main.tpl'));
         }
         // get the categories registered for the Pages
         list($properties, $propertiesdata) = ModUtil::apiFunc($this->name, 'user', 'getCategories');
         // Assign some useful vars to customize the main
         $this->view->assign('properties', $properties);
         $this->view->assign('propertiesdata', $propertiesdata);
-        return $this->view->fetch('User/main.tpl');
+
+        return new Response($this->view->fetch('User/main.tpl'));
     }
     
     /**
-     * view items
+     * view page list
      *
-     * @param array $args Arguments.
+     * @param Request $request
      *
-     * @return string html string
+     * @throws AccessDeniedException
+     *
+     * @return Response html string
      */
-    public function viewAction($args)
+    public function viewAction(Request $request)
     {
-    
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
+        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_OVERVIEW)) {
+            throw new AccessDeniedException();
+        }
         $lang = ZLanguage::getLanguageCode();
-        $startnum = (int) FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 1, 'GET');
-        $prop = (string) FormUtil::getPassedValue('prop', isset($args['prop']) ? $args['prop'] : null, 'GET');
-        $cat = (string) FormUtil::getPassedValue('cat', isset($args['cat']) ? $args['cat'] : null, 'GET');
+        $startnum = $request->query->get('startnum', 1);
+        $prop = $request->query->get('prop', null);
+        $cat = $request->query->get('cat', null);
         $this->view->assign('startnum', $startnum);
         $itemsperpage = $this->getVar('itemsperpage');
         $this->view->assign('action', '');
@@ -129,29 +147,33 @@ class UserController extends \Zikula_AbstractController
         // Return the output that has been generated by this function
         // is not practical to check for is_cached earlier in this method.
         $this->view->setCacheId('view|prop_' . $prop . '_cat_' . $cat . '|stnum_' . $startnum . '_' . $itemsperpage);
-        return $this->view->fetch('User/view.tpl');
+
+        return new Response($this->view->fetch('User/view.tpl'));
     }
     
     /**
-     * display item
+     * display page
      *
-     * @param $args array Arguments array.
+     * @param Request $request
      *
-     * @return string html string
+     * @throws \InvalidArgumentException
+     * @throws NotFoundHttpException
+     *
+     * @return Response html string
      */
-    public function displayAction($args)
+    public function displayAction(Request $request)
     {
-    
-        $pageid = FormUtil::getPassedValue('pageid', isset($args['pageid']) ? $args['pageid'] : null, 'REQUEST');
-        $title = FormUtil::getPassedValue('title', isset($args['title']) ? $args['title'] : null, 'REQUEST');
-        $page = FormUtil::getPassedValue('page', isset($args['page']) ? $args['page'] : null, 'REQUEST');
-        $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
+        $pageid = $request->request->get('pageid', null);
+        $title = $request->request->get('title', null);
+        $page = $request->request->get('page', null);
+        $objectid = $request->request->get('objectid', null);
+
         if (!empty($objectid)) {
             $pageid = $objectid;
         }
         // Validate the essential parameters
         if ((empty($pageid) || !is_numeric($pageid)) && empty($title)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException();
         }
         if (!empty($title)) {
             unset($pageid);
@@ -182,7 +204,7 @@ class UserController extends \Zikula_AbstractController
             $incrementresult = ModUtil::apiFunc($this->name, 'user', 'incrementreadcount', array('title' => $title));
         }
         if ($incrementresult === false) {
-            return LogUtil::registerError($this->__('No such page found.'), 404);
+            throw new NotFoundHttpException($this->__('No such page found.'));
         }
         // determine which template to render this page with
         // A specific template may exist for this page (based on page id)
@@ -193,17 +215,17 @@ class UserController extends \Zikula_AbstractController
         }
         // check if the contents are cached.
         if ($this->view->is_cached($template)) {
-            return $this->view->fetch($template);
+            return new Response($this->view->fetch($template));
         }
         // The return value of the function is checked here
         if ($item === false) {
-            return LogUtil::registerError($this->__('No such page found.'), 404);
+            throw new NotFoundHttpException($this->__('No such page found.'));
         }
-        // Explode the page into an array of seperate pages based upon the pagebreak
+        // Explode the page into an array of separate pages based upon the pagebreak
         $allpages = explode('<!--pagebreak-->', $item['content']);
         // validates that the requested page exists
         if (!isset($allpages[$page - 1])) {
-            return LogUtil::registerError($this->__('No such page found.'), 404);
+            throw new NotFoundHttpException($this->__('No such page found.'));
         }
         // Set the item content to be the required page
         // nb arrays start from zero pages from one
@@ -222,7 +244,7 @@ class UserController extends \Zikula_AbstractController
         // Now lets assign the informatation to create a pager for the review
         $pager = array('numitems' => $numitems, 'itemsperpage' => 1);
         $this->view->assign('pager', $pager);
-        return $this->view->fetch($template);
+        return new Response($this->view->fetch($template));
     }
 
 }

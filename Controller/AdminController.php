@@ -12,6 +12,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\PagesModule\Controller;
 
 use Zikula_View;
@@ -23,64 +24,74 @@ use \Zikula\PagesModule\Util as PagesUtil;
 use CategoryRegistryUtil;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 use ZLanguage;
-use System;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * Class AdminController
+ * @package Zikula\PagesModule\Controller
+ */
 class AdminController extends \Zikula_AbstractController
 {
-
     public function postInitializeAction()
     {
-    
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
     }
     
     /**
      * the main administration function
      *
-     * @return string HTML output
+     * @param Request $request
+     *
+     * @return RedirectResponse HTML output
      */
-    public function mainAction()
+    public function indexAction(Request $request)
     {
-    
-        $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
+        return new RedirectResponse(\ModUtil::url($this->name, 'admin', 'view'));
     }
     
     /**
      * modify a page
      *
-     * @param 'pageid' the id of the item to be modified
-     * @return string HTML output
+     * @param Request $request
+     *
+     * @return Response HTML output
      */
-    public function modifyAction()
+    public function modifyAction(Request $request)
     {
-    
         $form = FormUtil::newForm($this->name, $this);
-        return $form->execute('Admin/modify.tpl', new \Zikula\PagesModule\Handler\ModifyHandler());
+
+        return new Response($form->execute('Admin/modify.tpl', new \Zikula\PagesModule\Handler\ModifyHandler()));
     }
     
     /**
      * delete item
      *
-     * @return mixed string HTML output if no confirmation otherwise true
+     * @param Request $request
+     *
+     * @return Response HTML output
      */
-    public function deleteAction()
+    public function deleteAction(Request $request)
     {
-    
         $form = FormUtil::newForm($this->name, $this);
-        return $form->execute('Admin/delete.tpl', new \Zikula\PagesModule\Handler\DeleteHandler());
+
+        return new Response($form->execute('Admin/delete.tpl', new \Zikula\PagesModule\Handler\DeleteHandler()));
     }
     
     /**
      * view items
      *
-     * @param array $args Arguments.
+     * @param Request $request
      *
-     * @return string HTML output
+     * @return Response HTML output
      */
-    public function viewAction($args)
+    public function viewAction(Request $request)
     {
-    
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_EDIT), LogUtil::getErrorMsgPermission());
+        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
         // initialize sort array - used to display sort classes and urls
         $sort = array();
         $fields = array('pageid', 'title', 'cr_date');
@@ -89,26 +100,20 @@ class AdminController extends \Zikula_AbstractController
             $sort['class'][$field] = 'z-order-unsorted';
         }
         // Get parameters from whatever input we need.
-        $startnum = (int) FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 1, 'GETPOST');
-        $language = FormUtil::getPassedValue('language', isset($args['language']) ? $args['language'] : null, 'POST');
-        $orderby = FormUtil::getPassedValue('orderby', isset($args['orderby']) ? $args['orderby'] : 'pageid', 'GETPOST');
-        $originalSdir = FormUtil::getPassedValue('sdir', isset($args['sdir']) ? $args['sdir'] : 'ASC', 'GETPOST');
+        $startnum = $request->get('startnum', 1);
+        $language = $request->request->get('language', null);
+        $orderby = $request->get('orderby', 'pageid');
+        $originalSdir = $request->get('sdir', 'ASC');
+
         $this->view->assign('startnum', $startnum);
         $this->view->assign('orderby', $orderby);
         $this->view->assign('sdir', $originalSdir);
         $sdir = $originalSdir ? 0 : 1;
-        //if true change to false, if false change to true
-        // change class for selected 'orderby' field to asc/desc
-        if ($sdir == 0) {
-            $sort['class'][$orderby] = 'z-order-desc';
-            $orderdir = 'DESC';
-        }
-        if ($sdir == 1) {
-            $sort['class'][$orderby] = 'z-order-asc';
-            $orderdir = 'ASC';
-        }
-        $filtercats = FormUtil::getPassedValue('pages', null, 'GETPOST');
-        $filtercatsSerialized = FormUtil::getPassedValue('filtercats_serialized', false, 'GET');
+        $sort['class'][$orderby] = ($sdir == 0) ? 'z-order-desc' : 'z-order-asc';
+        $orderdir = ($sdir == 0) ? 'DESC' : 'ASC';
+
+        $filtercats = $request->get('pages', null);
+        $filtercatsSerialized = $request->query->get('filtercats_serialized', false);
         $filtercats = $filtercatsSerialized ? unserialize($filtercatsSerialized) : $filtercats;
         $catsarray = PagesUtil::formatCategoryFilter($filtercats);
         // complete initialization of sort array, adding urls
@@ -149,37 +154,45 @@ class AdminController extends \Zikula_AbstractController
             }
         }
         $this->view->assign('selectedcategories', $selectedcategories);
-        // Return the output that has been generated by this function
-        return $this->view->fetch('Admin/view.tpl');
+
+        return new Response($this->view->fetch('Admin/view.tpl'));
     }
     
     /**
      * purge permalinks
      *
-     * @return void
+     * @param Request $request
+     *
+     * @return RedirectResponse
      */
-    public function purgeAction()
+    public function purgeAction(Request $request)
     {
-    
+        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
         if (ModUtil::apiFunc($this->name, 'admin', 'purgepermalinks')) {
             LogUtil::registerStatus($this->__('Purging of the pemalinks was successful'));
         } else {
             LogUtil::registerError($this->__('Purging of the pemalinks has failed'));
         }
-        $url = strpos(System::serverGetVar('HTTP_REFERER'), 'purge') ? ModUtil::url($this->name, 'admin', 'view') : System::serverGetVar('HTTP_REFERER');
-        return \System::redirect($url);
+        $referer = $request->headers->get('referer');
+        $url = strpos($referer, 'purge') ? ModUtil::url($this->name, 'admin', 'view') : $referer;
+
+        return new RedirectResponse($url);
     }
     
     /**
      * modify module configuration
      *
-     * @return string HTML output string
+     * @param Request $request
+     *
+     * @return Response HTML output string
      */
-    public function modifyconfigAction()
+    public function modifyconfigAction(Request $request)
     {
-    
         $form = FormUtil::newForm($this->name, $this);
-        return $form->execute('Admin/modifyconfig.tpl', new \Zikula\PagesModule\Handler\ModifyConfigHandler());
+
+        return new Response($form->execute('Admin/modifyconfig.tpl', new \Zikula\PagesModule\Handler\ModifyConfigHandler()));
     }
 
 }

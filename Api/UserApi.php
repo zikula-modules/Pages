@@ -26,9 +26,12 @@ use Zikula_View;
 use Zikula_View_Theme;
 use CategoryRegistryUtil;
 
+/**
+ * Class UserApi
+ * @package Zikula\PagesModule\Api
+ */
 class UserApi extends \Zikula_AbstractApi
 {
-
     /**
      * get a specific item
      *
@@ -40,6 +43,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $page = new PageManager($this->getEntityManager());
         $page->find($args);
+
         return $page->toArray();
     }
     
@@ -71,6 +75,7 @@ class UserApi extends \Zikula_AbstractApi
             $orderdir = $args['orderdir'];
         }
         $pages->setOrder($orderby, $orderdir);
+
         return $pages->get();
     }
     
@@ -93,10 +98,12 @@ class UserApi extends \Zikula_AbstractApi
                 ->join('p.categories', 'c')
                 ->where('c.category = :categories')
                 ->setParameter('categories', $args['category']);
+
             return $qb->getQuery()->getSingleScalarResult();
         }
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('count(p)')->from('ZikulaPagesModule:PageEntity', 'p');
+
         return $qb->getQuery()->getSingleScalarResult();
     }
     
@@ -111,143 +118,8 @@ class UserApi extends \Zikula_AbstractApi
     {
         $page = new PageManager($this->getEntityManager());
         $page->find($args);
+
         return $page->incrementReadCount();
-    }
-    
-    /**
-     * form custom url string
-     *
-     * @param array $args Arguments array.
-     *
-     * @return string custom url string
-     */
-    public function encodeurl($args)
-    {
-        // check we have the required input
-        if (!isset($args['modname']) || !isset($args['func']) || !isset($args['args'])) {
-            return LogUtil::registerArgsError();
-        }
-        if (!isset($args['type'])) {
-            $args['type'] = 'user';
-        }
-        // create an empty string ready for population
-        $vars = '';
-        // view function
-        if ($args['func'] == 'view' && isset($args['args']['prop'])) {
-            $vars = $args['args']['prop'];
-            if (isset($args['args']['cat'])) {
-                $vars .= '/' . $args['args']['cat'];
-            }
-            if (isset($args['args']['startnum']) && $args['args']['startnum'] != 1) {
-                $vars .= (empty($vars) ? '' : '/') . 'startnum/' . $args['args']['startnum'];
-            }
-        }
-        // for the display function use either the title (if present) or the page id
-        if ($args['func'] == 'display') {
-            // check for the generic object id parameter
-            if (isset($args['args']['objectid'])) {
-                $args['args']['pageid'] = $args['args']['objectid'];
-            }
-            // get the item (will be cached by doctrine)
-            if (isset($args['args']['pageid'])) {
-                $findBy = array('pageid' => $args['args']['pageid']);
-            } else {
-                $findBy = array('title' => $args['args']['title']);
-            }
-            $page = new PageManager($this->getEntityManager());
-            $page->find($findBy);
-            $item = $page->get();
-            /**
-             * @var \Zikula\PagesModule\Entity\CategoryEntity $category
-             */
-            $category = $page->get()->getCategories()->first();
-            if (ModUtil::getVar($this->name, 'addcategorytitletopermalink') && $category) {
-                $vars = $category->getCategory()->getName() . '/' . $item['urltitle'];
-            } else {
-                $vars = $item['urltitle'];
-            }
-            if (isset($args['args']['page']) && $args['args']['page'] != 1) {
-                $vars .= '/page/' . $args['args']['page'];
-            }
-        }
-        // construct the custom url part
-        if (empty($args['func']) && empty($vars)) {
-            return $args['modname'] . '/';
-        } elseif (empty($args['func'])) {
-            return $args['modname'] . '/' . $vars . '/';
-        } elseif (empty($vars)) {
-            return $args['modname'] . '/' . $args['func'] . '/';
-        } else {
-            return $args['modname'] . '/' . $args['func'] . '/' . $vars . '/';
-        }
-    }
-    
-    /**
-     * decode the custom url string
-     *
-     * @param array $args Arguments array.
-     *
-     * @return bool true if successful, false otherwise
-     */
-    public function decodeurl($args)
-    {
-        // check we actually have some vars to work with...
-        if (!isset($args['vars'])) {
-            return LogUtil::registerArgsError();
-        }
-        // define the available user functions
-        $funcs = array('main', 'view', 'display');
-        // set the correct function name based on our input
-        if (empty($args['vars'][2])) {
-            System::queryStringSetVar('func', 'main');
-        } elseif (!in_array($args['vars'][2], $funcs)) {
-            System::queryStringSetVar('func', 'display');
-            $nextvar = 2;
-        } else {
-            System::queryStringSetVar('func', $args['vars'][2]);
-            $nextvar = 3;
-        }
-        // add the category info
-        if (FormUtil::getPassedValue('func') == 'view' && isset($args['vars'][$nextvar])) {
-            // get rid of unused vars
-            $args['vars'] = array_slice($args['vars'], $nextvar);
-            System::queryStringSetVar('prop', (string) $args['vars'][0]);
-            if (isset($args['vars'][1])) {
-                // check if there's a page arg
-                $varscount = count($args['vars']);
-                $args['vars'][$varscount - 2] == 'startnum' ? $pagersize = 2 : ($pagersize = 0);
-                System::queryStringSetVar('startnum', $args['vars'][$varscount - 1]);
-                // extract the category path
-                $cat = implode('/', array_slice($args['vars'], 1, $varscount - $pagersize - 1));
-                $category = CategoryUtil::getCategoryByPath($cat, 'name');
-                System::queryStringSetVar('cat', $category['id']);
-            }
-        }
-        // identify the correct parameter to identify the page
-        if (FormUtil::getPassedValue('func') == 'display') {
-            // get rid of unused vars
-            $args['vars'] = array_slice($args['vars'], $nextvar);
-            $nextvar = 0;
-            // remove any category path down to the leaf category
-            $varscount = count($args['vars']);
-            if (ModUtil::getVar($this->name, 'addcategorytitletopermalink') && count($args['vars']) == 4 || count($args['vars']) == 2) {
-                $args['vars'][$varscount - 2] == 'page' ? $pagersize = 2 : ($pagersize = 0);
-                $cat = array_slice($args['vars'], 0, $varscount - 1 - $pagersize);
-                $category = CategoryUtil::getCategoryByPath($cat, 'name');
-                System::queryStringSetVar('cat', $category['id']);
-                array_splice($args['vars'], 0, $varscount - 1 - $pagersize);
-            }
-            if (is_numeric($args['vars'][$nextvar])) {
-                System::queryStringSetVar('pageid', $args['vars'][$nextvar]);
-            } else {
-                System::queryStringSetVar('title', $args['vars'][$nextvar]);
-            }
-            $nextvar++;
-            if (isset($args['vars'][$nextvar]) && $args['vars'][$nextvar] == 'page') {
-                System::queryStringSetVar('page', (int) $args['vars'][$nextvar + 1]);
-            }
-        }
-        return true;
     }
     
     /**
@@ -257,7 +129,17 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getmodulemeta()
     {
-        return array('viewfunc' => 'view', 'displayfunc' => 'display', 'newfunc' => 'new', 'createfunc' => 'create', 'modifyfunc' => 'modify', 'updatefunc' => 'update', 'deletefunc' => 'delete', 'titlefield' => 'title', 'itemid' => 'pageid');
+        return array(
+            'viewfunc' => 'view',
+            'displayfunc' => 'display',
+            'newfunc' => 'new',
+            'createfunc' => 'create',
+            'modifyfunc' => 'modify',
+            'updatefunc' => 'update',
+            'deletefunc' => 'delete',
+            'titlefield' => 'title',
+            'itemid' => 'pageid'
+        );
     }
     
     /**
@@ -325,6 +207,7 @@ class UserApi extends \Zikula_AbstractApi
                 $propertiesdata[] = array('name' => $property, 'rootcat' => $rootcat, 'subcategories' => $subcategories);
             }
         }
+
         return array($properties, $propertiesdata);
     }
 

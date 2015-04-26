@@ -20,6 +20,10 @@ use LogUtil;
 use DataUtil;
 use ModUtil;
 
+/**
+ * Class AdminApi
+ * @package Zikula\PagesModule\Api
+ */
 class AdminApi extends \Zikula_AbstractApi
 {
     /**
@@ -38,6 +42,7 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
         $this->entityManager->flush();
+
         return true;
     }
     
@@ -59,6 +64,7 @@ class AdminApi extends \Zikula_AbstractApi
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'purge'), 'text' => $this->__('Purge permalinks'), 'icon' => 'refresh');
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
         }
+
         return $links;
     }
     
@@ -80,6 +86,7 @@ class AdminApi extends \Zikula_AbstractApi
             $qb->andWhere('p.pageid != :pageid')->setParameter('pageid', $args['pageid']);
         }
         $count = $qb->getQuery()->getSingleScalarResult();
+
         return !(bool) $count;
     }
 

@@ -21,11 +21,11 @@ use ModUtil;
 use FormUtil;
 
 /**
- * A pages list block.
+ * Class PageBlock
+ * @package Zikula\PagesModule\Block
  */
 class PageBlock extends \Zikula_Controller_AbstractBlock
 {
-
     /**
      * Initialise block.
      *
@@ -33,9 +33,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
      */
     public function init()
     {
-    
-        // Security
-        SecurityUtil::registerPermissionSchema('Pages:pageblock:', 'Block title::');
+        SecurityUtil::registerPermissionSchema('ZikulaPagesModule:pageblock:', 'Block title::');
     }
     
     /**
@@ -45,7 +43,6 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-    
         return array(
             'module' => $this->name,
             'text_type' => $this->__('Show page'),
@@ -67,9 +64,8 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
      */
     public function display($blockinfo)
     {
-    
         // Security check
-        if (!SecurityUtil::checkPermission('Pages:pageblock:', "{$blockinfo['title']}::", ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaPagesModule:pageblock:', "{$blockinfo['title']}::", ACCESS_READ)) {
             return false;
         }
         // Get variables from content block
@@ -97,6 +93,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
         $this->view->assign($item);
         // Populate block info and pass to theme
         $blockinfo['content'] = $this->view->fetch('Block/pageblock_display.tpl');
+
         return BlockUtil::themeBlock($blockinfo);
     }
     
@@ -109,7 +106,6 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
      */
     public function modify($blockinfo)
     {
-    
         // create the output object
         $this->view->setCaching(false);
         // Get current content and assign it
@@ -118,6 +114,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
         // Get all pages and assign them
         $pages = ModUtil::apiFunc($this->name, 'user', 'getall');
         $this->view->assign('pages', $pages);
+
         return $this->view->fetch('Block/pageblock_modify.tpl');
     }
     
@@ -130,7 +127,6 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
      */
     public function update($blockinfo)
     {
-    
         // get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
         // alter the corresponding variable
@@ -139,6 +135,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
         // clear the block cache
         $this->view->clear_cache('Block/pageslist.tpl');
+
         return $blockinfo;
     }
 
