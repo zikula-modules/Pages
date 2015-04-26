@@ -27,9 +27,9 @@
             {/if}
             &nbsp;&nbsp;
             <button class="btn btn-default btn-sm" name="submit" type="submit" >
-                <i class="fa fa-filter"></i>{gt text='Filter'}
+                <i class="fa fa-filter fa-lg"></i> {gt text='Filter'}
             </button>
-            <a href="{modurl modname="Pages" type='admin' func='view'}" title="{gt text="Clear"}" class="btn btn-default btn-sm"><i class="fa fa-times"></i> {gt text="Clear"}</a>
+            <a href="{modurl modname="Pages" type='admin' func='view'}" title="{gt text="Clear"}" class="btn btn-default btn-sm"><i class="fa fa-times fa-lg"></i> {gt text="Clear"}</a>
         </div>
     </fieldset>
 </form>

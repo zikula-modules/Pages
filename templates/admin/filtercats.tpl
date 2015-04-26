@@ -14,7 +14,7 @@
         allText=$allText
         allValue=0}
     <a href='' id='pages___CATEGORIES____{$property}__open'>
-        {img modname="core" src="xedit.png" set="icons/extrasmall" __alt="Select Multiple" __title="Select Multiple"}
+        <i class="fa fa-pencil fa-lg text-danger" title="{gt text="Select Multiple"}"></i>
     </a>
     <script type="text/javascript">
         var pages___CATEGORIES____{{$property}}_ = new Zikula.UI.SelectMultiple(
