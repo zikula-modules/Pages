@@ -1,6 +1,6 @@
-{pageaddvar name='javascript' value='modules/Pages/javascript/select2/select2.min.js'}
-{pageaddvar name='stylesheet' value='modules/Pages/javascript/select2/select2.css'}
-{pageaddvar name='stylesheet' value='modules/Pages/javascript/select2/select2-bootstrap.css'}
+{pageaddvar name='javascript' value='@ZikulaPagesModule/Resources/public/js/select2/select2.min.js'}
+{pageaddvar name='stylesheet' value='@ZikulaPagesModule/Resources/public/js/select2/select2.css'}
+{pageaddvar name='stylesheet' value='@ZikulaPagesModule/Resources/public/js/select2/select2-bootstrap.css'}
 
 <div class="form-group">
     <label for="htmlpages_pid" class="col-lg-3 control-label">
