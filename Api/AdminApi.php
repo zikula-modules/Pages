@@ -55,14 +55,14 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $links = array();
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view'), 'text' => $this->__('Pages list'), 'icon' => 'list');
+            $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_admin_view'), 'text' => $this->__('Pages list'), 'icon' => 'list');
         }
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'modify'), 'text' => $this->__('Create a page'), 'icon' => 'plus');
+            $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_admin_modify'), 'text' => $this->__('Create a page'), 'icon' => 'plus');
         }
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'purge'), 'text' => $this->__('Purge permalinks'), 'icon' => 'refresh');
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
+            $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_admin_purge'), 'text' => $this->__('Purge permalinks'), 'icon' => 'refresh');
+            $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_admin_modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
         }
 
         return $links;

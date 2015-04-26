@@ -82,7 +82,7 @@ class DeleteHandler extends \Zikula_Form_AbstractHandler
     public function handleCommand(\Zikula_Form_View $view, &$args)
     {
     
-        $returnUrl = ModUtil::url($this->name, 'admin', 'view');
+        $returnUrl = $view->getContainer()->get('router')->generate('zikulapagesmodule_admin_view');
         if ($args['commandName'] == 'cancel') {
             return $view->redirect($returnUrl);
         }

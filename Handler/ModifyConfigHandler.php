@@ -55,7 +55,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
     public function handleCommand(\Zikula_Form_View $view, &$args)
     {
         if ($args['commandName'] == 'cancel') {
-            $returnUrl = ModUtil::url($this->name, 'admin', 'modifyconfig');
+            $returnUrl = $view->getContainer()->get('router')->generate('zikulapagesmodule_admin_modifyconfig');
             return $view->redirect($returnUrl);
         }
         // check for valid form

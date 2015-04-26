@@ -28,10 +28,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 
 /**
  * Class AdminController
  * @package Zikula\PagesModule\Controller
+ *
+ * @Route("/admin")
  */
 class AdminController extends \Zikula_AbstractController
 {
@@ -41,6 +45,8 @@ class AdminController extends \Zikula_AbstractController
     }
     
     /**
+     * @Route("")
+     *
      * the main administration function
      *
      * @param Request $request
@@ -49,10 +55,12 @@ class AdminController extends \Zikula_AbstractController
      */
     public function indexAction(Request $request)
     {
-        return new RedirectResponse(\ModUtil::url($this->name, 'admin', 'view'));
+        return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_admin_view'));
     }
     
     /**
+     * @Route("/modify")
+     *
      * modify a page
      *
      * @param Request $request
@@ -67,6 +75,8 @@ class AdminController extends \Zikula_AbstractController
     }
     
     /**
+     * @Route("/delete")
+     *
      * delete item
      *
      * @param Request $request
@@ -81,6 +91,8 @@ class AdminController extends \Zikula_AbstractController
     }
     
     /**
+     * @Route("/view")
+     *
      * view items
      *
      * @param Request $request
@@ -119,7 +131,7 @@ class AdminController extends \Zikula_AbstractController
         // complete initialization of sort array, adding urls
         foreach ($fields as $field) {
             $params = array('language' => $language, 'filtercats_serialized' => serialize($filtercats), 'orderby' => $field, 'sdir' => $sdir);
-            $sort['url'][$field] = ModUtil::url($this->name, 'admin', 'view', $params);
+            $sort['url'][$field] = $this->get('router')->generate('zikulapagesmodule_admin_view', $params);
         }
         $this->view->assign('sort', $sort);
         $this->view->assign('filter_active', empty($language) && empty($catsarray) ? false : true);
@@ -159,6 +171,8 @@ class AdminController extends \Zikula_AbstractController
     }
     
     /**
+     * @Route("/purge")
+     *
      * purge permalinks
      *
      * @param Request $request
@@ -176,12 +190,14 @@ class AdminController extends \Zikula_AbstractController
             LogUtil::registerError($this->__('Purging of the pemalinks has failed'));
         }
         $referer = $request->headers->get('referer');
-        $url = strpos($referer, 'purge') ? ModUtil::url($this->name, 'admin', 'view') : $referer;
+        $url = strpos($referer, 'purge') ? $this->get('router')->generate('zikulapagesmodule_admin_view') : $referer;
 
         return new RedirectResponse($url);
     }
     
     /**
+     * @Route("/config")
+     *
      * modify module configuration
      *
      * @param Request $request

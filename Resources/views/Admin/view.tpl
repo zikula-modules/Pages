@@ -7,7 +7,7 @@
 
 
 {if ($modvars.ZConfig.multilingual OR $modvars.$module.enablecategorization)}
-<form class="form form-inline" action="{modurl modname='ZikulaPagesModule' type='admin' func='view'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form form-inline" action="{route name='zikulapagesmodule_admin_view'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset{if $filter_active} class='filteractive'{/if}>
         {if $filter_active}{gt text='active' assign='filteractive'}{else}{gt text='inactive' assign='filteractive'}{/if}
         <legend>{gt text='Filter %1$s, %2$s page listed' plural='Filter %1$s, %2$s pages listed' count=$pager.numitems tag1=$filteractive tag2=$pager.numitems}</legend>
@@ -29,7 +29,7 @@
             <button class="btn btn-default btn-sm" name="submit" type="submit" >
                 <i class="fa fa-filter fa-lg"></i> {gt text='Filter'}
             </button>
-            <a href="{modurl modname="Pages" type='admin' func='view'}" title="{gt text="Clear"}" class="btn btn-default btn-sm"><i class="fa fa-times fa-lg"></i> {gt text="Clear"}</a>
+            <a href="{route name='zikulapagesmodule_admin_view'}" title="{gt text="Clear"}" class="btn btn-default btn-sm"><i class="fa fa-times fa-lg"></i> {gt text="Clear"}</a>
         </div>
     </fieldset>
 </form>
@@ -66,9 +66,9 @@
             {/if}
             <td>{$page.cr_date|dateformat|safehtml}</td>
             <td class="actions">
-                <a href="{modurl modname='ZikulaPagesModule' type='user'  func='display' pageid=$page.pageid}" class="fa fa-eye"></a>
-                <a href="{modurl modname='ZikulaPagesModule' type='admin' func='modify'  pageid=$page.pageid}" class="fa fa-pencil"></a>
-                <a href="{modurl modname='ZikulaPagesModule' type='admin' func='delete'  pageid=$page.pageid}" class="fa fa-trash-o"></a>
+                <a href="{route name='zikulapagesmodule_user_display' pageid=$page.pageid}" class="fa fa-eye"></a>
+                <a href="{route name='zikulapagesmodule_admin_modify' pageid=$page.pageid}" class="fa fa-pencil"></a>
+                <a href="{route name='zikulapagesmodule_admin_delete' pageid=$page.pageid}" class="fa fa-trash-o"></a>
             </td>
         </tr>
         {foreachelse}
@@ -88,5 +88,5 @@
     </tbody>
 </table>
 
-{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulapagesmodule_admin_view'}
 {adminfooter}

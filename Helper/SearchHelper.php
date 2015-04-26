@@ -90,7 +90,7 @@ class SearchHelper extends AbstractSearchable
                 'created' => $page->getCr_date(),
                 'module' => $this->name,
                 'sesid' => $sessionId,
-                'url' => ModUtil::url($this->name, 'user', 'display', $params)
+                'url' => RouteUrl::createFromRoute('zikulapagesmodule_user_display', $params)
             );
         }
 

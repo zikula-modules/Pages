@@ -1,0 +1,3 @@
+zikulapagesmodule:
+    resource: "@ZikulaPagesModule/Controller"
+    type:     annotation

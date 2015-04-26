@@ -100,7 +100,7 @@ class PageslistBlock extends \Zikula_Controller_AbstractBlock
                 $shownResults++;
                 if ($shownResults <= $vars['numitems']) {
                     if (SecurityUtil::checkPermission($this->name . '::', "{$item['title']}::{$item['pageid']}", ACCESS_READ)) {
-                        $pagesitems[] = array('url' => ModUtil::url($this->name, 'user', 'display', array('pageid' => $item['pageid'])), 'title' => $item['title']);
+                        $pagesitems[] = array('url' => $this->get('router')->generate('zikulapagesmodule_user_display', array('pageid' => $item['pageid'])), 'title' => $item['title']);
                     } else {
                         $pagesitems[] = array('title' => $item['title']);
                     }

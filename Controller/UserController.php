@@ -27,6 +27,8 @@ use System;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 
 /**
  * Class UserController
@@ -35,6 +37,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class UserController extends \Zikula_AbstractController
 {
     /**
+     * @Route("/list")
+     * 
      * list all pages
      *
      * @param Request $request
@@ -62,6 +66,8 @@ class UserController extends \Zikula_AbstractController
     }
     
     /**
+     * @Route("")
+     * 
      * the index user function
      *
      * @param Request $request
@@ -72,14 +78,16 @@ class UserController extends \Zikula_AbstractController
     {
         if (!$this->getVar('enablecategorization')) {
             // list all pages
-            return new RedirectResponse(\ModUtil::url($this->name, 'user', 'listPages'));
+            return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_user_listpages'));
         } else {
             // show a list of the categories
-            return new RedirectResponse(\ModUtil::url($this->name, 'user', 'categories'));
+            return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_user_categories'));
         }
     }
     
     /**
+     * @Route("/categories")
+     * 
      * list all categories of pages
      *
      * @param Request $request
@@ -107,6 +115,8 @@ class UserController extends \Zikula_AbstractController
     }
     
     /**
+     * @Route("/view")
+     * 
      * view page list
      *
      * @param Request $request
@@ -152,6 +162,8 @@ class UserController extends \Zikula_AbstractController
     }
     
     /**
+     * @Route("/display")
+     * 
      * display page
      *
      * @param Request $request

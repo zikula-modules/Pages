@@ -25,7 +25,7 @@ use ModUtil;
 use Zikula_Hook_ValidationProviders;
 use Zikula_ValidationHook;
 use ZLanguage;
-use Zikula_ModUrl;
+use Zikula\Core\RouteUrl;
 use Zikula_ProcessHook;
 use System;
 
@@ -85,7 +85,7 @@ class ModifyHandler extends \Zikula_Form_AbstractHandler
         $view->assign('page', $this->_page->get());
         if (!empty($pageid)) {
             // now we've got this far let's lock the page for editing
-            $params = array('lockName' => "Pagespage{$pageid}", 'returnUrl' => ModUtil::url($this->name, 'admin', 'view'));
+            $params = array('lockName' => "Pagespage{$pageid}", 'returnUrl' => $view->getContainer()->get('router')->generate('zikulapagesmodule_admin_view'));
             ModUtil::apiFunc('PageLock', 'user', 'pageLock', $params);
         }
         return true;
@@ -118,14 +118,14 @@ class ModifyHandler extends \Zikula_Form_AbstractHandler
         if ($args['commandName'] == 'cancel') {
             // now release the page lock
             ModUtil::apiFunc('PageLock', 'user', 'releaseLock', array('lockName' => "Pagespage{$data['pageid']}"));
-            $url = ModUtil::url($this->name, 'admin', 'view');
+            $url = $view->getContainer()->get('router')->generate('zikulapagesmodule_admin_view');
             return $view->redirect($url);
         } else {
             if ($args['commandName'] == 'remove') {
                 // now release the page lock
                 ModUtil::apiFunc('PageLock', 'user', 'releaseLock', array('lockName' => "Pagespage{$data['pageid']}"));
                 $this->_page->remove();
-                $url = ModUtil::url($this->name, 'admin', 'view');
+                $url = $view->getContainer()->get('router')->generate('zikulapagesmodule_admin_view');
                 return $view->redirect($url);
             }
         }
@@ -146,7 +146,7 @@ class ModifyHandler extends \Zikula_Form_AbstractHandler
         }
         // Success
         LogUtil::registerStatus($this->__('Done! Page updated.'));
-        $url = new Zikula_ModUrl($this->name, 'user', 'display', ZLanguage::getLanguageCode(), array('pageid' => $data['pageid']));
+        $url = new RouteUrl('zikulapagesmodule_user_display', array('pageid' => $data['pageid']));
         $this->notifyHooks(new Zikula_ProcessHook('pages.ui_hooks.pages.process_edit', $data['pageid'], $url));
         // now release the page lock
         ModUtil::apiFunc('PageLock', 'user', 'releaseLock', array('lockName' => "Pagespage{$data['pageid']}"));

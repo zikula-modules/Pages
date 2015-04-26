@@ -10,4 +10,4 @@
     {/foreach}
 </ul>
 
-{*pager show='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'*}
+{*pager show='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulapagesmodule_user_view'*}
