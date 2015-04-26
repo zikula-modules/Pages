@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Pages Team 2012
+ * Copyright Pages Team 2015
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
