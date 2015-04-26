@@ -18,6 +18,7 @@ namespace Zikula\PagesModule;
 use HookUtil;
 use ModUtil;
 use Zikula\Component\HookDispatcher\SubscriberBundle;
+use Zikula\Module\SearchModule\AbstractSearchable;
 
 /**
  * Provides metadata for this module to the Extensions module.
@@ -44,7 +45,10 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
         $meta['core_min'] = '1.4.0';
         // requires minimum 1.4.0 or later
         $meta['core_max'] = '1.4.99';
-        $meta['capabilities'] = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
+        $meta['capabilities'] = array(
+            HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true),
+            AbstractSearchable::SEARCHABLE => array('class' => 'Zikula\PagesModule\Helper\SearchHelper')
+        );
         $meta['securityschema'] = array($this->name . '::' => 'Page name::Page ID', $this->name . ':category:' => 'Category ID::');
         // Module depedencies
         $meta['dependencies'] = array(
