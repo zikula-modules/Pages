@@ -18,6 +18,8 @@ namespace Zikula\PagesModule\Controller;
 use CategoryUtil;
 use ModUtil;
 use SecurityUtil;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,9 +29,6 @@ use System;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 use Zikula\PagesModule\Manager\PageManager;
 use ZLanguage;
-
-// used in annotations - do not remove
-// used in annotations - do not remove
 
 /**
  * Class UserController

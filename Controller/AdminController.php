@@ -19,6 +19,8 @@ use CategoryRegistryUtil;
 use FormUtil;
 use ModUtil;
 use SecurityUtil;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,9 +29,6 @@ use Zikula\PagesModule\Manager\PageCollectionManager;
 use Zikula\PagesModule\Util as PagesUtil;
 use Zikula_View;
 use ZLanguage;
-
-// used in annotations - do not remove
-// used in annotations - do not remove
 
 /**
  * Class AdminController
