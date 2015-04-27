@@ -67,8 +67,7 @@
         </div>
     </fieldset>
     <fieldset>
-        <legend><a id="pages_settings_collapse" href="#"><i
-                        class="fa fa-plus hide"></i> {gt text='Specific page settings'}</a></legend>
+        <legend><a id="pages_settings_collapse" href="#"><i class="fa fa-plus hide"></i> {gt text='Specific page settings'}</a></legend>
         <div id="pages_settings_details">
             <div class="form-group">
                 {formlabel cssClass="col-lg-3" for="displaywrapper" __text='Display additional information'}
