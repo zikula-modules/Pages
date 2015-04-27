@@ -175,10 +175,10 @@ class UserController extends \Zikula_AbstractController
      */
     public function displayAction(Request $request)
     {
-        $pageid = $request->request->get('pageid', null);
-        $title = $request->request->get('title', null);
-        $page = $request->request->get('page', null);
-        $objectid = $request->request->get('objectid', null);
+        $pageid = $request->get('pageid', null);
+        $title = $request->get('title', null);
+        $page = $request->get('page', null);
+        $objectid = $request->get('objectid', null);
 
         if (!empty($objectid)) {
             $pageid = $objectid;
