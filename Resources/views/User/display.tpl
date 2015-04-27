@@ -67,7 +67,7 @@
         {/if}
         {if $item.displayprint}
             <span class="pages_page_printerlink">
-        <a href="{route name='zikulapagesmodule_user_display' pageid=$item.pageid theme='Printer'}">{img modname='core' src='printer.png' set='icons/small' __alt='Print page'}</a>
+        <a href="{route name='zikulapagesmodule_user_display' pageid=$item.pageid theme='Printer'}"><i class="fa fa-print fa-2x"></i></a>
     </span>
         {/if}
     </div>
