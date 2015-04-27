@@ -16,7 +16,6 @@
 namespace Zikula\PagesModule;
 
 use DoctrineHelper;
-use LogUtil;
 use HookUtil;
 use CategoryRegistryUtil;
 use CategoryUtil;
@@ -49,14 +48,14 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
         try {
             DoctrineHelper::createSchema($this->entityManager, $this->entities);
         } catch (\Exception $e) {
-            LogUtil::registerStatus($e->getMessage());
+            $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
             return false;
         }
         // insert default category
         try {
             $this->createCategoryTree();
         } catch (\Exception $e) {
-            LogUtil::registerError($this->__f('Did not create default categories (%s).', $e->getMessage()));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Did not create default categories (%s).', $e->getMessage()));
         }
         // set up config variables
         $modvars = array(
@@ -101,7 +100,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
                 try {
                     DoctrineHelper::createSchema($this->entityManager, array('Zikula\PagesModule\Entity\CategoryEntity'));
                 } catch (\Exception $e) {
-                    LogUtil::registerStatus($e->getMessage());
+                    $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
                     return false;
                 }
                 // move relations from categories_mapobj to pages_category
@@ -118,7 +117,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
                     try {
                         $stmt->execute();
                     } catch (\Exception $e) {
-                        LogUtil::registerError($e->getMessage());
+                        $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
                     }
                 }
             case '2.6.0':
@@ -205,7 +204,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
         $page->merge($data);
         $this->entityManager->persist($page);
         $category = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule/Category1');
-        $catEntity = $this->entityManager->getReference('Zikula_Doctrine2_Entity_Category', $category['id']);
+        $catEntity = $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $category['id']);
         $registryId = CategoryRegistryUtil::getRegisteredModuleCategory($this->name, 'Page', 'Main');
         $categoryRelation = new CategoryEntity($registryId, $catEntity, $page);
         $page->setCategories(array($categoryRelation));
