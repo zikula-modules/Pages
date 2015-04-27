@@ -21,9 +21,7 @@
             {if $modvars.ZConfig.multilingual}
             &nbsp;&nbsp;
             <label for="pages_language">{gt text='Language'}</label>
-            {nocache}
             {html_select_languages id='pages_language' name='language' all=true installed=true selected=$language}
-            {/nocache}
             {/if}
             &nbsp;&nbsp;
             <button class="btn btn-default btn-sm" name="submit" type="submit" >

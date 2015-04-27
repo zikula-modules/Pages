@@ -1,6 +1,5 @@
 {ajaxheader module="Pages" ui=true}
 {gt text="All These Categories" assign="allText"}
-{nocache}
 {foreach from=$catregistry key='property' item='category'}
     {array_field assign="selectedValue" array=$selectedcategories field=$property}
     {selector_category
@@ -26,4 +25,3 @@
         );
     </script>
 {/foreach}
-{/nocache}
