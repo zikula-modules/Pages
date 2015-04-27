@@ -163,6 +163,13 @@ class Pages_Entity_Page extends Zikula_EntityAccess
     public function __construct()
     {
         $this->categories = new Doctrine\Common\Collections\ArrayCollection();
+        $modVars = \ModUtil::getVar('Pages');
+        $this->displaywrapper = $modVars['displaywrapper'];
+        $this->displaytitle = $modVars['displaytitle'];
+        $this->displaycreated = $modVars['displaycreated'];
+        $this->displayupdated = $modVars['displayupdated'];
+        $this->displaytextinfo = $modVars['displaytextinfo'];
+        $this->displayprint = $modVars['displayprint'];
     }
 
     /**
