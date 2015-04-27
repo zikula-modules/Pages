@@ -28,7 +28,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
 {
-
     /**
      * pageid
      *
@@ -159,6 +158,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * @ORM\Column(type="string", length=1)
      */
     private $obj_status = 'A';
+
     /**
      * Constuctor
      */
