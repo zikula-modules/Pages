@@ -31,7 +31,7 @@ class Util
      */
     public static function formatCategoryFilter($filtercats)
     {
-    
+
         if (is_array($filtercats)) {
             $catsarray = is_array($filtercats['__CATEGORIES__']) ? $filtercats['__CATEGORIES__'] : array('Main' => 0);
             foreach ($catsarray as $propname => $propid) {

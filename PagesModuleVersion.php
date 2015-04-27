@@ -64,7 +64,7 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
         );
         return $meta;
     }
-    
+
     /**
      * Define the hook bundles supported by this module.
      *

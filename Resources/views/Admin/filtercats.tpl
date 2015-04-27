@@ -17,11 +17,11 @@
     </a>
     <script type="text/javascript">
         var pages___CATEGORIES____{{$property}}_ = new Zikula.UI.SelectMultiple(
-            'pages___CATEGORIES____{{$property}}_',
-            {opener: 'pages___CATEGORIES____{{$property}}__open',
-            title: Zikula.__('Select multiple categories','module_Pages'),
-            value: '{{pages_implode value=$selectedValue}}',
-            excludeValues: ['0']}
+                'pages___CATEGORIES____{{$property}}_',
+                {opener: 'pages___CATEGORIES____{{$property}}__open',
+                title: Zikula.__('Select multiple categories','module_Pages'),
+                value: '{{pages_implode value=$selectedValue}}',
+                excludeValues: ['0']}
         );
     </script>
 {/foreach}

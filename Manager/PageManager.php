@@ -15,11 +15,11 @@
 
 namespace Zikula\PagesModule\Manager;
 
+use DataUtil;
+use ModUtil;
 use SecurityUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula\PagesModule\Entity\PageEntity;
-use DataUtil;
-use ModUtil;
 
 class PageManager
 {
@@ -36,7 +36,7 @@ class PageManager
     {
         $this->entityManager = $entityManager;
     }
-    
+
     /**
      * find
      *
@@ -66,7 +66,7 @@ class PageManager
         }
         return true;
     }
-    
+
     /**
      * find
      *
@@ -86,7 +86,7 @@ class PageManager
         }
         return true;
     }
-    
+
     /**
      * create
      *
@@ -95,7 +95,7 @@ class PageManager
     {
         $this->_page = new PageEntity();
     }
-    
+
     /**
      * return page as array
      *
@@ -108,7 +108,7 @@ class PageManager
         }
         return $this->_page->toArray();
     }
-    
+
     /**
      * return page as array
      *
@@ -118,7 +118,7 @@ class PageManager
     {
         return $this->_page->getPageId();
     }
-    
+
     /**
      * return page as doctrine2 object
      *
@@ -128,7 +128,7 @@ class PageManager
     {
         return $this->_page;
     }
-    
+
     /**
      * return page as array
      *
@@ -151,7 +151,7 @@ class PageManager
         }
         return $accessLevel;
     }
-    
+
     /**
      * increments read counter.
      *
@@ -163,7 +163,7 @@ class PageManager
         $this->entityManager->flush();
         return true;
     }
-    
+
     /**
      * return page as array
      *
@@ -199,7 +199,7 @@ class PageManager
         $this->entityManager->flush();
         return true;
     }
-    
+
     /**
      * return page as array
      *

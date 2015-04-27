@@ -15,20 +15,21 @@
 
 namespace Zikula\PagesModule\Controller;
 
-use SecurityUtil;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\PagesModule\Manager\PageCollectionManager;
-use ModUtil;
-use ZLanguage;
 use CategoryUtil;
-use Zikula\PagesModule\Manager\PageManager;
-use System;
+use ModUtil;
+use SecurityUtil;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use System;
+use Zikula\PagesModule\Manager\PageCollectionManager;
+use Zikula\PagesModule\Manager\PageManager;
+use ZLanguage;
+
+// used in annotations - do not remove
+// used in annotations - do not remove
 
 /**
  * Class UserController
@@ -38,7 +39,7 @@ class UserController extends \Zikula_AbstractController
 {
     /**
      * @Route("/list")
-     * 
+     *
      * list all pages
      *
      * @param Request $request
@@ -64,10 +65,10 @@ class UserController extends \Zikula_AbstractController
 
         return new Response($this->view->fetch('User/listpages.tpl'));
     }
-    
+
     /**
      * @Route("")
-     * 
+     *
      * the index user function
      *
      * @param Request $request
@@ -84,10 +85,10 @@ class UserController extends \Zikula_AbstractController
             return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_user_categories'));
         }
     }
-    
+
     /**
      * @Route("/categories")
-     * 
+     *
      * list all categories of pages
      *
      * @param Request $request
@@ -113,10 +114,10 @@ class UserController extends \Zikula_AbstractController
 
         return new Response($this->view->fetch('User/main.tpl'));
     }
-    
+
     /**
      * @Route("/view")
-     * 
+     *
      * view page list
      *
      * @param Request $request
@@ -160,10 +161,10 @@ class UserController extends \Zikula_AbstractController
 
         return new Response($this->view->fetch('User/view.tpl'));
     }
-    
+
     /**
      * @Route("/display")
-     * 
+     *
      * display page
      *
      * @param Request $request

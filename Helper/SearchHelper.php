@@ -15,10 +15,10 @@
 
 namespace Zikula\PagesModule\Helper;
 
-use Zikula\Module\SearchModule\AbstractSearchable;
-use SecurityUtil;
 use ModUtil;
+use SecurityUtil;
 use Zikula\Core\RouteUrl;
+use Zikula\Module\SearchModule\AbstractSearchable;
 
 class SearchHelper extends AbstractSearchable
 {
@@ -69,7 +69,7 @@ class SearchHelper extends AbstractSearchable
         foreach ($pages as $page) {
             /** @var $page \Zikula\PagesModule\Entity\PageEntity */
 
-            $pagePermissionCheck = SecurityUtil::checkPermission($this->name . '::', $page->getTitle() .'::' . $page->getPageid(), ACCESS_OVERVIEW);
+            $pagePermissionCheck = SecurityUtil::checkPermission($this->name . '::', $page->getTitle() . '::' . $page->getPageid(), ACCESS_OVERVIEW);
             if ($enableCategorization) {
                 $pagePermissionCheck = $pagePermissionCheck && \CategoryUtil::hasCategoryAccess($page->getCategories(), $this->name);
             }

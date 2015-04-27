@@ -8,7 +8,6 @@
 
 {form cssClass="form"}
     {formvalidationsummary}
-
     <div class="">
         {formbutton class="btn btn-danger" commandName="save" __text="Delete"}
         {formbutton class="btn btn-default" commandName="cancel" __text="Cancel"}

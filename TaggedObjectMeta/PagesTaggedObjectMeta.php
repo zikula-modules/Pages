@@ -15,9 +15,9 @@
 
 namespace Zikula\PagesModule\TaggedObjectMeta;
 
+use DateUtil;
 use ModUtil;
 use UserUtil;
-use DateUtil;
 
 /**
  * Tagged object meta class.
@@ -40,8 +40,9 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
         $module,
         $urlString = null,
         \Zikula_ModUrl $urlObject = null
-    ) {
-    
+    )
+    {
+
         parent::__construct($objectId, $areaId, $module, $urlString, $urlObject);
         $page = ModUtil::apiFunc('ZikulaPagesModule', 'user', 'get', array('pageid' => $this->getObjectId()));
         // the Api checks for perms and there is nothing else to check
@@ -51,7 +52,7 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
             $this->setObjectTitle($page['title']);
         }
     }
-    
+
     /**
      * Set object title.
      *
@@ -59,10 +60,10 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
      */
     public function setObjectTitle($title)
     {
-    
+
         $this->title = $title;
     }
-    
+
     /**
      * Set object date.
      *
@@ -70,10 +71,10 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
      */
     public function setObjectDate($date)
     {
-    
+
         $this->date = DateUtil::formatDatetime($date, 'datetimebrief');
     }
-    
+
     /**
      * Set object author.
      *
@@ -81,7 +82,7 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
      */
     public function setObjectAuthor($author)
     {
-    
+
         $this->author = $author;
     }
 

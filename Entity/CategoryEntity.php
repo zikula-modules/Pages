@@ -45,7 +45,7 @@ class CategoryEntity extends AbstractEntityCategory
     {
         return $this->entity;
     }
-    
+
     /**
      * Set entity
      *

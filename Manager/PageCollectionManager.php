@@ -15,10 +15,10 @@
 
 namespace Zikula\PagesModule\Manager;
 
-use ServiceUtil;
-use ModUtil;
-use System;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use ModUtil;
+use ServiceUtil;
+use System;
 
 class PageCollectionManager
 {
@@ -41,7 +41,7 @@ class PageCollectionManager
         $this->_qb->select('p')->from('ZikulaPagesModule:PageEntity', 'p')->leftJoin('p.categories', 'c');
         $this->_itemsPerPage = ModUtil::getVar('ZikulaPagesModule', 'itemsperpage', 25);
     }
-    
+
     /**
      * set start number
      *
@@ -53,7 +53,7 @@ class PageCollectionManager
     {
         $this->_startNumber = $startNumber - 1;
     }
-    
+
     /**
      * set order
      *
@@ -66,7 +66,7 @@ class PageCollectionManager
     {
         $this->_qb->orderBy('p.' . $orderBy, $orderDirection);
     }
-    
+
     /**
      * set language
      *
@@ -81,7 +81,7 @@ class PageCollectionManager
             $this->_qb->andWhere('p.language = :language')->setParameter('language', $language);
         }
     }
-    
+
     /**
      * set category
      *
@@ -99,7 +99,7 @@ class PageCollectionManager
             }
         }
     }
-    
+
     /**
      * return page as array
      *
@@ -118,7 +118,7 @@ class PageCollectionManager
             return $query->getResult();
         }
     }
-    
+
     /**
      * enable Pager
      *
@@ -128,7 +128,7 @@ class PageCollectionManager
     {
         $this->_pager = true;
     }
-    
+
     /**
      * return page as array
      *

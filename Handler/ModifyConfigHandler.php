@@ -41,12 +41,12 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
         $view->assign($this->getVars());
         return true;
     }
-    
+
     /**
      * Handle form submission.
      *
-     * @param \Zikula_Form_View $view  Reference to Form render object.
-     * @param array            &$args Arguments of the command.
+     * @param \Zikula_Form_View $view Reference to Form render object.
+     * @param array &$args Arguments of the command.
      *
      * @return boolean|void
      */

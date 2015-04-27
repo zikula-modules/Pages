@@ -16,10 +16,10 @@
 namespace Zikula\PagesModule\Handler;
 
 use FormUtil;
+use SecurityUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\PagesModule\Manager\PageManager;
-use SecurityUtil;
 use Zikula_ProcessHook;
 
 /**
@@ -36,6 +36,7 @@ class DeleteHandler extends \Zikula_Form_AbstractHandler
      * @var PageManager
      */
     private $_page;
+
     /**
      * Initialise the form handler
      *
@@ -47,7 +48,7 @@ class DeleteHandler extends \Zikula_Form_AbstractHandler
      */
     public function initialize(\Zikula_Form_View $view)
     {
-    
+
         $pageid = FormUtil::getPassedValue('pageid', isset($args['pageid']) ? $args['pageid'] : null, 'REQUEST');
         $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
         if (!empty($objectid)) {
@@ -69,18 +70,18 @@ class DeleteHandler extends \Zikula_Form_AbstractHandler
         }
         return true;
     }
-    
+
     /**
      * Handle form submission.
      *
-     * @param \Zikula_Form_View $view  Reference to Form render object.
-     * @param array            &$args Arguments of the command.
+     * @param \Zikula_Form_View $view Reference to Form render object.
+     * @param array &$args Arguments of the command.
      *
      * @return boolean|void
      */
     public function handleCommand(\Zikula_Form_View $view, &$args)
     {
-    
+
         $returnUrl = $view->getContainer()->get('router')->generate('zikulapagesmodule_admin_view');
         if ($args['commandName'] == 'cancel') {
             return $view->redirect($returnUrl);

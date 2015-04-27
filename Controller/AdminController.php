@@ -15,20 +15,21 @@
 
 namespace Zikula\PagesModule\Controller;
 
-use Zikula_View;
-use ModUtil;
-use FormUtil;
-use SecurityUtil;
-use \Zikula\PagesModule\Util as PagesUtil;
 use CategoryRegistryUtil;
-use Zikula\PagesModule\Manager\PageCollectionManager;
-use ZLanguage;
+use FormUtil;
+use ModUtil;
+use SecurityUtil;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Zikula\PagesModule\Manager\PageCollectionManager;
+use Zikula\PagesModule\Util as PagesUtil;
+use Zikula_View;
+use ZLanguage;
+
+// used in annotations - do not remove
+// used in annotations - do not remove
 
 /**
  * Class AdminController
@@ -42,7 +43,7 @@ class AdminController extends \Zikula_AbstractController
     {
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
     }
-    
+
     /**
      * @Route("")
      *
@@ -56,7 +57,7 @@ class AdminController extends \Zikula_AbstractController
     {
         return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_admin_view'));
     }
-    
+
     /**
      * @Route("/modify")
      *
@@ -72,7 +73,7 @@ class AdminController extends \Zikula_AbstractController
 
         return new Response($form->execute('Admin/modify.tpl', new \Zikula\PagesModule\Handler\ModifyHandler()));
     }
-    
+
     /**
      * @Route("/delete")
      *
@@ -88,7 +89,7 @@ class AdminController extends \Zikula_AbstractController
 
         return new Response($form->execute('Admin/delete.tpl', new \Zikula\PagesModule\Handler\DeleteHandler()));
     }
-    
+
     /**
      * @Route("/view")
      *
@@ -168,7 +169,7 @@ class AdminController extends \Zikula_AbstractController
 
         return new Response($this->view->fetch('Admin/view.tpl'));
     }
-    
+
     /**
      * @Route("/purge")
      *
@@ -193,7 +194,7 @@ class AdminController extends \Zikula_AbstractController
 
         return new RedirectResponse($url);
     }
-    
+
     /**
      * @Route("/config")
      *

@@ -15,19 +15,19 @@
 
 namespace Zikula\PagesModule\Handler;
 
+use CategoryRegistryUtil;
 use FormUtil;
+use ModUtil;
+use SecurityUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zikula\PagesModule\Manager\PageManager;
-use SecurityUtil;
-use Zikula_Exception_Forbidden;
-use CategoryRegistryUtil;
-use ModUtil;
-use Zikula_Hook_ValidationProviders;
-use Zikula_ValidationHook;
-use Zikula\Core\RouteUrl;
-use Zikula_ProcessHook;
 use System;
+use Zikula\Core\RouteUrl;
+use Zikula\PagesModule\Manager\PageManager;
+use Zikula_Exception_Forbidden;
+use Zikula_Hook_ValidationProviders;
+use Zikula_ProcessHook;
+use Zikula_ValidationHook;
 
 /**
  * This class provides a handler to modify or create a page.
@@ -90,12 +90,12 @@ class ModifyHandler extends \Zikula_Form_AbstractHandler
         }
         return true;
     }
-    
+
     /**
      * Handle form submission.
      *
-     * @param \Zikula_Form_View $view  Reference to Form render object.
-     * @param array            &$args Arguments of the command.
+     * @param \Zikula_Form_View $view Reference to Form render object.
+     * @param array &$args Arguments of the command.
      *
      * @return boolean|void
      */

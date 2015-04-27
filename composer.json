@@ -1,23 +1,23 @@
 {
-    "name": "zikula/pages-module",
-    "description": "Pages is a Static Page creation module for the Zikula Application Framework.",
-    "type": "zikula-module",
-    "license": "LGPL-3.0+",
-    "authors": [
-        {
-            "name": "Zikula Team",
-            "homepage": "http://www.zikula.org/"
-        }
-    ],
-    "autoload": {
-        "psr-4": { "Zikula\\PagesModule\\": "" }
-    },
-    "require": {
-        "php": ">5.3.3"
-    },
-    "extra": {
-        "zikula": {
-            "class": "Zikula\\PagesModule\\ZikulaPagesModule"
-        }
+  "name": "zikula/pages-module",
+  "description": "Pages is a Static Page creation module for the Zikula Application Framework.",
+  "type": "zikula-module",
+  "license": "LGPL-3.0+",
+  "authors": [
+    {
+      "name": "Zikula Team",
+      "homepage": "http://www.zikula.org/"
     }
+  ],
+  "autoload": {
+    "psr-4": {"Zikula\\PagesModule\\": ""}
+  },
+  "require": {
+    "php": ">5.3.3"
+  },
+  "extra": {
+    "zikula": {
+      "class": "Zikula\\PagesModule\\ZikulaPagesModule"
+    }
+  }
 }

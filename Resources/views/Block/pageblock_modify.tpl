@@ -6,6 +6,7 @@
     <label for="htmlpages_pid" class="col-lg-3 control-label">
         {gt text='Page' domain='module_pages'}
     </label>
+
     <div class="col-lg-9">
         <select id="htmlpages_pid" name='pid' class="form-control">
             {foreach from=$pages item="page"}
@@ -19,6 +20,8 @@
 
 <script type="text/javascript">
     jQuery('#htmlpages_pid').select2({
-        "formatNoMatches": function () { return "{{gt text="No match found"}}"; }
+        "formatNoMatches": function () {
+            return "{{gt text="No match found"}}";
+        }
     });
 </script>

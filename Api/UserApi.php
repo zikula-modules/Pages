@@ -15,13 +15,13 @@
 
 namespace Zikula\PagesModule\Api;
 
-use Zikula\PagesModule\Manager\PageManager;
-use Zikula\PagesModule\Manager\PageCollectionManager;
-use ModUtil;
+use CategoryRegistryUtil;
 use CategoryUtil;
+use ModUtil;
+use Zikula\PagesModule\Manager\PageCollectionManager;
+use Zikula\PagesModule\Manager\PageManager;
 use Zikula_View;
 use Zikula_View_Theme;
-use CategoryRegistryUtil;
 
 /**
  * Class UserApi
@@ -32,7 +32,7 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get a specific item
      *
-     * @param $args['pageid'] id of example item to get
+     * @param $args ['pageid'] id of example item to get
      *
      * @return mixed item array, or false on failure
      */
@@ -43,7 +43,7 @@ class UserApi extends \Zikula_AbstractApi
 
         return $page->toArray();
     }
-    
+
     /**
      * get all pages
      *
@@ -75,7 +75,7 @@ class UserApi extends \Zikula_AbstractApi
 
         return $pages->get();
     }
-    
+
     /**
      * utility function to count the number of items held by this module
      *
@@ -103,7 +103,7 @@ class UserApi extends \Zikula_AbstractApi
 
         return $qb->getQuery()->getSingleScalarResult();
     }
-    
+
     /**
      * increment the item read count
      *
@@ -118,7 +118,7 @@ class UserApi extends \Zikula_AbstractApi
 
         return $page->incrementReadCount();
     }
-    
+
     /**
      * get meta data for the module
      *
@@ -138,7 +138,7 @@ class UserApi extends \Zikula_AbstractApi
             'itemid' => 'pageid'
         );
     }
-    
+
     /**
      * Clear cache for given item. Can be called from other modules to clear an item cache.
      *
@@ -181,7 +181,7 @@ class UserApi extends \Zikula_AbstractApi
             }
         }
     }
-    
+
     /**
      * Get the categories registered for the Pages
      *

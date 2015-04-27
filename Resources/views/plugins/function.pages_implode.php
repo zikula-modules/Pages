@@ -2,11 +2,11 @@
 
 function smarty_function_pages_implode($args, &$smarty)
 {
-    $sep   = (!isset($args['seperator']) || empty($args['seperator'])) ? "," : $args['seperator'];
+    $sep = (!isset($args['seperator']) || empty($args['seperator'])) ? "," : $args['seperator'];
     $value = $args['value'];
     if (!is_array($value)) {
         $value = array(
-            (string) $value);
+            (string)$value);
     }
     $valueList = implode($sep, $value);
 

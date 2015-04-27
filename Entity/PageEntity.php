@@ -15,10 +15,10 @@
 
 namespace Zikula\PagesModule\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Page entity class.
@@ -164,10 +164,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function __construct()
     {
-    
+
         $this->categories = new ArrayCollection();
     }
-    
+
     /**
      * get pageid
      *
@@ -175,10 +175,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getPageid()
     {
-    
+
         return $this->pageid;
     }
-    
+
     /**
      * 'fake' setter so formcategoryselector doesn't blow up
      *
@@ -186,9 +186,9 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setPageid($pageid)
     {
-    
+
     }
-    
+
     /**
      * Get page title
      *
@@ -196,10 +196,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getTitle()
     {
-    
+
         return $this->title;
     }
-    
+
     /**
      * Set page title
      *
@@ -207,10 +207,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setTitle($title)
     {
-    
+
         $this->title = $title;
     }
-    
+
     /**
      * Get meta description
      *
@@ -218,10 +218,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getMetadescription()
     {
-    
+
         return $this->metadescription;
     }
-    
+
     /**
      * Set page meta description
      *
@@ -229,10 +229,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setMetadescription($metadescription)
     {
-    
+
         $this->metadescription = $metadescription;
     }
-    
+
     /**
      * Get meta keywords
      *
@@ -240,10 +240,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getMetakeywords()
     {
-    
+
         return $this->metakeywords;
     }
-    
+
     /**
      * Set page meta keywords
      *
@@ -251,10 +251,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setMetakeywords($metakeywords)
     {
-    
+
         $this->metakeywords = $metakeywords;
     }
-    
+
     /**
      * Get url title
      *
@@ -262,10 +262,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getUrltitle()
     {
-    
+
         return $this->urltitle;
     }
-    
+
     /**
      * Set page url title
      *
@@ -273,10 +273,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setUrltitle($urltitle)
     {
-    
+
         $this->urltitle = $urltitle;
     }
-    
+
     /**
      * Get content
      *
@@ -284,10 +284,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getContent()
     {
-    
+
         return $this->content;
     }
-    
+
     /**
      * Set page content
      *
@@ -295,10 +295,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setContent($content)
     {
-    
+
         $this->content = $content;
     }
-    
+
     /**
      * Get counter
      *
@@ -306,10 +306,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getCounter()
     {
-    
+
         return $this->counter;
     }
-    
+
     /**
      * Set page counter
      *
@@ -317,10 +317,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setCounter($counter)
     {
-    
+
         $this->counter = $counter;
     }
-    
+
     /**
      * Get display wrapper
      *
@@ -328,10 +328,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getDisplaywrapper()
     {
-    
+
         return $this->displaywrapper;
     }
-    
+
     /**
      * Set page display wrapper
      *
@@ -339,10 +339,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplaywrapper($displaywrapper)
     {
-    
+
         $this->displaywrapper = $displaywrapper;
     }
-    
+
     /**
      * Get display title
      *
@@ -350,10 +350,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getDisplaytitle()
     {
-    
+
         return $this->displaytitle;
     }
-    
+
     /**
      * Set if title should be shown
      *
@@ -361,10 +361,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplaytitle($displaytitle)
     {
-    
+
         $this->displaytitle = $displaytitle;
     }
-    
+
     /**
      * Get display created
      *
@@ -372,10 +372,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getDisplaycreated()
     {
-    
+
         return $this->displaycreated;
     }
-    
+
     /**
      * Set if the creator name and the creation time should be shown.
      *
@@ -383,10 +383,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplaycreated($displaycreated)
     {
-    
+
         $this->displaycreated = $displaycreated;
     }
-    
+
     /**
      * Get display updated
      *
@@ -394,10 +394,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getdisplayupdated()
     {
-    
+
         return $this->displayupdated;
     }
-    
+
     /**
      * Get display text info
      *
@@ -405,10 +405,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getdisplaytextinfo()
     {
-    
+
         return $this->displaytextinfo;
     }
-    
+
     /**
      * Get display print
      *
@@ -416,10 +416,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getdisplayprint()
     {
-    
+
         return $this->displayprint;
     }
-    
+
     /**
      * Get page language
      *
@@ -427,10 +427,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getLanguage()
     {
-    
+
         return $this->language;
     }
-    
+
     /**
      * Set page language
      *
@@ -438,10 +438,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setLanguage($language)
     {
-    
+
         $this->language = $language;
     }
-    
+
     /**
      * Set if the updater name and the update time should be shown.
      *
@@ -449,10 +449,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplayupdated($displayupdated)
     {
-    
+
         $this->displayupdated = $displayupdated;
     }
-    
+
     /**
      * Set if the text info should be shown.
      *
@@ -460,10 +460,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplaytextinfo($displaytextinfo)
     {
-    
+
         $this->displaytextinfo = $displaytextinfo;
     }
-    
+
     /**
      * Set if print link should shown
      *
@@ -471,19 +471,19 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplayprint($displayprint)
     {
-    
+
         $this->displayprint = $displayprint;
     }
-    
+
     /**
      * Increment page counter
      */
     public function incrementCounter()
     {
-    
+
         $this->counter++;
     }
-    
+
     /**
      * Set creator uid
      *
@@ -491,10 +491,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getCr_uid()
     {
-    
+
         return $this->cr_uid;
     }
-    
+
     /**
      * Get creation time
      *
@@ -502,10 +502,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getCr_date()
     {
-    
+
         return $this->cr_date;
     }
-    
+
     /**
      * Get last update uid
      *
@@ -513,10 +513,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getLu_uid()
     {
-    
+
         return $this->lu_uid;
     }
-    
+
     /**
      * Get last update date
      *
@@ -524,10 +524,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getLu_date()
     {
-    
+
         return $this->lu_date;
     }
-    
+
     /**
      * Get page categories
      *
@@ -535,10 +535,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getCategories()
     {
-    
+
         return $this->categories;
     }
-    
+
     /**
      * Set page categories
      *
@@ -546,10 +546,10 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setCategories($categories)
     {
-    
+
         $this->categories = $categories;
     }
-    
+
     /**
      * Get object status
      *
@@ -557,7 +557,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getObj_status()
     {
-    
+
         return $this->obj_status;
     }
 

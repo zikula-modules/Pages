@@ -15,10 +15,10 @@
 
 namespace Zikula\PagesModule\Block;
 
-use SecurityUtil;
 use BlockUtil;
-use ModUtil;
 use FormUtil;
+use ModUtil;
+use SecurityUtil;
 
 /**
  * Class PageBlock
@@ -35,7 +35,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
     {
         SecurityUtil::registerPermissionSchema('ZikulaPagesModule:pageblock:', 'Block title::');
     }
-    
+
     /**
      * get information on block
      *
@@ -54,7 +54,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
             'admin_tableless' => true
         );
     }
-    
+
     /**
      * Display block.
      *
@@ -96,7 +96,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
 
         return BlockUtil::themeBlock($blockinfo);
     }
-    
+
     /**
      * modify block settings
      *
@@ -117,7 +117,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
 
         return $this->view->fetch('Block/pageblock_modify.tpl');
     }
-    
+
     /**
      * update block settings
      *
@@ -130,7 +130,7 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
         // get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
         // alter the corresponding variable
-        $vars['pid'] = (int) FormUtil::getPassedValue('pid', null, 'POST');
+        $vars['pid'] = (int)FormUtil::getPassedValue('pid', null, 'POST');
         // write back the new contents
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
         // clear the block cache

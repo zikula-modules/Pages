@@ -17,31 +17,31 @@
             </div>
         </div>
         {if $modvars.$module.showpermalinkinput}
-        <div class="form-group">
-            {formlabel cssClass="col-lg-3" for="urltitle" __text='PermaLink URL title'}
-            <div class="col-lg-9">
-                {formtextinput id="urltitle" cssClass="form-control" maxLength="255"}
-                <span class="help-block">{gt text='(Blank = auto-generate)'}</span>
-            </div>
-        </div>
-        {/if}
-        {if $modvars.$module.enablecategorization}
-        {foreach from=$registries item="registryCid" key="registryId"}
             <div class="form-group">
-                {formlabel cssClass="col-lg-3" for="category_`$registryId`" __text="Category"}
+                {formlabel cssClass="col-lg-3" for="urltitle" __text='PermaLink URL title'}
                 <div class="col-lg-9">
-                    {formcategoryselector id="category_`$registryId`" category=$registryCid dataField="categories" group='page' registryId=$registryId doctrine2=true includeEmptyElement=true cssClass='form-control' editLink=false}
+                    {formtextinput id="urltitle" cssClass="form-control" maxLength="255"}
+                    <span class="help-block">{gt text='(Blank = auto-generate)'}</span>
                 </div>
             </div>
-        {/foreach}
+        {/if}
+        {if $modvars.$module.enablecategorization}
+            {foreach from=$registries item="registryCid" key="registryId"}
+                <div class="form-group">
+                    {formlabel cssClass="col-lg-3" for="category_`$registryId`" __text="Category"}
+                    <div class="col-lg-9">
+                        {formcategoryselector id="category_`$registryId`" category=$registryCid dataField="categories" group='page' registryId=$registryId doctrine2=true includeEmptyElement=true cssClass='form-control' editLink=false}
+                    </div>
+                </div>
+            {/foreach}
         {/if}
         {if $modvars.ZConfig.multilingual}
-        <div class="form-group">
-            {formlabel cssClass="col-lg-3" for="language" __text='Language'}
-            <div class="col-lg-9">
-                {formlanguageselector id="language" cssClass='form-control'}
+            <div class="form-group">
+                {formlabel cssClass="col-lg-3" for="language" __text='Language'}
+                <div class="col-lg-9">
+                    {formlanguageselector id="language" cssClass='form-control'}
+                </div>
             </div>
-        </div>
         {/if}
         <div class="form-group">
             {formlabel cssClass="col-lg-3" for="content" __text='Content'}
@@ -67,7 +67,8 @@
         </div>
     </fieldset>
     <fieldset>
-        <legend><a id="pages_settings_collapse" href="#"><i class="fa fa-plus hide"></i> {gt text='Specific page settings'}</a></legend>
+        <legend><a id="pages_settings_collapse" href="#"><i
+                        class="fa fa-plus hide"></i> {gt text='Specific page settings'}</a></legend>
         <div id="pages_settings_details">
             <div class="form-group">
                 {formlabel cssClass="col-lg-3" for="displaywrapper" __text='Display additional information'}
@@ -120,13 +121,11 @@
             </ul>
         </div>
     </fieldset>
-
-    {if !empty($pageid)}
+{if !empty($pageid)}
     {notifydisplayhooks eventname='pages.ui_hooks.pages.form_edit' id=$pageid}
-    {else}
+{else}
     {notifydisplayhooks eventname='pages.ui_hooks.pages.form_edit' id=null}
-    {/if}
-
+{/if}
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
             {formbutton class="btn btn-success" commandName="save" __text="Save"}

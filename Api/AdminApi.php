@@ -15,8 +15,8 @@
 
 namespace Zikula\PagesModule\Api;
 
-use SecurityUtil;
 use DataUtil;
+use SecurityUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -46,7 +46,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         return true;
     }
-    
+
     /**
      * get available admin panel links
      *
@@ -68,7 +68,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         return $links;
     }
-    
+
     /**
      * check if a permalink is unique for Pages
      *
@@ -88,7 +88,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
         $count = $qb->getQuery()->getSingleScalarResult();
 
-        return !(bool) $count;
+        return !(bool)$count;
     }
 
 }

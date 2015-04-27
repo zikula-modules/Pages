@@ -15,14 +15,14 @@
 
 namespace Zikula\PagesModule;
 
-use DoctrineHelper;
-use HookUtil;
 use CategoryRegistryUtil;
 use CategoryUtil;
+use DoctrineHelper;
+use HookUtil;
+use Zikula\PagesModule\Entity\CategoryEntity;
+use Zikula\PagesModule\Entity\PageEntity;
 use Zikula_Exception;
 use ZLanguage;
-use Zikula\PagesModule\Entity\PageEntity;
-use Zikula\PagesModule\Entity\CategoryEntity;
 
 /**
  * Provides module installation and upgrade services.
@@ -76,7 +76,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
         // initialisation successful
         return true;
     }
-    
+
     /**
      * Upgrade the errors module from an old version
      *
@@ -130,7 +130,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
         // Update successful
         return true;
     }
-    
+
     /**
      * delete the errors module
      *
@@ -151,7 +151,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
         // Deletion successful
         return true;
     }
-    
+
     /**
      * create the category tree
      *
@@ -179,7 +179,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
         }
         return true;
     }
-    
+
     /**
      * create a sample page
      *
