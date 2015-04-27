@@ -98,7 +98,10 @@ class Pages_Handler_Modify extends \Zikula_Form_AbstractHandler
             // `$this->_page` still contains the reference to the page. However, due to Doctrine-related
             // behaviour, this reference is outdated and must be refreshed. There are problems with saving
             // the categories otherwise.
-            $this->_page->findById($this->_page->getId());
+            $pageId = $this->_page->getId();
+            if (!empty($pageId)) {
+                $this->_page->findById($pageId);
+            }
             $view->assign('page', $this->_page->get());
         }
 
