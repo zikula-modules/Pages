@@ -166,6 +166,13 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     {
 
         $this->categories = new ArrayCollection();
+        $modVars = \ModUtil::getVar('ZikulaPagesModule');
+        $this->displaywrapper = $modVars['displaywrapper'];
+        $this->displaytitle = $modVars['displaytitle'];
+        $this->displaycreated = $modVars['displaycreated'];
+        $this->displayupdated = $modVars['displayupdated'];
+        $this->displaytextinfo = $modVars['displaytextinfo'];
+        $this->displayprint = $modVars['displayprint'];
     }
 
     /**
