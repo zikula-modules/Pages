@@ -16,9 +16,8 @@
 namespace Zikula\PagesModule\Api;
 
 use SecurityUtil;
-use LogUtil;
 use DataUtil;
-use ModUtil;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class AdminApi
@@ -33,7 +32,9 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function purgepermalinks()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
         $pages = $this->entityManager->getRepository('ZikulaPagesModule:PageEntity')->findAll();
         foreach ($pages as $page) {
             $perma = strtolower(DataUtil::formatPermalink($page->getUrltitle()));

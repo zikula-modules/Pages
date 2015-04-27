@@ -17,10 +17,7 @@ namespace Zikula\PagesModule\Api;
 
 use Zikula\PagesModule\Manager\PageManager;
 use Zikula\PagesModule\Manager\PageCollectionManager;
-use LogUtil;
 use ModUtil;
-use System;
-use FormUtil;
 use CategoryUtil;
 use Zikula_View;
 use Zikula_View_Theme;

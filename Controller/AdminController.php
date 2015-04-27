@@ -19,7 +19,6 @@ use Zikula_View;
 use ModUtil;
 use FormUtil;
 use SecurityUtil;
-use LogUtil;
 use \Zikula\PagesModule\Util as PagesUtil;
 use CategoryRegistryUtil;
 use Zikula\PagesModule\Manager\PageCollectionManager;
@@ -185,9 +184,9 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
         if (ModUtil::apiFunc($this->name, 'admin', 'purgepermalinks')) {
-            LogUtil::registerStatus($this->__('Purging of the pemalinks was successful'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Purging of the pemalinks was successful'));
         } else {
-            LogUtil::registerError($this->__('Purging of the pemalinks has failed'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Purging of the pemalinks has failed'));
         }
         $referer = $request->headers->get('referer');
         $url = strpos($referer, 'purge') ? $this->get('router')->generate('zikulapagesmodule_admin_view') : $referer;

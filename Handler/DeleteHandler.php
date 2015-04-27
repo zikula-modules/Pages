@@ -16,11 +16,10 @@
 namespace Zikula\PagesModule\Handler;
 
 use FormUtil;
-use LogUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\PagesModule\Manager\PageManager;
 use SecurityUtil;
-use Zikula_Exception_Forbidden;
-use ModUtil;
 use Zikula_ProcessHook;
 
 /**
@@ -44,7 +43,7 @@ class DeleteHandler extends \Zikula_Form_AbstractHandler
      *
      * @return boolean
      *
-     * @throws Zikula_Exception_Forbidden If the current user does not have adequate permissions to perform this function.
+     * @throws AccessDeniedHttpException If the current user does not have adequate permissions to perform this function.
      */
     public function initialize(\Zikula_Form_View $view)
     {
@@ -56,17 +55,17 @@ class DeleteHandler extends \Zikula_Form_AbstractHandler
         }
         // Validate the essential parameters
         if (empty($pageid)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException();
         }
         // Get the existing page
         $this->_page = new PageManager($this->getEntityManager());
         $this->_page->findById($pageid);
         $item = $this->_page->toArray();
         if ($item === false) {
-            return LogUtil::registerError($this->__('No such page found.'), 404);
+            throw new NotFoundHttpException($this->__('No such page found.'));
         }
         if (!SecurityUtil::checkPermission($this->name . '::', $item['title'] . '::' . $pageid, ACCESS_DELETE)) {
-            throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
+            throw new AccessDeniedHttpException();
         }
         return true;
     }
@@ -87,7 +86,7 @@ class DeleteHandler extends \Zikula_Form_AbstractHandler
             return $view->redirect($returnUrl);
         }
         $pageid = $this->_page->getId();
-        LogUtil::registerStatus($this->__('Done! Page deleted.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Page deleted.'));
         $this->notifyHooks(new Zikula_ProcessHook('pages.ui_hooks.pages.process_delete', $pageid));
         $this->_page->remove();
         return $view->redirect($returnUrl);

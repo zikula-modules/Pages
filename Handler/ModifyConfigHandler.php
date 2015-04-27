@@ -16,9 +16,7 @@
 namespace Zikula\PagesModule\Handler;
 
 use SecurityUtil;
-use LogUtil;
-use Zikula_Exception_Forbidden;
-use ModUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * This class provides a handler to modify the module settings.
@@ -33,12 +31,12 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
      *
      * @return boolean
      *
-     * @throws Zikula_Exception_Forbidden If the current user does not have adequate permissions to perform this function.
+     * @throws AccessDeniedHttpException If the current user does not have adequate permissions to perform this function.
      */
     public function initialize(\Zikula_Form_View $view)
     {
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
+            throw new AccessDeniedHttpException();
         }
         $view->assign($this->getVars());
         return true;
@@ -68,7 +66,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
             $data['itemsperpage'] = 25;
         }
         $this->setVars($data);
-        LogUtil::registerStatus($this->__('Done! Module configuration updated.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Module configuration updated.'));
         return true;
     }
 

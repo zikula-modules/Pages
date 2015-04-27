@@ -15,8 +15,8 @@
 
 namespace Zikula\PagesModule\Manager;
 
-use LogUtil;
 use SecurityUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula\PagesModule\Entity\PageEntity;
 use DataUtil;
 use ModUtil;
@@ -48,7 +48,7 @@ class PageManager
     {
         // Argument check
         if ((!isset($args['pageid']) || !is_numeric($args['pageid'])) && !isset($args['title'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException();
         }
         $where = array();
         if (isset($args['pageid']) && is_numeric($args['pageid'])) {
@@ -58,11 +58,11 @@ class PageManager
         }
         $this->_page = $this->entityManager->getRepository('ZikulaPagesModule:PageEntity')->findOneBy($where);
         if (!$this->_page) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException();
         }
         // Permission check
         if (!SecurityUtil::checkPermission('Pages:title:', $this->_page->getPageid() . '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
         return true;
     }
@@ -78,11 +78,11 @@ class PageManager
     {
         $this->_page = $this->entityManager->find('ZikulaPagesModule:PageEntity', $id);
         if (!$this->_page) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException();
         }
         // Permission check
         if (!SecurityUtil::checkPermission('Pages:title:', $this->_page->getPageid() . '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
         return true;
     }
@@ -181,10 +181,13 @@ class PageManager
         }
         if (ModUtil::apiFunc('ZikulaPagesModule', 'admin', 'checkuniquepermalink', $data) === false) {
             $data['urltitle'] = '';
+            $request = \ServiceUtil::getManager()->get('request');
             if ($urltitlecreatedfromtitle == true) {
-                return LogUtil::registerError(__('The permalinks retrieved from the title has to be unique!'));
+                $request->getSession()->getFlashBag()->add('error', __('The permalinks retrieved from the title has to be unique!'));
+                return false;
             } else {
-                return LogUtil::registerError(__('The permalink has to be unique!'));
+                $request->getSession()->getFlashBag()->add('error', __('The permalink has to be unique!'));
+                return false;
             }
         }
         $this->_page->merge($data);

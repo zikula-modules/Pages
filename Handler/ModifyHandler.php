@@ -16,15 +16,15 @@
 namespace Zikula\PagesModule\Handler;
 
 use FormUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\PagesModule\Manager\PageManager;
-use LogUtil;
 use SecurityUtil;
 use Zikula_Exception_Forbidden;
 use CategoryRegistryUtil;
 use ModUtil;
 use Zikula_Hook_ValidationProviders;
 use Zikula_ValidationHook;
-use ZLanguage;
 use Zikula\Core\RouteUrl;
 use Zikula_ProcessHook;
 use System;
@@ -70,10 +70,10 @@ class ModifyHandler extends \Zikula_Form_AbstractHandler
         }
         $item = $this->_page->toArray();
         if ($item === false) {
-            return LogUtil::registerError($this->__('No such page found.'), 404);
+            throw new NotFoundHttpException($this->__('No such page found.'));
         }
         if (!SecurityUtil::checkPermission($this->name . '::', $item['title'] . '::' . $pageid, ACCESS_EDIT)) {
-            throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
+            throw new AccessDeniedHttpException();
         }
         if ($this->getVar('enablecategorization', true)) {
             // load and assign registred categories
@@ -132,20 +132,23 @@ class ModifyHandler extends \Zikula_Form_AbstractHandler
         // check for valid form
         if (!$view->isValid()) {
             // Do NOT release Lock.
-            return LogUtil::registerError('Validation failed!');
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Validation failed!'));
+            return false;
         }
         $ok = $this->_page->set($data);
         if (!$ok) {
-            return LogUtil::registerError('Page save failed!');
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Page save failed!'));
+            return false;
         }
         $data['pageid'] = $this->_page->getid();
         //this line is needed for new pages
         $validators = $this->notifyHooks(new Zikula_ValidationHook('pages.ui_hooks.pages.validate_edit', new Zikula_Hook_ValidationProviders()))->getValidators();
         if ($validators->hasErrors()) {
-            return LogUtil::registerError('Hook validation failed!');
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Hook validation failed!'));
+            return false;
         }
         // Success
-        LogUtil::registerStatus($this->__('Done! Page updated.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Page updated.'));
         $url = new RouteUrl('zikulapagesmodule_user_display', array('pageid' => $data['pageid']));
         $this->notifyHooks(new Zikula_ProcessHook('pages.ui_hooks.pages.process_edit', $data['pageid'], $url));
         // now release the page lock
