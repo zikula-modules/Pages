@@ -21,27 +21,27 @@
         <legend>{gt text='New page defaults'}</legend>
         <div class="z-formrow">
             {formlabel for="displaywrapper" __text='Display additional information'}
-            {formcheckbox id="displaywrapper"}
+            {formcheckbox id="def_displaywrapper"}
         </div>
         <div class="z-formrow">
             {formlabel for="displaytitle" __text='Display page title'}
-            {formcheckbox id="displaytitle"}
+            {formcheckbox id="def_displaytitle"}
         </div>
         <div class="z-formrow">
             {formlabel for="displaycreated" __text='Display page creation date'}
-            {formcheckbox id="displaycreated"}
+            {formcheckbox id="def_displaycreated"}
         </div>
         <div class="z-formrow">
             {formlabel for="displayupdated" __text='Display page update date'}
-            {formcheckbox id="displayupdated"}
+            {formcheckbox id="def_displayupdated"}
         </div>
         <div class="z-formrow">
             {formlabel for="displaytextinfo" __text='Display page text statistics'}
-            {formcheckbox id="displaytextinfo"}
+            {formcheckbox id="def_displaytextinfo"}
         </div>
         <div class="z-formrow">
             {formlabel for="displayprint" __text='Display page print link'}
-            {formcheckbox id="displayprint"}
+            {formcheckbox id="def_displayprint"}
         </div>
     </fieldset>
     <fieldset>
