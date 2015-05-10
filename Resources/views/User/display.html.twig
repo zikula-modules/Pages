@@ -1,4 +1,5 @@
-{{ pageAddVar('stylesheet', asset('modules/zikulapages/css/style.css')) }}
+{{ pageAddVar('stylesheet', zasset('@ZikulaPagesModule:css/style.css')) }}
+
 {{ pageSetVar('title', page.title) }}
 {{ showflashes() }}
 {% if page.metadescription is not empty %}{{ setMetaTag('description', page.metadescription) }}{% endif %}
