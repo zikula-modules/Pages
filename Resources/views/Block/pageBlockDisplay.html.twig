@@ -1,0 +1,3 @@
+<div>
+    {{ content|safeHtml|notifyFilters('pages.filter_hooks.pages.filter')|raw }}
+</div>

@@ -27,37 +27,37 @@
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for="displaywrapper" __text='Display additional information'}
             <div class="col-lg-9">
-                {formcheckbox id="displaywrapper"}
+                {formcheckbox id="def_displaywrapper"}
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for="displaytitle" __text='Display page title'}
             <div class="col-lg-9">
-                {formcheckbox id="displaytitle"}
+                {formcheckbox id="def_displaytitle"}
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for="displaycreated" __text='Display page creation date'}
             <div class="col-lg-9">
-                {formcheckbox id="displaycreated"}
+                {formcheckbox id="def_displaycreated"}
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for="displayupdated" __text='Display page update date'}
             <div class="col-lg-9">
-                {formcheckbox id="displayupdated"}
+                {formcheckbox id="def_displayupdated"}
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for="displaytextinfo" __text='Display page text statistics'}
             <div class="col-lg-9">
-                {formcheckbox id="displaytextinfo"}
+                {formcheckbox id="def_displaytextinfo"}
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for="displayprint" __text='Display page print link'}
             <div class="col-lg-9">
-                {formcheckbox id="displayprint"}
+                {formcheckbox id="def_displayprint"}
             </div>
         </div>
     </fieldset>

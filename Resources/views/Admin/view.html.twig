@@ -1,0 +1,74 @@
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<h3>
+    <span class="fa fa-list"></span>
+    {{ __('View pages list') }}
+</h3>
+
+{% include 'ZikulaPagesModule:Admin:filter_form.html.twig' %}
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th><a class='{{ sort.class.pageid }}' href='{{ sort.url.pageid }}'>{{ __('ID') }}</a></th>
+        <th><a class='{{ sort.class.title }}' href='{{ sort.url.title }}'>{{ __('Title') }}</a></th>
+        <th>{{ __('Creator') }}</th>
+        {% if modvars.ZikulaPagesModule.enablecategorization %}
+            <th>{{ __('Category') }}</th>
+        {% endif %}
+        {% if ZConfig.multilingual %}
+            <th>{{ __('Language') }}</th>
+        {% endif %}
+        <th><a class='{{ sort.class.cr_date }}' href='{{ sort.url.cr_date }}'>{{ __('Created') }}</a></th>
+        <th>{{ __('Actions') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for page in pages %}
+        <tr>
+            <td>{{ page.pageid }}</td>
+            <td>{{ page.title }}</td>
+            <td>{{ page.creator.uname|default('Unknown Author') }}</td>
+            {% if modvars.ZikulaPagesModule.enablecategorization %}
+                <td>
+                {% for category in page.categories %}
+                    {% if category is iterable  %}
+                        {% for item in category %}
+                            {{ item.display_name[lang] }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {{ category.display_name[lang] }}{% if not loop.last %}, {% endif %}
+                    {% endif %}
+                {% else %}
+                    {{  __('No categories') }}
+                {% endfor %}
+                </td>
+            {% endif %}
+            {% if ZConfig.multilingual %}
+                <td>{{ page.language|languageName|default('All') }}</td>
+            {% endif %}
+            <td>{{ page.cr_date|date("m/d/Y") }}</td>
+            <td class="actions">
+                <a href="{{ path('zikulapagesmodule_user_display', {'urltitle': page.urltitle}) }}" class="fa fa-eye"></a>
+                <a href="{{ path('zikulapagesmodule_adminform_edit', {'page': page.pageid}) }}" class="fa fa-pencil"></a>
+                <a href="{{ path('zikulapagesmodule_adminform_delete', {'page': page.pageid}) }}" class="fa fa-trash-o"></a>
+            </td>
+        </tr>
+    {% else %}
+        {% set colspan=5 %}
+        {% if modvars.ZikulaPagesModule.enablecategorization %}
+            {% set colspan=colspan+1 %}
+        {% endif %}
+        {% if ZConfig.multilingual %}
+            {% set colspan=colspan+1 %}
+        {% endif %}
+        <tr>
+            <td colspan="{{ colspan }}">
+                {{ __('No pages found.') }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{{ pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_admin_index'}) }}
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

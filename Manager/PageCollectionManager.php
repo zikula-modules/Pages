@@ -16,6 +16,7 @@
 namespace Zikula\PagesModule\Manager;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\EntityManager;
 use ModUtil;
 use ServiceUtil;
 use System;
@@ -25,21 +26,32 @@ class PageCollectionManager
     /**
      * @var \Doctrine\ORM\QueryBuilder
      */
-    private $_qb;
-    private $_itemsPerPage;
-    private $_startNumber = 1;
-    private $_pager = false;
-    private $_numberOfItems = 0;
+    private $queryBuilder;
+    /**
+     * @var EntityManager
+     */
+    private $em;
+    private $itemsPerPage = 0;
+    private $startNumber = 1;
+    private $pager = false;
+    private $numberOfItems = 0;
 
     /**
      * construct
+     * @param EntityManager $em
      */
-    public function __construct()
+    public function __construct(EntityManager $em)
     {
-        $em = ServiceUtil::getService('doctrine.entitymanager');
-        $this->_qb = $em->createQueryBuilder();
-        $this->_qb->select('p')->from('ZikulaPagesModule:PageEntity', 'p')->leftJoin('p.categories', 'c');
-        $this->_itemsPerPage = ModUtil::getVar('ZikulaPagesModule', 'itemsperpage', 25);
+        $this->em = $em;
+        $this->queryBuilder = $this->em->createQueryBuilder();
+        $this->queryBuilder->select('p')
+            ->from('ZikulaPagesModule:PageEntity', 'p')
+            ->leftJoin('p.categories', 'c');
+    }
+
+    public function setItemsPerPage($amount)
+    {
+        $this->itemsPerPage = $amount;
     }
 
     /**
@@ -51,7 +63,7 @@ class PageCollectionManager
      */
     public function setStartNumber($startNumber)
     {
-        $this->_startNumber = $startNumber - 1;
+        $this->startNumber = $startNumber - 1;
     }
 
     /**
@@ -64,7 +76,7 @@ class PageCollectionManager
      */
     public function setOrder($orderBy, $orderDirection = 'ASC')
     {
-        $this->_qb->orderBy('p.' . $orderBy, $orderDirection);
+        $this->queryBuilder->orderBy('p.' . $orderBy, $orderDirection);
     }
 
     /**
@@ -78,7 +90,7 @@ class PageCollectionManager
     {
         $multilingual = System::getVar('multilingual', false);
         if (!empty($language) && $multilingual) {
-            $this->_qb->andWhere('p.language = :language')->setParameter('language', $language);
+            $this->queryBuilder->andWhere('p.language = :language')->setParameter('language', $language);
         }
     }
 
@@ -92,11 +104,25 @@ class PageCollectionManager
     public function setCategory($category)
     {
         if (is_array($category)) {
-            $this->_qb->andWhere('c.category in (:categories)')->setParameter('categories', $category);
+            $this->queryBuilder->andWhere('c.category in (:categories)')->setParameter('categories', $category);
         } else {
             if (!empty($category)) {
-                $this->_qb->andWhere('c.category = :categories')->setParameter('categories', $category);
+                $this->queryBuilder->andWhere('c.category = :categories')->setParameter('categories', $category);
             }
+        }
+    }
+
+    public function setFilterBy(array $filterData)
+    {
+        if (!empty($filterData['language'])) {
+            $this->setLanguage($filterData['language']);
+        }
+        if (!empty($filterData['category']) && is_array($filterData['category'])) {
+            $categoryIds = array();
+            foreach ($filterData['category'] as $pagesCategoryEntity) {
+                $categoryIds[] = $pagesCategoryEntity->getId();
+            }
+            $this->setCategory($categoryIds);
         }
     }
 
@@ -107,14 +133,16 @@ class PageCollectionManager
      */
     public function get()
     {
-        $query = $this->_qb->getQuery();
-        $paginator = new Paginator($query);
-        if ($this->_pager) {
-            $this->_numberOfItems = count($paginator);
+        $query = $this->queryBuilder->getQuery();
+        if ($this->itemsPerPage > 0) {
+            $query->setMaxResults($this->itemsPerPage);
+        }
+        if ($this->pager) {
+            $query->setFirstResult($this->startNumber);
+            $paginator = new Paginator($query);
+            $this->numberOfItems = count($paginator);
             return $paginator;
         } else {
-            //$query->setFirstResult($this->_startNumber)
-            //      ->setMaxResults($this->_itemsPerPage);
             return $query->getResult();
         }
     }
@@ -126,7 +154,7 @@ class PageCollectionManager
      */
     public function enablePager()
     {
-        $this->_pager = true;
+        $this->pager = true;
     }
 
     /**
@@ -136,7 +164,7 @@ class PageCollectionManager
      */
     public function getPager()
     {
-        return array('itemsperpage' => $this->_itemsPerPage, 'numitems' => $this->_numberOfItems);
+        return array('itemsperpage' => $this->itemsPerPage, 'numitems' => $this->numberOfItems);
     }
 
 }

@@ -1,0 +1,23 @@
+{% form_theme form 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig' %}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h1>{{ p.__('Modify Page') }}</h1>
+        {{ getstatusmsg() }}
+        {{ form_start(form) }}
+
+        {{ form_row(form.categories, {'full_name': form.categories.vars.full_name|replace({ (form.categories.vars.name): form.categories.vars.name ~ '][' ~ form.categories.vars.registry_id }) }) }}
+
+        {{ form_widget(form) }}
+
+        {#{{ form_start(form) }}#}
+        {#{{ form_errors(form) }}#}
+
+        {#{{ form_row(form.task) }}#}
+        {#{{ form_row(form.dueDate) }}#}
+        {#{{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}#}
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

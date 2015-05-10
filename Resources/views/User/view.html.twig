@@ -1,0 +1,14 @@
+{{ pageAddVar('stylesheet', asset('modules/zikulapages/css/style.css')) }}
+{% set templatetitle = __('Pages list') %}
+{{ pageSetVar('title', templatetitle) }}
+{{ showflashes() }}
+
+<h2>{{ __f('Category: %s', category.display_name[lang]) }}</h2>
+<p>{{ __('Pages published under this category:') }}</p>
+<ul>
+    {% for page in pages if checkPermission('ZikulaPagesModule::Page', page.title ~ '::' ~ page.pageid, 'ACCESS_READ') %}
+        <li><a href="{{ path('zikulapagesmodule_user_display', {urltitle: page.urltitle}) }}">{{ page.title }}</a></li>
+    {% endfor %}
+</ul>
+
+{{ pager({show:'page', rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_user_view'}) }}

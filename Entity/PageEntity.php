@@ -19,6 +19,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Zikula\PagesModule\Entity\CategoryEntity as PagesCategoryRelation;
 
 /**
  * Page entity class.
@@ -40,6 +42,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * title
      *
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $title = '';
     /**
@@ -58,12 +61,14 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * urltitle
      *
      * @ORM\Column(type="text")
+     * @Gedmo\Slug(fields={"title"})
      */
     private $urltitle = '';
     /**
      * content
      *
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $content = '';
     /**
@@ -117,10 +122,11 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     /**
      * cr_uid
      *
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="create")
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
      */
-    private $cr_uid;
+    private $creator;
     /**
      * cr_date
      *
@@ -132,16 +138,19 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     /**
      * lu_uid
      *
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="update")
+     * @Gedmo\Blameable(on="create")
+     * @Gedmo\Blameable(on="change", field={"title", "metadescription", "metakeywords", "content"})
+     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
      */
-    private $lu_uid;
+    private $updater;
     /**
      * lu_date
      *
      * @var \DateTime
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
+     * @Gedmo\Timestampable(on="create")
+     * @Gedmo\Timestampable(on="change", field={"title", "metadescription", "metakeywords", "content"})
      */
     private $lu_date;
     /**
@@ -149,7 +158,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      *
      * @ORM\OneToMany(targetEntity="Zikula\PagesModule\Entity\CategoryEntity",
      *                mappedBy="entity", cascade={"all"},
-     *                orphanRemoval=true, indexBy="categoryRegistryId")
+     *                orphanRemoval=true, fetch="EAGER")
      */
     private $categories;
     /**
@@ -164,15 +173,14 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function __construct()
     {
-
         $this->categories = new ArrayCollection();
         $modVars = \ModUtil::getVar('ZikulaPagesModule');
-        $this->displaywrapper = $modVars['displaywrapper'];
-        $this->displaytitle = $modVars['displaytitle'];
-        $this->displaycreated = $modVars['displaycreated'];
-        $this->displayupdated = $modVars['displayupdated'];
-        $this->displaytextinfo = $modVars['displaytextinfo'];
-        $this->displayprint = $modVars['displayprint'];
+        $this->displaywrapper = $modVars['def_displaywrapper'];
+        $this->displaytitle = $modVars['def_displaytitle'];
+        $this->displaycreated = $modVars['def_displaycreated'];
+        $this->displayupdated = $modVars['def_displayupdated'];
+        $this->displaytextinfo = $modVars['def_displaytextinfo'];
+        $this->displayprint = $modVars['def_displayprint'];
     }
 
     /**
@@ -492,17 +500,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     }
 
     /**
-     * Set creator uid
-     *
-     * @return int
-     */
-    public function getCr_uid()
-    {
-
-        return $this->cr_uid;
-    }
-
-    /**
      * Get creation time
      *
      * @return \DateTime
@@ -511,17 +508,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     {
 
         return $this->cr_date;
-    }
-
-    /**
-     * Get last update uid
-     *
-     * @return int
-     */
-    public function getLu_uid()
-    {
-
-        return $this->lu_uid;
     }
 
     /**
@@ -538,12 +524,25 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     /**
      * Get page categories
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Zikula\PagesModule\Entity\CategoryEntity[]
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getCategories()
     {
+        $categories = array();
+        /** @var \Zikula\PagesModule\Entity\CategoryEntity $catRelation */
+        foreach ($this->categories as $catRelation) {
+            $registryId = $catRelation->getCategoryRegistryId();
+//            if (is_array($catRelation)) {
+                if (!isset($categories[$registryId])) {
+                    $categories[$registryId] = new ArrayCollection();
+                }
+                $categories[$registryId]->add($catRelation->getCategory());
+//            } else {
+//                $categories[$registryId] = $catRelation->getCategory();
+//            }
+        }
 
-        return $this->categories;
+        return $categories;
     }
 
     /**
@@ -553,8 +552,18 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setCategories($categories)
     {
-
-        $this->categories = $categories;
+        $this->categories = new ArrayCollection();
+        foreach ($categories as $regId => $category) {
+            if ($category instanceof ArrayCollection) {
+                // a result of multiple select box
+                foreach ($category as $element) {
+                    $this->categories[] = new PagesCategoryRelation($regId, $element, $this);
+                }
+            } else {
+                // a normal select box
+                $this->categories[] = new PagesCategoryRelation($regId, $category, $this);
+            }
+        }
     }
 
     /**
@@ -566,6 +575,44 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     {
 
         return $this->obj_status;
+    }
+
+    public function getObjStatus()
+    {
+        return $this->obj_status == 'A';
+    }
+
+    public function setObjStatus($status)
+    {
+        $this->obj_status = $status ? 'A' : 'I';
+    }
+    public function setCreator($creator)
+    {
+        $this->creator = $creator;
+    }
+
+    /**
+     * @return \Zikula\Module\UsersModule\Entity\UserEntity
+     */
+    public function getCreator()
+    {
+        return $this->creator;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdater()
+    {
+        return $this->updater;
+    }
+
+    /**
+     * @param mixed $updater
+     */
+    public function setUpdater($updater)
+    {
+        $this->updater = $updater;
     }
 
 }

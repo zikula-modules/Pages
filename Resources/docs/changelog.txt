@@ -1,4 +1,8 @@
 Pages 3.0.0
+  * Converted to Core 2.0.0 standards
+    * namespaced
+    * converted to Twig
+    * converted to symfony forms
   * Bootstrap support added
 
 Pages 2.6.1

@@ -7,7 +7,7 @@
 
 
 {if ($modvars.ZConfig.multilingual OR $modvars.$module.enablecategorization)}
-    <form class="form form-inline" action="{route name='zikulapagesmodule_admin_view'}" method="post"
+    <form class="form form-inline" action="{route name='zikulapagesmodule_admin_index'}" method="post"
           enctype="application/x-www-form-urlencoded">
         <fieldset{if $filter_active} class='filteractive'{/if}>
             {if $filter_active}{gt text='active' assign='filteractive'}{else}{gt text='inactive' assign='filteractive'}{/if}
@@ -29,7 +29,7 @@
                 <button class="btn btn-default btn-sm" name="submit" type="submit">
                     <i class="fa fa-filter fa-lg"></i> {gt text='Filter'}
                 </button>
-                <a href="{route name='zikulapagesmodule_admin_view'}" title="{gt text="Clear"}"
+                <a href="{route name='zikulapagesmodule_admin_index'}" title="{gt text="Clear"}"
                    class="btn btn-default btn-sm"><i class="fa fa-times fa-lg"></i> {gt text="Clear"}</a>
             </div>
         </fieldset>
@@ -68,8 +68,8 @@
             <td>{$page.cr_date|dateformat|safehtml}</td>
             <td class="actions">
                 <a href="{route name='zikulapagesmodule_user_display' pageid=$page.pageid}" class="fa fa-eye"></a>
-                <a href="{route name='zikulapagesmodule_admin_modify' pageid=$page.pageid}" class="fa fa-pencil"></a>
-                <a href="{route name='zikulapagesmodule_admin_delete' pageid=$page.pageid}" class="fa fa-trash-o"></a>
+                <a href="{route name='zikulapagesmodule_adminform_edit' page=$page.pageid}" class="fa fa-pencil"></a>
+                <a href="{route name='zikulapagesmodule_adminform_delete' page=$page.pageid}" class="fa fa-trash-o"></a>
             </td>
         </tr>
         {foreachelse}
@@ -89,5 +89,5 @@
     </tbody>
 </table>
 
-{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulapagesmodule_admin_view'}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulapagesmodule_admin_index'}
 {adminfooter}

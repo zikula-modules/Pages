@@ -1,0 +1,20 @@
+{% form_theme filterForm with [
+    'ZikulaCategoriesModule:Form:filter_layout_customizations.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{% if ZConfig.multilingual or modvars.ZikulaPagesModule.enablecategorization %}
+    {{ form_start(filterForm) }}
+        <fieldset{% if filter_active %} class='filteractive'{% endif %}>
+            {% if filter_active %}{% set filteractive = __('active') %}{% else %}{% set filteractive = __('inactive') %}{% endif %}
+            <legend>{{ p._fn("Filter %1$s, %2$s page listed", "Filter %1$s, %2$s pages listed", pager.numitems, [filteractive, pager.numitems]) }}</legend>
+            {% if modvars.ZikulaPagesModule.enablecategorization %}
+                {{ form_row(filterForm.category, {'full_name': filterForm.category.vars.full_name|replace({ (filterForm.category.vars.name): filterForm.category.vars.name ~ '][' ~ filterForm.category.vars.registry_id }) }) }}
+            {% endif %}
+            {% if ZConfig.multilingual %}
+                {{ form_row(filterForm.language) }}
+            {% endif %}
+            {{ form_row(filterForm.FilterButton) }}
+            <a href="{{ path('zikulapagesmodule_admin_index') }}" title="{{ __('Clear') }}" class="btn btn-default btn-sm"><i class="fa fa-times fa-lg"></i> {{ __("Clear") }}</a>
+        </fieldset>
+    {{ form_end(filterForm) }}
+{% endif %}

@@ -15,9 +15,7 @@
 
 namespace Zikula\PagesModule\Api;
 
-use DataUtil;
 use SecurityUtil;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class AdminApi
@@ -25,28 +23,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class AdminApi extends \Zikula_AbstractApi
 {
-    /**
-     * Purge the permalink fields in the Pages table
-     *
-     * @return bool true on success, false on failure
-     */
-    public function purgepermalinks()
-    {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-        $pages = $this->entityManager->getRepository('ZikulaPagesModule:PageEntity')->findAll();
-        foreach ($pages as $page) {
-            $perma = strtolower(DataUtil::formatPermalink($page->getUrltitle()));
-            if ($page->getUrltitle() != $perma) {
-                $page->setUrltitle($perma);
-            }
-        }
-        $this->entityManager->flush();
-
-        return true;
-    }
-
     /**
      * get available admin panel links
      *
@@ -56,39 +32,17 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $links = array();
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_admin_view'), 'text' => $this->__('Pages list'), 'icon' => 'list');
+            $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_admin_index'), 'text' => $this->__('Pages list'), 'icon' => 'list');
         }
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_admin_modify'), 'text' => $this->__('Create a page'), 'icon' => 'plus');
+            $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_adminform_edit'), 'text' => $this->__('New Page'), 'icon' => 'plus');
         }
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_admin_purge'), 'text' => $this->__('Purge permalinks'), 'icon' => 'refresh');
-            $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_admin_modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
+            $links[] = array('url' => $this->get('router')->generate('zikulapagesmodule_adminform_config'), 'text' => $this->__('Modify Config'), 'icon' => 'wrench');
         }
 
         return $links;
-    }
-
-    /**
-     * check if a permalink is unique for Pages
-     *
-     * @param array $args Arguments.
-     *
-     * @return boolean true if permalink is unique, otherwise false
-     */
-    public function checkuniquepermalink($args)
-    {
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('count(p)')
-            ->from('ZikulaPagesModule:PageEntity', 'p')
-            ->where('p.urltitle = :urltitle')
-            ->setParameter('urltitle', $args['urltitle']);
-        if (isset($args['pageid']) && $args['pageid']) {
-            $qb->andWhere('p.pageid != :pageid')->setParameter('pageid', $args['pageid']);
-        }
-        $count = $qb->getQuery()->getSingleScalarResult();
-
-        return !(bool)$count;
     }
 
 }

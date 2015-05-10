@@ -1,0 +1,62 @@
+{{ pageAddVar('stylesheet', asset('modules/zikulapages/css/style.css')) }}
+{{ pageSetVar('title', page.title) }}
+{{ showflashes() }}
+{% if page.metadescription is not empty %}{{ setMetaTag('description', page.metadescription) }}{% endif %}
+{% if page.metakeywords is not empty %}{{ setMetaTag('keywords', page.metakeywords) }}{% endif %}
+
+{% if page.displaytitle %}<h2>{{ page.title }}</h2>{% endif %}
+
+{% if page.displaywrapper or page.displaycreated or page.displayupdated %}
+<div class="pages_page_header">
+    <ul>
+        {% if page.displaycreated %}
+        <li>{{ __f('Created by %1$s on %2$s', [page.creator.uname, page.cr_date|date("m/d/Y")] ) }}</li>
+        {% endif %}
+        {% if page.displayupdated %}
+        <li>{{ __f('Last update by %1$s on %2$s', [page.updater.uname, page.lu_date|date("m/d/Y")] ) }}</li>
+        {% endif %}
+
+        {% if modvars.ZikulaPagesModule.enablecategorization and page.categories is not null %}
+        <li>{{ __('Categories') }}:
+            {% for category in page.categories %}
+                {% if category is iterable  %}
+                    {% for item in category %}
+                        {{ item.display_name[lang] }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {{ category.display_name[lang] }}{% if not loop.last %}, {% endif %}
+                {% endif %}
+            {% else %}
+                {{  __('No categories') }}
+            {% endfor %}
+        </li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}
+
+<div class="pages_page_body">
+{{ page.content|safeHtml|notifyFilters('pages.filter_hooks.pages.filter')|raw }}
+</div>
+
+{% if page.displayprint or page.displaytextinfo or displayeditlink %}
+<div class="pages_page_footer">
+    {% if displayeditlink %}
+    <a href="{{ path('zikulapagesmodule_adminform_edit', {page: page.pageid}) }}">{{ __('Edit') }}</a>
+    <span class="text_separator">|</span>
+    {% endif %}
+    {% if page.displaytextinfo %}
+    {{ __f('%s total characters in this text', page.content|length) }}
+    <span class="text_separator">|</span>
+    {{ __f('%s reads', page.counter) }}
+    {% endif %}
+    {% if page.displayprint %}
+            <span class="pages_page_printerlink">
+        <a href="{{ path('zikulapagesmodule_user_display', {urltitle:page.urltitle, theme:'Printer'}) }}"><i class="fa fa-print fa-2x"></i></a>
+    </span>
+    {% endif %}
+</div>
+{% endif %}
+
+{{ pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'pagenum', route:'zikulapagesmodule_user_display'}) }}
+{{ notifyDisplayHooks('pages.ui_hooks.pages.display_view', page.pageid) }}

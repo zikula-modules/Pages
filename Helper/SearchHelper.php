@@ -32,10 +32,8 @@ class SearchHelper extends AbstractSearchable
     public function getOptions($active, $modVars = null)
     {
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            $render = \Zikula_View::getInstance($this->name);
-            $render->assign('active', $active);
 
-            return $render->fetch('Search/options.tpl');
+            return $this->getContainer()->get('templating')->renderResponse('ZikulaPagesModule:Search:options.html.twig', array('active' => $active))->getContent();
         }
 
         return '';
@@ -57,12 +55,11 @@ class SearchHelper extends AbstractSearchable
 
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('p')->from('Zikula\PagesModule\Entity\PageEntity', 'p');
-        $whereExpr = $this->formatWhere($qb, $words, array('t.title', 'p.content'), $searchType);
+        $whereExpr = $this->formatWhere($qb, $words, array('p.title', 'p.content'), $searchType);
         $qb->andWhere($whereExpr);
         $pages = $qb->getQuery()->getResult();
 
         $sessionId = session_id();
-        $addCategoryTitleToPermalink = ModUtil::getVar($this->name, 'addcategorytitletopermalink');
         $enableCategorization = ModUtil::getVar($this->name, 'enablecategorization');
 
         $records = array();
@@ -77,20 +74,13 @@ class SearchHelper extends AbstractSearchable
                 continue;
             }
 
-            if ($addCategoryTitleToPermalink) {
-                $cat = isset($obj['__CATEGORIES__']['Main']['name']) ? $obj['__CATEGORIES__']['Main']['name'] : null;
-                $params = array('pageid' => $page->getPageid(), 'cat' => $cat);
-            } else {
-                $params = array('pageid' => $page->getPageid());
-            }
-
             $records[] = array(
                 'title' => $page->getTitle(),
                 'text' => $page->getContent(),
                 'created' => $page->getCr_date(),
                 'module' => $this->name,
                 'sesid' => $sessionId,
-                'url' => RouteUrl::createFromRoute('zikulapagesmodule_user_display', $params)
+                'url' => RouteUrl::createFromRoute('zikulapagesmodule_user_display', array('urltitle' => $page->getUrltitle()))
             );
         }
 

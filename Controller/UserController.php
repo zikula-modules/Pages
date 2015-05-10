@@ -23,48 +23,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotati
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use System;
+use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Manager\PageCollectionManager;
-use Zikula\PagesModule\Manager\PageManager;
 use ZLanguage;
+use Zikula\Core\Controller\AbstractController;
 
 /**
  * Class UserController
  * @package Zikula\PagesModule\Controller
  */
-class UserController extends \Zikula_AbstractController
+class UserController extends AbstractController
 {
-    /**
-     * @Route("/list")
-     *
-     * list all pages
-     *
-     * @param Request $request
-     *
-     * @throws AccessDeniedException
-     *
-     * @return Response html string
-     */
-    public function listPagesAction(Request $request)
-    {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            throw new AccessDeniedException();
-        }
-        $startnum = $request->query->get('startnum', 1);
-        $this->view->assign('startnum', $startnum);
-        $pages = new PageCollectionManager();
-        $pages->setStartNumber($startnum);
-        $pages->setOrder('title');
-        $pages->enablePager();
-        $this->view->assign('pages', $pages->get());
-        // assign the values for the smarty plugin to produce a pager
-        $this->view->assign('pager', $pages->getPager());
-
-        return new Response($this->view->fetch('User/listpages.tpl'));
-    }
-
     /**
      * @Route("")
      *
@@ -76,13 +48,44 @@ class UserController extends \Zikula_AbstractController
      */
     public function indexAction(Request $request)
     {
-        if (!$this->getVar('enablecategorization')) {
+        if (!\ModUtil::getVar($this->name, 'enablecategorization')) {
             // list all pages
             return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_user_listpages'));
         } else {
             // show a list of the categories
             return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_user_categories'));
         }
+    }
+
+    /**
+     * @Route("/list/{startnum}", requirements={"startnum" = "^[1-9]\d*$"})
+     *
+     * list all pages
+     *
+     * @param Request $request
+     *
+     * @throws AccessDeniedException
+     *
+     * @return Response html string
+     */
+    public function listPagesAction(Request $request, $startnum = 1)
+    {
+        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+            throw new AccessDeniedException();
+        }
+
+        $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
+        $pages->setStartNumber($startnum);
+        $pages->setItemsPerPage(\ModUtil::getVar($this->name, 'itemsperpage'));
+        $pages->setOrder('title', 'ASC');
+        $pages->enablePager();
+
+        $templateParameters['pages'] = $pages->get();
+        $templateParameters['pager'] = $pages->getPager();
+
+        $request->attributes->set('_legacy', true); // forces template to render inside old theme
+
+        return $this->render('ZikulaPagesModule:User:listpages.html.twig', $templateParameters);
     }
 
     /**
@@ -101,21 +104,17 @@ class UserController extends \Zikula_AbstractController
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
-        $this->view->setCacheId('main');
-        if ($this->view->is_cached('User/main.tpl')) {
-            return new Response($this->view->fetch('User/main.tpl'));
-        }
-        // get the categories registered for the Pages
-        list($properties, $propertiesdata) = ModUtil::apiFunc($this->name, 'user', 'getCategories');
-        // Assign some useful vars to customize the main
-        $this->view->assign('properties', $properties);
-        $this->view->assign('propertiesdata', $propertiesdata);
 
-        return new Response($this->view->fetch('User/main.tpl'));
+        // get the registered categories
+        list($properties, $propertiesdata) = ModUtil::apiFunc($this->name, 'user', 'getCategories');
+
+        $request->attributes->set('_legacy', true); // forces template to render inside old theme
+
+        return $this->render('ZikulaPagesModule:User:main.html.twig', array('properties' => $properties, 'propertiesdata' => $propertiesdata, 'lang' => \ZLanguage::getLanguageCode()));
     }
 
     /**
-     * @Route("/view")
+     * @Route("/view/{prop}/{cat}/{startnum}", requirements={"startnum" = "^[1-9]\d*$", "cat" = "^[1-9]\d*$"})
      *
      * view page list
      *
@@ -125,138 +124,100 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response html string
      */
-    public function viewAction(Request $request)
+    public function viewAction(Request $request, $prop, $cat, $startnum = 1)
     {
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
         }
-        $lang = ZLanguage::getLanguageCode();
-        $startnum = $request->query->get('startnum', 1);
-        $prop = $request->query->get('prop', null);
-        $cat = $request->query->get('cat', null);
-        $this->view->assign('startnum', $startnum);
-        $itemsperpage = $this->getVar('itemsperpage');
-        $this->view->assign('action', '');
-        $category = CategoryUtil::getCategoryByID($cat);
-        if (isset($category['display_name'][$lang])) {
-            $this->view->assign('categoryname', $category['display_name'][$lang]);
-        } else {
-            $this->view->assign('categoryname', $category['name']);
-        }
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('p')
-            ->from('ZikulaPagesModule:PageEntity', 'p')
-            ->join('p.categories', 'c')
-            ->where('c.category = :categories')
-            ->setParameter('categories', $cat);
-        $pages = $qb->getQuery()->getArrayResult();
-        $this->view->assign('pages', $pages);
-        // assign the values for the smarty plugin to produce a pager
-        $pager = array('numitems' => ModUtil::apiFunc($this->name, 'user', 'countitems', array('category' => $cat)), 'itemsperpage' => $itemsperpage);
-        $this->view->assign('pager', $pager);
-        // Return the output that has been generated by this function
-        // is not practical to check for is_cached earlier in this method.
-        $this->view->setCacheId('view|prop_' . $prop . '_cat_' . $cat . '|stnum_' . $startnum . '_' . $itemsperpage);
+        // @TODO the prop category must be converted to the propId and links adjusted throughout
+        // then the CollectionManager must also include this parameter in the search
 
-        return new Response($this->view->fetch('User/view.tpl'));
+        $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
+        $pages->setStartNumber($startnum);
+        $pages->setItemsPerPage(\ModUtil::getVar($this->name, 'itemsperpage'));
+        $pages->setOrder('title', 'ASC');
+        $pages->setCategory($cat);
+        $pages->enablePager();
+
+        $templateParameters = array(
+            'startnum' => $startnum,
+            'category' => CategoryUtil::getCategoryByID($cat),
+            'lang' => \ZLanguage::getLanguageCode(),
+            'pages' => $pages->get(),
+            'pager' => $pages->getPager()
+        );
+        $request->attributes->set('_legacy', true); // forces template to render inside old theme
+
+        return $this->render('ZikulaPagesModule:User:view.html.twig', $templateParameters);
     }
 
     /**
-     * @Route("/display")
+     * @Route("/display/{urltitle}/{pagenum}", requirements={"pagenum" = "^[1-9]\d*$"})
      *
      * display page
      *
      * @param Request $request
-     *
-     * @throws \InvalidArgumentException
-     * @throws NotFoundHttpException
-     *
-     * @return Response html string
+     * @param PageEntity $page
+     * @param int $pagenum
+     * @return Response
      */
-    public function displayAction(Request $request)
+    public function displayAction(Request $request, PageEntity $page, $pagenum = 1)
     {
-        $pageid = $request->get('pageid', null);
-        $title = $request->get('title', null);
-        $page = $request->get('page', null);
-        $objectid = $request->get('objectid', null);
+        $accessLevel = $this->getAccessLevel($page);
+        if ($accessLevel == ACCESS_NONE) {
+            throw new AccessDeniedHttpException();
+        }
 
-        if (!empty($objectid)) {
-            $pageid = $objectid;
-        }
-        // Validate the essential parameters
-        if ((empty($pageid) || !is_numeric($pageid)) && empty($title)) {
-            throw new \InvalidArgumentException();
-        }
-        if (!empty($title)) {
-            unset($pageid);
-        }
-        // Set the default page number
-        if (empty($page) || $page < 1 || !is_numeric($page)) {
-            $page = 1;
-        }
-        // Get the page
-        $accesslevel = 0;
-        if (isset($pageid)) {
-            $item = new PageManager($this->getEntityManager());
-            $item->findById($pageid);
-            $accesslevel = $item->getAccessLevel();
-            $item = $item->get();
-        } else {
-            $params = array('title' => $title, 'catregistry' => isset($catregistry) ? $catregistry : null);
-            $item = ModUtil::apiFunc($this->name, 'user', 'get', $params);
-            System::queryStringSetVar('pageid', $item['pageid']);
-            $pageid = $item['pageid'];
-        }
-        // Regardless of caching, we need to increment the read count and set the cache ID
-        if (isset($pageid)) {
-            $this->view->setCacheId($pageid . '|' . $page . '_a' . $accesslevel);
-            $incrementresult = ModUtil::apiFunc($this->name, 'user', 'incrementreadcount', array('pageid' => $pageid));
-        } else {
-            $this->view->setCacheId($title . '|' . $page . '_a' . $accesslevel);
-            $incrementresult = ModUtil::apiFunc($this->name, 'user', 'incrementreadcount', array('title' => $title));
-        }
-        if ($incrementresult === false) {
-            throw new NotFoundHttpException($this->__('No such page found.'));
-        }
-        // determine which template to render this page with
-        // A specific template may exist for this page (based on page id)
-        if (isset($pageid) && $this->view->template_exists('User/display_' . $pageid . '.tpl')) {
-            $template = 'User/display_' . $pageid . '.tpl';
-        } else {
-            $template = 'User/display.tpl';
-        }
-        // check if the contents are cached.
-        if ($this->view->is_cached($template)) {
-            return new Response($this->view->fetch($template));
-        }
-        // The return value of the function is checked here
-        if ($item === false) {
-            throw new NotFoundHttpException($this->__('No such page found.'));
-        }
+        $page->incrementCounter();
+        $this->get('doctrine.entitymanager')->flush($page);
+
+        // A custom template may exist for this page (based on page id)
+        $customTemplateName = 'ZikulaPagesModule:User:display_' . $page->getPageid() . '.html.twig';
+        $templateName = ($this->get('templating')->exists($customTemplateName)) ? $customTemplateName : 'ZikulaPagesModule:User:display.html.twig';
+
         // Explode the page into an array of separate pages based upon the pagebreak
-        $allpages = explode('<!--pagebreak-->', $item['content']);
+        $allPages = explode('<!--pagebreak-->', $page->getContent());
         // validates that the requested page exists
-        if (!isset($allpages[$page - 1])) {
-            throw new NotFoundHttpException($this->__('No such page found.'));
+        if (!isset($allPages[$pagenum - 1])) {
+            throw new NotFoundHttpException(__('No such page found.'));
         }
         // Set the item content to be the required page
-        // nb arrays start from zero pages from one
-        $item['content'] = trim($allpages[$page - 1]);
-        $numitems = count($allpages);
-        unset($allpages);
-        // Display Admin Edit Link
-        if ($accesslevel >= ACCESS_EDIT) {
-            $this->view->assign('displayeditlink', true);
+        // arrays are zero-based
+        $page->setContent(trim($allPages[$pagenum - 1]));
+        $numitems = count($allPages);
+        unset($allPages);
+        $templateParameters = array();
+        $templateParameters['displayeditlink'] = ($accessLevel >= ACCESS_EDIT);
+        $templateParameters['page'] = $page;
+        $templateParameters['lang'] = ZLanguage::getLanguageCode();
+        $templateParameters['modvars'] = \ModUtil::getModvars(); // @todo temporary solution
+        $templateParameters['pager'] = array('numitems' => $numitems, 'itemsperpage' => 1);
+
+        $request->attributes->set('_legacy', true); // forces template to render inside old theme
+
+        return $this->render($templateName, $templateParameters);
+    }
+
+    /**
+     * Find Access level for current user for this page
+     *
+     * @return integer (ACCESS CONSTANT)
+     */
+    private function getAccessLevel(PageEntity $page)
+    {
+        if (SecurityUtil::checkPermission('ZikulaPagesModule::Page', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_READ)) {
+            $accessLevel = ACCESS_READ;
+            if (SecurityUtil::checkPermission('ZikulaPagesModule::', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_COMMENT)) {
+                $accessLevel = ACCESS_COMMENT;
+                if (SecurityUtil::checkPermission('ZikulaPagesModule::', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_EDIT)) {
+                    $accessLevel = ACCESS_EDIT;
+                }
+            }
         } else {
-            $this->view->assign('displayeditlink', false);
+            $accessLevel = ACCESS_NONE;
         }
-        // Assign details of the item.
-        $this->view->assign('item', $item);
-        $this->view->assign('lang', ZLanguage::getLanguageCode());
-        // Now lets assign the informatation to create a pager for the review
-        $pager = array('numitems' => $numitems, 'itemsperpage' => 1);
-        $this->view->assign('pager', $pager);
-        return new Response($this->view->fetch($template));
+
+        return $accessLevel;
     }
 
 }

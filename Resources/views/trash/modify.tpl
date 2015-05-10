@@ -111,8 +111,8 @@
         <legend><a id="pages_meta_collapse" href="#"><i class="fa fa-plus hide"></i> {gt text='Meta data'}</a></legend>
         <div id="pages_meta_details">
             <ul>
-                {usergetvar name='uname' uid=$cr_uid assign='username'}
-                <li>{gt text='Created by %s' tag1=$username}</li>
+                {*{usergetvar name='uname' uid=$cr_uid assign='username'}*}
+                {*<li>{gt text='Created by %s' tag1=$username}</li>*}
                 <li>{gt text='Created on %s' tag1=$cr_date|dateformat}</li>
                 {usergetvar name='uname' uid=$lu_uid assign='username'}
                 <li>{gt text='Last update by %s' tag1=$username}</li>

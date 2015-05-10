@@ -16,15 +16,16 @@
 namespace Zikula\PagesModule\Block;
 
 use BlockUtil;
-use FormUtil;
 use ModUtil;
 use SecurityUtil;
+use Zikula\Core\Controller\AbstractBlockController;
+use Zikula\PagesModule\Manager\PageCollectionManager;
 
 /**
- * Class PageslistBlock
+ * Class PagesListBlock
  * @package Zikula\PagesModule\Block
  */
-class PageslistBlock extends \Zikula_Controller_AbstractBlock
+class PagesListBlock extends AbstractBlockController
 {
     /**
      * Initialise block.
@@ -45,8 +46,8 @@ class PageslistBlock extends \Zikula_Controller_AbstractBlock
     {
         return array(
             'module' => $this->name,
-            'text_type' => $this->__('Pages list'),
-            'text_type_long' => $this->__('Display a list of pages'),
+            'text_type' => __('Pages list'),
+            'text_type_long' => __('Display a list of pages'),
             'allow_multiple' => true,
             'form_content' => false,
             'form_refresh' => false,
@@ -58,18 +59,18 @@ class PageslistBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display block.
      *
-     * @param array $blockinfo A blockinfo structure.
+     * @param array $blockInfo A blockInfo structure.
      *
      * @return string|void The rendered block.
      */
-    public function display($blockinfo)
+    public function display($blockInfo)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaPagesModule:pageslistblock:', "{$blockinfo['title']}::", ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaPagesModule:pageslistblock:', "{$blockInfo['title']}::", ACCESS_READ)) {
             return false;
         }
         // Get variables from content block
-        $vars = BlockUtil::varsFromContent($blockinfo['content']);
+        $vars = BlockUtil::varsFromContent($blockInfo['content']);
         // Defaults
         if (empty($vars['numitems'])) {
             $vars['numitems'] = 5;
@@ -79,83 +80,78 @@ class PageslistBlock extends \Zikula_Controller_AbstractBlock
             return false;
         }
         // Call the modules API to get the items
-        $items = ModUtil::apiFunc($this->name, 'user', 'getall');
+        $pagesManager = new PageCollectionManager($this->get('doctrine.entitymanager'));
+        $pagesManager->setItemsPerPage($vars['numitems']);
+        $pagesManager->setOrder('lu_date', 'DESC');
+        $pages = $pagesManager->get();
+
         // Check for no items returned
-        if (empty($items)) {
+        if (empty($pages)) {
             return false;
         }
         // Call the modules API to get the numitems
-        $countitems = ModUtil::apiFunc($this->name, 'user', 'countitems');
+        $countitems = count($pages);
         // Compare the numitems with the block setting
         if ($countitems <= $vars['numitems']) {
             $vars['numitems'] = $countitems;
         }
-        // Create output object
-        $this->view->setCacheId($blockinfo['bid']);
+
         // Display each item, permissions permitting
-        $shownResults = 0;
-        $pagesitems = array();
-        foreach ($items as $item) {
-            if (SecurityUtil::checkPermission($this->name . '::', "{$item['title']}::{$item['pageid']}", ACCESS_OVERVIEW)) {
-                $shownResults++;
-                if ($shownResults <= $vars['numitems']) {
-                    if (SecurityUtil::checkPermission($this->name . '::', "{$item['title']}::{$item['pageid']}", ACCESS_READ)) {
-                        $pagesitems[] = array('url' => $this->get('router')->generate('zikulapagesmodule_user_display', array('pageid' => $item['pageid'])), 'title' => $item['title']);
-                    } else {
-                        $pagesitems[] = array('title' => $item['title']);
-                    }
+        $pageArray = array();
+        /** @var \Zikula\PagesModule\Entity\PageEntity $page */
+        foreach ($pages as $page) {
+            if (SecurityUtil::checkPermission($this->name . '::', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_OVERVIEW)) {
+                if (SecurityUtil::checkPermission($this->name . '::', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_READ)) {
+                    $pageArray[] = array(
+                        'url' => $this->get('router')->generate('zikulapagesmodule_user_display', array('urltitle' => $page->getUrltitle())),
+                        'title' => $page['title']
+                    );
+                } else {
+                    $pageArray[] = array('title' => $page['title']);
                 }
             }
         }
-        $this->view->assign('items', $pagesitems);
-        // Populate block info and pass to theme
-        $blockinfo['content'] = $this->view->fetch('Block/pageslist.tpl');
 
-        return BlockUtil::themeBlock($blockinfo);
+        $blockInfo['content'] = $this->render('ZikulaPagesModule:Block:pagesListDisplay.html.twig', array('pages' => $pageArray))->getContent();
+
+        return BlockUtil::themeBlock($blockInfo);
     }
 
     /**
      * modify block settings
      *
-     * @param array $blockinfo a blockinfo structure
+     * @param array $blockInfo a blockInfo structure
      *
      * @return string the block form
      */
-    public function modify($blockinfo)
+    public function modify($blockInfo)
     {
         // Get current content
-        $vars = BlockUtil::varsFromContent($blockinfo['content']);
+        $vars = BlockUtil::varsFromContent($blockInfo['content']);
         // Defaults
-        if (empty($vars['numitems'])) {
-            $vars['numitems'] = 5;
-        }
-        // Create output object
-        $this->view->setCaching(false);
-        // assign the appropriate values
-        $this->view->assign($vars);
+        $vars['numitems'] = !empty($vars['numitems']) ? $vars['numitems'] : 5;
 
-        return $this->view->fetch('Block/pageslist_modify.tpl');
+        return $this->render('ZikulaPagesModule:Block:pagesListModify.html.twig', $vars)->getContent();
     }
 
     /**
      * update block settings
      *
-     * @param array $blockinfo A blockinfo structure.
+     * @param array $blockInfo A blockInfo structure.
      *
-     * @return array The modified blockinfo structure.
+     * @return array The modified blockInfo structure.
      */
-    public function update($blockinfo)
+    public function update($blockInfo)
     {
         // Get current content
-        $vars = BlockUtil::varsFromContent($blockinfo['content']);
+        $vars = BlockUtil::varsFromContent($blockInfo['content']);
         // alter the corresponding variable
-        $vars['numitems'] = (int)FormUtil::getPassedValue('numitems', null, 'POST');
+        $vars['numitems'] = $this->get('request')->request->get('numitems', null);
         // write back the new contents
-        $blockinfo['content'] = BlockUtil::varsToContent($vars);
-        // clear the block cache
-        $this->view->clear_cache('Block/pageslist.tpl');
+        $blockInfo['content'] = BlockUtil::varsToContent($vars);
 
-        return $blockinfo;
+
+        return $blockInfo;
     }
 
 }

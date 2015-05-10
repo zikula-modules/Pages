@@ -16,7 +16,6 @@
 namespace Zikula\PagesModule\Controller;
 
 use CategoryRegistryUtil;
-use FormUtil;
 use ModUtil;
 use SecurityUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
@@ -26,9 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\PagesModule\Manager\PageCollectionManager;
-use Zikula\PagesModule\Util as PagesUtil;
-use Zikula_View;
 use ZLanguage;
+use Zikula\Core\Controller\AbstractController;
+use Zikula\PagesModule\Form\Type\FilterType;
 
 /**
  * Class AdminController
@@ -36,61 +35,12 @@ use ZLanguage;
  *
  * @Route("/admin")
  */
-class AdminController extends \Zikula_AbstractController
+class AdminController extends AbstractController
 {
-    public function postInitializeAction()
-    {
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
-    }
-
+    const SORTDIR_ASC = 0;
+    const SORTDIR_DESC = 1;
     /**
      * @Route("")
-     *
-     * the main administration function
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse HTML output
-     */
-    public function indexAction(Request $request)
-    {
-        return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_admin_view'));
-    }
-
-    /**
-     * @Route("/modify")
-     *
-     * modify a page
-     *
-     * @param Request $request
-     *
-     * @return Response HTML output
-     */
-    public function modifyAction(Request $request)
-    {
-        $form = FormUtil::newForm($this->name, $this);
-
-        return new Response($form->execute('Admin/modify.tpl', new \Zikula\PagesModule\Handler\ModifyHandler()));
-    }
-
-    /**
-     * @Route("/delete")
-     *
-     * delete item
-     *
-     * @param Request $request
-     *
-     * @return Response HTML output
-     */
-    public function deleteAction(Request $request)
-    {
-        $form = FormUtil::newForm($this->name, $this);
-
-        return new Response($form->execute('Admin/delete.tpl', new \Zikula\PagesModule\Handler\DeleteHandler()));
-    }
-
-    /**
-     * @Route("/view")
      *
      * view items
      *
@@ -98,75 +48,73 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response HTML output
      */
-    public function viewAction(Request $request)
+    public function indexAction(Request $request)
     {
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
+
         // initialize sort array - used to display sort classes and urls
         $sort = array();
-        $fields = array('pageid', 'title', 'cr_date');
+        $sortableFields = array('pageid', 'title', 'cr_date');
         // possible sort fields
-        foreach ($fields as $field) {
+        foreach ($sortableFields as $field) {
             $sort['class'][$field] = 'z-order-unsorted';
         }
-        // Get parameters from whatever input we need.
-        $startnum = $request->get('startnum', 1);
-        $language = $request->request->get('language', null);
-        $orderby = $request->get('orderby', 'pageid');
-        $originalSdir = $request->get('sdir', 'ASC');
+        // Get parameters
+        $startnum = $request->query->get('startnum', 1);
+        $language = $request->query->get('language', null);
+        $orderby = $request->query->get('orderby', 'pageid');
+        $currentSortDirection = $request->query->get('sdir', self::SORTDIR_DESC);
 
-        $this->view->assign('startnum', $startnum);
-        $this->view->assign('orderby', $orderby);
-        $this->view->assign('sdir', $originalSdir);
-        $sdir = $originalSdir ? 0 : 1;
-        $sort['class'][$orderby] = ($sdir == 0) ? 'z-order-desc' : 'z-order-asc';
-        $orderdir = ($sdir == 0) ? 'DESC' : 'ASC';
+        $templateParameters = array(
+            'startnum' => $startnum,
+            'orderby' => $orderby,
+            'sdir' => $currentSortDirection,
+        );
+        $possibleSortDirection = ($currentSortDirection == self::SORTDIR_DESC) ? self::SORTDIR_ASC : self::SORTDIR_DESC;
+        $sort['class'][$orderby] = ($possibleSortDirection == self::SORTDIR_ASC) ? 'z-order-desc' : 'z-order-asc';
+        $orderdir = ($possibleSortDirection == self::SORTDIR_ASC) ? 'DESC' : 'ASC';
 
-        $filtercats = $request->get('pages', null);
-        $filtercatsSerialized = $request->query->get('filtercats_serialized', false);
-        $filtercats = $filtercatsSerialized ? unserialize($filtercatsSerialized) : $filtercats;
-        $catsarray = PagesUtil::formatCategoryFilter($filtercats);
+        $filterForm = $this->createForm(new FilterType(), $request->query->all(), array(
+            'action' => $this->generateUrl('zikulapagesmodule_admin_index'),
+            'method' => 'POST',
+            'entityCategoryRegistries' => CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'Page', 'id'),
+        ));
+        $filterForm->handleRequest($request);
+        $filterData = $filterForm->isSubmitted() ? $filterForm->getData() : $request->query->all();
+        $templateParameters['filter_active'] = (isset($filterData['category']) && (count($filterData['category']) > 0)) || !empty($filterData['language']);
+
         // complete initialization of sort array, adding urls
-        foreach ($fields as $field) {
-            $params = array('language' => $language, 'filtercats_serialized' => serialize($filtercats), 'orderby' => $field, 'sdir' => $sdir);
-            $sort['url'][$field] = $this->get('router')->generate('zikulapagesmodule_admin_view', $params);
+        foreach ($sortableFields as $field) {
+            $params = array(
+                'language' => isset($filterData['language']) ? $filterData['language'] : null,
+                'filtercats_serialized' => isset($filterData['categories']) ? serialize($filterData['categories']) : null,
+                'orderby' => $field,
+                'sdir' => $possibleSortDirection);
+            $sort['url'][$field] = $this->get('router')->generate('zikulapagesmodule_admin_index', $params);
         }
-        $this->view->assign('sort', $sort);
-        $this->view->assign('filter_active', empty($language) && empty($catsarray) ? false : true);
-        // get module vars
-        $modvars = $this->getVars();
-        if ($modvars['enablecategorization']) {
-            $catregistry = CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'Page');
-            $this->view->assign('catregistry', $catregistry);
-        }
-        $pages = new PageCollectionManager();
+        $templateParameters['sort'] = $sort;
+
+        $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
         $pages->setStartNumber($startnum);
-        $pages->setLanguage($language);
+        $pages->setItemsPerPage(\ModUtil::getVar($this->name, 'itemsperpage'));
         $pages->setOrder($orderby, $orderdir);
         $pages->enablePager();
-        if (isset($catsarray['Main'])) {
-            $pages->setCategory($catsarray['Main']);
-        }
+        $pages->setFilterBy($filterData);
         // Assign the items to the template
-        $this->view->assign('pages', $pages->get());
-        // Assign the default language
-        $this->view->assign('lang', ZLanguage::getLanguageCode());
-        $this->view->assign('language', $language);
+        $templateParameters['pages'] = $pages->get();
+        $templateParameters['lang'] = ZLanguage::getLanguageCode();
         // Assign the information required to create the pager
-        $this->view->assign('pager', $pages->getPager());
-        $selectedcategories = array();
-        if (is_array($filtercats)) {
-            $catsarray = $filtercats['__CATEGORIES__'];
-            foreach ($catsarray as $propname => $propid) {
-                if ($propid > 0) {
-                    $selectedcategories[$propname] = $propid;
-                }
-            }
-        }
-        $this->view->assign('selectedcategories', $selectedcategories);
+        $templateParameters['pager'] = $pages->getPager();
+        $templateParameters['modvars'] = \ModUtil::getModvars(); // temporary solution
+        $templateParameters['filterForm'] = $filterForm->createView();
 
-        return new Response($this->view->fetch('Admin/view.tpl'));
+        // attempt to disable caching for this only
+        $response = new Response();
+        $response->expire();
+
+        return $this->render('ZikulaPagesModule:Admin:view.html.twig', $templateParameters, $response);
     }
 
     /**
@@ -183,31 +131,18 @@ class AdminController extends \Zikula_AbstractController
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
-        if (ModUtil::apiFunc($this->name, 'admin', 'purgepermalinks')) {
-            $this->request->getSession()->getFlashBag()->add('status', $this->__('Purging of the pemalinks was successful'));
-        } else {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__('Purging of the pemalinks has failed'));
+        $pages = $this->container->get('doctrine.entitymanager')->getRepository('ZikulaPagesModule:PageEntity')->findAll();
+        foreach ($pages as $page) {
+            $page->setUrltitle(null); // reset the Gedmo/Sluggable field
         }
+        $this->container->get('doctrine.entitymanager')->flush();
+
+        $this->addFlash('status', __('Permalinks have been reset.'));
+
         $referer = $request->headers->get('referer');
-        $url = strpos($referer, 'purge') ? $this->get('router')->generate('zikulapagesmodule_admin_view') : $referer;
+        $url = strpos($referer, 'purge') ? $this->get('router')->generate('zikulapagesmodule_admin_index') : $referer;
 
         return new RedirectResponse($url);
-    }
-
-    /**
-     * @Route("/config")
-     *
-     * modify module configuration
-     *
-     * @param Request $request
-     *
-     * @return Response HTML output string
-     */
-    public function modifyconfigAction(Request $request)
-    {
-        $form = FormUtil::newForm($this->name, $this);
-
-        return new Response($form->execute('Admin/modifyconfig.tpl', new \Zikula\PagesModule\Handler\ModifyConfigHandler()));
     }
 
 }

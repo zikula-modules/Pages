@@ -1,0 +1,25 @@
+{% form_theme form 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig' %}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h1>{{ p.__('Delete Page?') }}</h1>
+        <ul>
+            <li>ID: {{ page.pageid }}</li>
+            <li>Title: {{ page.title }}</li>
+            <li>Created: {{ page.cr_date|date("m/d/Y") }}</li>
+        </ul>
+        {{ getstatusmsg() }}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        {#{{ form_start(form) }}#}
+        {#{{ form_errors(form) }}#}
+
+        {#{{ form_row(form.task) }}#}
+        {#{{ form_row(form.dueDate) }}#}
+        {#{{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}#}
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

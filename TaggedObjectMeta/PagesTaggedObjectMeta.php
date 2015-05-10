@@ -44,12 +44,14 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
     {
 
         parent::__construct($objectId, $areaId, $module, $urlString, $urlObject);
-        $page = ModUtil::apiFunc('ZikulaPagesModule', 'user', 'get', array('pageid' => $this->getObjectId()));
+        $sm = \ServiceUtil::getManager();
+        /** @var \Zikula\PagesModule\Entity\PageEntity $page */
+        $page = $sm->get('doctrine.entitymanager')->getRepository('ZikulaPagesModule:PageEntity')->find($this->getObjectId());
         // the Api checks for perms and there is nothing else to check
         if ($page) {
-            $this->setObjectAuthor(UserUtil::getVar('uname', $page['cr_uid']));
-            $this->setObjectDate($page['cr_date']);
-            $this->setObjectTitle($page['title']);
+            $this->setObjectAuthor($page->getCreator()->getUname());
+            $this->setObjectDate($page->getCr_date());
+            $this->setObjectTitle($page->getTitle());
         }
     }
 
