@@ -73,19 +73,20 @@ class AdminFormController extends AbstractController
     public function configAction(Request $request)
     {
         $form = $this->createFormBuilder(\ModUtil::getVar('ZikulaPagesModule'))
-            ->add('enablecategorization', 'checkbox', array('required' => false))
-            ->add('itemsperpage', 'number', array(
+            ->add('enablecategorization', 'checkbox', array('label' => __('Enable categorization'),
+                'required' => false))
+            ->add('itemsperpage', 'number', array('label' => __('Items per page'),
                 'constraints' => array(
                     new Assert\GreaterThan(array('value' => 0)),
                 )))
-            ->add('def_displaywrapper', 'checkbox', array('required' => false))
-            ->add('def_displaytitle', 'checkbox', array('required' => false))
-            ->add('def_displaycreated', 'checkbox', array('required' => false))
-            ->add('def_displayupdated', 'checkbox', array('required' => false))
-            ->add('def_displaytextinfo', 'checkbox', array('required' => false))
-            ->add('def_displayprint', 'checkbox', array('required' => false))
-            ->add('addcategorytitletopermalink', 'checkbox', array('required' => false))
-            ->add('showpermalinkinput', 'checkbox', array('required' => false))
+            ->add('def_displaywrapper', 'checkbox', array('label' => __('Display additional information'), 'required' => false))
+            ->add('def_displaytitle', 'checkbox', array('label' => __('Display page title'), 'required' => false))
+            ->add('def_displaycreated', 'checkbox', array('label' => __('Display page creation date'), 'required' => false))
+            ->add('def_displayupdated', 'checkbox', array('label' => __('Display page update date'), 'required' => false))
+            ->add('def_displaytextinfo', 'checkbox', array('label' => __('Display page text statistics'), 'required' => false))
+            ->add('def_displayprint', 'checkbox', array('label' => __('Display page print link'), 'required' => false))
+            ->add('addcategorytitletopermalink', 'checkbox', array('label' => __('Add category title to permalink'), 'required' => false, 'disabled' => true))
+            ->add('showpermalinkinput', 'checkbox', array('label' => __('Show permalink input field'), 'required' => false, 'disabled' => true))
             ->add('save', 'submit', array('label' => 'Save'))
             ->add('cancel', 'submit', array('label' => 'Cancel'))
             ->getForm();

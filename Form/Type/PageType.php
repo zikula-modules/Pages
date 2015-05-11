@@ -29,24 +29,24 @@ class PageType extends AbstractType
     {
         $builder
             ->add('title', 'text')
-            ->add('urltitle', 'text', array('required' => false))
+            ->add('urltitle', 'text', array('required' => false, 'label' => __('PermaLink URL title')))
             ->add($builder->create('metadescription', 'textarea', array('required' => false))
                 ->addModelTransformer(new NullToEmptyTransformer()))
             ->add($builder->create('metakeywords', 'textarea', array('required' => false))
                 ->addModelTransformer(new NullToEmptyTransformer()))
             ->add('content')
-            ->add('displaywrapper', 'checkbox', array('required' => false))
-            ->add('displaytitle', 'checkbox', array('required' => false))
-            ->add('displaycreated', 'checkbox', array('required' => false))
-            ->add('displayupdated', 'checkbox', array('required' => false))
-            ->add('displaytextinfo', 'checkbox', array('required' => false))
-            ->add('displayprint', 'checkbox', array('required' => false))
+            ->add('displaywrapper', 'checkbox', array('required' => false, 'label' => __('Display additional information')))
+            ->add('displaytitle', 'checkbox', array('required' => false, 'label' => __('Display page title')))
+            ->add('displaycreated', 'checkbox', array('required' => false, 'label' => __('Display page creation date')))
+            ->add('displayupdated', 'checkbox', array('required' => false, 'label' => __('Display page update date')))
+            ->add('displaytextinfo', 'checkbox', array('required' => false, 'label' => __('Display page text statistics')))
+            ->add('displayprint', 'checkbox', array('required' => false, 'label' => __('Display page print link')))
             ->add($builder->create('language', 'choice', array(
                 'choices' => \ZLanguage::getInstalledLanguageNames(),
                 'required' => false,
                 'placeholder' => __('All')
                 ))->addModelTransformer(new NullToEmptyTransformer()))
-            ->add('obj_status', 'checkbox', array('required' => false))
+            ->add('obj_status', 'checkbox', array('required' => false, 'label' => __('Page is active')))
             ->add('save', 'submit', array('label' => 'Create Page'));
 
         $entityCategoryRegistries = \CategoryRegistryUtil::getRegisteredModuleCategories('ZikulaPagesModule', 'Page', 'id');

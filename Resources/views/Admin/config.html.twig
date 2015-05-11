@@ -1,18 +1,42 @@
-{% form_theme form 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig' %}
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
 {{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
 <div class="container-fluid">
     <div class="row">
-        <h1>{{ p.__('Modify Pages Config') }}</h1>
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ p.__('Modify Pages Config') }}
+        </h3>
         {{ getstatusmsg() }}
         {{ form_start(form) }}
-        {{ form_widget(form) }}
-
-        {#{{ form_start(form) }}#}
-        {#{{ form_errors(form) }}#}
-
-        {#{{ form_row(form.task) }}#}
-        {#{{ form_row(form.dueDate) }}#}
-        {#{{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}#}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>{{ __('General settings') }}</legend>
+            {{ form_row(form.enablecategorization) }}
+            {{ form_row(form.itemsperpage) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('New page defaults') }}</legend>
+            {{ form_row(form.def_displaywrapper) }}
+            {{ form_row(form.def_displaytitle) }}
+            {{ form_row(form.def_displaycreated) }}
+            {{ form_row(form.def_displayupdated) }}
+            {{ form_row(form.def_displaytextinfo) }}
+            {{ form_row(form.def_displayprint) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Permalinks settings') }}</legend>
+            {{ form_row(form.addcategorytitletopermalink) }}
+            {{ form_row(form.showpermalinkinput) }}
+        </fieldset>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}, 'icon':'fa-check'}) }}
+                {{ form_widget(form.cancel, {'attr': {'class': 'btn btn-default'}, icon:'fa-times'}) }}
+            </div>
+        </div>
         {{ form_end(form) }}
     </div>
 
