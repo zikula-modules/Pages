@@ -9,8 +9,8 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th><a class='{{ sort.class.pageid }}' href='{{ sort.url.pageid }}'>{{ __('ID') }}</a></th>
-        <th><a class='{{ sort.class.title }}' href='{{ sort.url.title }}'>{{ __('Title') }}</a></th>
+        <th><a class='{{ sort.pageid.class }}' href='{{ sort.pageid.url }}'>{{ __('ID') }}</a></th>
+        <th><a class='{{ sort.title.class }}' href='{{ sort.title.url }}'>{{ __('Title') }}</a></th>
         <th>{{ __('Creator') }}</th>
         {% if modvars.ZikulaPagesModule.enablecategorization %}
             <th>{{ __('Category') }}</th>
@@ -18,7 +18,7 @@
         {% if ZConfig.multilingual %}
             <th>{{ __('Language') }}</th>
         {% endif %}
-        <th><a class='{{ sort.class.cr_date }}' href='{{ sort.url.cr_date }}'>{{ __('Created') }}</a></th>
+        <th><a class='{{ sort.cr_date.class }}' href='{{ sort.cr_date.url }}'>{{ __('Created') }}</a></th>
         <th>{{ __('Actions') }}</th>
     </tr>
     </thead>

@@ -28,6 +28,8 @@ use Zikula\PagesModule\Manager\PageCollectionManager;
 use ZLanguage;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\PagesModule\Form\Type\FilterType;
+use Zikula\Component\SortableColumns\SortableColumns;
+use Zikula\Component\SortableColumns\Column;
 
 /**
  * Class AdminController
@@ -37,8 +39,6 @@ use Zikula\PagesModule\Form\Type\FilterType;
  */
 class AdminController extends AbstractController
 {
-    const SORTDIR_ASC = 0;
-    const SORTDIR_DESC = 1;
     /**
      * @Route("")
      *
@@ -54,27 +54,10 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        // initialize sort array - used to display sort classes and urls
-        $sort = array();
-        $sortableFields = array('pageid', 'title', 'cr_date');
-        // possible sort fields
-        foreach ($sortableFields as $field) {
-            $sort['class'][$field] = 'z-order-unsorted';
-        }
         // Get parameters
         $startnum = $request->query->get('startnum', 1);
-        $language = $request->query->get('language', null);
-        $orderby = $request->query->get('orderby', 'pageid');
-        $currentSortDirection = $request->query->get('sdir', self::SORTDIR_DESC);
-
-        $templateParameters = array(
-            'startnum' => $startnum,
-            'orderby' => $orderby,
-            'sdir' => $currentSortDirection,
-        );
-        $possibleSortDirection = ($currentSortDirection == self::SORTDIR_DESC) ? self::SORTDIR_ASC : self::SORTDIR_DESC;
-        $sort['class'][$orderby] = ($possibleSortDirection == self::SORTDIR_ASC) ? 'z-order-desc' : 'z-order-asc';
-        $orderdir = ($possibleSortDirection == self::SORTDIR_ASC) ? 'DESC' : 'ASC';
+        $orderBy = $request->query->get('orderby', 'pageid');
+        $currentSortDirection = $request->query->get('sdir', Column::DIRECTION_DESCENDING);
 
         $filterForm = $this->createForm(new FilterType(), $request->query->all(), array(
             'action' => $this->generateUrl('zikulapagesmodule_admin_index'),
@@ -83,29 +66,30 @@ class AdminController extends AbstractController
         ));
         $filterForm->handleRequest($request);
         $filterData = $filterForm->isSubmitted() ? $filterForm->getData() : $request->query->all();
-        $templateParameters['filter_active'] = (isset($filterData['category']) && (count($filterData['category']) > 0)) || !empty($filterData['language']);
 
-        // complete initialization of sort array, adding urls
-        foreach ($sortableFields as $field) {
-            $params = array(
-                'language' => isset($filterData['language']) ? $filterData['language'] : null,
-                'filtercats_serialized' => isset($filterData['categories']) ? serialize($filterData['categories']) : null,
-                'orderby' => $field,
-                'sdir' => $possibleSortDirection);
-            $sort['url'][$field] = $this->get('router')->generate('zikulapagesmodule_admin_index', $params);
-        }
-        $templateParameters['sort'] = $sort;
+        $sortableColumns = new SortableColumns($this->get('router'), 'zikulapagesmodule_admin_index', 'orderby', 'sdir');
+        $sortableColumns->addColumn(new Column('pageid')); // first added is automatically the default
+        $sortableColumns->addColumn(new Column('title'));
+        $sortableColumns->addColumn(new Column('cr_date'));
+        $sortableColumns->setOrderBy($sortableColumns->getColumn($orderBy), $currentSortDirection);
+        $sortableColumns->setAdditionalUrlParameters(array(
+            'language' => isset($filterData['language']) ? $filterData['language'] : null,
+            // @todo serialized cats not working yet
+            'filtercats_serialized' => isset($filterData['categories']) ? serialize($filterData['categories']) : null,
+        ));
 
         $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
         $pages->setStartNumber($startnum);
         $pages->setItemsPerPage(\ModUtil::getVar($this->name, 'itemsperpage'));
-        $pages->setOrder($orderby, $orderdir);
+        $pages->setOrder($orderBy, $currentSortDirection);
         $pages->enablePager();
         $pages->setFilterBy($filterData);
-        // Assign the items to the template
+
+        $templateParameters = array();
+        $templateParameters['filter_active'] = (isset($filterData['category']) && (count($filterData['category']) > 0)) || !empty($filterData['language']);
+        $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['pages'] = $pages->get();
         $templateParameters['lang'] = ZLanguage::getLanguageCode();
-        // Assign the information required to create the pager
         $templateParameters['pager'] = $pages->getPager();
         $templateParameters['modvars'] = \ModUtil::getModvars(); // temporary solution
         $templateParameters['filterForm'] = $filterForm->createView();
