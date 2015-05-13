@@ -8,7 +8,7 @@
             {% if filter_active %}{% set filteractive = __('active') %}{% else %}{% set filteractive = __('inactive') %}{% endif %}
             <legend>{{ p._fn("Filter %1$s, %2$s page listed", "Filter %1$s, %2$s pages listed", pager.numitems, [filteractive, pager.numitems]) }}</legend>
             {% if modvars.ZikulaPagesModule.enablecategorization %}
-                {{ form_row(filterForm.category, {'full_name': filterForm.category.vars.full_name|replace({ (filterForm.category.vars.name): filterForm.category.vars.name ~ '][' ~ filterForm.category.vars.registry_id }) }) }}
+                {{ form_row(filterForm.category) }}
             {% endif %}
             {% if ZConfig.multilingual %}
                 {{ form_row(filterForm.language) }}

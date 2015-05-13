@@ -15,7 +15,7 @@
             {{ form_row(form.obj_status) }}
             {{ form_row(form.title) }}
             {{ form_row(form.urltitle) }}
-            {{ form_row(form.categories, {'full_name': form.categories.vars.full_name|replace({ (form.categories.vars.name): form.categories.vars.name ~ '][' ~ form.categories.vars.registry_id }) }) }}
+            {{ form_row(form.categories) }}
             {{ form_row(form.language) }}
             {{ form_row(form.content) }}
         </fieldset>
