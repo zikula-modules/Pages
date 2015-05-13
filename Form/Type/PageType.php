@@ -51,9 +51,7 @@ class PageType extends AbstractType
 
         $entityCategoryRegistries = \CategoryRegistryUtil::getRegisteredModuleCategories('ZikulaPagesModule', 'Page', 'id');
         foreach ($entityCategoryRegistries as $registryId => $parentCategoryId) {
-            $builder->add('categories', new CategoryType($registryId, $parentCategoryId), array('multiple' => true))
-                ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'))
-                ->addEventListener(FormEvents::POST_SET_DATA, array($this, 'onPostSetData'));
+            $builder->add('categories', new CategoryType($registryId, $parentCategoryId), array('multiple' => true));
         }
     }
 
@@ -73,18 +71,6 @@ class PageType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Zikula\PagesModule\Entity\PageEntity',
         ));
-    }
-
-    public function onPreSetData(FormEvent $event)
-    {
-//        $data = $event->getData();
-//        $form = $event->getForm();
-    }
-
-    public function onPostSetData(FormEvent $event)
-    {
-//        $data = $event->getData();
-//        $form = $event->getForm();
     }
 
 }
