@@ -62,7 +62,7 @@ class AdminController extends AbstractController
         $filterForm = $this->createForm(new FilterType(), $request->query->all(), array(
             'action' => $this->generateUrl('zikulapagesmodule_admin_index'),
             'method' => 'POST',
-            'entityCategoryRegistries' => CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'Page', 'id'),
+            'entityCategoryRegistries' => CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'PageEntity', 'id'),
         ));
         $filterForm->handleRequest($request);
         $filterData = $filterForm->isSubmitted() ? $filterForm->getData() : $request->query->all();

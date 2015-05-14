@@ -124,6 +124,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
             case '2.6.1':
                 // @todo convert modvar module name
                 // @todo convert category paths to ZikulaPagesModule
+                // @todo convert categoryRegistry Entity name from Page to PageEntity
                 // @todo convert security schema names to ZikulaPagesModule
             case '3.0.0':
         }
@@ -171,7 +172,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
         $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule');
         if ($rootcat) {
             // create an entry in the categories registry to the Main property
-            if (!CategoryRegistryUtil::insertEntry($this->name, 'Page', 'Main', $rootcat['id'])) {
+            if (!CategoryRegistryUtil::insertEntry($this->name, 'PageEntity', 'Main', $rootcat['id'])) {
                 throw new Zikula_Exception('Cannot insert Category Registry entry.');
             }
         } else {
@@ -205,7 +206,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
         $this->entityManager->persist($page);
         $category = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule/Category1');
         $catEntity = $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $category['id']);
-        $registryId = CategoryRegistryUtil::getRegisteredModuleCategory($this->name, 'Page', 'Main');
+        $registryId = CategoryRegistryUtil::getRegisteredModuleCategory($this->name, 'PageEntity', 'Main');
         $categoryRelation = new CategoryEntity($registryId, $catEntity, $page);
         $page->setCategories(array($categoryRelation));
         $this->entityManager->flush();

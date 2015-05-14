@@ -49,7 +49,7 @@ class PageType extends AbstractType
             ->add('obj_status', 'checkbox', array('required' => false, 'label' => __('Page is active')))
             ->add('save', 'submit', array('label' => 'Create Page'));
 
-        $entityCategoryRegistries = \CategoryRegistryUtil::getRegisteredModuleCategories('ZikulaPagesModule', 'Page', 'id');
+        $entityCategoryRegistries = \CategoryRegistryUtil::getRegisteredModuleCategories('ZikulaPagesModule', 'PageEntity', 'id');
         foreach ($entityCategoryRegistries as $registryId => $parentCategoryId) {
             $builder->add('categories', new CategoryType($registryId, $parentCategoryId), array('multiple' => true));
         }

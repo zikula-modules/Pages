@@ -59,7 +59,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getCategories()
     {
-        $categoryRegistry = CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'Page');
+        $categoryRegistry = CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'PageEntity');
         $properties = array_keys($categoryRegistry);
         $propertiesdata = array();
         foreach ($properties as $property) {
