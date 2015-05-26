@@ -23,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotati
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Form\Type\PageType;
 use Symfony\Component\Validator\Constraints as Assert;
+use Zikula\PagesModule\AdminAuthInterface;
 
 /**
  * @Route("/admin")
@@ -30,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class AdminFormController
  * @package Zikula\PagesModule\Controller
  */
-class AdminFormController extends AbstractController
+class AdminFormController extends AbstractController implements AdminAuthInterface
 {
     /**
      * @Route("/edit/{page}")

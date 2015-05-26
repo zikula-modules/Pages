@@ -23,13 +23,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotati
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 use ZLanguage;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\PagesModule\Form\Type\FilterType;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Component\SortableColumns\Column;
+use Zikula\PagesModule\AdminAuthInterface;
 
 /**
  * Class AdminController
@@ -37,7 +37,7 @@ use Zikula\Component\SortableColumns\Column;
  *
  * @Route("/admin")
  */
-class AdminController extends AbstractController
+class AdminController extends AbstractController implements AdminAuthInterface
 {
     /**
      * @Route("")
@@ -50,10 +50,6 @@ class AdminController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
         // Get parameters
         $startnum = $request->query->get('startnum', 1);
         $orderBy = $request->query->get('orderby', 'pageid');
@@ -112,9 +108,6 @@ class AdminController extends AbstractController
      */
     public function purgeAction(Request $request)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
         $pages = $this->container->get('doctrine.entitymanager')->getRepository('ZikulaPagesModule:PageEntity')->findAll();
         foreach ($pages as $page) {
             $page->setUrltitle(null); // reset the Gedmo/Sluggable field
