@@ -45,7 +45,7 @@ class PageCollectionManager
         $this->em = $em;
         $this->queryBuilder = $this->em->createQueryBuilder();
         $this->queryBuilder->select('p')
-            ->from('ZikulaPagesModule:PageEntity', 'p')
+            ->from('Zikula\PagesModule\Entity\PageEntity', 'p')
             ->leftJoin('p.categories', 'c');
     }
 

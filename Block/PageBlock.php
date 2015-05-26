@@ -76,7 +76,7 @@ class PageBlock extends AbstractBlockController
         }
         // get the page
         /** @var \Zikula\PagesModule\Entity\PageEntity $page */
-        $page = $this->get('doctrine.entitymanager')->getRepository('ZikulaPagesModule:PageEntity')->find($vars['pid']);
+        $page = $this->get('doctrine.entitymanager')->getRepository('\Zikula\PagesModule\Entity\PageEntity')->find($vars['pid']);
         // check for a valid item
         if (!$page) {
             return false;
