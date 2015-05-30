@@ -6,7 +6,7 @@
     {{ form_start(filterForm) }}
         <fieldset{% if filter_active %} class='filteractive'{% endif %}>
             {% if filter_active %}{% set filteractive = __('active') %}{% else %}{% set filteractive = __('inactive') %}{% endif %}
-            <legend>{{ p._fn("Filter %1$s, %2$s page listed", "Filter %1$s, %2$s pages listed", pager.numitems, [filteractive, pager.numitems]) }}</legend>
+            <legend>{{ _fn("Filter %1$s, %2$s page listed", "Filter %1$s, %2$s pages listed", pager.numitems, [filteractive, pager.numitems]) }}</legend>
             {% if modvars.ZikulaPagesModule.enablecategorization %}
                 {{ form_row(filterForm.category) }}
             {% endif %}
