@@ -2,7 +2,7 @@
     'ZikulaCategoriesModule:Form:filter_layout_customizations.html.twig',
     'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
-{% if ZConfig.multilingual or modvars.ZikulaPagesModule.enablecategorization %}
+{% if modvars.ZConfig.multilingual or modvars.ZikulaPagesModule.enablecategorization %}
     {{ form_start(filterForm) }}
         <fieldset{% if filter_active %} class='filteractive'{% endif %}>
             {% if filter_active %}{% set filteractive = __('active') %}{% else %}{% set filteractive = __('inactive') %}{% endif %}
@@ -10,7 +10,7 @@
             {% if modvars.ZikulaPagesModule.enablecategorization %}
                 {{ form_row(filterForm.category) }}
             {% endif %}
-            {% if ZConfig.multilingual %}
+            {% if modvars.ZConfig.multilingual %}
                 {{ form_row(filterForm.language) }}
             {% endif %}
             {{ form_row(filterForm.FilterButton) }}

@@ -15,7 +15,7 @@
         {% if modvars.ZikulaPagesModule.enablecategorization %}
             <th>{{ __('Category') }}</th>
         {% endif %}
-        {% if ZConfig.multilingual %}
+        {% if modvars.ZConfig.multilingual %}
             <th>{{ __('Language') }}</th>
         {% endif %}
         <th><a class='{{ sort.cr_date.class }}' href='{{ sort.cr_date.url }}'>{{ __('Created') }}</a></th>
@@ -43,7 +43,7 @@
                 {% endfor %}
                 </td>
             {% endif %}
-            {% if ZConfig.multilingual %}
+            {% if modvars.ZConfig.multilingual %}
                 <td>{{ page.language|languageName|default('All') }}</td>
             {% endif %}
             <td>{{ page.cr_date|date("m/d/Y") }}</td>
@@ -58,7 +58,7 @@
         {% if modvars.ZikulaPagesModule.enablecategorization %}
             {% set colspan=colspan+1 %}
         {% endif %}
-        {% if ZConfig.multilingual %}
+        {% if modvars.ZConfig.multilingual %}
             {% set colspan=colspan+1 %}
         {% endif %}
         <tr>
