@@ -5,6 +5,10 @@ This version requires Zikula Core 1.4
 
 Pages is a Static Page creation module for the Zikula Application Framework.
 
+*How to extract pot file*
+`php app/console translation:extract en --bundle=ZikulaPagesModule --output-format=pot --exclude-dir=TaggedObjectMeta`
+
+
 Pages 2.6.0
 -----------
 
