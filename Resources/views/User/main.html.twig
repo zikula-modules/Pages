@@ -9,7 +9,7 @@
 <ul>
     {% for category in property.subcategories %}
     <li><a href="{{ path('zikulapagesmodule_user_view', {prop: property.name, cat:category.id}) }}" title="{{ category.display_desc[lang] }}">{{ category.display_name[lang] }}</a>
-         ({{ _fn('%s page', '%s pages', category.count, category.count) }})
+         ({{ _fn('%s page', '%s pages', category.count, { '%s': category.count } ) }})
     </li>
     {% endfor %}
 </ul>
