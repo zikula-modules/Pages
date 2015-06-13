@@ -1,0 +1,196 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2015-06-13 17:00+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+
+#: views/User/main.html.twig on line 12
+msgid "%s page|%s pages"
+msgstr ""
+#: views/User/display.html.twig on line 52
+msgid "%s reads"
+msgstr ""
+#: views/User/display.html.twig on line 50
+msgid "%s total characters in this text"
+msgstr ""
+#: views/Admin/view.html.twig on line 22
+msgid "Actions"
+msgstr ""
+#: views/User/main.html.twig on line 7
+msgid "Available categories:"
+msgstr ""
+#: views/User/listpages.html.twig on line 8
+msgid "Available pages:"
+msgstr ""
+#: views/User/display.html.twig on line 21
+msgid "Categories"
+msgstr ""
+#: views/Admin/view.html.twig on line 16
+msgid "Category"
+msgstr ""
+#: modules/Pages/PagesModuleInstaller.php on line 169
+msgid "Category 1"
+msgstr ""
+#: modules/Pages/PagesModuleInstaller.php on line 170
+msgid "Category 2"
+msgstr ""
+#: views/User/view.html.twig on line 6
+msgid "Category: %s"
+msgstr ""
+#: views/Admin/filter_form.html.twig on line 17
+msgid "Clear"
+msgstr ""
+#: views/Admin/modify.html.twig on line 14
+msgid "Content"
+msgstr ""
+#: views/Admin/view.html.twig on line 21
+msgid "Created"
+msgstr ""
+#: views/Admin/delete.html.twig on line 19
+msgid "Created by"
+msgstr ""
+#: views/User/display.html.twig on line 14
+msgid "Created by %name% on %date%"
+msgstr ""
+#: views/Admin/modify.html.twig on line 42
+msgid "Created by %s"
+msgstr ""
+#: views/Admin/delete.html.twig on line 18
+msgid "Created on"
+msgstr ""
+#: views/Admin/modify.html.twig on line 43
+msgid "Created on %s"
+msgstr ""
+#: views/Admin/view.html.twig on line 14
+msgid "Creator"
+msgstr ""
+#: views/Admin/delete.html.twig on line 7
+msgid "Delete this page?"
+msgstr ""
+#: views/User/display.html.twig on line 46
+msgid "Edit"
+msgstr ""
+#: views/Admin/filter_form.html.twig on line 9
+msgid "Filter %active%, %count% page listed|Filter %active%, %count% pages listed"
+msgstr ""
+#: views/Admin/config.html.twig on line 16
+msgid "General settings"
+msgstr ""
+#: views/Admin/delete.html.twig on line 16
+#: views/Admin/view.html.twig on line 12
+msgid "ID"
+msgstr ""
+#: modules/Pages/PagesModuleInstaller.php on line 169
+#: modules/Pages/PagesModuleInstaller.php on line 170
+msgid "Initial sub-category created on install"
+msgstr ""
+#: views/Admin/view.html.twig on line 19
+msgid "Language"
+msgstr ""
+#: views/User/display.html.twig on line 17
+msgid "Last update by %name% on %date%"
+msgstr ""
+#: views/Admin/modify.html.twig on line 44
+msgid "Last update by %s"
+msgstr ""
+#: views/Admin/modify.html.twig on line 39
+msgid "Meta data"
+msgstr ""
+#: views/Admin/modify.html.twig on line 23
+msgid "Meta tags"
+msgstr ""
+#: Pages/Api/AdminApi.php on line 42
+msgid "Modify Config"
+msgstr ""
+#: views/Admin/modify.html.twig on line 8
+msgid "Modify Page"
+msgstr ""
+#: views/Admin/config.html.twig on line 10
+msgid "Modify Pages Config"
+msgstr ""
+#: Pages/Api/AdminApi.php on line 38
+msgid "New Page"
+msgstr ""
+#: views/Admin/config.html.twig on line 21
+msgid "New page defaults"
+msgstr ""
+#: views/Admin/view.html.twig on line 42
+#: views/User/display.html.twig on line 31
+msgid "No categories"
+msgstr ""
+#: views/Block/pageBlockModify.html.twig on line 24
+msgid "No match found"
+msgstr ""
+#: views/Block/pagesListModify.html.twig on line 2
+msgid "Number of pages to display"
+msgstr ""
+#: views/Block/pageBlockModify.html.twig on line 7
+msgid "Page"
+msgstr ""
+#: views/Admin/delete.html.twig on line 13
+msgid "Page Details"
+msgstr ""
+#: modules/Pages/PagesModuleInstaller.php on line 167
+#: views/Search/options.html.twig on line 3
+#: views/User/main.html.twig on line 2
+msgid "Pages"
+msgstr ""
+#: modules/Pages/PagesModuleVersion.php on line 84
+msgid "Pages Filter Hooks"
+msgstr ""
+#: modules/Pages/PagesModuleVersion.php on line 75
+msgid "Pages Hooks"
+msgstr ""
+#: Pages/Api/AdminApi.php on line 35
+#: views/User/listpages.html.twig on line 2
+#: views/User/view.html.twig on line 2
+msgid "Pages list"
+msgstr ""
+#: views/User/view.html.twig on line 7
+msgid "Pages published under this category:"
+msgstr ""
+#: views/Admin/config.html.twig on line 30
+msgid "Permalinks settings"
+msgstr ""
+#: Pages/Api/AdminApi.php on line 41
+msgid "Purge permalinks"
+msgstr ""
+#: views/Admin/modify.html.twig on line 28
+msgid "Specific page settings"
+msgstr ""
+#: modules/Pages/PagesModuleInstaller.php on line 167
+#: modules/Pages/PagesModuleVersion.php on line 39
+msgid "Static pages"
+msgstr ""
+#: views/Admin/delete.html.twig on line 17
+#: views/Admin/view.html.twig on line 13
+msgid "Title"
+msgstr ""
+#: views/Admin/modify.html.twig on line 45
+msgid "Updated on %s"
+msgstr ""
+#: views/Admin/view.html.twig on line 4
+msgid "View pages list"
+msgstr ""
+#: modules/Pages/PagesModuleInstaller.php on line 200
+msgid "Welcome to Pages content manager"
+msgstr ""
+#: views/Admin/filter_form.html.twig on line 8
+msgid "active"
+msgstr ""
+#: views/Admin/filter_form.html.twig on line 8
+msgid "inactive"
+msgstr ""
+#: modules/Pages/PagesModuleVersion.php on line 43
+msgid "pages"
+msgstr ""
+#: modules/Pages/PagesModuleInstaller.php on line 201
+msgid "welcome-to-pages-content-manager"
+msgstr ""

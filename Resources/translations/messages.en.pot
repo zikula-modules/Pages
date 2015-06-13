@@ -1,0 +1,26 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2015-06-13 17:00+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+
+#: Pages/Controller/AdminFormController.php on line 92
+#: Pages/Controller/AdminFormController.php on line 126
+msgid "Cancel"
+msgstr ""
+#: Form/Type/PageType.php on line 50
+msgid "Create Page"
+msgstr ""
+#: Pages/Controller/AdminFormController.php on line 125
+msgid "Delete"
+msgstr ""
+#: Pages/Controller/AdminFormController.php on line 91
+msgid "Save"
+msgstr ""
