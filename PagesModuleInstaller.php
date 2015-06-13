@@ -188,7 +188,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
      */
     private function createIntroPage()
     {
-        $content = $this->__(
+        $content = $this->__(/** @Ignore */
             'This is a demonstration page. You can use Pages to create simple static content pages. It is excellent '
             . 'if you only need basic html for your pages. You can also utilize the Scribite module for WYSIWYG '
             . 'content creation. It is well suited for informational articles, documents and other "long term" type '
@@ -206,9 +206,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
         $this->entityManager->persist($page);
         $category = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule/Category1');
         $catEntity = $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $category['id']);
-        $registryId = CategoryRegistryUtil::getRegisteredModuleCategory($this->name, 'PageEntity', 'Main');
-        $categoryRelation = new CategoryEntity($registryId, $catEntity, $page);
-        $page->setCategories(array($categoryRelation));
+        $page->setCategories(array($catEntity));
         $this->entityManager->flush();
     }
 
