@@ -17,12 +17,13 @@ namespace Zikula\PagesModule\Api;
 
 use CategoryRegistryUtil;
 use CategoryUtil;
+use Zikula\Core\Api\AbstractApi;
 
 /**
  * Class UserApi
  * @package Zikula\PagesModule\Api
  */
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends AbstractApi
 {
     /**
      * utility function to count the number of items held by this module
@@ -33,11 +34,14 @@ class UserApi extends \Zikula_AbstractApi
      */
     private function countItems($args)
     {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->get('doctrine.entitymanager');
+
         if (isset($args['category']) && !empty($args['category'])) {
             if (is_array($args['category'])) {
                 $args['category'] = $args['category']['Main'][0];
             }
-            $qb = $this->entityManager->createQueryBuilder();
+            $qb = $em->createQueryBuilder();
             $qb->select('count(p)')
                 ->from('Zikula\PagesModule\Entity\PageEntity', 'p')
                 ->join('p.categories', 'c')
@@ -46,7 +50,7 @@ class UserApi extends \Zikula_AbstractApi
 
             return $qb->getQuery()->getSingleScalarResult();
         }
-        $qb = $this->entityManager->createQueryBuilder();
+        $qb = $em->createQueryBuilder();
         $qb->select('count(p)')->from('Zikula\PagesModule\Entity\PageEntity', 'p');
 
         return $qb->getQuery()->getSingleScalarResult();

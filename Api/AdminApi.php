@@ -16,12 +16,13 @@
 namespace Zikula\PagesModule\Api;
 
 use SecurityUtil;
+use Zikula\Core\Api\AbstractApi;
 
 /**
  * Class AdminApi
  * @package Zikula\PagesModule\Api
  */
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi extends AbstractApi
 {
     /**
      * get available admin panel links
