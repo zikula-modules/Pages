@@ -17,18 +17,32 @@ namespace Zikula\PagesModule;
 
 use CategoryRegistryUtil;
 use CategoryUtil;
-use DoctrineHelper;
 use HookUtil;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Core\AbstractBundle;
 use Zikula\PagesModule\Entity\CategoryEntity;
 use Zikula\PagesModule\Entity\PageEntity;
-use Zikula_Exception;
 use ZLanguage;
+use Zikula\Core\ExtensionInstallerInterface;
+use Zikula\Common\Translator\TranslatorTrait;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Provides module installation and upgrade services.
  */
-class PagesModuleInstaller extends \Zikula_AbstractInstaller
+class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwareInterface
 {
+    use TranslatorTrait;
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+    /**
+     * @var AbstractBundle
+     */
+    private $bundle;
     private $entities = array(
         'Zikula\PagesModule\Entity\PageEntity',
         'Zikula\PagesModule\Entity\CategoryEntity'
@@ -46,16 +60,16 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create table
         try {
-            DoctrineHelper::createSchema($this->entityManager, $this->entities);
+            $this->container->get('zikula.doctrine.schema_tool')->create($this->entities);
         } catch (\Exception $e) {
-            $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            $this->container->get('request')->getSession()->getFlashBag()->add('error', $e->getMessage());
             return false;
         }
         // insert default category
         try {
             $this->createCategoryTree();
         } catch (\Exception $e) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Did not create default categories (%s).', $e->getMessage()));
+            $this->container->get('request')->getSession()->getFlashBag()->add('error', $this->__f('Did not create default categories (%s).', $e->getMessage()));
         }
         // set up config variables
         $modvars = array(
@@ -70,8 +84,10 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
             'def_displaytextinfo' => true,
             'def_displayprint' => true
         );
-        $this->setVars($modvars);
-        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+        \ModUtil::setVars($this->bundle->getName(), $modvars);
+        $versionClass = $this->bundle->getVersionClass();
+        $version = new $versionClass($this->bundle);
+        HookUtil::registerSubscriberBundles($version->getHookSubscriberBundles());
         $this->createIntroPage();
         // initialisation successful
         return true;
@@ -91,21 +107,21 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
     {
         // Only support upgrade from version 2.5.1 and up. Notify users if they have a version below that one.
         if (version_compare($oldversion, '2.5.1', '<=')) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__('Notice: This version does not support upgrades from versions of Pages less than 2.5.1. Please upgrade to 2.5.1 before attempting this upgrade.'));
+            $this->container->get('request')->getSession()->getFlashBag()->add('error', $this->__('Notice: This version does not support upgrades from versions of Pages less than 2.5.1. Please upgrade to 2.5.1 before attempting this upgrade.'));
             return false;
         }
         switch ($oldversion) {
             case '2.5.1':
                 // create categories table
                 try {
-                    DoctrineHelper::createSchema($this->entityManager, array('Zikula\PagesModule\Entity\CategoryEntity'));
+                    $this->container->get('zikula.doctrine.schema_tool')->create(array('Zikula\PagesModule\Entity\CategoryEntity'));
                 } catch (\Exception $e) {
-                    $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                    $this->container->get('request')->getSession()->getFlashBag()->add('error', $e->getMessage());
                     return false;
                 }
                 // move relations from categories_mapobj to pages_category
                 // then delete old data
-                $connection = $this->entityManager->getConnection();
+                $connection = $this->container->get('doctrine.entitymanager')->getConnection();
                 $sqls = array();
                 $sqls[] = 'INSERT INTO pages_category (entityId, registryId, categoryId) SELECT obj_id, reg_id, category_id FROM categories_mapobj WHERE modname = \'Pages\' AND tablename = \'pages\'';
                 $sqls[] = 'DELETE FROM categories_mapobj WHERE modname = \'Pages\' AND tablename = \'pages\'';
@@ -117,7 +133,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
                     try {
                         $stmt->execute();
                     } catch (\Exception $e) {
-                        $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
+                        $this->container->get('request')->getSession()->getFlashBag()->add('error', $e->getMessage());
                     }
                 }
             case '2.6.0':
@@ -143,12 +159,14 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
     public function uninstall()
     {
         // drop table
-        DoctrineHelper::dropSchema($this->entityManager, $this->entities);
+        $this->container->get('zikula.doctrine.schema_tool')->drop($this->entities);
         // Delete any module variables
-        $this->delVars();
+        \ModUtil::delVar($this->bundle->getName());
         // Delete entries from category registry
-        CategoryRegistryUtil::deleteEntry($this->name);
-        HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
+        CategoryRegistryUtil::deleteEntry($this->bundle->getName());
+        $versionClass = $this->bundle->getVersionClass();
+        $version = new $versionClass($this->bundle);
+        HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
         // Deletion successful
         return true;
     }
@@ -157,14 +175,14 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
      * create the category tree
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException If Root category not found.
-     * @throws \Zikula_Exception
+     * @throws \Exception
      *
      * @return boolean
      */
     private function createCategoryTree()
     {
         // create category
-        CategoryUtil::createCategory('/__SYSTEM__/Modules', $this->name, null, $this->__('Pages'), $this->__('Static pages'));
+        CategoryUtil::createCategory('/__SYSTEM__/Modules', $this->bundle->getName(), null, $this->__('Pages'), $this->__('Static pages'));
         // create subcategory
         CategoryUtil::createCategory('/__SYSTEM__/Modules/ZikulaPagesModule', 'Category1', null, $this->__('Category 1'), $this->__('Initial sub-category created on install'), array('color' => '#99ccff'));
         CategoryUtil::createCategory('/__SYSTEM__/Modules/ZikulaPagesModule', 'Category2', null, $this->__('Category 2'), $this->__('Initial sub-category created on install'), array('color' => '#cceecc'));
@@ -172,11 +190,11 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
         $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule');
         if ($rootcat) {
             // create an entry in the categories registry to the Main property
-            if (!CategoryRegistryUtil::insertEntry($this->name, 'PageEntity', 'Main', $rootcat['id'])) {
-                throw new Zikula_Exception('Cannot insert Category Registry entry.');
+            if (!CategoryRegistryUtil::insertEntry($this->bundle->getName(), 'PageEntity', 'Main', $rootcat['id'])) {
+                throw new \Exception('Cannot insert Category Registry entry.');
             }
         } else {
-            $this->throwNotFound('Root category not found.');
+            throw new NotFoundHttpException('Root category not found.');
         }
         return true;
     }
@@ -188,6 +206,7 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
      */
     private function createIntroPage()
     {
+        $em = $this->container->get('doctrine.entitymanager');
         $content = $this->__(/** @Ignore */
             'This is a demonstration page. You can use Pages to create simple static content pages. It is excellent '
             . 'if you only need basic html for your pages. You can also utilize the Scribite module for WYSIWYG '
@@ -203,11 +222,33 @@ class PagesModuleInstaller extends \Zikula_AbstractInstaller
             'language' => ZLanguage::getLanguageCode());
         $page = new PageEntity();
         $page->merge($data);
-        $this->entityManager->persist($page);
+        $em->persist($page);
         $category = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule/Category1');
-        $catEntity = $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $category['id']);
+        $catEntity = $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $category['id']);
         $page->setCategories(array($catEntity));
-        $this->entityManager->flush();
+        $em->flush();
     }
 
+    public function setBundle(AbstractBundle $bundle)
+    {
+        $this->bundle = $bundle;
+    }
+
+    /**
+     * Sets the Container.
+     *
+     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     *
+     * @api
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+        $this->setTranslator($container->get('translator'));
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
+    }
 }
