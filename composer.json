@@ -1,5 +1,6 @@
 {
   "name": "zikula/pages-module",
+  "version": "3.0.0",
   "description": "Pages is a Static Page creation module for the Zikula Application Framework.",
   "type": "zikula-module",
   "license": "LGPL-3.0+",
@@ -13,11 +14,28 @@
     "psr-4": {"Zikula\\PagesModule\\": ""}
   },
   "require": {
-    "php": ">5.3.3"
+    "php": ">5.3.3",
+    "zikula/core": "~1.4"
+  },
+  "suggest": {
+    "Scribite 5.0.0": "To allow WYSIWYG page editing."
   },
   "extra": {
     "zikula": {
-      "class": "Zikula\\PagesModule\\ZikulaPagesModule"
+      "class": "Zikula\\PagesModule\\ZikulaPagesModule",
+      "displayname": "Pages",
+      "url": "pages",
+      "oldnames": ["Pages"],
+      "capabilities": {
+        "hook_subscriber": {"enabled": true},
+        "searchable": {"class": "Zikula\\PagesModule\\Helper\\SearchHelper"},
+        "user": {"route": "zikulapagesmodule_user_index"},
+        "admin": {"route": "zikulapagesmodule_admin_index"}
+      },
+      "securityschema": {
+        "ZikulaPagesModule::": "Page name::Page ID",
+        "ZikulaPagesModule:category:": "Category ID::"
+      }
     }
   }
 }
