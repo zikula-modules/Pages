@@ -164,8 +164,6 @@ class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwar
         \ModUtil::delVar($this->bundle->getName());
         // Delete entries from category registry
         CategoryRegistryUtil::deleteEntry($this->bundle->getName());
-        $versionClass = $this->bundle->getVersionClass();
-        $version = new $versionClass($this->bundle);
         $hookHelper = new HookHelper($this->getTranslator());
         HookUtil::unregisterSubscriberBundles($hookHelper->getHookSubscriberBundles());
         // Deletion successful
