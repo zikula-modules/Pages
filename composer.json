@@ -14,14 +14,14 @@
     "psr-4": {"Zikula\\PagesModule\\": ""}
   },
   "require": {
-    "php": ">5.3.3",
-    "zikula/core": "~1.4"
+    "php": ">5.3.3"
   },
   "suggest": {
-    "Scribite 5.0.0": "To allow WYSIWYG page editing."
+    "Scribite:>=5.0.0": "To allow WYSIWYG page editing."
   },
   "extra": {
     "zikula": {
+      "core-compatibility": "~1.4",
       "class": "Zikula\\PagesModule\\ZikulaPagesModule",
       "displayname": "Pages",
       "url": "pages",
@@ -29,6 +29,7 @@
       "capabilities": {
         "hook_subscriber": {"enabled": true},
         "searchable": {"class": "Zikula\\PagesModule\\Helper\\SearchHelper"},
+        "categorizable": ["Zikula\\PagesModule\\Entity\\PageEntity"],
         "user": {"route": "zikulapagesmodule_user_index"},
         "admin": {"route": "zikulapagesmodule_admin_index"}
       },
