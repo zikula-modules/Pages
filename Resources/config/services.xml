@@ -8,5 +8,10 @@
         <service id="app.tokens.action_listener" class="Zikula\PagesModule\Listener\AdminAuthListener">
             <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
         </service>
+        <service id="zikulapagesmodule.link_container" class="Zikula\PagesModule\Container\LinkContainer">
+            <argument type="service" id="translator" />
+            <argument type="service" id="router" />
+            <tag name="zikula.link_container" />
+        </service>
     </services>
 </container>
