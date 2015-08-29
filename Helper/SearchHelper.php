@@ -18,7 +18,7 @@ namespace Zikula\PagesModule\Helper;
 use ModUtil;
 use SecurityUtil;
 use Zikula\Core\RouteUrl;
-use Zikula\Module\SearchModule\AbstractSearchable;
+use Zikula\SearchModule\AbstractSearchable;
 
 class SearchHelper extends AbstractSearchable
 {
