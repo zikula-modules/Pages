@@ -24,6 +24,7 @@ use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Form\Type\PageType;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\PagesModule\AdminAuthInterface;
+use Zikula\Core\Theme\Annotation\Theme;
 
 /**
  * @Route("/admin")
@@ -35,6 +36,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 {
     /**
      * @Route("/edit/{page}")
+     * @Theme("admin")
      * @param Request $request
      * @param PageEntity $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
@@ -68,6 +70,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 
     /**
      * @Route("/config")
+     * @Theme("admin")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
@@ -115,6 +118,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 
     /**
      * @Route("/delete/{page}")
+     * @Theme("admin")
      * @param Request $request
      * @param PageEntity $page
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response

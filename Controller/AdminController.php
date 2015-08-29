@@ -30,6 +30,7 @@ use Zikula\PagesModule\Form\Type\FilterType;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\PagesModule\AdminAuthInterface;
+use Zikula\Core\Theme\Annotation\Theme;
 
 /**
  * Class AdminController
@@ -41,6 +42,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
 {
     /**
      * @Route("")
+     * @Theme("admin")
      *
      * view items
      *
