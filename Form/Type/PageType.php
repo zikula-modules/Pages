@@ -18,7 +18,7 @@ namespace Zikula\PagesModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Zikula\Module\CategoriesModule\Form\Type\CategoryType;
+use Zikula\CategoriesModule\Form\Type\CategoryType;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
