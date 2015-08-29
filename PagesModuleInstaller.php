@@ -223,7 +223,7 @@ class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwar
         $page->merge($data);
         $em->persist($page);
         $category = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule/Category1');
-        $catEntity = $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $category['id']);
+        $catEntity = $em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', $category['id']);
         $page->setCategories(array($catEntity));
         $em->flush();
     }

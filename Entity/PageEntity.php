@@ -123,7 +123,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * cr_uid
      *
      * @Gedmo\Blameable(on="create")
-     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
      */
     private $creator;
@@ -592,7 +592,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     }
 
     /**
-     * @return \Zikula\Module\UsersModule\Entity\UserEntity
+     * @return \Zikula\UsersModule\Entity\UserEntity
      */
     public function getCreator()
     {
