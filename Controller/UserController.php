@@ -106,7 +106,7 @@ class UserController extends AbstractController
         }
 
         // get the registered categories
-        list($properties, $propertiesdata) = ModUtil::apiFunc($this->name, 'user', 'getCategories');
+        list($properties, $propertiesdata) = $this->getCategories();
 
         $request->attributes->set('_legacy', true); // forces template to render inside old theme
 
@@ -220,4 +220,60 @@ class UserController extends AbstractController
         return $accessLevel;
     }
 
+    /**
+     * Get the categories registered for the Pages
+     *
+     * @return array
+     */
+    private function getCategories()
+    {
+        $categoryRegistry = \CategoryRegistryUtil::getRegisteredModuleCategories('ZikulaPagesModule', 'PageEntity');
+        $properties = array_keys($categoryRegistry);
+        $propertiesdata = array();
+        foreach ($properties as $property) {
+            $rootcat = CategoryUtil::getCategoryByID($categoryRegistry[$property]);
+            if (!empty($rootcat)) {
+                $rootcat['path'] .= '/';
+                // add this to make the relative paths of the subcategories with ease - mateo
+                $subcategories = CategoryUtil::getCategoriesByParentID($rootcat['id']);
+                foreach ($subcategories as $k => $category) {
+                    $subcategories[$k]['count'] = $this->countItems(array('category' => $category['id'], 'property' => $property));
+                }
+                $propertiesdata[] = array('name' => $property, 'rootcat' => $rootcat, 'subcategories' => $subcategories);
+            }
+        }
+
+        return array($properties, $propertiesdata);
+    }
+
+    /**
+     * utility function to count the number of items held by this module
+     *
+     * @param array $args Arguments.
+     *
+     * @return integer number of items held by this module
+     */
+    private function countItems($args)
+    {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->get('doctrine.entitymanager');
+
+        if (isset($args['category']) && !empty($args['category'])) {
+            if (is_array($args['category'])) {
+                $args['category'] = $args['category']['Main'][0];
+            }
+            $qb = $em->createQueryBuilder();
+            $qb->select('count(p)')
+                ->from('Zikula\PagesModule\Entity\PageEntity', 'p')
+                ->join('p.categories', 'c')
+                ->where('c.category = :categories')
+                ->setParameter('categories', $args['category']);
+
+            return $qb->getQuery()->getSingleScalarResult();
+        }
+        $qb = $em->createQueryBuilder();
+        $qb->select('count(p)')->from('Zikula\PagesModule\Entity\PageEntity', 'p');
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }
