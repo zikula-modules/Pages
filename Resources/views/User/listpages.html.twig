@@ -7,7 +7,7 @@
 
 <p>{{ __('Available pages:') }}</p>
 <ul>
-    {% for page in pages if checkPermission('ZikulaPagesModule::Page', page.title ~ '::' ~ page.pageid, 'ACCESS_READ') %}
+    {% for page in pages if hasPermission('ZikulaPagesModule::Page', page.title ~ '::' ~ page.pageid, 'ACCESS_READ') %}
         <li><a href="{{ path('zikulapagesmodule_user_display', {urltitle: page.urltitle}) }}">{{ page.title }}</a></li>
     {% endfor %}
 </ul>
