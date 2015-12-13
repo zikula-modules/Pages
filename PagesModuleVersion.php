@@ -41,9 +41,8 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
         $meta['version'] = '3.0.0';
         //! this defines the module's url
         $meta['url'] = $this->__('pages');
-        $meta['core_min'] = '1.4.0';
-        // requires minimum 1.4.0 or later
-        $meta['core_max'] = '1.4.99';
+        $meta['core_min'] = '1.4.1';
+        $meta['core_max'] = '1.4.1';
         $meta['capabilities'] = array(
             HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true),
             AbstractSearchable::SEARCHABLE => array('class' => 'Zikula\PagesModule\Helper\SearchHelper')
@@ -56,7 +55,7 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
         $meta['dependencies'] = array(
             array(
                 'modname' => 'Scribite',
-                'minversion' => '4.3.0',
+                'minversion' => '5.0.0',
                 'maxversion' => '',
                 'reason' => __('To allow WYSIWYG page editing.'),
                 'status' => ModUtil::DEPENDENCY_RECOMMENDED
