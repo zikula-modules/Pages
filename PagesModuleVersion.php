@@ -42,7 +42,7 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
         //! this defines the module's url
         $meta['url'] = $this->__('pages');
         $meta['core_min'] = '1.4.1';
-        $meta['core_max'] = '1.4.1';
+        $meta['core_max'] = '1.4.9';
         $meta['capabilities'] = array(
             HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true),
             AbstractSearchable::SEARCHABLE => array('class' => 'Zikula\PagesModule\Helper\SearchHelper')
