@@ -17,6 +17,7 @@ namespace Zikula\PagesModule;
 
 use CategoryRegistryUtil;
 use CategoryUtil;
+use Doctrine\Common\Collections\ArrayCollection;
 use HookUtil;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -225,7 +226,10 @@ class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwar
         $em->persist($page);
         $category = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule/Category1');
         $catEntity = $em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', $category['id']);
-        $page->setCategories(array($catEntity));
+        $categoryRegistry = CategoryRegistryUtil::getRegisteredModuleCategoriesIds('ZikulaPagesModule', 'PageEntity');
+        $categoryAssociation = new CategoryEntity($categoryRegistry['Main'], $catEntity, $page);
+        $arrayCollection = new ArrayCollection([$categoryAssociation]);
+        $page->setCategories($arrayCollection);
         $em->flush();
     }
 
