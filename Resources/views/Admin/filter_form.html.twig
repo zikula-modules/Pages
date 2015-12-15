@@ -7,10 +7,10 @@
     <fieldset{% if filter_active %} class='filteractive'{% endif %}>
         {% if filter_active %}{% set filteractive = __('active') %}{% else %}{% set filteractive = __('inactive') %}{% endif %}
         <legend>{{ _fn("Filter %active%, %count% page listed", "Filter %active%, %count% pages listed", pager.numitems, { '%active%': filteractive, '%count%': pager.numitems } ) }}</legend>
-        {% if modvars.ZikulaPagesModule.enablecategorization %}
+        <span{% if not modvars.ZikulaPagesModule.enablecategorization %} class="hidden"{% endif %}>
             <strong>{{ __('Categories') }}</strong>
             {% for categorySelect in filterForm.categories %}{{ form_widget(categorySelect) }}&nbsp;&nbsp;{% endfor %}
-        {% endif %}
+        </span>
         <span{% if not modvars.ZConfig.multilingual %} class="hidden"{% endif %}>
             <strong>{{ __('Language') }}</strong> {{ form_widget(filterForm.language) }}&nbsp;&nbsp;
         </span>
