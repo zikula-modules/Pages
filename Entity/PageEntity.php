@@ -157,7 +157,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * categories
      *
      * @ORM\OneToMany(targetEntity="Zikula\PagesModule\Entity\CategoryEntity",
-     *                mappedBy="entity", cascade={"all"},
+     *                mappedBy="entity", cascade={"remove", "persist"},
      *                orphanRemoval=true, fetch="EAGER")
      */
     private $categories;
@@ -528,21 +528,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getCategories()
     {
-        $categories = array();
-        /** @var \Zikula\PagesModule\Entity\CategoryEntity $catRelation */
-        foreach ($this->categories as $catRelation) {
-            $registryId = $catRelation->getCategoryRegistryId();
-//            if (is_array($catRelation)) {
-                if (!isset($categories[$registryId])) {
-                    $categories[$registryId] = new ArrayCollection();
-                }
-                $categories[$registryId]->add($catRelation->getCategory());
-//            } else {
-//                $categories[$registryId] = $catRelation->getCategory();
-//            }
-        }
-
-        return $categories;
+        return $this->categories;
     }
 
     /**
@@ -550,20 +536,39 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      *
      * @param $categories
      */
-    public function setCategories($categories)
+    public function setCategories(ArrayCollection $categories)
     {
-        $this->categories = new ArrayCollection();
-        foreach ($categories as $regId => $category) {
-            if ($category instanceof ArrayCollection) {
-                // a result of multiple select box
-                foreach ($category as $element) {
-                    $this->categories[] = new PagesCategoryRelation($regId, $element, $this);
-                }
+        foreach ($this->categories as $categoryAssignment) {
+            if (false === $key = $this->collectionContains($categories, $categoryAssignment)) {
+                $this->categories->removeElement($categoryAssignment);
             } else {
-                // a normal select box
-                $this->categories[] = new PagesCategoryRelation($regId, $category, $this);
+                $categories->remove($key);
             }
         }
+        foreach ($categories as $category) {
+            $this->categories->add($category);
+        }
+    }
+
+    /**
+     * Check if a collection contains an element based only on two criteria (categoryRegistryId, categoy).
+     * @param $collection
+     * @param $element
+     * @return bool|int
+     */
+    private function collectionContains($collection, $element)
+    {
+        foreach ($collection as $key => $collectionAssignment) {
+            /** @var \Zikula\PagesModule\Entity\CategoryEntity $collectionAssignment */
+            if ($collectionAssignment->getCategoryRegistryId() == $element->getCategoryRegistryId()
+                && $collectionAssignment->getCategory() == $element->getCategory()
+            ) {
+
+                return $key;
+            }
+        }
+
+        return false;
     }
 
     /**

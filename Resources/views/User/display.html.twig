@@ -19,14 +19,8 @@
 
         {% if modvars.ZikulaPagesModule.enablecategorization and page.categories is not null %}
         <li>{{ __('Categories') }}:
-            {% for category in page.categories %}
-                {% if category is iterable  %}
-                    {% for item in category %}
-                        {{ item.display_name[lang] }}{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                {% else %}
-                    {{ category.display_name[lang] }}{% if not loop.last %}, {% endif %}
-                {% endif %}
+            {% for assignment in page.categories %}
+                {{ assignment.category.display_name[lang] }}{% if not loop.last %}, {% endif %}
             {% else %}
                 {{  __('No categories') }}
             {% endfor %}

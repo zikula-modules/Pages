@@ -8,7 +8,7 @@
             {% if filter_active %}{% set filteractive = __('active') %}{% else %}{% set filteractive = __('inactive') %}{% endif %}
             <legend>{{ _fn("Filter %active%, %count% page listed", "Filter %active%, %count% pages listed", pager.numitems, { '%active%': filteractive, '%count%': pager.numitems } ) }}</legend>
             {% if modvars.ZikulaPagesModule.enablecategorization %}
-                {{ form_row(filterForm.category) }}
+                {{ form_row(filterForm.categories) }}
             {% endif %}
             {% if modvars.ZConfig.multilingual %}
                 {{ form_row(filterForm.language) }}

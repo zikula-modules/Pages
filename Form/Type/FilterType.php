@@ -17,6 +17,7 @@ namespace Zikula\PagesModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Zikula\CategoriesModule\Form\Type\CategoryType;
 
@@ -34,26 +35,39 @@ class FilterType extends AbstractType
                 'label' => __('Filter'),
                 'attr' => array('class' => "btn btn-default btn-sm")
             ));
-        foreach ($options['entityCategoryRegistries'] as $registryId => $parentCategoryId) {
-            $builder->add('category', new CategoryType($registryId, $parentCategoryId), array('attr' => array('class' => 'input-sm')));
-        }
+        $builder->add('categories', 'Zikula\Core\Forms\Type\CategoriesType', [
+            'required' => false,
+            'multiple' => false,
+            'module' => 'ZikulaPagesModule',
+            'entity' => 'PageEntity',
+            'entityCategoryClass' => 'Zikula\PagesModule\Entity\CategoryEntity',
+        ]);
     }
 
+    /**
+     * @deprecated
+     * @return string
+     */
     public function getName()
     {
         return 'zikulapagesmodule_filter';
     }
 
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function getBlockPrefix()
     {
-        $resolver->setDefaults(array(
-            'entityCategoryRegistries' => array(),
-            'attr' => array(
+        return 'zikulapagesmodule_filter';
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'entityCategoryRegistries' => [],
+            'attr' => [
                 'class' => 'form form-inline'
-            ),
-        ));
+            ],
+        ]);
     }
 }

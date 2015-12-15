@@ -17,6 +17,7 @@ namespace Zikula\PagesModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Zikula\CategoriesModule\Form\Type\CategoryType;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
@@ -49,28 +50,37 @@ class PageType extends AbstractType
             ->add('obj_status', 'checkbox', array('required' => false, 'label' => __('Page is active')))
             ->add('save', 'submit', array('label' => 'Create Page'));
 
-        $entityCategoryRegistries = \CategoryRegistryUtil::getRegisteredModuleCategories('ZikulaPagesModule', 'PageEntity', 'id');
-        foreach ($entityCategoryRegistries as $registryId => $parentCategoryId) {
-            $builder->add('categories', new CategoryType($registryId, $parentCategoryId), array('multiple' => true));
-        }
+        $builder->add('categories', 'Zikula\Core\Forms\Type\CategoriesType', [
+            'required' => false,
+            'multiple' => true,
+            'module' => 'ZikulaPagesModule',
+            'entity' => 'PageEntity',
+            'entityCategoryClass' => 'Zikula\PagesModule\Entity\CategoryEntity',
+        ]);
     }
 
+    /**
+     * @deprecated
+     * @return string
+     */
     public function getName()
     {
         return 'zikulapagesmodule_page';
     }
 
-    /**
-     * OptionsResolverInterface is @deprecated and is supposed to be replaced by
-     * OptionsResolver but docs not clear on implementation
-     *
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function getBlockPrefix()
     {
-        $resolver->setDefaults(array(
+        return 'zikulapagesmodule_page';
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
             'data_class' => 'Zikula\PagesModule\Entity\PageEntity',
-        ));
+        ]);
     }
 
 }

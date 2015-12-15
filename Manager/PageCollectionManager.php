@@ -15,6 +15,7 @@
 
 namespace Zikula\PagesModule\Manager;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\EntityManager;
 use ModUtil;
@@ -103,13 +104,19 @@ class PageCollectionManager
      */
     public function setCategory($category)
     {
+        $subQb = $this->em->createQueryBuilder();
+        $categorySubQuery = $subQb->select('pc')
+            ->from('ZikulaCategoriesModule:CategoryEntity', 'pc');
         if (is_array($category)) {
-            $this->queryBuilder->andWhere('c.category in (:categories)')->setParameter('categories', $category);
+            $categorySubQuery->where('pc.id in (:categories)');
         } else {
             if (!empty($category)) {
-                $this->queryBuilder->andWhere('c.category = :categories')->setParameter('categories', $category);
+                $categorySubQuery->where('pc.id = :categories');
             }
         }
+        $this->queryBuilder
+            ->andWhere($this->queryBuilder->expr()->in('c.category', $categorySubQuery->getDQL()))
+            ->setParameter('categories', $category);
     }
 
     public function setFilterBy(array $filterData)
@@ -117,10 +124,10 @@ class PageCollectionManager
         if (!empty($filterData['language'])) {
             $this->setLanguage($filterData['language']);
         }
-        if (!empty($filterData['category']) && is_array($filterData['category'])) {
+        if (!empty($filterData['categories']) && ($filterData['categories'] instanceof ArrayCollection)) {
             $categoryIds = array();
-            foreach ($filterData['category'] as $pagesCategoryEntity) {
-                $categoryIds[] = $pagesCategoryEntity->getId();
+            foreach ($filterData['categories'] as $pagesCategoryEntity) {
+                $categoryIds[] = $pagesCategoryEntity->getCategory()->getId();
             }
             $this->setCategory($categoryIds);
         }
