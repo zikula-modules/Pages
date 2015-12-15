@@ -46,7 +46,8 @@ class PageType extends AbstractType
             ->add('obj_status', 'checkbox', array('required' => false, 'label' => __('Page is active')))
             ->add('save', 'submit', array('label' => 'Create Page'));
 
-        $builder->add('categories', 'Zikula\Core\Forms\Type\CategoriesType', [
+        // @todo in Symfony 2.8 use FqCn string 'Zikula\Core\Forms\Type\CategoriesType' (or corrected namespace)
+        $builder->add('categories', new CategoriesType(), [
             'required' => false,
             'multiple' => true,
             'module' => 'ZikulaPagesModule',

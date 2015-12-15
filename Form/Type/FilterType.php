@@ -18,7 +18,6 @@ namespace Zikula\PagesModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Core\Forms\Type\CategoriesType;
 
 class FilterType extends AbstractType
 {
@@ -34,7 +33,7 @@ class FilterType extends AbstractType
                 'label' => __('Filter'),
                 'attr' => array('class' => "btn btn-default btn-sm")
             ));
-        // @todo in Symfony 2.8 use FqCn string 'Zikula\Core\Forms\Type\CategoriesType'
+        // @todo in Symfony 2.8 use FqCn string 'Zikula\Core\Forms\Type\CategoriesType' (or corrected namespace)
         $builder->add('categories', new CategoriesType(), [
             'required' => false,
             'multiple' => false,
