@@ -84,7 +84,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $pages->setFilterBy($filterData);
 
         $templateParameters = array();
-        $templateParameters['filter_active'] = (isset($filterData['category']) && (count($filterData['category']) > 0)) || !empty($filterData['language']);
+        $templateParameters['filter_active'] = !empty($filterData['categories']) || !empty($filterData['language']);
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['pages'] = $pages->get();
         $templateParameters['lang'] = ZLanguage::getLanguageCode();
