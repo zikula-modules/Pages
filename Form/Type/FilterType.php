@@ -30,11 +30,12 @@ class FilterType extends AbstractType
             ->add('orderby', 'hidden')
             ->add('sdir', 'hidden')
             ->add('language', 'zikula_locale', array('attr' => array('class' => 'input-sm')))
-            ->add('FilterButton', 'submit', array(
+            ->add('filterButton', 'submit', array(
                 'icon' => 'fa-filter fa-lg',
                 'label' => __('Filter'),
                 'attr' => array('class' => "btn btn-default btn-sm")
             ));
+        // @todo This is a Symfony 2.8 method of getting the formType
         $builder->add('categories', 'Zikula\Core\Forms\Type\CategoriesType', [
             'required' => false,
             'multiple' => false,
