@@ -57,9 +57,9 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $orderBy = $request->query->get('orderby', 'pageid');
         $currentSortDirection = $request->query->get('sdir', Column::DIRECTION_DESCENDING);
 
-        $filterForm = $this->createForm(new FilterType(), $request->query->all(), array(
+        $filterForm = $this->createForm(new FilterType(), [], array(
             'action' => $this->generateUrl('zikulapagesmodule_admin_index'),
-            'method' => 'POST',
+            'method' => 'GET',
             'entityCategoryRegistries' => CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'PageEntity', 'id'),
         ));
         $filterForm->handleRequest($request);
@@ -70,11 +70,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $sortableColumns->addColumn(new Column('title'));
         $sortableColumns->addColumn(new Column('cr_date'));
         $sortableColumns->setOrderBy($sortableColumns->getColumn($orderBy), $currentSortDirection);
-        $sortableColumns->setAdditionalUrlParameters(array(
-            'language' => isset($filterData['language']) ? $filterData['language'] : null,
-            // @todo serialized cats not working yet
-            'filtercats_serialized' => isset($filterData['categories']) ? serialize($filterData['categories']) : null,
-        ));
+        $sortableColumns->setAdditionalUrlParameters($request->query->all());
 
         $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
         $pages->setStartNumber($startnum);

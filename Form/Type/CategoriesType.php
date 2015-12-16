@@ -59,6 +59,7 @@ class CategoriesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'csrf_protection' => false,
             'attr' => [
                 'class' => 'form form-inline',
             ],

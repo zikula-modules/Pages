@@ -63,6 +63,6 @@
     {% endfor %}
     </tbody>
 </table>
-
-{{ pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_admin_index'}) }}
+{# @TODO replace `pages_pager` with core's `pager` with Core-1.4.2 release #}
+{{ pages_pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_admin_index'}) }}
 {{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
