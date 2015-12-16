@@ -21,8 +21,8 @@
         </fieldset>
         <fieldset>
             <legend>{{ __('Meta tags') }}</legend>
-            {{ form_row(form.metadescription) }}
-            {{ form_row(form.metakeywords) }}
+            {{ form_row(form.metadescription, {'attr': {'class': 'noeditor'}}) }}
+            {{ form_row(form.metakeywords, {'attr': {'class': 'noeditor'}}) }}
         </fieldset>
         <fieldset>
             <legend><a id="pages_settings_collapse" href="#"><i class="fa fa-plus hide"></i> {{ __('Specific page settings') }}</a></legend>
