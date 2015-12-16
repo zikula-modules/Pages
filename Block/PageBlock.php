@@ -17,6 +17,7 @@ namespace Zikula\PagesModule\Block;
 
 use BlockUtil;
 use SecurityUtil;
+use Symfony\Component\HttpFoundation\Response;
 use Zikula\Core\Controller\AbstractBlockController;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 
@@ -24,7 +25,7 @@ use Zikula\PagesModule\Manager\PageCollectionManager;
  * Class PageBlock
  * @package Zikula\PagesModule\Block
  */
-class PageBlock extends AbstractBlockController
+class PageBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * Initialise block.
@@ -127,6 +128,21 @@ class PageBlock extends AbstractBlockController
         $blockInfo['content'] = BlockUtil::varsToContent($vars);
 
         return $blockInfo;
+    }
+
+    /**
+     * @param $view
+     * @param $parameters
+     * @param Response|null $response
+     * @return Response
+     */
+    private function render($view, $parameters, Response $response = null)
+    {
+        if ($this->has('templating')) {
+            return $this->get('templating')->renderResponse($view, $parameters, $response);
+        }
+
+        return '';
     }
 
 }
