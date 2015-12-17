@@ -124,7 +124,7 @@ class PageCollectionManager
         if (!empty($filterData['language'])) {
             $this->setLanguage($filterData['language']);
         }
-        if (!empty($filterData['categories']) && ($filterData['categories'] instanceof ArrayCollection)) {
+        if (isset($filterData['categories']) && ($filterData['categories'] instanceof ArrayCollection) && !$filterData['categories']->isEmpty()) {
             $categoryIds = array();
             foreach ($filterData['categories'] as $pagesCategoryEntity) {
                 $categoryIds[] = $pagesCategoryEntity->getCategory()->getId();
