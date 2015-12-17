@@ -120,11 +120,12 @@ class UserController extends AbstractController
      *
      * @param Request $request
      *
-     * @throws AccessDeniedException
-     *
-     * @return Response html string
+     * @param null $prop
+     * @param null $cat
+     * @param int $startnum
+     * @return Response
      */
-    public function viewAction(Request $request, $prop, $cat, $startnum = 1)
+    public function viewAction(Request $request, $prop = null, $cat = null, $startnum = 1)
     {
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
