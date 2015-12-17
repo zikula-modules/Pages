@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-06-13 17:00+0200\n"
+"POT-Creation-Date: 2015-12-17 15:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,10 +14,10 @@ msgstr ""
 #: views/User/main.html.twig on line 12
 msgid "%s page|%s pages"
 msgstr ""
-#: views/User/display.html.twig on line 52
+#: views/User/display.html.twig on line 46
 msgid "%s reads"
 msgstr ""
-#: views/User/display.html.twig on line 50
+#: views/User/display.html.twig on line 44
 msgid "%s total characters in this text"
 msgstr ""
 #: views/Admin/view.html.twig on line 22
@@ -29,22 +29,23 @@ msgstr ""
 #: views/User/listpages.html.twig on line 8
 msgid "Available pages:"
 msgstr ""
+#: views/Admin/filter_form.html.twig on line 11
 #: views/User/display.html.twig on line 21
 msgid "Categories"
 msgstr ""
 #: views/Admin/view.html.twig on line 16
 msgid "Category"
 msgstr ""
-#: modules/Pages/PagesModuleInstaller.php on line 169
+#: modules/Pages/PagesModuleInstaller.php on line 188
 msgid "Category 1"
 msgstr ""
-#: modules/Pages/PagesModuleInstaller.php on line 170
+#: modules/Pages/PagesModuleInstaller.php on line 189
 msgid "Category 2"
 msgstr ""
 #: views/User/view.html.twig on line 6
 msgid "Category: %s"
 msgstr ""
-#: views/Admin/filter_form.html.twig on line 17
+#: views/Admin/filter_form.html.twig on line 18
 msgid "Clear"
 msgstr ""
 #: views/Admin/modify.html.twig on line 14
@@ -74,11 +75,15 @@ msgstr ""
 #: views/Admin/delete.html.twig on line 7
 msgid "Delete this page?"
 msgstr ""
-#: views/User/display.html.twig on line 46
+#: views/User/display.html.twig on line 40
 msgid "Edit"
 msgstr ""
 #: views/Admin/filter_form.html.twig on line 9
 msgid "Filter %active%, %count% page listed|Filter %active%, %count% pages listed"
+msgstr ""
+#: views/Pager/pagercss.html.twig on line 4
+#: views/Pager/pagercss.html.twig on line 7
+msgid "First page"
 msgstr ""
 #: views/Admin/config.html.twig on line 16
 msgid "General settings"
@@ -87,12 +92,17 @@ msgstr ""
 #: views/Admin/view.html.twig on line 12
 msgid "ID"
 msgstr ""
-#: modules/Pages/PagesModuleInstaller.php on line 169
-#: modules/Pages/PagesModuleInstaller.php on line 170
+#: modules/Pages/PagesModuleInstaller.php on line 188
+#: modules/Pages/PagesModuleInstaller.php on line 189
 msgid "Initial sub-category created on install"
 msgstr ""
+#: views/Admin/filter_form.html.twig on line 15
 #: views/Admin/view.html.twig on line 19
 msgid "Language"
+msgstr ""
+#: views/Pager/pagercss.html.twig on line 21
+#: views/Pager/pagercss.html.twig on line 24
+msgid "Last page"
 msgstr ""
 #: views/User/display.html.twig on line 17
 msgid "Last update by %name% on %date%"
@@ -106,7 +116,7 @@ msgstr ""
 #: views/Admin/modify.html.twig on line 23
 msgid "Meta tags"
 msgstr ""
-#: Pages/Api/AdminApi.php on line 42
+#: Pages/Container/LinkContainer.php on line 61
 msgid "Modify Config"
 msgstr ""
 #: views/Admin/modify.html.twig on line 8
@@ -115,14 +125,18 @@ msgstr ""
 #: views/Admin/config.html.twig on line 10
 msgid "Modify Pages Config"
 msgstr ""
-#: Pages/Api/AdminApi.php on line 38
+#: Pages/Container/LinkContainer.php on line 51
 msgid "New Page"
 msgstr ""
 #: views/Admin/config.html.twig on line 21
 msgid "New page defaults"
 msgstr ""
-#: views/Admin/view.html.twig on line 42
-#: views/User/display.html.twig on line 31
+#: views/Pager/pagercss.html.twig on line 20
+#: views/Pager/pagercss.html.twig on line 23
+msgid "Next page"
+msgstr ""
+#: views/Admin/view.html.twig on line 36
+#: views/User/display.html.twig on line 25
 msgid "No categories"
 msgstr ""
 #: views/Block/pageBlockModify.html.twig on line 24
@@ -137,18 +151,18 @@ msgstr ""
 #: views/Admin/delete.html.twig on line 13
 msgid "Page Details"
 msgstr ""
-#: modules/Pages/PagesModuleInstaller.php on line 167
+#: modules/Pages/PagesModuleInstaller.php on line 186
 #: views/Search/options.html.twig on line 3
 #: views/User/main.html.twig on line 2
 msgid "Pages"
 msgstr ""
-#: modules/Pages/PagesModuleVersion.php on line 84
+#: modules/Pages/PagesModuleVersion.php on line 83
 msgid "Pages Filter Hooks"
 msgstr ""
-#: modules/Pages/PagesModuleVersion.php on line 75
+#: modules/Pages/PagesModuleVersion.php on line 74
 msgid "Pages Hooks"
 msgstr ""
-#: Pages/Api/AdminApi.php on line 35
+#: Pages/Container/LinkContainer.php on line 45
 #: views/User/listpages.html.twig on line 2
 #: views/User/view.html.twig on line 2
 msgid "Pages list"
@@ -159,13 +173,17 @@ msgstr ""
 #: views/Admin/config.html.twig on line 30
 msgid "Permalinks settings"
 msgstr ""
-#: Pages/Api/AdminApi.php on line 41
+#: views/Pager/pagercss.html.twig on line 5
+#: views/Pager/pagercss.html.twig on line 8
+msgid "Previous page"
+msgstr ""
+#: Pages/Container/LinkContainer.php on line 57
 msgid "Purge permalinks"
 msgstr ""
 #: views/Admin/modify.html.twig on line 28
 msgid "Specific page settings"
 msgstr ""
-#: modules/Pages/PagesModuleInstaller.php on line 167
+#: modules/Pages/PagesModuleInstaller.php on line 186
 #: modules/Pages/PagesModuleVersion.php on line 39
 msgid "Static pages"
 msgstr ""
@@ -179,7 +197,7 @@ msgstr ""
 #: views/Admin/view.html.twig on line 4
 msgid "View pages list"
 msgstr ""
-#: modules/Pages/PagesModuleInstaller.php on line 200
+#: modules/Pages/PagesModuleInstaller.php on line 220
 msgid "Welcome to Pages content manager"
 msgstr ""
 #: views/Admin/filter_form.html.twig on line 8
@@ -191,6 +209,6 @@ msgstr ""
 #: modules/Pages/PagesModuleVersion.php on line 43
 msgid "pages"
 msgstr ""
-#: modules/Pages/PagesModuleInstaller.php on line 201
+#: modules/Pages/PagesModuleInstaller.php on line 221
 msgid "welcome-to-pages-content-manager"
 msgstr ""
