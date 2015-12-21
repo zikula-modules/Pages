@@ -20,7 +20,7 @@ use CategoryUtil;
 use Doctrine\Common\Collections\ArrayCollection;
 use HookUtil;
 use Zikula\Core\AbstractExtensionInstaller;
-use Zikula\PagesModule\Entity\CategoryEntity;
+use Zikula\PagesModule\Entity\CategoryAssignmentEntity;
 use Zikula\PagesModule\Entity\PageEntity;
 use ZLanguage;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -227,9 +227,9 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         $category = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule/Category1');
         $catEntity = $this->entityManager->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', $category['id']);
         $categoryRegistry = CategoryRegistryUtil::getRegisteredModuleCategoriesIds('ZikulaPagesModule', 'PageEntity');
-        $categoryAssociation = new CategoryEntity($categoryRegistry['Main'], $catEntity, $page);
+        $categoryAssociation = new CategoryAssignmentEntity($categoryRegistry['Main'], $catEntity, $page);
         $arrayCollection = new ArrayCollection([$categoryAssociation]);
-        $page->setCategories($arrayCollection);
+        $page->setCategoryAssignments($arrayCollection);
         $this->entityManager->flush();
     }
 }
