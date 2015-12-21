@@ -24,6 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\PagesModule\Entity\CategoryEntity;
 use Zikula\PagesModule\Entity\PageEntity;
+use Zikula\PagesModule\Helper\HookHelper;
 use ZLanguage;
 use Zikula\Core\ExtensionInstallerInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -86,9 +87,8 @@ class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwar
             'def_displayprint' => true
         );
         \ModUtil::setVars($this->bundle->getName(), $modvars);
-        $versionClass = $this->bundle->getVersionClass();
-        $version = new $versionClass($this->bundle);
-        HookUtil::registerSubscriberBundles($version->getHookSubscriberBundles());
+        $hookHelper = new HookHelper($this->getTranslator());
+        HookUtil::registerSubscriberBundles($hookHelper->getHookSubscriberBundles());
         $this->createIntroPage();
         // initialisation successful
         return true;
@@ -182,9 +182,8 @@ class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwar
         \ModUtil::delVar($this->bundle->getName());
         // Delete entries from category registry
         CategoryRegistryUtil::deleteEntry($this->bundle->getName());
-        $versionClass = $this->bundle->getVersionClass();
-        $version = new $versionClass($this->bundle);
-        HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
+        $hookHelper = new HookHelper($this->getTranslator());
+        HookUtil::unregisterSubscriberBundles($hookHelper->getHookSubscriberBundles());
         // Deletion successful
         return true;
     }
