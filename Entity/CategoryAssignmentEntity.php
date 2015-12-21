@@ -16,7 +16,7 @@
 namespace Zikula\PagesModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Core\Doctrine\Entity\AbstractEntityCategory;
+use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 
 /**
  * Pages entity class.
@@ -27,10 +27,10 @@ use Zikula\Core\Doctrine\Entity\AbstractEntityCategory;
  * @ORM\Table(name="pages_category",
  *            uniqueConstraints={@ORM\UniqueConstraint(name="cat_unq",columns={"registryId", "categoryId", "entityId"})})
  */
-class CategoryEntity extends AbstractEntityCategory
+class CategoryAssignmentEntity extends AbstractCategoryAssignment
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Zikula\PagesModule\Entity\PageEntity", inversedBy="categories")
+     * @ORM\ManyToOne(targetEntity="Zikula\PagesModule\Entity\PageEntity", inversedBy="categoryAssignments")
      * @ORM\JoinColumn(name="entityId", referencedColumnName="pageid")
      * @var \Zikula\PagesModule\Entity\PageEntity
      */

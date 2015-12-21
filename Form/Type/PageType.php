@@ -25,44 +25,62 @@ class PageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'text')
-            ->add('urltitle', 'text', array('required' => false, 'label' => __('PermaLink URL title')))
-            ->add($builder->create('metadescription', 'textarea', array('required' => false))
-                ->addModelTransformer(new NullToEmptyTransformer()))
-            ->add($builder->create('metakeywords', 'textarea', array('required' => false))
-                ->addModelTransformer(new NullToEmptyTransformer()))
-            ->add('content')
-            ->add('displaywrapper', 'checkbox', array('required' => false, 'label' => __('Display additional information')))
-            ->add('displaytitle', 'checkbox', array('required' => false, 'label' => __('Display page title')))
-            ->add('displaycreated', 'checkbox', array('required' => false, 'label' => __('Display page creation date')))
-            ->add('displayupdated', 'checkbox', array('required' => false, 'label' => __('Display page update date')))
-            ->add('displaytextinfo', 'checkbox', array('required' => false, 'label' => __('Display page text statistics')))
-            ->add('displayprint', 'checkbox', array('required' => false, 'label' => __('Display page print link')))
-            ->add($builder->create('language', 'choice', array(
+            ->add('title', 'Symfony\Component\Form\Extension\Core\Type\TextType')
+            ->add('urltitle', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                'required' => false,
+                'label' => __('PermaLink URL title')
+            ])
+            ->add($builder->create('metadescription', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+                'required' => false
+                ])->addModelTransformer(new NullToEmptyTransformer())
+            )
+            ->add($builder->create('metakeywords', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+                'required' => false
+                ])->addModelTransformer(new NullToEmptyTransformer())
+            )
+            ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType')
+            ->add('displaywrapper', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'required' => false,
+                'label' => __('Display additional information')
+            ])
+            ->add('displaytitle', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'required' => false,
+                'label' => __('Display page title')
+            ])
+            ->add('displaycreated', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'required' => false,
+                'label' => __('Display page creation date')
+            ])
+            ->add('displayupdated', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'required' => false,
+                'label' => __('Display page update date')
+            ])
+            ->add('displaytextinfo', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'required' => false,
+                'label' => __('Display page text statistics')
+            ])
+            ->add('displayprint', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'required' => false,
+                'label' => __('Display page print link')
+            ])
+            ->add($builder->create('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => \ZLanguage::getInstalledLanguageNames(),
                 'required' => false,
                 'placeholder' => __('All')
-                ))->addModelTransformer(new NullToEmptyTransformer()))
-            ->add('obj_status', 'checkbox', array('required' => false, 'label' => __('Page is active')))
-            ->add('save', 'submit');
-
-        // @todo in Symfony 2.8 use FqCn string 'Zikula\Core\Forms\Type\CategoriesType' (or corrected namespace)
-        $builder->add('categories', new CategoriesType(), [
-            'required' => false,
-            'multiple' => true,
-            'module' => 'ZikulaPagesModule',
-            'entity' => 'PageEntity',
-            'entityCategoryClass' => 'Zikula\PagesModule\Entity\CategoryEntity',
-        ]);
-    }
-
-    /**
-     * @deprecated
-     * @return string
-     */
-    public function getName()
-    {
-        return 'zikulapagesmodule_page';
+                ])->addModelTransformer(new NullToEmptyTransformer())
+            )
+            ->add('obj_status', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'required' => false,
+                'label' => __('Page is active')
+            ])
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
+            ->add('categoryAssignments', 'Zikula\CategoriesModule\Form\Type\CategoriesType', [
+                'required' => false,
+                'multiple' => true,
+                'module' => 'ZikulaPagesModule',
+                'entity' => 'PageEntity',
+                'entityCategoryClass' => 'Zikula\PagesModule\Entity\CategoryAssignmentEntity',
+            ]);
     }
 
     public function getBlockPrefix()

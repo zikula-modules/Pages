@@ -47,7 +47,7 @@ class PageCollectionManager
         $this->queryBuilder = $this->em->createQueryBuilder();
         $this->queryBuilder->select('p')
             ->from('Zikula\PagesModule\Entity\PageEntity', 'p')
-            ->leftJoin('p.categories', 'c');
+            ->leftJoin('p.categoryAssignments', 'c');
     }
 
     public function setItemsPerPage($amount)
@@ -124,9 +124,9 @@ class PageCollectionManager
         if (!empty($filterData['language'])) {
             $this->setLanguage($filterData['language']);
         }
-        if (isset($filterData['categories']) && ($filterData['categories'] instanceof ArrayCollection) && !$filterData['categories']->isEmpty()) {
+        if (isset($filterData['categoryAssignments']) && ($filterData['categoryAssignments'] instanceof ArrayCollection) && !$filterData['categoryAssignments']->isEmpty()) {
             $categoryIds = array();
-            foreach ($filterData['categories'] as $pagesCategoryEntity) {
+            foreach ($filterData['categoryAssignments'] as $pagesCategoryEntity) {
                 $categoryIds[] = $pagesCategoryEntity->getCategory()->getId();
             }
             $this->setCategory($categoryIds);

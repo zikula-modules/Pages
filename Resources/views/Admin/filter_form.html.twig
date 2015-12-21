@@ -9,7 +9,7 @@
         <legend style="margin-bottom:0">{{ _fn("Filter %active%, %count% page listed", "Filter %active%, %count% pages listed", pager.numitems, { '%active%': filteractive, '%count%': pager.numitems } ) }}</legend>
         <span{% if not modvars.ZikulaPagesModule.enablecategorization %} class="hidden"{% endif %}>
             <strong>{{ __('Categories') }}</strong>
-            {% for categorySelect in filterForm.categories %}{{ form_widget(categorySelect) }}&nbsp;&nbsp;{% endfor %}
+            {% for categorySelect in filterForm.categoryAssignments %}{{ form_widget(categorySelect) }}&nbsp;&nbsp;{% endfor %}
         </span>
         <span{% if not modvars.ZConfig.multilingual %} class="hidden"{% endif %}>
             <strong>{{ __('Language') }}</strong> {{ form_widget(filterForm.language) }}&nbsp;&nbsp;

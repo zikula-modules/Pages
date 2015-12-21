@@ -156,11 +156,11 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     /**
      * categories
      *
-     * @ORM\OneToMany(targetEntity="Zikula\PagesModule\Entity\CategoryEntity",
+     * @ORM\OneToMany(targetEntity="Zikula\PagesModule\Entity\CategoryAssignmentEntity",
      *                mappedBy="entity", cascade={"remove", "persist"},
      *                orphanRemoval=true, fetch="EAGER")
      */
-    private $categories;
+    private $categoryAssignments;
     /**
      * obj_status
      *
@@ -173,7 +173,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
+        $this->categoryAssignments = new ArrayCollection();
         $modVars = \ModUtil::getVar('ZikulaPagesModule');
         $this->displaywrapper = $modVars['def_displaywrapper'];
         $this->displaytitle = $modVars['def_displaytitle'];
@@ -522,44 +522,44 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     }
 
     /**
-     * Get page categories
+     * Get page category assignments
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getCategories()
+    public function getCategoryAssignments()
     {
-        return $this->categories;
+        return $this->categoryAssignments;
     }
 
     /**
-     * Set page categories
+     * Set page category assignments
      *
-     * @param $categories
+     * @param $assignments
      */
-    public function setCategories(ArrayCollection $categories)
+    public function setCategoryAssignments(ArrayCollection $assignments)
     {
-        foreach ($this->categories as $categoryAssignment) {
-            if (false === $key = $this->collectionContains($categories, $categoryAssignment)) {
-                $this->categories->removeElement($categoryAssignment);
+        foreach ($this->categoryAssignments as $categoryAssignment) {
+            if (false === $key = $this->collectionContains($assignments, $categoryAssignment)) {
+                $this->categoryAssignments->removeElement($categoryAssignment);
             } else {
-                $categories->remove($key);
+                $assignments->remove($key);
             }
         }
-        foreach ($categories as $category) {
-            $this->categories->add($category);
+        foreach ($assignments as $category) {
+            $this->categoryAssignments->add($category);
         }
     }
 
     /**
-     * Check if a collection contains an element based only on two criteria (categoryRegistryId, categoy).
-     * @param $collection
-     * @param $element
+     * Check if a collection contains an element based only on two criteria (categoryRegistryId, category).
+     * @param ArrayCollection $collection
+     * @param CategoryAssignmentEntity $element
      * @return bool|int
      */
-    private function collectionContains($collection, $element)
+    private function collectionContains(ArrayCollection $collection, CategoryAssignmentEntity $element)
     {
         foreach ($collection as $key => $collectionAssignment) {
-            /** @var \Zikula\PagesModule\Entity\CategoryEntity $collectionAssignment */
+            /** @var \Zikula\PagesModule\Entity\CategoryAssignmentEntity $collectionAssignment */
             if ($collectionAssignment->getCategoryRegistryId() == $element->getCategoryRegistryId()
                 && $collectionAssignment->getCategory() == $element->getCategory()
             ) {

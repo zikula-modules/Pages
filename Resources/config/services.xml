@@ -13,10 +13,5 @@
             <argument type="service" id="router" />
             <tag name="zikula.link_container" />
         </service>
-        <service id="twig.extension.pages_pager" class="Zikula\PagesModule\Twig\Extension\PagerExtension" public="false">
-            <!-- This service is @deprecated immediately. At Core-1.4.2 use the core's pager. -->
-            <tag name="twig.extension" />
-            <argument type="service" id="service_container" />
-        </service>
     </services>
 </container>

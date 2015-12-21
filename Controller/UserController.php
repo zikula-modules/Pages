@@ -266,7 +266,7 @@ class UserController extends AbstractController
             $qb = $em->createQueryBuilder();
             $qb->select('count(p)')
                 ->from('Zikula\PagesModule\Entity\PageEntity', 'p')
-                ->join('p.categories', 'c')
+                ->join('p.categoryAssignments', 'c')
                 ->where('c.category = :categories')
                 ->setParameter('categories', $args['category']);
 

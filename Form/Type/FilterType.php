@@ -24,32 +24,24 @@ class FilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startnum', 'hidden')
-            ->add('orderby', 'hidden')
-            ->add('sdir', 'hidden')
-            ->add('language', 'zikula_locale', array('attr' => array('class' => 'input-sm')))
-            ->add('filterButton', 'submit', array(
+            ->add('startnum', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('orderby', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('sdir', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('language', 'Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType', [
+                'attr' => ['class' => 'input-sm']
+            ])
+            ->add('filterButton', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'icon' => 'fa-filter fa-lg',
                 'label' => __('Filter'),
-                'attr' => array('class' => "btn btn-default btn-sm")
-            ));
-        // @todo in Symfony 2.8 use FqCn string 'Zikula\Core\Forms\Type\CategoriesType' (or corrected namespace)
-        $builder->add('categories', new CategoriesType(), [
-            'required' => false,
-            'multiple' => false,
-            'module' => 'ZikulaPagesModule',
-            'entity' => 'PageEntity',
-            'entityCategoryClass' => 'Zikula\PagesModule\Entity\CategoryEntity',
-        ]);
-    }
-
-    /**
-     * @deprecated
-     * @return string
-     */
-    public function getName()
-    {
-        return 'zikulapagesmodule_filter';
+                'attr' => ['class' => "btn btn-default btn-sm"]
+            ])
+            ->add('categoryAssignments', 'Zikula\CategoriesModule\Form\Type\CategoriesType', [
+                'required' => false,
+                'multiple' => false,
+                'module' => 'ZikulaPagesModule',
+                'entity' => 'PageEntity',
+                'entityCategoryClass' => 'Zikula\PagesModule\Entity\CategoryAssignmentEntity',
+            ]);
     }
 
     public function getBlockPrefix()

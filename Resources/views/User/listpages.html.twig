@@ -12,4 +12,4 @@
     {% endfor %}
 </ul>
 
-{{ pages_pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_user_listpages'}) }}
+{{ pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_user_listpages'}) }}

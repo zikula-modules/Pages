@@ -13,7 +13,7 @@
         <th><a class='{{ sort.title.class }}' href='{{ sort.title.url }}'>{{ __('Title') }}</a></th>
         <th>{{ __('Creator') }}</th>
         {% if modvars.ZikulaPagesModule.enablecategorization %}
-            <th>{{ __('Category') }}</th>
+            <th>{{ __('Categories') }}</th>
         {% endif %}
         {% if modvars.ZConfig.multilingual %}
             <th>{{ __('Language') }}</th>
@@ -30,7 +30,7 @@
             <td>{{ page.creator.uname|default('Unknown Author') }}</td>
             {% if modvars.ZikulaPagesModule.enablecategorization %}
                 <td>
-                {% for assignment in page.categories %}
+                {% for assignment in page.categoryAssignments %}
                     {{ assignment.category.display_name[lang] }}{% if not loop.last %}, {% endif %}
                 {% else %}
                     {{  __('No categories') }}
@@ -63,6 +63,5 @@
     {% endfor %}
     </tbody>
 </table>
-{# @TODO replace `pages_pager` with core's `pager` with Core-1.4.2 release #}
-{{ pages_pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_admin_index'}) }}
+{{ pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_admin_index'}) }}
 {{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
