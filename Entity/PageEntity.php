@@ -534,7 +534,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     /**
      * Set page category assignments
      *
-     * @param $assignments
+     * @param ArrayCollection $assignments
      */
     public function setCategoryAssignments(ArrayCollection $assignments)
     {
@@ -545,8 +545,8 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
                 $assignments->remove($key);
             }
         }
-        foreach ($assignments as $category) {
-            $this->categoryAssignments->add($category);
+        foreach ($assignments as $assignment) {
+            $this->categoryAssignments->add($assignment);
         }
     }
 
