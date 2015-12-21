@@ -13,12 +13,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\PagesModule\Helper;
+namespace Zikula\PagesModule\Container;
 
-use Zikula\Component\HookDispatcher\AbstractContainer as HookContainer;
+use Zikula\Component\HookDispatcher\AbstractContainer;
 use Zikula\Component\HookDispatcher\SubscriberBundle;
 
-class HookHelper extends HookContainer
+class HookContainer extends AbstractContainer
 {
     /**
      * Define the hook bundles supported by this module.
