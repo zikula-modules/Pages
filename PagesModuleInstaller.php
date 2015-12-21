@@ -127,7 +127,7 @@ class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwar
                 $sqls[] = 'INSERT INTO pages_category (entityId, registryId, categoryId) SELECT obj_id, reg_id, category_id FROM categories_mapobj WHERE modname = \'Pages\' AND tablename = \'pages\'';
                 $sqls[] = 'DELETE FROM categories_mapobj WHERE modname = \'Pages\' AND tablename = \'pages\'';
                 // update category registry data to change tablename to EntityName
-                $sqls[] = 'UPDATE categories_registry SET tablename = \'Pages\' WHERE tablename = \'pages\'';
+                $sqls[] = 'UPDATE categories_registry SET entityname = \'Pages\' WHERE entityname = \'pages\'';
                 // do changes
                 foreach ($sqls as $sql) {
                     $stmt = $connection->prepare($sql);
@@ -139,11 +139,35 @@ class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwar
                 }
             case '2.6.0':
             case '2.6.1':
-                // @todo convert modvar module name
-                // @todo convert category paths to ZikulaPagesModule
-                // @todo convert categoryRegistry Entity name from Page to PageEntity
-                // @todo convert security schema names to ZikulaPagesModule
+                $sqls = [];
+                // convert modvar module name
+                $sqls[] = "UPDATE module_vars SET modname = 'ZikulaPagesModule' WHERE modname = 'Pages'";
+
+                // convert category paths to ZikulaPagesModule
+                $subCategories = CategoryUtil::getCategoriesByPath('/__SYSTEM__/Modules/Pages');
+                foreach ($subCategories as $subCategory) {
+                    $currentPath = $subCategory['path'];
+                    $newPath = str_replace($currentPath, '/Pages', '/ZikulaPagesModule');
+                    $sqls[] = "UPDATE categories_category SET path = $newPath WHERE id = $subCategory[id]";
+                }
+                $sqls[] = "UPDATE categories_category SET path = '/__SYSTEM__/Modules/ZikulaPagesModule' WHERE path = '/__SYSTEM__/Modules/Pages'";
+
+                // convert categoryRegistry Entity name from Page to PageEntity
+                $sqls[] = 'UPDATE categories_registry SET entityname = \'PageEntity\' WHERE entityname = \'Pages\'';
+
+                // convert security schema names to ZikulaPagesModule
+                $sqls[] = "UPDATE group_perms SET component = CONCAT('ZikulaPagesModule', SUBSTRING(component, 6)) WHERE component LIKE 'Pages%'";
+
+                foreach ($sqls as $sql) {
+                    $stmt = $connection->prepare($sql);
+                    try {
+                        $stmt->execute();
+                    } catch (\Exception $e) {
+                        $this->container->get('request')->getSession()->getFlashBag()->add('error', $e->getMessage());
+                    }
+                }
             case '3.0.0':
+            case '3.0.1':
         }
         // Update successful
         return true;
