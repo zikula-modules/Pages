@@ -111,6 +111,8 @@ class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwar
             $this->container->get('request')->getSession()->getFlashBag()->add('error', $this->__('Notice: This version does not support upgrades from versions of Pages less than 2.5.1. Please upgrade to 2.5.1 before attempting this upgrade.'));
             return false;
         }
+        $connection = $this->container->get('doctrine.entitymanager')->getConnection();
+
         switch ($oldversion) {
             case '2.5.1':
                 // create categories table
@@ -122,7 +124,6 @@ class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwar
                 }
                 // move relations from categories_mapobj to pages_category
                 // then delete old data
-                $connection = $this->container->get('doctrine.entitymanager')->getConnection();
                 $sqls = array();
                 $sqls[] = 'INSERT INTO pages_category (entityId, registryId, categoryId) SELECT obj_id, reg_id, category_id FROM categories_mapobj WHERE modname = \'Pages\' AND tablename = \'pages\'';
                 $sqls[] = 'DELETE FROM categories_mapobj WHERE modname = \'Pages\' AND tablename = \'pages\'';
