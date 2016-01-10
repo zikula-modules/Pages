@@ -144,17 +144,9 @@ class PagesModuleInstaller implements ExtensionInstallerInterface, ContainerAwar
                 // convert modvar module name
                 $sqls[] = "UPDATE module_vars SET modname = 'ZikulaPagesModule' WHERE modname = 'Pages'";
 
-                // convert category paths to ZikulaPagesModule
-                $subCategories = CategoryUtil::getCategoriesByPath('/__SYSTEM__/Modules/Pages');
-                foreach ($subCategories as $subCategory) {
-                    $currentPath = $subCategory['path'];
-                    $newPath = str_replace($currentPath, '/Pages', '/ZikulaPagesModule');
-                    $sqls[] = "UPDATE categories_category SET path = $newPath WHERE id = $subCategory[id]";
-                }
-                $sqls[] = "UPDATE categories_category SET path = '/__SYSTEM__/Modules/ZikulaPagesModule' WHERE path = '/__SYSTEM__/Modules/Pages'";
-
                 // convert categoryRegistry Entity name from Page to PageEntity
                 $sqls[] = 'UPDATE categories_registry SET entityname = \'PageEntity\' WHERE entityname = \'Pages\'';
+                $sqls[] = 'UPDATE categories_registry SET modname = \'ZikulaPagesModule\' WHERE modname = \'Pages\'';
 
                 // convert security schema names to ZikulaPagesModule
                 $sqls[] = "UPDATE group_perms SET component = CONCAT('ZikulaPagesModule', SUBSTRING(component, 6)) WHERE component LIKE 'Pages%'";

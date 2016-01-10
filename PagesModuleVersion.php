@@ -38,7 +38,7 @@ class PagesModuleVersion extends \Zikula_AbstractVersion
         $meta['oldnames'] = 'Pages';
         $meta['displayname'] = $this->__('Static pages');
         $meta['description'] = $this->__('Manage static pages of the site.');
-        $meta['version'] = '3.0.0';
+        $meta['version'] = '3.0.1';
         //! this defines the module's url
         $meta['url'] = $this->__('pages');
         $meta['core_min'] = '1.4.1';
