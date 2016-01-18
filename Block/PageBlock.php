@@ -15,47 +15,16 @@
 
 namespace Zikula\PagesModule\Block;
 
-use BlockUtil;
-use SecurityUtil;
-use Symfony\Component\HttpFoundation\Response;
-use Zikula\Core\Controller\AbstractBlockController;
+use Symfony\Component\HttpFoundation\Request;
+use Zikula\Core\AbstractBlockHandler;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 
 /**
  * Class PageBlock
  * @package Zikula\PagesModule\Block
  */
-class PageBlock extends \Zikula_Controller_AbstractBlock
+class PageBlock extends AbstractBlockHandler
 {
-    /**
-     * Initialise block.
-     *
-     * @return void
-     */
-    public function init()
-    {
-        SecurityUtil::registerPermissionSchema('ZikulaPagesModule:pageblock:', 'Block title::');
-    }
-
-    /**
-     * get information on block
-     *
-     * @return array The block information
-     */
-    public function info()
-    {
-        return array(
-            'module' => $this->name,
-            'text_type' => __('Show page'),
-            'text_type_long' => __('Show a page in a block'),
-            'allow_multiple' => true,
-            'form_content' => false,
-            'form_refresh' => false,
-            'show_preview' => true,
-            'admin_tableless' => true
-        );
-    }
-
     /**
      * Display block.
      *
@@ -63,86 +32,59 @@ class PageBlock extends \Zikula_Controller_AbstractBlock
      *
      * @return string|void The rendered block.
      */
-    public function display($blockInfo)
+    public function display(array $properties)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaPagesModule:pageblock:', "{$blockInfo['title']}::", ACCESS_READ)) {
+        if (!$this->hasPermission('ZikulaPagesModule:pageblock:', "{$properties['title']}::", ACCESS_READ)) {
             return false;
         }
-        // Get variables from content block
-        $vars = BlockUtil::varsFromContent($blockInfo['content']);
         // return if no pid
-        if (empty($vars['pid'])) {
+        if (empty($properties['pid'])) {
             return false;
         }
+
         // get the page
         /** @var \Zikula\PagesModule\Entity\PageEntity $page */
-        $page = $this->get('doctrine.entitymanager')->getRepository('\Zikula\PagesModule\Entity\PageEntity')->find($vars['pid']);
+        $page = $this->get('doctrine.entitymanager')->getRepository('\Zikula\PagesModule\Entity\PageEntity')->find($properties['pid']);
         // check for a valid item
         if (!$page) {
             return false;
         }
-        if (!SecurityUtil::checkPermission($this->name . '::', "{$page->getTitle()}::{$page->getPageId()}", ACCESS_READ)) {
+        if (!$this->hasPermission('ZikulaPagesModule' . '::', "{$page->getTitle()}::{$page->getPageId()}", ACCESS_READ)) {
             return false;
         }
 
-        $blockInfo['content'] = $this->render('ZikulaPagesModule:Block:pageBlockDisplay.html.twig', array('content' => $page->getContent()))->getContent();
-
-        return BlockUtil::themeBlock($blockInfo);
+        return $this->renderView('ZikulaPagesModule:Block:pageBlockDisplay.html.twig', array('content' => $page->getContent()));
     }
 
     /**
      * modify block settings
      *
-     * @param array $blockInfo a blockInfo structure
-     *
+     * @param Request $request
+     * @param array $properties
      * @return string the block form
      */
-    public function modify($blockInfo)
+    public function modify(Request $request, array $properties)
     {
-        // Get current content and assign it
-        $vars = BlockUtil::varsFromContent($blockInfo['content']);
-        $vars['pid'] = !empty($vars['pid']) ? $vars['pid'] : '';
-
-        // Get all pages and assign them
+        $defaults = [
+            'pid' => '',
+        ];
+        $vars = array_merge($defaults, $properties);
         $pages = new PageCollectionManager($this->get('doctrine.entitymanager'));
-        $vars['pages'] = $pages->get();
+        $choices = [];
+        foreach ($pages->get() as $page) {
+            $choices[$page->getPageid()] = $page->getTitle();
+        }
+        $options = ['pages' => $choices];
+        $form = $this->createForm('Zikula\PagesModule\Block\Form\Type\PageBlockType', $vars, $options);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
 
-        return $this->render('ZikulaPagesModule:Block:pageBlockModify.html.twig', $vars)->getContent();
-    }
-
-    /**
-     * update block settings
-     *
-     * @param array $blockInfo A blockInfo structure.
-     *
-     * @return array The modified blockInfo structure.
-     */
-    public function update($blockInfo)
-    {
-        // get current content
-        $vars = BlockUtil::varsFromContent($blockInfo['content']);
-        // alter the corresponding variable
-        $vars['pid'] = $this->get('request')->request->get('pid', null);
-        // write back the new contents
-        $blockInfo['content'] = BlockUtil::varsToContent($vars);
-
-        return $blockInfo;
-    }
-
-    /**
-     * @param $view
-     * @param $parameters
-     * @param Response|null $response
-     * @return Response
-     */
-    private function render($view, $parameters, Response $response = null)
-    {
-        if ($this->has('templating')) {
-            return $this->get('templating')->renderResponse($view, $parameters, $response);
+            return $form->getData();
         }
 
-        return '';
+        return $this->renderView('ZikulaPagesModule:Block:pageBlockModify.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
-
 }

@@ -31,7 +31,7 @@ class SearchHelper extends AbstractSearchable
      */
     public function getOptions($active, $modVars = null)
     {
-        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+        if ($this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
 
             return $this->getContainer()->get('templating')->renderResponse('ZikulaPagesModule:Search:options.html.twig', array('active' => $active))->getContent();
         }
@@ -49,7 +49,7 @@ class SearchHelper extends AbstractSearchable
      */
     function getResults(array $words, $searchType = 'AND', $modVars = null)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             return array();
         }
 
@@ -60,13 +60,13 @@ class SearchHelper extends AbstractSearchable
         $pages = $qb->getQuery()->getResult();
 
         $sessionId = session_id();
-        $enableCategorization = ModUtil::getVar($this->name, 'enablecategorization');
+        $enableCategorization = $this->getVar('enablecategorization');
 
         $records = array();
         foreach ($pages as $page) {
             /** @var $page \Zikula\PagesModule\Entity\PageEntity */
 
-            $pagePermissionCheck = SecurityUtil::checkPermission($this->name . '::', $page->getTitle() . '::' . $page->getPageid(), ACCESS_OVERVIEW);
+            $pagePermissionCheck = $this->hasPermission($this->name . '::', $page->getTitle() . '::' . $page->getPageid(), ACCESS_OVERVIEW);
             if ($enableCategorization) {
                 $pagePermissionCheck = $pagePermissionCheck && \CategoryUtil::hasCategoryAccess($page->getCategories(), $this->name);
             }
@@ -87,4 +87,13 @@ class SearchHelper extends AbstractSearchable
         return $records;
     }
 
+    private function hasPermission($component = null, $instance = null, $level = null, $user = null)
+    {
+        return $this->getContainer()->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, $level, $user);
+    }
+
+    private function getVar($varName)
+    {
+        return $this->getContainer()->get('zikula_extensions_module.api.variable')->get($this->name, $varName);
+    }
 }

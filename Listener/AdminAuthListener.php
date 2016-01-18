@@ -18,9 +18,21 @@ namespace Zikula\PagesModule\Listener;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Zikula\PagesModule\AdminAuthInterface;
+use Zikula\PermissionsModule\Api\PermissionApi;
 
 class AdminAuthListener
 {
+    private $permissionApi;
+
+    /**
+     * AdminAuthListener constructor.
+     * @param PermissionApi $permissionApi
+     */
+    public function __construct(PermissionApi $permissionApi)
+    {
+        $this->permissionApi = $permissionApi;
+    }
+
     public function onKernelController(FilterControllerEvent $event)
     {
         $controller = $event->getController();
@@ -35,7 +47,7 @@ class AdminAuthListener
         }
 
         if ($controller[0] instanceof AdminAuthInterface) {
-            if (!\SecurityUtil::checkPermission('ZikulaPagesModule::', '::', ACCESS_EDIT)) {
+            if (!$this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
         }

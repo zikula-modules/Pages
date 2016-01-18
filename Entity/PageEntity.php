@@ -175,12 +175,12 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     {
         $this->categoryAssignments = new ArrayCollection();
         $modVars = \ModUtil::getVar('ZikulaPagesModule');
-        $this->displaywrapper = $modVars['def_displaywrapper'];
-        $this->displaytitle = $modVars['def_displaytitle'];
-        $this->displaycreated = $modVars['def_displaycreated'];
-        $this->displayupdated = $modVars['def_displayupdated'];
-        $this->displaytextinfo = $modVars['def_displaytextinfo'];
-        $this->displayprint = $modVars['def_displayprint'];
+        $this->displaywrapper = isset($modVars['def_displaywrapper']) ? $modVars['def_displaywrapper'] : true;
+        $this->displaytitle = isset($modVars['def_displaytitle']) ? $modVars['def_displaytitle'] : true;
+        $this->displaycreated = isset($modVars['def_displaycreated']) ? $modVars['def_displaycreated'] : true;
+        $this->displayupdated = isset($modVars['def_displayupdated']) ? $modVars['def_displayupdated'] : true;
+        $this->displaytextinfo = isset($modVars['def_displaytextinfo']) ? $modVars['def_displaytextinfo'] : true;
+        $this->displayprint = isset($modVars['def_displayprint']) ? $modVars['def_displayprint'] : true;
     }
 
     /**

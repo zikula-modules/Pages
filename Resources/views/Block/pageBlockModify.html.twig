@@ -2,24 +2,11 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaPagesModule:js/select2/select2.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaPagesModule:js/select2/select2-bootstrap.css')) }}
 
-<div class="form-group">
-    <label for="htmlpages_pid" class="col-lg-3 control-label">
-        {{ __('Page') }}{# domain='module_pages' #}
-    </label>
-
-    <div class="col-lg-9">
-        <select id="htmlpages_pid" name='pid' class="form-control">
-            {% for page in pages %}
-            <option value="{{ page.pageid }}"{% if pid is not empty and page.pageid == pid %} selected="selected"{% endif %}>
-                {{ page.title|safeHtml }}
-            </option>
-            {% endfor %}
-        </select>
-    </div>
-</div>
+{% form_theme form 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig' %}
+{{ form_widget(form) }}
 
 <script type="text/javascript">
-    jQuery('#htmlpages_pid').select2({
+    jQuery('#zikulapagesmodule_pageblock_pid').select2({
         "formatNoMatches": function () {
             return "{{ __("No match found") }}";
         }

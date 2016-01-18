@@ -76,7 +76,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
      */
     public function configAction(Request $request)
     {
-        $form = $this->createFormBuilder(\ModUtil::getVar('ZikulaPagesModule'))
+        $form = $this->createFormBuilder($this->getVars())
             ->add('enablecategorization', 'checkbox', array('label' => __('Enable categorization'),
                 'required' => false))
             ->add('itemsperpage', 'number', array('label' => __('Items per page'),
@@ -99,7 +99,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 
         if ($form->isValid()) {
             if ($form->get('save')->isClicked()) {
-                \ModUtil::setVars('ZikulaPagesModule', $form->getData());
+                $this->setVars($form->getData());
                 $this->addFlash('status', __('Done! Module configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {

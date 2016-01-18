@@ -32,7 +32,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
 {
     private $entities = array(
         'Zikula\PagesModule\Entity\PageEntity',
-        'Zikula\PagesModule\Entity\CategoryEntity'
+        'Zikula\PagesModule\Entity\CategoryAssignmentEntity'
     );
 
     /**
@@ -102,7 +102,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             case '2.5.1':
                 // create categories table
                 try {
-                    $this->schemaTool->create(array('Zikula\PagesModule\Entity\CategoryEntity'));
+                    $this->schemaTool->create(array('Zikula\PagesModule\Entity\CategoryAssignmentEntity'));
                 } catch (\Exception $e) {
                     $this->addFlash('error', $e->getMessage());
                     return false;
@@ -146,6 +146,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
                 }
             case '3.0.0':
             case '3.0.1':
+            case '3.1.0': // current version
         }
         // Update successful
         return true;

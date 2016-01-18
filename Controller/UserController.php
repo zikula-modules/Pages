@@ -48,7 +48,7 @@ class UserController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        if (!\ModUtil::getVar($this->name, 'enablecategorization')) {
+        if (!$this->getVar('enablecategorization')) {
             // list all pages
             return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_user_listpages'));
         } else {
@@ -70,13 +70,13 @@ class UserController extends AbstractController
      */
     public function listPagesAction(Request $request, $startnum = 1)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
         $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
         $pages->setStartNumber($startnum);
-        $pages->setItemsPerPage(\ModUtil::getVar($this->name, 'itemsperpage'));
+        $pages->setItemsPerPage($this->getVar('itemsperpage'));
         $pages->setOrder('title', 'ASC');
         $pages->enablePager();
 
@@ -101,7 +101,7 @@ class UserController extends AbstractController
      */
     public function categoriesAction(Request $request)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
@@ -127,7 +127,7 @@ class UserController extends AbstractController
      */
     public function viewAction(Request $request, $prop = null, $cat = null, $startnum = 1)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_OVERVIEW)) {
+        if (!$this->hasPermission($this->name . '::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
         }
         // @TODO the prop category must be converted to the propId and links adjusted throughout
@@ -135,7 +135,7 @@ class UserController extends AbstractController
 
         $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
         $pages->setStartNumber($startnum);
-        $pages->setItemsPerPage(\ModUtil::getVar($this->name, 'itemsperpage'));
+        $pages->setItemsPerPage($this->getVar('itemsperpage'));
         $pages->setOrder('title', 'ASC');
         $pages->setCategory($cat);
         $pages->enablePager();
@@ -191,7 +191,7 @@ class UserController extends AbstractController
         $templateParameters['displayeditlink'] = ($accessLevel >= ACCESS_EDIT);
         $templateParameters['page'] = $page;
         $templateParameters['lang'] = ZLanguage::getLanguageCode();
-        $templateParameters['modvars'] = \ModUtil::getModvars(); // @todo temporary solution
+        $templateParameters['modvars']['ZikulaPagesModule'] = $this->getVars(); // @todo temporary solution
         $templateParameters['pager'] = array('numitems' => $numitems, 'itemsperpage' => 1);
 
         $request->attributes->set('_legacy', true); // forces template to render inside old theme
@@ -206,11 +206,11 @@ class UserController extends AbstractController
      */
     private function getAccessLevel(PageEntity $page)
     {
-        if (SecurityUtil::checkPermission('ZikulaPagesModule::Page', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_READ)) {
+        if ($this->hasPermission('ZikulaPagesModule::Page', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_READ)) {
             $accessLevel = ACCESS_READ;
-            if (SecurityUtil::checkPermission('ZikulaPagesModule::', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_COMMENT)) {
+            if ($this->hasPermission('ZikulaPagesModule::', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_COMMENT)) {
                 $accessLevel = ACCESS_COMMENT;
-                if (SecurityUtil::checkPermission('ZikulaPagesModule::', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_EDIT)) {
+                if ($this->hasPermission('ZikulaPagesModule::', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_EDIT)) {
                     $accessLevel = ACCESS_EDIT;
                 }
             }

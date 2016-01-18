@@ -6,11 +6,13 @@
 
     <services>
         <service id="app.tokens.action_listener" class="Zikula\PagesModule\Listener\AdminAuthListener">
+            <argument type="service" id="zikula_permissions_module.api.permission" />
             <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
         </service>
         <service id="zikulapagesmodule.link_container" class="Zikula\PagesModule\Container\LinkContainer">
             <argument type="service" id="translator" />
             <argument type="service" id="router" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
             <tag name="zikula.link_container" />
         </service>
     </services>

@@ -35,7 +35,9 @@
       },
       "securityschema": {
         "ZikulaPagesModule::": "Page name::Page ID",
-        "ZikulaPagesModule:category:": "Category ID::"
+        "ZikulaPagesModule:category:": "Category ID::",
+        "ZikulaPagesModule:pageslistblock:": "Block title::",
+        "ZikulaPagesModule:pageblock:": "Block title::"
       }
     }
   }

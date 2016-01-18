@@ -74,7 +74,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
 
         $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
         $pages->setStartNumber($startnum);
-        $pages->setItemsPerPage(\ModUtil::getVar($this->name, 'itemsperpage'));
+        $pages->setItemsPerPage($this->getVar('itemsperpage'));
         $pages->setOrder($orderBy, $currentSortDirection);
         $pages->enablePager();
         $pages->setFilterBy($filterData);
@@ -85,7 +85,8 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $templateParameters['pages'] = $pages->get();
         $templateParameters['lang'] = ZLanguage::getLanguageCode();
         $templateParameters['pager'] = $pages->getPager();
-        $templateParameters['modvars'] = \ModUtil::getModvars(); // temporary solution
+        $templateParameters['modvars']['ZikulaPagesModule'] = $this->getVars(); // temporary solution
+        $templateParameters['modvars']['ZConfig'] = $this->get('zikula_extensions_module.api.variable')->getAll('ZConfig'); // temporary solution
         $templateParameters['filterForm'] = $filterForm->createView();
 
         // attempt to disable caching for this only
