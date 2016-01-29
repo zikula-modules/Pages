@@ -28,13 +28,12 @@ class PageBlock extends AbstractBlockHandler
     /**
      * Display block.
      *
-     * @param array $blockInfo A blockInfo structure.
+     * @param array $properties
      *
      * @return string|void The rendered block.
      */
     public function display(array $properties)
     {
-        // Security check
         if (!$this->hasPermission('ZikulaPagesModule:pageblock:', "{$properties['title']}::", ACCESS_READ)) {
             return false;
         }
@@ -57,34 +56,23 @@ class PageBlock extends AbstractBlockHandler
         return $this->renderView('ZikulaPagesModule:Block:pageBlockDisplay.html.twig', array('content' => $page->getContent()));
     }
 
-    /**
-     * modify block settings
-     *
-     * @param Request $request
-     * @param array $properties
-     * @return string the block form
-     */
-    public function modify(Request $request, array $properties)
+    public function getFormClassName()
     {
-        $defaults = [
-            'pid' => '',
-        ];
-        $vars = array_merge($defaults, $properties);
+        return 'Zikula\PagesModule\Block\Form\Type\PageBlockType';
+    }
+
+    public function getFormTemplate()
+    {
+        return 'ZikulaPagesModule:Block:pageBlockModify.html.twig';
+    }
+
+    public function getFormOptions()
+    {
         $pages = new PageCollectionManager($this->get('doctrine.entitymanager'));
         $choices = [];
         foreach ($pages->get() as $page) {
             $choices[$page->getPageid()] = $page->getTitle();
         }
-        $options = ['pages' => $choices];
-        $form = $this->createForm('Zikula\PagesModule\Block\Form\Type\PageBlockType', $vars, $options);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-
-            return $form->getData();
-        }
-
-        return $this->renderView('ZikulaPagesModule:Block:pageBlockModify.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return ['pages' => $choices];
     }
 }

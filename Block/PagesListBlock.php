@@ -79,28 +79,8 @@ class PagesListBlock extends AbstractBlockHandler
         return $this->renderView('ZikulaPagesModule:Block:pagesListDisplay.html.twig', array('pages' => $pageArray));
     }
 
-    /**
-     * modify block settings
-     *
-     * @param Request $request
-     * @param array $properties
-     * @return string the block form
-     */
-    public function modify(Request $request, array $properties)
+    public function getFormClassName()
     {
-        $defaults = [
-            'numitems' => 5,
-        ];
-        $vars = array_merge($defaults, $properties);
-        $form = $this->createForm('Zikula\PagesModule\Block\Form\Type\PagesListBlockType', $vars);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-
-            return $form->getData();
-        }
-
-        return $this->renderView('ZikulaBlocksModule:Block:default_modify.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return 'Zikula\PagesModule\Block\Form\Type\PagesListBlockType';
     }
 }
