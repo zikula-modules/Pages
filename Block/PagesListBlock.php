@@ -15,8 +15,7 @@
 
 namespace Zikula\PagesModule\Block;
 
-use Symfony\Component\HttpFoundation\Request;
-use Zikula\Core\AbstractBlockHandler;
+use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 
 /**
@@ -76,7 +75,7 @@ class PagesListBlock extends AbstractBlockHandler
             }
         }
 
-        return $this->renderView('ZikulaPagesModule:Block:pagesListDisplay.html.twig', array('pages' => $pageArray));
+        return $this->renderView('@ZikulaPagesModule/Block/pagesListDisplay.html.twig', array('pages' => $pageArray));
     }
 
     public function getFormClassName()

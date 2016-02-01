@@ -15,8 +15,7 @@
 
 namespace Zikula\PagesModule\Block;
 
-use Symfony\Component\HttpFoundation\Request;
-use Zikula\Core\AbstractBlockHandler;
+use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 
 /**
@@ -53,7 +52,7 @@ class PageBlock extends AbstractBlockHandler
             return false;
         }
 
-        return $this->renderView('ZikulaPagesModule:Block:pageBlockDisplay.html.twig', array('content' => $page->getContent()));
+        return $this->renderView('@ZikulaPagesModule/Block/pageBlockDisplay.html.twig', array('content' => $page->getContent()));
     }
 
     public function getFormClassName()
@@ -63,7 +62,7 @@ class PageBlock extends AbstractBlockHandler
 
     public function getFormTemplate()
     {
-        return 'ZikulaPagesModule:Block:pageBlockModify.html.twig';
+        return '@ZikulaPagesModule/Block/pageBlockModify.html.twig';
     }
 
     public function getFormOptions()
