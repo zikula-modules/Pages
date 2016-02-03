@@ -42,27 +42,29 @@ class LinkContainer implements LinkContainerInterface
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
         $links = array();
-        if ($this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_READ)) {
-            $links[] = array(
-                'url' => $this->router->generate('zikulapagesmodule_admin_index'),
-                'text' => $this->translator->__('Pages list'),
-                'icon' => 'list');
-        }
-        if ($this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_ADD)) {
-            $links[] = array(
-                'url' => $this->router->generate('zikulapagesmodule_adminform_edit'),
-                'text' => $this->translator->__('New Page'),
-                'icon' => 'plus');
-        }
-        if ($this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array(
-                'url' => $this->router->generate('zikulapagesmodule_admin_purge'),
-                'text' => $this->translator->__('Purge permalinks'),
-                'icon' => 'refresh');
-            $links[] = array(
-                'url' => $this->router->generate('zikulapagesmodule_adminform_config'),
-                'text' => $this->translator->__('Modify Config'),
-                'icon' => 'wrench');
+        if (LinkContainerInterface::TYPE_ADMIN == $type) {
+            if ($this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_READ)) {
+                $links[] = array(
+                    'url' => $this->router->generate('zikulapagesmodule_admin_index'),
+                    'text' => $this->translator->__('Pages list'),
+                    'icon' => 'list');
+            }
+            if ($this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_ADD)) {
+                $links[] = array(
+                    'url' => $this->router->generate('zikulapagesmodule_adminform_edit'),
+                    'text' => $this->translator->__('New Page'),
+                    'icon' => 'plus');
+            }
+            if ($this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_ADMIN)) {
+                $links[] = array(
+                    'url' => $this->router->generate('zikulapagesmodule_admin_purge'),
+                    'text' => $this->translator->__('Purge permalinks'),
+                    'icon' => 'refresh');
+                $links[] = array(
+                    'url' => $this->router->generate('zikulapagesmodule_adminform_config'),
+                    'text' => $this->translator->__('Modify Config'),
+                    'icon' => 'wrench');
+            }
         }
 
         return $links;
