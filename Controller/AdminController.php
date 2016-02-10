@@ -30,7 +30,7 @@ use Zikula\PagesModule\Form\Type\FilterType;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\PagesModule\AdminAuthInterface;
-use Zikula\Core\Theme\Annotation\Theme;
+use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class AdminController

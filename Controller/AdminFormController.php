@@ -24,7 +24,7 @@ use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Form\Type\PageType;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\PagesModule\AdminAuthInterface;
-use Zikula\Core\Theme\Annotation\Theme;
+use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * @Route("/admin")
