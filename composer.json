@@ -29,7 +29,7 @@
       "capabilities": {
         "hook_subscriber": {"class": "Zikula\\PagesModule\\Container\\HookContainer"},
         "searchable": {"class": "Zikula\\PagesModule\\Helper\\SearchHelper"},
-        "categorizable": ["Zikula\\PagesModule\\Entity\\PageEntity"],
+        "categorizable": {"entities": ["Zikula\\PagesModule\\Entity\\PageEntity"]},
         "user": {"route": "zikulapagesmodule_user_index"},
         "admin": {"route": "zikulapagesmodule_admin_index"}
       },
