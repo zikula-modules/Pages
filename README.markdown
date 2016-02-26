@@ -1,3 +1,5 @@
+[![StyleCI](https://styleci.io/repos/808769/shield)](https://styleci.io/repos/808769)
+
 Pages 3.0.0
 ===========
 
