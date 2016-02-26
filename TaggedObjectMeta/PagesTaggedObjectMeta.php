@@ -16,15 +16,12 @@
 namespace Zikula\PagesModule\TaggedObjectMeta;
 
 use DateUtil;
-use ModUtil;
-use UserUtil;
 
 /**
  * Tagged object meta class.
  */
 class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
 {
-
     /**
      * Construct.
      *
@@ -40,9 +37,7 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
         $module,
         $urlString = null,
         \Zikula_ModUrl $urlObject = null
-    )
-    {
-
+    ) {
         parent::__construct($objectId, $areaId, $module, $urlString, $urlObject);
         $sm = \ServiceUtil::getManager();
         /** @var \Zikula\PagesModule\Entity\PageEntity $page */
@@ -62,7 +57,6 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
      */
     public function setObjectTitle($title)
     {
-
         $this->title = $title;
     }
 
@@ -73,7 +67,6 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
      */
     public function setObjectDate($date)
     {
-
         $this->date = DateUtil::formatDatetime($date, 'datetimebrief');
     }
 
@@ -84,8 +77,6 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
      */
     public function setObjectAuthor($author)
     {
-
         $this->author = $author;
     }
-
 }

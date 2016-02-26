@@ -49,6 +49,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             $this->schemaTool->create($this->entities);
         } catch (\Exception $e) {
             $this->addFlash('error', $e->getMessage());
+
             return false;
         }
         // insert default category
@@ -93,6 +94,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         // Only support upgrade from version 2.5.1 and up. Notify users if they have a version below that one.
         if (version_compare($oldversion, '2.5.1', '<=')) {
             $this->addFlash('error', $this->__('Notice: This version does not support upgrades from versions of Pages less than 2.5.1. Please upgrade to 2.5.1 before attempting this upgrade.'));
+
             return false;
         }
         $connection = $this->container->get('doctrine.entitymanager')->getConnection();
@@ -104,6 +106,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
                     $this->schemaTool->create(array('Zikula\PagesModule\Entity\CategoryAssignmentEntity'));
                 } catch (\Exception $e) {
                     $this->addFlash('error', $e->getMessage());
+
                     return false;
                 }
                 // move relations from categories_mapobj to pages_category
@@ -198,6 +201,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         } else {
             throw new NotFoundHttpException('Root category not found.');
         }
+
         return true;
     }
 

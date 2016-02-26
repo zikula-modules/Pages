@@ -55,5 +55,4 @@ class CategoryAssignmentEntity extends AbstractCategoryAssignment
     {
         $this->entity = $entity;
     }
-
 }

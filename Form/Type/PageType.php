@@ -97,5 +97,4 @@ class PageType extends AbstractType
             'data_class' => 'Zikula\PagesModule\Entity\PageEntity',
         ]);
     }
-
 }
