@@ -18,8 +18,7 @@ namespace Zikula\PagesModule\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Core\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Form\Type\PageType;
 use Symfony\Component\Validator\Constraints as Assert;

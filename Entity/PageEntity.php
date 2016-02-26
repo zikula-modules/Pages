@@ -17,10 +17,8 @@ namespace Zikula\PagesModule\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\PagesModule\Entity\CategoryEntity as PagesCategoryRelation;
 
 /**
  * Page entity class.
