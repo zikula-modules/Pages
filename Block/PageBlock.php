@@ -72,6 +72,7 @@ class PageBlock extends AbstractBlockHandler
         foreach ($pages->get() as $page) {
             $choices[$page->getPageid()] = $page->getTitle();
         }
+
         return ['pages' => $choices];
     }
 }

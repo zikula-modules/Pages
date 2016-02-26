@@ -16,8 +16,6 @@
 namespace Zikula\PagesModule\Controller;
 
 use CategoryRegistryUtil;
-use ModUtil;
-use SecurityUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -120,5 +118,4 @@ class AdminController extends AbstractController implements AdminAuthInterface
 
         return new RedirectResponse($url);
     }
-
 }

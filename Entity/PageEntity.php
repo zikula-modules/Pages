@@ -188,7 +188,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getPageid()
     {
-
         return $this->pageid;
     }
 
@@ -199,7 +198,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setPageid($pageid)
     {
-
     }
 
     /**
@@ -209,7 +207,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getTitle()
     {
-
         return $this->title;
     }
 
@@ -220,7 +217,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setTitle($title)
     {
-
         $this->title = $title;
     }
 
@@ -231,7 +227,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getMetadescription()
     {
-
         return $this->metadescription;
     }
 
@@ -242,7 +237,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setMetadescription($metadescription)
     {
-
         $this->metadescription = $metadescription;
     }
 
@@ -253,7 +247,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getMetakeywords()
     {
-
         return $this->metakeywords;
     }
 
@@ -264,7 +257,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setMetakeywords($metakeywords)
     {
-
         $this->metakeywords = $metakeywords;
     }
 
@@ -275,7 +267,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getUrltitle()
     {
-
         return $this->urltitle;
     }
 
@@ -286,7 +277,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setUrltitle($urltitle)
     {
-
         $this->urltitle = $urltitle;
     }
 
@@ -297,7 +287,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getContent()
     {
-
         return $this->content;
     }
 
@@ -308,7 +297,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setContent($content)
     {
-
         $this->content = $content;
     }
 
@@ -319,7 +307,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getCounter()
     {
-
         return $this->counter;
     }
 
@@ -330,7 +317,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setCounter($counter)
     {
-
         $this->counter = $counter;
     }
 
@@ -341,7 +327,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getDisplaywrapper()
     {
-
         return $this->displaywrapper;
     }
 
@@ -352,7 +337,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplaywrapper($displaywrapper)
     {
-
         $this->displaywrapper = $displaywrapper;
     }
 
@@ -363,7 +347,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getDisplaytitle()
     {
-
         return $this->displaytitle;
     }
 
@@ -374,7 +357,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplaytitle($displaytitle)
     {
-
         $this->displaytitle = $displaytitle;
     }
 
@@ -385,7 +367,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getDisplaycreated()
     {
-
         return $this->displaycreated;
     }
 
@@ -396,7 +377,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplaycreated($displaycreated)
     {
-
         $this->displaycreated = $displaycreated;
     }
 
@@ -407,7 +387,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getdisplayupdated()
     {
-
         return $this->displayupdated;
     }
 
@@ -418,7 +397,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getdisplaytextinfo()
     {
-
         return $this->displaytextinfo;
     }
 
@@ -429,7 +407,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getdisplayprint()
     {
-
         return $this->displayprint;
     }
 
@@ -440,7 +417,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getLanguage()
     {
-
         return $this->language;
     }
 
@@ -451,7 +427,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setLanguage($language)
     {
-
         $this->language = $language;
     }
 
@@ -462,7 +437,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplayupdated($displayupdated)
     {
-
         $this->displayupdated = $displayupdated;
     }
 
@@ -473,7 +447,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplaytextinfo($displaytextinfo)
     {
-
         $this->displaytextinfo = $displaytextinfo;
     }
 
@@ -484,7 +457,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function setDisplayprint($displayprint)
     {
-
         $this->displayprint = $displayprint;
     }
 
@@ -493,7 +465,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function incrementCounter()
     {
-
         $this->counter++;
     }
 
@@ -504,7 +475,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getCr_date()
     {
-
         return $this->cr_date;
     }
 
@@ -515,7 +485,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getLu_date()
     {
-
         return $this->lu_date;
     }
 
@@ -561,7 +530,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
             if ($collectionAssignment->getCategoryRegistryId() == $element->getCategoryRegistryId()
                 && $collectionAssignment->getCategory() == $element->getCategory()
             ) {
-
                 return $key;
             }
         }
@@ -576,7 +544,6 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     public function getObj_status()
     {
-
         return $this->obj_status;
     }
 
@@ -589,6 +556,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     {
         $this->obj_status = $status ? 'A' : 'I';
     }
+
     public function setCreator($creator)
     {
         $this->creator = $creator;
@@ -617,5 +585,4 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     {
         $this->updater = $updater;
     }
-
 }

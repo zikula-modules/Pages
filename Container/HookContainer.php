@@ -40,5 +40,4 @@ class HookContainer extends AbstractHookContainer
         $bundle->addEvent('filter', 'pages.filter_hooks.pages.filter');
         $this->registerHookSubscriberBundle($bundle);
     }
-
 }

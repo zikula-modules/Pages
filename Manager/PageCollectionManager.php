@@ -18,8 +18,6 @@ namespace Zikula\PagesModule\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\EntityManager;
-use ModUtil;
-use ServiceUtil;
 use System;
 
 class PageCollectionManager
@@ -148,6 +146,7 @@ class PageCollectionManager
             $query->setFirstResult($this->startNumber);
             $paginator = new Paginator($query);
             $this->numberOfItems = count($paginator);
+
             return $paginator;
         } else {
             return $query->getResult();
@@ -173,5 +172,4 @@ class PageCollectionManager
     {
         return array('itemsperpage' => $this->itemsPerPage, 'numitems' => $this->numberOfItems);
     }
-
 }

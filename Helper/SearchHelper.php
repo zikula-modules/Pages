@@ -15,8 +15,6 @@
 
 namespace Zikula\PagesModule\Helper;
 
-use ModUtil;
-use SecurityUtil;
 use Zikula\Core\RouteUrl;
 use Zikula\SearchModule\AbstractSearchable;
 
@@ -32,7 +30,6 @@ class SearchHelper extends AbstractSearchable
     public function getOptions($active, $modVars = null)
     {
         if ($this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
-
             return $this->getContainer()->get('templating')->renderResponse('ZikulaPagesModule:Search:options.html.twig', array('active' => $active))->getContent();
         }
 
@@ -47,7 +44,7 @@ class SearchHelper extends AbstractSearchable
      * @param array|null $modVars module form vars passed though
      * @return array
      */
-    function getResults(array $words, $searchType = 'AND', $modVars = null)
+    public function getResults(array $words, $searchType = 'AND', $modVars = null)
     {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             return array();
