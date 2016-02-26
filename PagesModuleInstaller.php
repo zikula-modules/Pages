@@ -72,8 +72,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             'def_displayprint' => true
         );
         $this->setVars($modvars);
-        $hookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData());
-        $this->hookApi->registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
+        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
         $this->createIntroPage();
         // initialisation successful
         return true;
@@ -170,8 +169,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         $this->delVars();
         // Delete entries from category registry
         CategoryRegistryUtil::deleteEntry($this->bundle->getName());
-        $hookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData());
-        $this->hookApi->unregisterSubscriberBundles($hookContainer->getHookSubscriberBundles());
+        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
         // Deletion successful
         return true;
     }
