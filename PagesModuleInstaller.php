@@ -18,7 +18,6 @@ namespace Zikula\PagesModule;
 use CategoryRegistryUtil;
 use CategoryUtil;
 use Doctrine\Common\Collections\ArrayCollection;
-use HookUtil;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\PagesModule\Entity\CategoryAssignmentEntity;
 use Zikula\PagesModule\Entity\PageEntity;
@@ -73,7 +72,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         );
         $this->setVars($modvars);
         $hookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData());
-        HookUtil::registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
+        $this->hookApi->registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
         $this->createIntroPage();
         // initialisation successful
         return true;
@@ -169,7 +168,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         // Delete entries from category registry
         CategoryRegistryUtil::deleteEntry($this->bundle->getName());
         $hookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData());
-        HookUtil::unregisterSubscriberBundles($hookContainer->getHookSubscriberBundles());
+        $this->hookApi->unregisterSubscriberBundles($hookContainer->getHookSubscriberBundles());
         // Deletion successful
         return true;
     }
