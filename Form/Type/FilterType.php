@@ -36,6 +36,7 @@ class FilterType extends AbstractType
                 'attr' => ['class' => "btn btn-default btn-sm"]
             ])
             ->add('categoryAssignments', 'Zikula\CategoriesModule\Form\Type\CategoriesType', [
+                'attr' => ['class' => 'input-sm'],
                 'required' => false,
                 'multiple' => false,
                 'module' => 'ZikulaPagesModule',
