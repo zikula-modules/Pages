@@ -5,12 +5,12 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version)
  * @package Pages
  * @link https://github.com/zikula-modules/Pages
  *
  * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * information regarding copyright and licensing
  */
 
 namespace Zikula\PagesModule\Controller;
@@ -247,7 +247,7 @@ class UserController extends AbstractController
     /**
      * utility function to count the number of items held by this module
      *
-     * @param array $args Arguments.
+     * @param array $args Arguments
      *
      * @return integer number of items held by this module
      */

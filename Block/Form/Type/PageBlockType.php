@@ -8,7 +8,7 @@
  * @license GNU/LGPLv3 (or at your option, any later version).
  *
  * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * information regarding copyright and licensing
  */
 
 namespace Zikula\PagesModule\Block\Form\Type;
