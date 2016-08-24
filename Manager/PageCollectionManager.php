@@ -5,12 +5,12 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version)
  * @package Pages
  * @link https://github.com/zikula-modules/Pages
  *
  * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * information regarding copyright and licensing
  */
 
 namespace Zikula\PagesModule\Manager;
@@ -56,7 +56,7 @@ class PageCollectionManager
     /**
      * set start number
      *
-     * @param int $startNumber Start number.
+     * @param int $startNumber Start number
      *
      * @return void
      */
@@ -68,8 +68,8 @@ class PageCollectionManager
     /**
      * set order
      *
-     * @param string $orderBy E.g. titles.
-     * @param string $orderDirection ASC/DESC.
+     * @param string $orderBy E.g. titles
+     * @param string $orderDirection ASC/DESC
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class PageCollectionManager
     /**
      * set language
      *
-     * @param string $language Language code.
+     * @param string $language Language code
      *
      * @return void
      */
@@ -96,7 +96,7 @@ class PageCollectionManager
     /**
      * set category
      *
-     * @param mixed $category Category id.
+     * @param mixed $category Category id
      *
      * @return void
      */

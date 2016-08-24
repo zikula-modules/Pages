@@ -5,12 +5,12 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version)
  * @package Pages
  * @link https://github.com/zikula-modules/Pages
  *
  * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * information regarding copyright and licensing
  */
 
 namespace Zikula\PagesModule;
@@ -84,9 +84,9 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param string $oldversion Version number string to upgrade from.
+     * @param string $oldversion Version number string to upgrade from
      *
-     * @return mixed True on success, last valid version string or false if fails.
+     * @return mixed True on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
@@ -177,7 +177,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
     /**
      * create the category tree
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException If Root category not found.
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException If Root category not found
      * @throws \Exception
      *
      * @return boolean

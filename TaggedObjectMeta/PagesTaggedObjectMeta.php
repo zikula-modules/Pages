@@ -5,12 +5,12 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version)
  * @package Pages
  * @link https://github.com/zikula-modules/Pages
  *
  * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * information regarding copyright and licensing
  */
 
 namespace Zikula\PagesModule\TaggedObjectMeta;
@@ -25,11 +25,11 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
     /**
      * Construct.
      *
-     * @param int $objectId Object ID.
-     * @param int $areaId A blockinfo structure.
-     * @param string $module Module.
-     * @param string $urlString Url.
-     * @param \Zikula_ModUrl $urlObject Url object.
+     * @param int $objectId Object ID
+     * @param int $areaId A blockinfo structure
+     * @param string $module Module
+     * @param string $urlString Url
+     * @param \Zikula_ModUrl $urlObject Url object
      */
     public function __construct(
         $objectId,
@@ -53,7 +53,7 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
     /**
      * Set object title.
      *
-     * @param string $title Object title.
+     * @param string $title Object title
      */
     public function setObjectTitle($title)
     {
@@ -63,7 +63,7 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
     /**
      * Set object date.
      *
-     * @param string $date Date.
+     * @param string $date Date
      */
     public function setObjectDate($date)
     {
@@ -73,7 +73,7 @@ class PagesTaggedObjectMeta extends \Tag_AbstractTaggedObjectMeta
     /**
      * Set object author.
      *
-     * @param string $author Object author.
+     * @param string $author Object author
      */
     public function setObjectAuthor($author)
     {
