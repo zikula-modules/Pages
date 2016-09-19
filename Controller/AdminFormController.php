@@ -171,7 +171,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 
                     return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
                 }
-            } else if ($form->get('cancel')->isClicked()) {
+            } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', __('Operation cancelled.'));
 
                 return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
