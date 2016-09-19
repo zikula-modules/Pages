@@ -15,10 +15,18 @@
 
 namespace Zikula\PagesModule\Controller;
 
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Zikula\Bundle\HookBundle\Hook\Hook;
+use Zikula\Bundle\HookBundle\Hook\ProcessHook;
+use Zikula\Bundle\HookBundle\Hook\ValidationHook;
+use Zikula\Bundle\HookBundle\Hook\ValidationResponse;
 use Zikula\Core\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Zikula\Core\RouteUrl;
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Form\Type\PageType;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -38,7 +46,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
      * @Theme("admin")
      * @param Request $request
      * @param PageEntity $page
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, PageEntity $page = null)
     {
@@ -53,11 +61,21 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         if ($form->isValid()) {
-            $em->persist($page);
-            $em->flush();
-            $this->addFlash('status', __('Page saved!'));
+            if ($this->hookValidates($form, 'validate_edit')) {
+                $em->persist($page);
+                $em->flush();
+                $this->addFlash('status', __('Page saved!'));
 
-            return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
+                $this->notifyHooks(
+                    new ProcessHook(
+                        $page->getPageid(),
+                        new RouteUrl('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()])
+                    ),
+                    "pages.ui_hooks.pages.process_edit"
+                );
+
+                return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
+            }
         }
 
         $request->attributes->set('_legacy', true); // forces template to render inside old theme
@@ -71,7 +89,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
      * @Route("/config")
      * @Theme("admin")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function configAction(Request $request)
     {
@@ -120,7 +138,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
      * @Theme("admin")
      * @param Request $request
      * @param PageEntity $page
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function deleteAction(Request $request, PageEntity $page)
     {
@@ -133,17 +151,31 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 
         if ($form->isValid()) {
             if ($form->get('Delete')->isClicked()) {
-                /** @var \Doctrine\ORM\EntityManager $em */
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($page);
-                $em->flush();
-                $this->addFlash('status', __('Done! Page deleted.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', __('Operation cancelled.'));
-            }
+                if ($this->hookValidates($form, 'validate_delete')) {
+                    // Save page id for use in hook event. It is set to null during the entitymanager flush.
+                    $pageId = $page->getPageid();
 
-            return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
+                    /** @var \Doctrine\ORM\EntityManager $em */
+                    $em = $this->getDoctrine()->getManager();
+                    $em->remove($page);
+                    $em->flush();
+                    $this->addFlash('status', __('Done! Page deleted.'));
+
+                    $this->notifyHooks(
+                        new ProcessHook(
+                            $pageId,
+                            new RouteUrl('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()])
+                        ),
+                        "pages.ui_hooks.pages.process_delete"
+                    );
+
+                    return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
+                }
+            } else if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', __('Operation cancelled.'));
+
+                return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
+            }
         }
 
         $request->attributes->set('_legacy', true); // forces template to render inside old theme
@@ -152,5 +184,47 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
             'page' => $page,
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * Checks whether or not the hook validates.
+     *
+     * @param Form $form
+     * @param string $event
+     *
+     * @return bool
+     */
+    private function hookValidates(Form $form, $event)
+    {
+        $validationHook = new ValidationHook();
+        /** @var ValidationHook $validationHook */
+        $validationHook = $this->notifyHooks($validationHook, "pages.ui_hooks.pages.$event");
+        $hookvalidators = $validationHook->getValidators();
+
+        if (!$hookvalidators->hasErrors()) {
+            return true;
+        }
+
+        /** @var ValidationResponse $validationResponse */
+        foreach ($hookvalidators as $validationResponse) {
+            foreach ($validationResponse->getErrors() as $error) {
+                $form->addError(new FormError($error));
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Notifies subscribers of the given hook.
+     *
+     * @param Hook $hook
+     * @param $name
+     *
+     * @return Hook
+     */
+    private function notifyHooks(Hook $hook, $name)
+    {
+        return $this->get('hook_dispatcher')->dispatch($name, $hook);
     }
 }
