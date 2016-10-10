@@ -2,12 +2,13 @@
     'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
     'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
+{{ pageSetVar('title', __('Pages settings')) }}
 {{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
 <div class="container-fluid">
     <div class="row">
         <h3>
             <span class="fa fa-wrench"></span>
-            {{ __('Modify Pages Config') }}
+            {{ __('Settings') }}
         </h3>
         {{ showflashes() }}
         {{ form_start(form) }}
