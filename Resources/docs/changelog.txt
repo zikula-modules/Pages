@@ -1,3 +1,6 @@
+Pages 3.1.0
+  * bug fixes
+
 Pages 3.0.0
   * Converted to Core 2.0.0 standards
     * namespaced
@@ -16,7 +19,7 @@ Pages 2.6.1
   * Pagination fixed - DoctrineExtensions Paginator was merged into Doctrine ORM
   * Correct category registry entry set
   * Required group parameter in plugin set
-  * Fake setter set so form plugin doesn't fail 
+  * Fake setter set so form plugin doesn't fail
 
 Pages 2.6.0
   * DBUtil migrated to Doctrine2
