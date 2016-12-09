@@ -1,4 +1,9 @@
 Pages 3.1.0
+  * requires Core >=1.4.2
+  * update form types to SY 2.8 standards
+  * convert to composer.json for version info
+  * convert hook helper to hook container
+  * update Blocks to Core-2.0 standards
   * bug fixes
 
 Pages 3.0.0
