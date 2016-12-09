@@ -54,7 +54,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $orderBy = $request->query->get('orderby', 'pageid');
         $currentSortDirection = $request->query->get('sdir', Column::DIRECTION_DESCENDING);
 
-        $filterForm = $this->createForm(new FilterType(), [], array(
+        $filterForm = $this->createForm('Zikula\PagesModule\Form\Type\FilterType', [], array(
             'action' => $this->generateUrl('zikulapagesmodule_admin_index'),
             'method' => 'GET',
             'entityCategoryRegistries' => CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'PageEntity', 'id'),

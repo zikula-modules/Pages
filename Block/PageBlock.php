@@ -34,11 +34,11 @@ class PageBlock extends AbstractBlockHandler
     public function display(array $properties)
     {
         if (!$this->hasPermission('ZikulaPagesModule:pageblock:', "{$properties['title']}::", ACCESS_READ)) {
-            return false;
+            return;
         }
         // return if no pid
         if (empty($properties['pid'])) {
-            return false;
+            return;
         }
 
         // get the page
@@ -46,10 +46,10 @@ class PageBlock extends AbstractBlockHandler
         $page = $this->get('doctrine.entitymanager')->getRepository('\Zikula\PagesModule\Entity\PageEntity')->find($properties['pid']);
         // check for a valid item
         if (!$page) {
-            return false;
+            return;
         }
         if (!$this->hasPermission('ZikulaPagesModule' . '::', "{$page->getTitle()}::{$page->getPageId()}", ACCESS_READ)) {
-            return false;
+            return;
         }
 
         return $this->renderView('@ZikulaPagesModule/Block/pageBlockDisplay.html.twig', array('content' => $page->getContent()));

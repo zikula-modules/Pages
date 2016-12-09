@@ -38,7 +38,9 @@ class PageType extends AbstractType
                 'required' => false
                 ])->addModelTransformer(new NullToEmptyTransformer())
             )
-            ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType')
+            ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+                'attr' => array('rows' => '10'),
+            ])
             ->add('displaywrapper', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'required' => false,
                 'label' => __('Display additional information')
