@@ -7,7 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version)
  * @package Pages
- * @link https://github.com/zikula-modules/Pages
+ * @see https://github.com/zikula-modules/Pages
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing
@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 use ZLanguage;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\PagesModule\Form\Type\FilterType;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\PagesModule\AdminAuthInterface;
