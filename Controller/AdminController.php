@@ -26,7 +26,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class AdminController
- * @package Zikula\PagesModule\Controller
  *
  * @Route("/admin")
  */
@@ -49,11 +48,11 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $orderBy = $request->query->get('orderby', 'pageid');
         $currentSortDirection = $request->query->get('sdir', Column::DIRECTION_DESCENDING);
 
-        $filterForm = $this->createForm('Zikula\PagesModule\Form\Type\FilterType', [], array(
+        $filterForm = $this->createForm('Zikula\PagesModule\Form\Type\FilterType', [], [
             'action' => $this->generateUrl('zikulapagesmodule_admin_index'),
             'method' => 'GET',
             'entityCategoryRegistries' => CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'PageEntity', 'id'),
-        ));
+        ]);
         $filterForm->handleRequest($request);
         $filterData = $filterForm->isSubmitted() ? $filterForm->getData() : $request->query->all();
 
@@ -71,7 +70,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $pages->enablePager();
         $pages->setFilterBy($filterData);
 
-        $templateParameters = array();
+        $templateParameters = [];
         $templateParameters['filter_active'] = !empty($filterData['categories']) || !empty($filterData['language']);
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['pages'] = $pages->get();

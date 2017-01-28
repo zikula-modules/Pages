@@ -26,7 +26,6 @@ use Zikula\Core\Controller\AbstractController;
 
 /**
  * Class UserController
- * @package Zikula\PagesModule\Controller
  */
 class UserController extends AbstractController
 {
@@ -103,7 +102,7 @@ class UserController extends AbstractController
 
         $request->attributes->set('_legacy', true); // forces template to render inside old theme
 
-        return $this->render('ZikulaPagesModule:User:main.html.twig', array('properties' => $properties, 'propertiesdata' => $propertiesdata, 'lang' => \ZLanguage::getLanguageCode()));
+        return $this->render('ZikulaPagesModule:User:main.html.twig', ['properties' => $properties, 'propertiesdata' => $propertiesdata, 'lang' => \ZLanguage::getLanguageCode()]);
     }
 
     /**
@@ -133,13 +132,13 @@ class UserController extends AbstractController
         $pages->setCategory($cat);
         $pages->enablePager();
 
-        $templateParameters = array(
+        $templateParameters = [
             'startnum' => $startnum,
             'category' => CategoryUtil::getCategoryByID($cat),
             'lang' => \ZLanguage::getLanguageCode(),
             'pages' => $pages->get(),
             'pager' => $pages->getPager()
-        );
+        ];
         $request->attributes->set('_legacy', true); // forces template to render inside old theme
 
         return $this->render('ZikulaPagesModule:User:view.html.twig', $templateParameters);
@@ -180,12 +179,12 @@ class UserController extends AbstractController
         $page->setContent(trim($allPages[$pagenum - 1]));
         $numitems = count($allPages);
         unset($allPages);
-        $templateParameters = array();
+        $templateParameters = [];
         $templateParameters['displayeditlink'] = ($accessLevel >= ACCESS_EDIT);
         $templateParameters['page'] = $page;
         $templateParameters['lang'] = ZLanguage::getLanguageCode();
         $templateParameters['modvars']['ZikulaPagesModule'] = $this->getVars(); // @todo temporary solution
-        $templateParameters['pager'] = array('numitems' => $numitems, 'itemsperpage' => 1);
+        $templateParameters['pager'] = ['numitems' => $numitems, 'itemsperpage' => 1];
 
         $request->attributes->set('_legacy', true); // forces template to render inside old theme
 
@@ -223,7 +222,7 @@ class UserController extends AbstractController
     {
         $categoryRegistry = \CategoryRegistryUtil::getRegisteredModuleCategories('ZikulaPagesModule', 'PageEntity');
         $properties = array_keys($categoryRegistry);
-        $propertiesdata = array();
+        $propertiesdata = [];
         foreach ($properties as $property) {
             $rootcat = CategoryUtil::getCategoryByID($categoryRegistry[$property]);
             if (!empty($rootcat)) {
@@ -231,13 +230,13 @@ class UserController extends AbstractController
                 // add this to make the relative paths of the subcategories with ease - mateo
                 $subcategories = CategoryUtil::getCategoriesByParentID($rootcat['id']);
                 foreach ($subcategories as $k => $category) {
-                    $subcategories[$k]['count'] = $this->countItems(array('category' => $category['id'], 'property' => $property));
+                    $subcategories[$k]['count'] = $this->countItems(['category' => $category['id'], 'property' => $property]);
                 }
-                $propertiesdata[] = array('name' => $property, 'rootcat' => $rootcat, 'subcategories' => $subcategories);
+                $propertiesdata[] = ['name' => $property, 'rootcat' => $rootcat, 'subcategories' => $subcategories];
             }
         }
 
-        return array($properties, $propertiesdata);
+        return [$properties, $propertiesdata];
     }
 
     /**

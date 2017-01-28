@@ -26,7 +26,7 @@ class SearchHelper extends AbstractSearchable
     public function getOptions($active, $modVars = null)
     {
         if ($this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
-            return $this->getContainer()->get('templating')->renderResponse('ZikulaPagesModule:Search:options.html.twig', array('active' => $active))->getContent();
+            return $this->getContainer()->get('templating')->renderResponse('ZikulaPagesModule:Search:options.html.twig', ['active' => $active])->getContent();
         }
 
         return '';
@@ -43,19 +43,19 @@ class SearchHelper extends AbstractSearchable
     public function getResults(array $words, $searchType = 'AND', $modVars = null)
     {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
-            return array();
+            return [];
         }
 
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('p')->from('Zikula\PagesModule\Entity\PageEntity', 'p');
-        $whereExpr = $this->formatWhere($qb, $words, array('p.title', 'p.content'), $searchType);
+        $whereExpr = $this->formatWhere($qb, $words, ['p.title', 'p.content'], $searchType);
         $qb->andWhere($whereExpr);
         $pages = $qb->getQuery()->getResult();
 
         $sessionId = session_id();
         $enableCategorization = $this->getVar('enablecategorization');
 
-        $records = array();
+        $records = [];
         foreach ($pages as $page) {
             /** @var $page \Zikula\PagesModule\Entity\PageEntity */
 
@@ -67,14 +67,14 @@ class SearchHelper extends AbstractSearchable
                 continue;
             }
 
-            $records[] = array(
+            $records[] = [
                 'title' => $page->getTitle(),
                 'text' => $page->getContent(),
                 'created' => $page->getCr_date(),
                 'module' => $this->name,
                 'sesid' => $sessionId,
-                'url' => RouteUrl::createFromRoute('zikulapagesmodule_user_display', array('urltitle' => $page->getUrltitle()))
-            );
+                'url' => RouteUrl::createFromRoute('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()])
+            ];
         }
 
         return $records;

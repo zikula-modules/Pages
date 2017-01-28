@@ -16,7 +16,6 @@ use Zikula\PagesModule\Manager\PageCollectionManager;
 
 /**
  * Class PagesListBlock
- * @package Zikula\PagesModule\Block
  */
 class PagesListBlock extends AbstractBlockHandler
 {
@@ -56,22 +55,22 @@ class PagesListBlock extends AbstractBlockHandler
         }
 
         // Display each item, permissions permitting
-        $pageArray = array();
+        $pageArray = [];
         /** @var \Zikula\PagesModule\Entity\PageEntity $page */
         foreach ($pages as $page) {
             if ($this->hasPermission('ZikulaPagesModule' . '::', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_OVERVIEW)) {
                 if ($this->hasPermission('ZikulaPagesModule' . '::', "{$page->getTitle()}::{$page->getPageid()}", ACCESS_READ)) {
-                    $pageArray[] = array(
-                        'url' => $this->get('router')->generate('zikulapagesmodule_user_display', array('urltitle' => $page->getUrltitle())),
+                    $pageArray[] = [
+                        'url' => $this->get('router')->generate('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()]),
                         'title' => $page['title']
-                    );
+                    ];
                 } else {
-                    $pageArray[] = array('title' => $page['title']);
+                    $pageArray[] = ['title' => $page['title']];
                 }
             }
         }
 
-        return $this->renderView('@ZikulaPagesModule/Block/pagesListDisplay.html.twig', array('pages' => $pageArray));
+        return $this->renderView('@ZikulaPagesModule/Block/pagesListDisplay.html.twig', ['pages' => $pageArray]);
     }
 
     public function getFormClassName()
