@@ -16,7 +16,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Class PagesListBlockType
- * @package Zikula\PagesModule\Block\Form\Type
  */
 class PagesListBlockType extends AbstractType
 {

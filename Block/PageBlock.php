@@ -16,7 +16,6 @@ use Zikula\PagesModule\Manager\PageCollectionManager;
 
 /**
  * Class PageBlock
- * @package Zikula\PagesModule\Block
  */
 class PageBlock extends AbstractBlockHandler
 {
@@ -48,7 +47,7 @@ class PageBlock extends AbstractBlockHandler
             return;
         }
 
-        return $this->renderView('@ZikulaPagesModule/Block/pageBlockDisplay.html.twig', array('content' => $page->getContent()));
+        return $this->renderView('@ZikulaPagesModule/Block/pageBlockDisplay.html.twig', ['content' => $page->getContent()]);
     }
 
     public function getFormClassName()

@@ -25,10 +25,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class PagesModuleInstaller extends AbstractExtensionInstaller
 {
-    private $entities = array(
+    private $entities = [
         'Zikula\PagesModule\Entity\PageEntity',
         'Zikula\PagesModule\Entity\CategoryAssignmentEntity'
-    );
+    ];
 
     /**
      * initialise the module
@@ -55,7 +55,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             $this->addFlash('error', $this->__f('Did not create default categories (%s).', $e->getMessage()));
         }
         // set up config variables
-        $modvars = array(
+        $modvars = [
             'itemsperpage' => 25,
             'enablecategorization' => true,
             'addcategorytitletopermalink' => true,
@@ -66,7 +66,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             'def_displayupdated' => true,
             'def_displaytextinfo' => true,
             'def_displayprint' => true
-        );
+        ];
         $this->setVars($modvars);
         $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
         $this->createIntroPage();
@@ -98,7 +98,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             case '2.5.1':
                 // create categories table
                 try {
-                    $this->schemaTool->create(array('Zikula\PagesModule\Entity\CategoryAssignmentEntity'));
+                    $this->schemaTool->create(['Zikula\PagesModule\Entity\CategoryAssignmentEntity']);
                 } catch (\Exception $e) {
                     $this->addFlash('error', $e->getMessage());
 
@@ -106,7 +106,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
                 }
                 // move relations from categories_mapobj to pages_category
                 // then delete old data
-                $sqls = array();
+                $sqls = [];
                 $sqls[] = 'INSERT INTO pages_category (entityId, registryId, categoryId) SELECT obj_id, reg_id, category_id FROM categories_mapobj WHERE modname = \'Pages\' AND tablename = \'pages\'';
                 $sqls[] = 'DELETE FROM categories_mapobj WHERE modname = \'Pages\' AND tablename = \'pages\'';
                 // update category registry data to change tablename to EntityName
@@ -183,8 +183,8 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         // create category
         CategoryUtil::createCategory('/__SYSTEM__/Modules', $this->bundle->getName(), null, $this->__('Pages'), $this->__('Static pages'));
         // create subcategory
-        CategoryUtil::createCategory('/__SYSTEM__/Modules/ZikulaPagesModule', 'Category1', null, $this->__('Category 1'), $this->__('Initial sub-category created on install'), array('color' => '#99ccff'));
-        CategoryUtil::createCategory('/__SYSTEM__/Modules/ZikulaPagesModule', 'Category2', null, $this->__('Category 2'), $this->__('Initial sub-category created on install'), array('color' => '#cceecc'));
+        CategoryUtil::createCategory('/__SYSTEM__/Modules/ZikulaPagesModule', 'Category1', null, $this->__('Category 1'), $this->__('Initial sub-category created on install'), ['color' => '#99ccff']);
+        CategoryUtil::createCategory('/__SYSTEM__/Modules/ZikulaPagesModule', 'Category2', null, $this->__('Category 2'), $this->__('Initial sub-category created on install'), ['color' => '#cceecc']);
         // get the category path to insert Pages categories
         $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule');
         if ($rootcat) {
@@ -212,11 +212,11 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             . 'content items.' . '<br /><br />'
             . 'Pages is a hookable module which allows you to hook EZComments or other hook providers to extend the '
             . 'capabilities of your module.';
-        $data = array(
+        $data = [
             'title' => $this->__('Welcome to Pages content manager'),
             'urltitle' => $this->__('welcome-to-pages-content-manager'),
             'content' => $content,
-            'language' => ZLanguage::getLanguageCode());
+            'language' => ZLanguage::getLanguageCode()];
         $page = new PageEntity();
         $page->merge($data);
         $this->entityManager->persist($page);

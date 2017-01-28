@@ -33,7 +33,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
  * @Route("/admin")
  *
  * Class AdminFormController
- * @package Zikula\PagesModule\Controller
  */
 class AdminFormController extends AbstractController implements AdminAuthInterface
 {
@@ -76,9 +75,9 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 
         $request->attributes->set('_legacy', true); // forces template to render inside old theme
 
-        return $this->render('ZikulaPagesModule:Admin:modify.html.twig', array(
+        return $this->render('ZikulaPagesModule:Admin:modify.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -90,22 +89,22 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
     public function configAction(Request $request)
     {
         $form = $this->createFormBuilder($this->getVars())
-            ->add('enablecategorization', 'checkbox', array('label' => __('Enable categorization'),
-                'required' => false))
-            ->add('itemsperpage', 'number', array('label' => __('Items per page'),
-                'constraints' => array(
-                    new Assert\GreaterThan(array('value' => 0)),
-                )))
-            ->add('def_displaywrapper', 'checkbox', array('label' => __('Display additional information'), 'required' => false))
-            ->add('def_displaytitle', 'checkbox', array('label' => __('Display page title'), 'required' => false))
-            ->add('def_displaycreated', 'checkbox', array('label' => __('Display page creation date'), 'required' => false))
-            ->add('def_displayupdated', 'checkbox', array('label' => __('Display page update date'), 'required' => false))
-            ->add('def_displaytextinfo', 'checkbox', array('label' => __('Display page text statistics'), 'required' => false))
-            ->add('def_displayprint', 'checkbox', array('label' => __('Display page print link'), 'required' => false))
-            ->add('addcategorytitletopermalink', 'checkbox', array('label' => __('Add category title to permalink'), 'required' => false, 'disabled' => true))
-            ->add('showpermalinkinput', 'checkbox', array('label' => __('Show permalink input field'), 'required' => false, 'disabled' => true))
-            ->add('save', 'submit', array('label' => 'Save'))
-            ->add('cancel', 'submit', array('label' => 'Cancel'))
+            ->add('enablecategorization', 'checkbox', ['label' => __('Enable categorization'),
+                'required' => false])
+            ->add('itemsperpage', 'number', ['label' => __('Items per page'),
+                'constraints' => [
+                    new Assert\GreaterThan(['value' => 0]),
+                ]])
+            ->add('def_displaywrapper', 'checkbox', ['label' => __('Display additional information'), 'required' => false])
+            ->add('def_displaytitle', 'checkbox', ['label' => __('Display page title'), 'required' => false])
+            ->add('def_displaycreated', 'checkbox', ['label' => __('Display page creation date'), 'required' => false])
+            ->add('def_displayupdated', 'checkbox', ['label' => __('Display page update date'), 'required' => false])
+            ->add('def_displaytextinfo', 'checkbox', ['label' => __('Display page text statistics'), 'required' => false])
+            ->add('def_displayprint', 'checkbox', ['label' => __('Display page print link'), 'required' => false])
+            ->add('addcategorytitletopermalink', 'checkbox', ['label' => __('Add category title to permalink'), 'required' => false, 'disabled' => true])
+            ->add('showpermalinkinput', 'checkbox', ['label' => __('Show permalink input field'), 'required' => false, 'disabled' => true])
+            ->add('save', 'submit', ['label' => 'Save'])
+            ->add('cancel', 'submit', ['label' => 'Cancel'])
             ->getForm();
 
         $form->handleRequest($request);
@@ -124,9 +123,9 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 
         $request->attributes->set('_legacy', true); // forces template to render inside old theme
 
-        return $this->render('ZikulaPagesModule:Admin:config.html.twig', array(
+        return $this->render('ZikulaPagesModule:Admin:config.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -139,8 +138,8 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
     public function deleteAction(Request $request, PageEntity $page)
     {
         $form = $this->createFormBuilder()
-            ->add('Delete', 'submit', array('label' => 'Delete'))
-            ->add('cancel', 'submit', array('label' => 'Cancel'))
+            ->add('Delete', 'submit', ['label' => 'Delete'])
+            ->add('cancel', 'submit', ['label' => 'Cancel'])
             ->getForm();
 
         $form->handleRequest($request);
@@ -176,10 +175,10 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 
         $request->attributes->set('_legacy', true); // forces template to render inside old theme
 
-        return $this->render('ZikulaPagesModule:Admin:delete.html.twig', array(
+        return $this->render('ZikulaPagesModule:Admin:delete.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**

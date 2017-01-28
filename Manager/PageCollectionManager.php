@@ -119,7 +119,7 @@ class PageCollectionManager
             $this->setLanguage($filterData['language']);
         }
         if (isset($filterData['categoryAssignments']) && ($filterData['categoryAssignments'] instanceof ArrayCollection) && !$filterData['categoryAssignments']->isEmpty()) {
-            $categoryIds = array();
+            $categoryIds = [];
             foreach ($filterData['categoryAssignments'] as $pagesCategoryEntity) {
                 $categoryIds[] = $pagesCategoryEntity->getCategory()->getId();
             }
@@ -166,6 +166,6 @@ class PageCollectionManager
      */
     public function getPager()
     {
-        return array('itemsperpage' => $this->itemsPerPage, 'numitems' => $this->numberOfItems);
+        return ['itemsperpage' => $this->itemsPerPage, 'numitems' => $this->numberOfItems];
     }
 }

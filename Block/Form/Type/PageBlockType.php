@@ -17,7 +17,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PageBlockType
- * @package Zikula\PagesModule\Block\Form\Type
  */
 class PageBlockType extends AbstractType
 {
