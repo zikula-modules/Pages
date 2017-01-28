@@ -61,7 +61,7 @@ class SearchHelper extends AbstractSearchable
 
             $pagePermissionCheck = $this->hasPermission($this->name . '::', $page->getTitle() . '::' . $page->getPageid(), ACCESS_OVERVIEW);
             if ($enableCategorization) {
-                $pagePermissionCheck = $pagePermissionCheck && \CategoryUtil::hasCategoryAccess($page->getCategories(), $this->name);
+                $pagePermissionCheck = $pagePermissionCheck && \CategoryUtil::hasCategoryAccess($page->getCategoryAssignments()->getValues(), $this->name);
             }
             if (!$pagePermissionCheck) {
                 continue;
