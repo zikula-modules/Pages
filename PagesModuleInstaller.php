@@ -52,7 +52,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         try {
             $this->createCategoryTree();
         } catch (\Exception $e) {
-            $this->addFlash('error', $this->__f('Did not create default categories (%s).', $e->getMessage()));
+            $this->addFlash('error', $this->__f('Did not create default categories (%s).', ['%s' => $e->getMessage()]));
         }
         // set up config variables
         $modvars = [
