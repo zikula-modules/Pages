@@ -11,8 +11,6 @@
 
 namespace Zikula\PagesModule;
 
-use CategoryRegistryUtil;
-use CategoryUtil;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
@@ -20,8 +18,6 @@ use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\PagesModule\Entity\CategoryAssignmentEntity;
 use Zikula\PagesModule\Entity\PageEntity;
-use ZLanguage;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Provides module installation and upgrade services.
