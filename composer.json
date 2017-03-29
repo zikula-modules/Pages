@@ -21,7 +21,7 @@
   },
   "extra": {
     "zikula": {
-      "core-compatibility": ">=1.4.2",
+      "core-compatibility": ">=1.4.6",
       "class": "Zikula\\PagesModule\\ZikulaPagesModule",
       "displayname": "Pages",
       "url": "pages",
