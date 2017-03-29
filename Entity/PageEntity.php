@@ -32,6 +32,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $pageid;
+
     /**
      * title
      *
@@ -39,18 +40,21 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * @Assert\NotBlank()
      */
     private $title = '';
+
     /**
      * metadescription
      *
      * @ORM\Column(type="text")
      */
     private $metadescription = '';
+
     /**
      * metakeywords
      *
      * @ORM\Column(type="text")
      */
     private $metakeywords = '';
+
     /**
      * urltitle
      *
@@ -58,6 +62,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * @Gedmo\Slug(fields={"title"})
      */
     private $urltitle = '';
+
     /**
      * content
      *
@@ -65,54 +70,63 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * @Assert\NotBlank()
      */
     private $content = '';
+
     /**
      * counter
      *
      * @ORM\Column(type="integer")
      */
     private $counter = 0;
+
     /**
      * displaywrapper
      *
      * @ORM\Column(type="boolean")
      */
     private $displaywrapper = true;
+
     /**
      * displaytitle
      *
      * @ORM\Column(type="boolean")
      */
     private $displaytitle = true;
+
     /**
      * displaycreated
      *
      * @ORM\Column(type="boolean")
      */
     private $displaycreated = true;
+
     /**
      * displayupdated
      *
      * @ORM\Column(type="boolean")
      */
     private $displayupdated = true;
+
     /**
      * displaytextinfo
      *
      * @ORM\Column(type="boolean")
      */
     private $displaytextinfo = true;
+
     /**
      * displayprint
      *
      * @ORM\Column(type="boolean")
      */
     private $displayprint = true;
+
     /**
      * language
      *
      * @ORM\Column(type="string", length=30)
      */
     private $language = '';
+
     /**
      * cr_uid
      *
@@ -121,6 +135,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
      */
     private $creator;
+
     /**
      * cr_date
      *
@@ -129,15 +144,17 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * @Gedmo\Timestampable(on="create")
      */
     private $cr_date;
+
     /**
      * lu_uid
      *
      * @Gedmo\Blameable(on="create")
      * @Gedmo\Blameable(on="change", field={"title", "metadescription", "metakeywords", "content"})
-     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
      */
     private $updater;
+
     /**
      * lu_date
      *
@@ -147,6 +164,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      * @Gedmo\Timestampable(on="change", field={"title", "metadescription", "metakeywords", "content"})
      */
     private $lu_date;
+
     /**
      * categories
      *
@@ -155,6 +173,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
      *                orphanRemoval=true, fetch="EAGER")
      */
     private $categoryAssignments;
+
     /**
      * obj_status
      *
@@ -168,7 +187,12 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     public function __construct()
     {
         $this->categoryAssignments = new ArrayCollection();
-        $modVars = \ModUtil::getVar('ZikulaPagesModule');
+        $this->cr_date = new \DateTime();
+        $this->lu_date = new \DateTime();
+    }
+
+    public function setDefaultsFromModVars(array $modVars)
+    {
         $this->displaywrapper = isset($modVars['def_displaywrapper']) ? $modVars['def_displaywrapper'] : true;
         $this->displaytitle = isset($modVars['def_displaytitle']) ? $modVars['def_displaytitle'] : true;
         $this->displaycreated = isset($modVars['def_displaycreated']) ? $modVars['def_displaycreated'] : true;

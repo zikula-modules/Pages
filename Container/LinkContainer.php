@@ -12,24 +12,32 @@
 namespace Zikula\PagesModule\Container;
 
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Common\Translator\Translator;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 
 class LinkContainer implements LinkContainerInterface
 {
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     private $translator;
+
     /**
      * @var RouterInterface
      */
     private $router;
+
+    /**
+     * @var PermissionApi
+     */
     private $permissionApi;
 
-    public function __construct($translator, RouterInterface $router, PermissionApi $permissionApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        PermissionApi $permissionApi
+    ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;

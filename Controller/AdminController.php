@@ -11,13 +11,11 @@
 
 namespace Zikula\PagesModule\Controller;
 
-use CategoryRegistryUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\PagesModule\Manager\PageCollectionManager;
-use ZLanguage;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Component\SortableColumns\Column;
@@ -49,9 +47,9 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $currentSortDirection = $request->query->get('sdir', Column::DIRECTION_DESCENDING);
 
         $filterForm = $this->createForm('Zikula\PagesModule\Form\Type\FilterType', [], [
+            'translator' => $this->getTranslator(),
             'action' => $this->generateUrl('zikulapagesmodule_admin_index'),
             'method' => 'GET',
-            'entityCategoryRegistries' => CategoryRegistryUtil::getRegisteredModuleCategories($this->name, 'PageEntity', 'id'),
         ]);
         $filterForm->handleRequest($request);
         $filterData = $filterForm->isSubmitted() ? $filterForm->getData() : $request->query->all();
@@ -74,7 +72,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $templateParameters['filter_active'] = !empty($filterData['categories']) || !empty($filterData['language']);
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['pages'] = $pages->get();
-        $templateParameters['lang'] = ZLanguage::getLanguageCode();
+        $templateParameters['lang'] = $request->getLocale();
         $templateParameters['pager'] = $pages->getPager();
         $templateParameters['modvars']['ZikulaPagesModule'] = $this->getVars(); // temporary solution
         $templateParameters['modvars']['ZConfig'] = $this->get('zikula_extensions_module.api.variable')->getAll('ZConfig'); // temporary solution
@@ -104,7 +102,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
         }
         $this->container->get('doctrine.entitymanager')->flush();
 
-        $this->addFlash('status', __('Permalinks have been reset.'));
+        $this->addFlash('status', $this->__('Permalinks have been reset.'));
 
         $referer = $request->headers->get('referer');
         $url = strpos($referer, 'purge') ? $this->get('router')->generate('zikulapagesmodule_admin_index') : $referer;

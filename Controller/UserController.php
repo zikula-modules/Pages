@@ -11,7 +11,6 @@
 
 namespace Zikula\PagesModule\Controller;
 
-use CategoryUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,9 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Manager\PageCollectionManager;
-use ZLanguage;
 use Zikula\Core\Controller\AbstractController;
 
 /**
@@ -96,28 +95,26 @@ class UserController extends AbstractController
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
+        $registries = $this->get('zikula_categories_module.category_registry_repository')->findBy([
+            'modname' => $this->getName(),
+            'entityname' => 'PageEntity'
+        ]);
 
-        // get the registered categories
-        list($properties, $propertiesdata) = $this->getCategories();
-
-        $request->attributes->set('_legacy', true); // forces template to render inside old theme
-
-        return $this->render('ZikulaPagesModule:User:main.html.twig', ['properties' => $properties, 'propertiesdata' => $propertiesdata, 'lang' => \ZLanguage::getLanguageCode()]);
+        return $this->render('ZikulaPagesModule:User:main.html.twig', ['registries' => $registries]);
     }
 
     /**
-     * @Route("/view/{prop}/{cat}/{startnum}", requirements={"startnum" = "^[1-9]\d*$", "cat" = "^[1-9]\d*$"})
+     * @Route("/view/{cat}/{startnum}", requirements={"startnum" = "^[1-9]\d*$", "cat" = "^[1-9]\d*$"})
      *
      * view page list
      *
      * @param Request $request
      *
-     * @param null $prop
-     * @param null $cat
+     * @param CategoryEntity $category
      * @param int $startnum
      * @return Response
      */
-    public function viewAction(Request $request, $prop = null, $cat = null, $startnum = 1)
+    public function viewAction(Request $request, CategoryEntity $category = null, $startnum = 1)
     {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
@@ -129,17 +126,16 @@ class UserController extends AbstractController
         $pages->setStartNumber($startnum);
         $pages->setItemsPerPage($this->getVar('itemsperpage'));
         $pages->setOrder('title', 'ASC');
-        $pages->setCategory($cat);
+        $pages->setCategory($category);
         $pages->enablePager();
 
         $templateParameters = [
             'startnum' => $startnum,
-            'category' => CategoryUtil::getCategoryByID($cat),
-            'lang' => \ZLanguage::getLanguageCode(),
+            'category' => $category,
+            'lang' => $request->getLocale(),
             'pages' => $pages->get(),
             'pager' => $pages->getPager()
         ];
-        $request->attributes->set('_legacy', true); // forces template to render inside old theme
 
         return $this->render('ZikulaPagesModule:User:view.html.twig', $templateParameters);
     }
@@ -172,7 +168,7 @@ class UserController extends AbstractController
         $allPages = explode('<!--pagebreak-->', $page->getContent());
         // validates that the requested page exists
         if (!isset($allPages[$pagenum - 1])) {
-            throw new NotFoundHttpException(__('No such page found.'));
+            throw new NotFoundHttpException($this->__('No such page found.'));
         }
         // Set the item content to be the required page
         // arrays are zero-based
@@ -182,11 +178,9 @@ class UserController extends AbstractController
         $templateParameters = [];
         $templateParameters['displayeditlink'] = ($accessLevel >= ACCESS_EDIT);
         $templateParameters['page'] = $page;
-        $templateParameters['lang'] = ZLanguage::getLanguageCode();
+        $templateParameters['lang'] = $request->getLocale();
         $templateParameters['modvars']['ZikulaPagesModule'] = $this->getVars(); // @todo temporary solution
         $templateParameters['pager'] = ['numitems' => $numitems, 'itemsperpage' => 1];
-
-        $request->attributes->set('_legacy', true); // forces template to render inside old theme
 
         return $this->render($templateName, $templateParameters);
     }
@@ -211,62 +205,5 @@ class UserController extends AbstractController
         }
 
         return $accessLevel;
-    }
-
-    /**
-     * Get the categories registered for the Pages
-     *
-     * @return array
-     */
-    private function getCategories()
-    {
-        $categoryRegistry = \CategoryRegistryUtil::getRegisteredModuleCategories('ZikulaPagesModule', 'PageEntity');
-        $properties = array_keys($categoryRegistry);
-        $propertiesdata = [];
-        foreach ($properties as $property) {
-            $rootcat = CategoryUtil::getCategoryByID($categoryRegistry[$property]);
-            if (!empty($rootcat)) {
-                $rootcat['path'] .= '/';
-                // add this to make the relative paths of the subcategories with ease - mateo
-                $subcategories = CategoryUtil::getCategoriesByParentID($rootcat['id']);
-                foreach ($subcategories as $k => $category) {
-                    $subcategories[$k]['count'] = $this->countItems(['category' => $category['id'], 'property' => $property]);
-                }
-                $propertiesdata[] = ['name' => $property, 'rootcat' => $rootcat, 'subcategories' => $subcategories];
-            }
-        }
-
-        return [$properties, $propertiesdata];
-    }
-
-    /**
-     * utility function to count the number of items held by this module
-     *
-     * @param array $args Arguments
-     *
-     * @return integer number of items held by this module
-     */
-    private function countItems($args)
-    {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $this->get('doctrine.entitymanager');
-
-        if (isset($args['category']) && !empty($args['category'])) {
-            if (is_array($args['category'])) {
-                $args['category'] = $args['category']['Main'][0];
-            }
-            $qb = $em->createQueryBuilder();
-            $qb->select('count(p)')
-                ->from('Zikula\PagesModule\Entity\PageEntity', 'p')
-                ->join('p.categoryAssignments', 'c')
-                ->where('c.category = :categories')
-                ->setParameter('categories', $args['category']);
-
-            return $qb->getQuery()->getSingleScalarResult();
-        }
-        $qb = $em->createQueryBuilder();
-        $qb->select('count(p)')->from('Zikula\PagesModule\Entity\PageEntity', 'p');
-
-        return $qb->getQuery()->getSingleScalarResult();
     }
 }

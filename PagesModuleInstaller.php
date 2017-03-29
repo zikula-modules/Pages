@@ -14,6 +14,9 @@ namespace Zikula\PagesModule;
 use CategoryRegistryUtil;
 use CategoryUtil;
 use Doctrine\Common\Collections\ArrayCollection;
+use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\PagesModule\Entity\CategoryAssignmentEntity;
 use Zikula\PagesModule\Entity\PageEntity;
@@ -92,7 +95,7 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
 
             return false;
         }
-        $connection = $this->container->get('doctrine.entitymanager')->getConnection();
+        $connection = $this->entityManager->getConnection();
 
         switch ($oldversion) {
             case '2.5.1':
@@ -143,7 +146,8 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
                 }
             case '3.0.0':
             case '3.0.1':
-            case '3.1.0': // current version
+            case '3.1.0':
+            case '3.2.0': // current version
         }
         // Update successful
         return true;
@@ -164,7 +168,11 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         // Delete any module variables
         $this->delVars();
         // Delete entries from category registry
-        CategoryRegistryUtil::deleteEntry($this->bundle->getName());
+        $registries = $this->container->get('zikula_categories_module.category_registry_repository')->findBy(['modname' => $this->bundle->getName()]);
+        foreach ($registries as $registry) {
+            $this->entityManager->remove($registry);
+        }
+        $this->entityManager->flush();
         $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
         // Deletion successful
         return true;
@@ -180,21 +188,58 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
      */
     private function createCategoryTree()
     {
-        // create category
-        CategoryUtil::createCategory('/__SYSTEM__/Modules', $this->bundle->getName(), null, $this->__('Pages'), $this->__('Static pages'));
-        // create subcategory
-        CategoryUtil::createCategory('/__SYSTEM__/Modules/ZikulaPagesModule', 'Category1', null, $this->__('Category 1'), $this->__('Initial sub-category created on install'), ['color' => '#99ccff']);
-        CategoryUtil::createCategory('/__SYSTEM__/Modules/ZikulaPagesModule', 'Category2', null, $this->__('Category 2'), $this->__('Initial sub-category created on install'), ['color' => '#cceecc']);
-        // get the category path to insert Pages categories
-        $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule');
-        if ($rootcat) {
-            // create an entry in the categories registry to the Main property
-            if (!CategoryRegistryUtil::insertEntry($this->bundle->getName(), 'PageEntity', 'Main', $rootcat['id'])) {
-                throw new \Exception('Cannot insert Category Registry entry.');
-            }
-        } else {
-            throw new NotFoundHttpException('Root category not found.');
-        }
+        $locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+        $repo = $this->container->get('zikula_categories_module.category_repository');
+        // create pages root category
+        $parent = $repo->findOneBy(['name' => 'Modules']);
+        $pagesRoot = new CategoryEntity();
+        $pagesRoot->setParent($parent);
+        $pagesRoot->setName($this->bundle->getName());
+        $pagesRoot->setDisplay_name([
+            $locale => $this->__('Pages', $this->bundle->getTranslationDomain(), $locale)
+        ]);
+        $pagesRoot->setDisplay_desc([
+            $locale => $this->__('Static Pages', $this->bundle->getTranslationDomain(), $locale)
+        ]);
+        $this->entityManager->persist($pagesRoot);
+        // create children
+        $category1 = new CategoryEntity();
+        $category1->setParent($pagesRoot);
+        $category1->setName('Category1');
+        $category1->setDisplay_name([
+            $locale => $this->__('Category 1', $this->bundle->getTranslationDomain(), $locale)
+        ]);
+        $category1->setDisplay_desc([
+            $locale => $this->__('Initial sub-category created on install', $this->bundle->getTranslationDomain(), $locale)
+        ]);
+        $attribute = new CategoryAttributeEntity();
+        $attribute->setAttribute('color', '#99ccff');
+        $category1->addAttribute($attribute);
+        $this->entityManager->persist($category1);
+
+        $category2 = new CategoryEntity();
+        $category2->setParent($pagesRoot);
+        $category2->setName('Category2');
+        $category2->setDisplay_name([
+            $locale => $this->__('Category 2', $this->bundle->getTranslationDomain(), $locale)
+        ]);
+        $category2->setDisplay_desc([
+            $locale => $this->__('Initial sub-category created on install', $this->bundle->getTranslationDomain(), $locale)
+        ]);
+        $attribute = new CategoryAttributeEntity();
+        $attribute->setAttribute('color', '#cceecc');
+        $category2->addAttribute($attribute);
+        $this->entityManager->persist($category2);
+
+        // create Registry
+        $registry = new CategoryRegistryEntity();
+        $registry->setCategory($pagesRoot);
+        $registry->setEntityname('PageEntity');
+        $registry->setModname($this->bundle->getName());
+        $registry->setProperty('Main');
+        $this->entityManager->persist($registry);
+
+        $this->entityManager->flush();
 
         return true;
     }
@@ -206,6 +251,9 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
      */
     private function createIntroPage()
     {
+        $locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+        $repo = $this->container->get('zikula_categories_module.category_repository');
+
         $content = 'This is a demonstration page. You can use Pages to create simple static content pages. It is excellent '
             . 'if you only need basic html for your pages. You can also utilize the Scribite module for WYSIWYG '
             . 'content creation. It is well suited for informational articles, documents and other "long term" type '
@@ -216,14 +264,22 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             'title' => $this->__('Welcome to Pages content manager'),
             'urltitle' => $this->__('welcome-to-pages-content-manager'),
             'content' => $content,
-            'language' => ZLanguage::getLanguageCode()];
+            'language' => $locale];
         $page = new PageEntity();
+        $page->setDefaultsFromModVars($this->getVars());
         $page->merge($data);
+        $currentUserId = $this->container->get('zikula_users_module.current_user')->get('uid');
+        $currentUser = $this->container->get('zikula_users_module.user_repository')->find($currentUserId);
+        $page->setCreator($currentUser);
+        $page->setUpdater($currentUser);
         $this->entityManager->persist($page);
-        $category = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ZikulaPagesModule/Category1');
-        $catEntity = $this->entityManager->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', $category['id']);
-        $categoryRegistry = CategoryRegistryUtil::getRegisteredModuleCategoriesIds('ZikulaPagesModule', 'PageEntity');
-        $categoryAssociation = new CategoryAssignmentEntity($categoryRegistry['Main'], $catEntity, $page);
+        $category = $repo->findOneBy(['name' => 'Category1']);
+        $categoryRegistry = $this->container->get('zikula_categories_module.category_registry_repository')->findOneBy([
+            'modname' => $this->bundle->getName(),
+            'entityname' => 'PageEntity',
+            'property' => 'Main'
+        ]);
+        $categoryAssociation = new CategoryAssignmentEntity($categoryRegistry->getId(), $category, $page);
         $arrayCollection = new ArrayCollection([$categoryAssociation]);
         $page->setCategoryAssignments($arrayCollection);
         $this->entityManager->flush();

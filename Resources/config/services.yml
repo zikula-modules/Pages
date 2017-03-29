@@ -1,0 +1,27 @@
+services:
+
+    app.tokens.action_listener:
+        class: Zikula\PagesModule\Listener\AdminAuthListener
+        arguments: ['@zikula_permissions_module.api.permission']
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+    zikula_pages_module.link_container:
+        class: Zikula\PagesModule\Container\LinkContainer
+        arguments:
+          - "@translator.default"
+          - "@router"
+          - "@zikula_permissions_module.api.permission"
+        tags:
+          - { name: zikula.link_container }
+
+    zikula_pages_module.helper.search_helper:
+        class: Zikula\PagesModule\Helper\SearchHelper
+        arguments:
+          - '@zikula_permissions_module.api.permission'
+          - '@zikula_extensions_module.api.variable'
+          - '@doctrine.orm.entity_manager'
+          - '@zikula_categories_module.api.category_permission'
+          - '@session'
+        tags:
+            - { name: zikula.searchable_module, bundleName: ZikulaPagesModule}

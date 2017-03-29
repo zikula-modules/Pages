@@ -11,82 +11,127 @@
 
 namespace Zikula\PagesModule\Helper;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Zikula\CategoriesModule\Api\CategoryPermissionApi;
 use Zikula\Core\RouteUrl;
-use Zikula\SearchModule\AbstractSearchable;
+use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\SearchModule\Entity\SearchResultEntity;
+use Zikula\SearchModule\SearchableInterface;
 
-class SearchHelper extends AbstractSearchable
+class SearchHelper implements SearchableInterface
 {
     /**
-     * get the UI options for search form
-     *
-     * @param boolean $active if the module should be checked as active
-     * @param array|null $modVars module form vars as previously set
-     * @return string
+     * @var PermissionApiInterface
      */
-    public function getOptions($active, $modVars = null)
-    {
-        if ($this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
-            return $this->getContainer()->get('templating')->renderResponse('ZikulaPagesModule:Search:options.html.twig', ['active' => $active])->getContent();
-        }
+    private $permissionApi;
 
-        return '';
+    /**
+     * @var VariableApi
+     */
+    private $variableApi;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @var CategoryPermissionApi
+     */
+    private $categoryPermissionApi;
+
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * SearchHelper constructor.
+     * @param PermissionApiInterface $permissionApi
+     * @param VariableApi $variableApi
+     * @param EntityManagerInterface $entityManager
+     * @param CategoryPermissionApi $categoryPermissionApi
+     * @param SessionInterface $session
+     */
+    public function __construct(
+        PermissionApiInterface $permissionApi,
+        VariableApi $variableApi,
+        EntityManagerInterface $entityManager,
+        CategoryPermissionApi $categoryPermissionApi,
+        SessionInterface $session
+    ) {
+        $this->permissionApi = $permissionApi;
+        $this->variableApi = $variableApi;
+        $this->entityManager = $entityManager;
+        $this->categoryPermissionApi = $categoryPermissionApi;
+        $this->session = $session;
     }
 
     /**
-     * Get the search results
-     *
-     * @param array $words array of words to search for
-     * @param string $searchType AND|OR|EXACT
-     * @param array|null $modVars module form vars passed though
-     * @return array
+     * {@inheritdoc}
+     */
+    public function amendForm(FormBuilderInterface $form)
+    {
+        // not needed because `active` child object is already added and that is all that is needed.
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getResults(array $words, $searchType = 'AND', $modVars = null)
     {
-        if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
+        if (!$this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_READ)) {
             return [];
         }
-
+        $method = ($searchType == 'OR') ? 'orX' : 'andX';
         $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('p')->from('Zikula\PagesModule\Entity\PageEntity', 'p');
-        $whereExpr = $this->formatWhere($qb, $words, ['p.title', 'p.content'], $searchType);
-        $qb->andWhere($whereExpr);
+        $qb->select('p')
+            ->from('Zikula\PagesModule\Entity\PageEntity', 'p');
+        /** @var $where \Doctrine\ORM\Query\Expr\Composite */
+        $where = $qb->expr()->$method();
+        $i = 1;
+        foreach ($words as $word) {
+            $subWhere = $qb->expr()->orX();
+            foreach (['p.title', 'p.content'] as $field) {
+                $expr = $qb->expr()->like($field, "?$i");
+                $subWhere->add($expr);
+                $qb->setParameter($i, '%' . $word . '%');
+                $i++;
+            }
+            $where->add($subWhere);
+        }
+        $qb->andWhere($where);
         $pages = $qb->getQuery()->getResult();
 
-        $sessionId = session_id();
-        $enableCategorization = $this->getVar('enablecategorization');
-
-        $records = [];
+        $results = [];
+        /** @var $pages \Zikula\PagesModule\Entity\PageEntity[] */
         foreach ($pages as $page) {
-            /** @var $page \Zikula\PagesModule\Entity\PageEntity */
-
-            $pagePermissionCheck = $this->hasPermission($this->name . '::', $page->getTitle() . '::' . $page->getPageid(), ACCESS_OVERVIEW);
-            if ($enableCategorization) {
-                $pagePermissionCheck = $pagePermissionCheck && \CategoryUtil::hasCategoryAccess($page->getCategoryAssignments()->getValues(), $this->name);
+            $pagePermissionCheck = $this->permissionApi->hasPermission('ZikulaPagesModule::', $page->getTitle() . '::' . $page->getPageid(), ACCESS_OVERVIEW);
+            if ($this->variableApi->get('ZikulaPagesModule', 'enablecategorization')) {
+                // @todo I'm not certain this API is working as I would expect
+                $pagePermissionCheck = $pagePermissionCheck && $this->categoryPermissionApi->hasCategoryAccess($page->getCategoryAssignments()->getValues());
             }
             if (!$pagePermissionCheck) {
                 continue;
             }
-
-            $records[] = [
-                'title' => $page->getTitle(),
-                'text' => $page->getContent(),
-                'created' => $page->getCr_date(),
-                'module' => $this->name,
-                'sesid' => $sessionId,
-                'url' => RouteUrl::createFromRoute('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()])
-            ];
+            $result = new SearchResultEntity();
+            $result->setTitle($page->getTitle())
+                ->setText($page->getContent())
+                ->setModule('ZikulaPagesModule')
+                ->setCreated($page->getCr_date())
+                ->setUrl(RouteUrl::createFromRoute('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()]))
+                ->setSesid($this->session->getId());
+            $results[] = $result;
         }
 
-        return $records;
+        return $results;
     }
 
-    private function hasPermission($component = null, $instance = null, $level = null, $user = null)
+    public function getErrors()
     {
-        return $this->getContainer()->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, $level, $user);
-    }
-
-    private function getVar($varName)
-    {
-        return $this->getContainer()->get('zikula_extensions_module.api.variable')->get($this->name, $varName);
+        return [];
     }
 }

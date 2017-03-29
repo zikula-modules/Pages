@@ -14,6 +14,7 @@ namespace Zikula\PagesModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\IdentityTranslator;
 
 class FilterType extends AbstractType
 {
@@ -28,7 +29,7 @@ class FilterType extends AbstractType
             ])
             ->add('filterButton', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'icon' => 'fa-filter fa-lg',
-                'label' => __('Filter'),
+                'label' => $options['translator']->__('Filter'),
                 'attr' => ['class' => "btn btn-default btn-sm"]
             ])
             ->add('categoryAssignments', 'Zikula\CategoriesModule\Form\Type\CategoriesType', [
@@ -52,8 +53,8 @@ class FilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'translator' => new IdentityTranslator(),
             'csrf_protection' => false,
-            'entityCategoryRegistries' => [],
             'attr' => [
                 'class' => 'form form-inline'
             ],
