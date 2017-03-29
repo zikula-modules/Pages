@@ -17,14 +17,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\CategoriesModule\Api\CategoryPermissionApi;
 use Zikula\Core\RouteUrl;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\SearchableInterface;
 
 class SearchHelper implements SearchableInterface
 {
     /**
-     * @var PermissionApiInterface
+     * @var PermissionApi
      */
     private $permissionApi;
 
@@ -50,14 +50,14 @@ class SearchHelper implements SearchableInterface
 
     /**
      * SearchHelper constructor.
-     * @param PermissionApiInterface $permissionApi
+     * @param PermissionApi $permissionApi
      * @param VariableApi $variableApi
      * @param EntityManagerInterface $entityManager
      * @param CategoryPermissionApi $categoryPermissionApi
      * @param SessionInterface $session
      */
     public function __construct(
-        PermissionApiInterface $permissionApi,
+        PermissionApi $permissionApi,
         VariableApi $variableApi,
         EntityManagerInterface $entityManager,
         CategoryPermissionApi $categoryPermissionApi,
