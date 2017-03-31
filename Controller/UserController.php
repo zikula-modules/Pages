@@ -74,8 +74,6 @@ class UserController extends AbstractController
         $templateParameters['pages'] = $pages->get();
         $templateParameters['pager'] = $pages->getPager();
 
-        $request->attributes->set('_legacy', true); // forces template to render inside old theme
-
         return $this->render('ZikulaPagesModule:User:listpages.html.twig', $templateParameters);
     }
 
