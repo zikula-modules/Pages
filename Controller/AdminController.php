@@ -61,7 +61,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $sortableColumns->setOrderBy($sortableColumns->getColumn($orderBy), $currentSortDirection);
         $sortableColumns->setAdditionalUrlParameters($request->query->all());
 
-        $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
+        $pages = new PageCollectionManager($this->get('doctrine')->getManager());
         $pages->setStartNumber($startnum);
         $pages->setItemsPerPage($this->getVar('itemsperpage'));
         $pages->setOrder($orderBy, $currentSortDirection);
@@ -96,11 +96,11 @@ class AdminController extends AbstractController implements AdminAuthInterface
      */
     public function purgeAction(Request $request)
     {
-        $pages = $this->container->get('doctrine.entitymanager')->getRepository('ZikulaPagesModule:PageEntity')->findAll();
+        $pages = $this->get('doctrine')->getManager()->getRepository('ZikulaPagesModule:PageEntity')->findAll();
         foreach ($pages as $page) {
             $page->setUrltitle(null); // reset the Gedmo/Sluggable field
         }
-        $this->container->get('doctrine.entitymanager')->flush();
+        $this->get('doctrine')->getManager()->flush();
 
         $this->addFlash('status', $this->__('Permalinks have been reset.'));
 

@@ -65,7 +65,7 @@ class UserController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
+        $pages = new PageCollectionManager($this->get('doctrine')->getManager());
         $pages->setStartNumber($startnum);
         $pages->setItemsPerPage($this->getVar('itemsperpage'));
         $pages->setOrder('title', 'ASC');
@@ -120,7 +120,7 @@ class UserController extends AbstractController
         // @TODO the prop category must be converted to the propId and links adjusted throughout
         // then the CollectionManager must also include this parameter in the search
 
-        $pages = new PageCollectionManager($this->container->get('doctrine.entitymanager'));
+        $pages = new PageCollectionManager($this->get('doctrine')->getManager());
         $pages->setStartNumber($startnum);
         $pages->setItemsPerPage($this->getVar('itemsperpage'));
         $pages->setOrder('title', 'ASC');
@@ -156,7 +156,7 @@ class UserController extends AbstractController
         }
 
         $page->incrementCounter();
-        $this->get('doctrine.entitymanager')->flush($page);
+        $this->get('doctrine')->getManager()->flush($page);
 
         // A custom template may exist for this page (based on page id)
         $customTemplateName = 'ZikulaPagesModule:User:display_' . $page->getPageid() . '.html.twig';
