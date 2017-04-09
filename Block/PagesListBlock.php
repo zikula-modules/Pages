@@ -38,7 +38,7 @@ class PagesListBlock extends AbstractBlockHandler
         }
 
         // Call the modules API to get the items
-        $pagesManager = new PageCollectionManager($this->get('doctrine.entitymanager'));
+        $pagesManager = new PageCollectionManager($this->get('doctrine')->getManager());
         $pagesManager->setItemsPerPage($properties['numitems']);
         $pagesManager->setOrder('lu_date', 'DESC');
         $pages = $pagesManager->get();

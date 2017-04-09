@@ -38,7 +38,7 @@ class PageBlock extends AbstractBlockHandler
 
         // get the page
         /** @var \Zikula\PagesModule\Entity\PageEntity $page */
-        $page = $this->get('doctrine.entitymanager')->getRepository('\Zikula\PagesModule\Entity\PageEntity')->find($properties['pid']);
+        $page = $this->get('doctrine')->getRepository('\Zikula\PagesModule\Entity\PageEntity')->find($properties['pid']);
         // check for a valid item
         if (!$page) {
             return;
@@ -62,7 +62,7 @@ class PageBlock extends AbstractBlockHandler
 
     public function getFormOptions()
     {
-        $pages = new PageCollectionManager($this->get('doctrine.entitymanager'));
+        $pages = new PageCollectionManager($this->get('doctrine')->getManager());
         $choices = [];
         foreach ($pages->get() as $page) {
             $choices[$page->getPageid()] = $page->getTitle();
