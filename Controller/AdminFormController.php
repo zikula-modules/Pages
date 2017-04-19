@@ -50,7 +50,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 
         $form = $this->createForm('Zikula\PagesModule\Form\Type\PageType', $page, [
             'translator' => $this->getTranslator(),
-            'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames()
+            'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale())
         ]);
 
         $form->handleRequest($request);
@@ -76,36 +76,6 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
         }
 
         return $this->render('ZikulaPagesModule:Admin:modify.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/config")
-     * @Theme("admin")
-     * @param Request $request
-     * @return RedirectResponse|Response
-     */
-    public function configAction(Request $request)
-    {
-        $form = $this->createForm('Zikula\PagesModule\Form\Type\ConfigType', $this->getVars(), [
-            'translator' => $this->getTranslator()
-        ]);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            if ($form->get('save')->isClicked()) {
-                $this->setVars($form->getData());
-                $this->addFlash('status', $this->__('Done! Module configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
-            }
-
-            return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
-        }
-
-        return $this->render('ZikulaPagesModule:Admin:config.html.twig', [
             'form' => $form->createView(),
         ]);
     }
