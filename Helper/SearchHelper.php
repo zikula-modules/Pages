@@ -14,22 +14,22 @@ namespace Zikula\PagesModule\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zikula\CategoriesModule\Api\CategoryPermissionApi;
+use Zikula\CategoriesModule\Api\ApiInterface\CategoryPermissionApiInterface;
 use Zikula\Core\RouteUrl;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\SearchableInterface;
 
 class SearchHelper implements SearchableInterface
 {
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -39,7 +39,7 @@ class SearchHelper implements SearchableInterface
     private $entityManager;
 
     /**
-     * @var CategoryPermissionApi
+     * @var CategoryPermissionApiInterface
      */
     private $categoryPermissionApi;
 
@@ -50,17 +50,17 @@ class SearchHelper implements SearchableInterface
 
     /**
      * SearchHelper constructor.
-     * @param PermissionApi $permissionApi
-     * @param VariableApi $variableApi
+     * @param PermissionApiInterface $permissionApi
+     * @param VariableApiInterface $variableApi
      * @param EntityManagerInterface $entityManager
-     * @param CategoryPermissionApi $categoryPermissionApi
+     * @param CategoryPermissionApiInterface $categoryPermissionApi
      * @param SessionInterface $session
      */
     public function __construct(
-        PermissionApi $permissionApi,
-        VariableApi $variableApi,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
         EntityManagerInterface $entityManager,
-        CategoryPermissionApi $categoryPermissionApi,
+        CategoryPermissionApiInterface $categoryPermissionApi,
         SessionInterface $session
     ) {
         $this->permissionApi = $permissionApi;
@@ -111,8 +111,7 @@ class SearchHelper implements SearchableInterface
         foreach ($pages as $page) {
             $pagePermissionCheck = $this->permissionApi->hasPermission('ZikulaPagesModule::', $page->getTitle() . '::' . $page->getPageid(), ACCESS_OVERVIEW);
             if ($this->variableApi->get('ZikulaPagesModule', 'enablecategorization')) {
-                // @todo I'm not certain this API is working as I would expect
-                $pagePermissionCheck = $pagePermissionCheck && $this->categoryPermissionApi->hasCategoryAccess($page->getCategoryAssignments()->getValues());
+                $pagePermissionCheck = $pagePermissionCheck && $this->categoryPermissionApi->hasCategoryAccess($page->getCategoryAssignments());
             }
             if (!$pagePermissionCheck) {
                 continue;

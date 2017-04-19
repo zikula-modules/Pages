@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\PagesModule\AdminAuthInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class AdminAuthListener
 {
@@ -23,9 +23,9 @@ class AdminAuthListener
 
     /**
      * AdminAuthListener constructor.
-     * @param PermissionApi $permissionApi
+     * @param PermissionApiInterface $permissionApi
      */
-    public function __construct(PermissionApi $permissionApi)
+    public function __construct(PermissionApiInterface $permissionApi)
     {
         $this->permissionApi = $permissionApi;
     }
