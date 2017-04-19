@@ -82,7 +82,7 @@ class LinkContainer implements LinkContainerInterface
                     'text' => $this->translator->__('Modify Config'),
                     'icon' => 'wrench'];
             }
-        } else if (LinkContainerInterface::TYPE_USER == $type) {
+        } elseif (LinkContainerInterface::TYPE_USER == $type) {
             if ($this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_OVERVIEW)) {
                 $links[] = [
                     'url' => $this->router->generate('zikulapagesmodule_user_listpages'),
