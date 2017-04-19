@@ -1,11 +1,9 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaPagesModule:css/style.css')) }}
 
-{{ pageSetVar('title', page.title) }}
-{{ showflashes() }}
 {% if page.metadescription is not empty %}{{ setMetaTag('description', page.metadescription) }}{% endif %}
 {% if page.metakeywords is not empty %}{{ setMetaTag('keywords', page.metakeywords) }}{% endif %}
 
-{% if page.displaytitle %}<h2>{{ page.title }}</h2>{% endif %}
+{{ moduleHeader('user', page.title, '', true, true, true) }}
 
 {% if page.displaywrapper or page.displaycreated or page.displayupdated %}
 <div class="pages_page_header">

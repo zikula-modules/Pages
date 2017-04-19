@@ -75,7 +75,9 @@ class PageType extends AbstractType
                 'required' => false,
                 'label' =>  $translator->__('Page is active')
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $translator->__('Save')
+            ])
             ->add('categoryAssignments', 'Zikula\CategoriesModule\Form\Type\CategoriesType', [
                 'required' => false,
                 'multiple' => true,

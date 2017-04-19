@@ -16,7 +16,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\CategoriesModule\Api\ApiInterface\CategoryPermissionApiInterface;
 use Zikula\Core\RouteUrl;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\SearchableInterface;
@@ -29,9 +28,9 @@ class SearchHelper implements SearchableInterface
     private $permissionApi;
 
     /**
-     * @var VariableApiInterface
+     * @var bool
      */
-    private $variableApi;
+    private $enableCategorization;
 
     /**
      * @var EntityManagerInterface
@@ -51,23 +50,23 @@ class SearchHelper implements SearchableInterface
     /**
      * SearchHelper constructor.
      * @param PermissionApiInterface $permissionApi
-     * @param VariableApiInterface $variableApi
      * @param EntityManagerInterface $entityManager
      * @param CategoryPermissionApiInterface $categoryPermissionApi
      * @param SessionInterface $session
+     * @param bool $enableCategorization
      */
     public function __construct(
         PermissionApiInterface $permissionApi,
-        VariableApiInterface $variableApi,
         EntityManagerInterface $entityManager,
         CategoryPermissionApiInterface $categoryPermissionApi,
-        SessionInterface $session
+        SessionInterface $session,
+        $enableCategorization
     ) {
         $this->permissionApi = $permissionApi;
-        $this->variableApi = $variableApi;
         $this->entityManager = $entityManager;
         $this->categoryPermissionApi = $categoryPermissionApi;
         $this->session = $session;
+        $this->enableCategorization = $enableCategorization;
     }
 
     /**
@@ -110,7 +109,7 @@ class SearchHelper implements SearchableInterface
         /** @var $pages \Zikula\PagesModule\Entity\PageEntity[] */
         foreach ($pages as $page) {
             $pagePermissionCheck = $this->permissionApi->hasPermission('ZikulaPagesModule::', $page->getTitle() . '::' . $page->getPageid(), ACCESS_OVERVIEW);
-            if ($this->variableApi->get('ZikulaPagesModule', 'enablecategorization')) {
+            if ($this->enableCategorization) {
                 $pagePermissionCheck = $pagePermissionCheck && $this->categoryPermissionApi->hasCategoryAccess($page->getCategoryAssignments());
             }
             if (!$pagePermissionCheck) {

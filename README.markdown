@@ -19,5 +19,8 @@ This version is available for Zikula Core 1.3.x
 Dev Info
 --------
 
-*How to extract pot file*
-`php app/console translation:extract en --bundle=ZikulaPagesModule --output-format=pot --exclude-dir=TaggedObjectMeta`
+*How to extract translation*
+`php app/console translation:extract en --bundle=ZikulaPagesModule --output-format=po`
+
+*How to extract translation with routes*
+`php app/console translation:extract en --bundle=ZikulaPagesModule --output-format=po --enable-extractor=jms_i18n_routing`

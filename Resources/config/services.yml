@@ -12,6 +12,7 @@ services:
           - "@translator.default"
           - "@router"
           - "@zikula_permissions_module.api.permission"
+          - "@=service('zikula_extensions_module.api.variable').get('ZikulaPagesModule', 'enablecategorization', true)"
         tags:
           - { name: zikula.link_container }
 
@@ -19,9 +20,9 @@ services:
         class: Zikula\PagesModule\Helper\SearchHelper
         arguments:
           - '@zikula_permissions_module.api.permission'
-          - '@zikula_extensions_module.api.variable'
           - '@doctrine.orm.entity_manager'
           - '@zikula_categories_module.api.category_permission'
           - '@session'
+          - "@=service('zikula_extensions_module.api.variable').get('ZikulaPagesModule', 'enablecategorization', true)"
         tags:
             - { name: zikula.searchable_module, bundleName: ZikulaPagesModule}

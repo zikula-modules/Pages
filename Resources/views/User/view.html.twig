@@ -1,14 +1,14 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaPagesModule:css/style.css')) }}
-{% set templatetitle = __('Pages list') %}
-{{ pageSetVar('title', templatetitle) }}
-{{ showflashes() }}
 
-<h2>{{ __f('Category: %s', { '%s': category.display_name[lang] } ) }}</h2>
-<p>{{ __('Pages published under this category:') }}</p>
+{{ moduleHeader('user', __('Pages list'), '', true, true, true) }}
+
+<h4>{{ __f('Pages published under category: %s', { '%s': category.display_name[lang] } ) }}</h4>
 <ul>
     {% for page in pages if hasPermission('ZikulaPagesModule::Page', page.title ~ '::' ~ page.pageid, 'ACCESS_READ') %}
         <li><a href="{{ path('zikulapagesmodule_user_display', {urltitle: page.urltitle}) }}">{{ page.title }}</a></li>
+    {% else %}
+        <li>{{ __('No pages found in this category!') }}</li>
     {% endfor %}
 </ul>
 
-{{ pager({show:'page', rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_user_view'}) }}
+{{ pager({show:'page', rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_user_viewcategory'}) }}

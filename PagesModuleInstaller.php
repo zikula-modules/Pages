@@ -192,10 +192,10 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         $pagesRoot->setParent($parent);
         $pagesRoot->setName($this->bundle->getName());
         $pagesRoot->setDisplay_name([
-            $locale => $this->__('Pages', $this->bundle->getTranslationDomain(), $locale)
+            $locale => $this->__('Pages', 'zikulapagesmodule', $locale)
         ]);
         $pagesRoot->setDisplay_desc([
-            $locale => $this->__('Static Pages', $this->bundle->getTranslationDomain(), $locale)
+            $locale => $this->__('Static Pages', 'zikulapagesmodule', $locale)
         ]);
         $this->entityManager->persist($pagesRoot);
         // create children
@@ -203,10 +203,10 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         $category1->setParent($pagesRoot);
         $category1->setName('Category1');
         $category1->setDisplay_name([
-            $locale => $this->__('Category 1', $this->bundle->getTranslationDomain(), $locale)
+            $locale => $this->__('Category 1', 'zikulapagesmodule', $locale)
         ]);
         $category1->setDisplay_desc([
-            $locale => $this->__('Initial sub-category created on install', $this->bundle->getTranslationDomain(), $locale)
+            $locale => $this->__('Initial sub-category created on install', 'zikulapagesmodule', $locale)
         ]);
         $attribute = new CategoryAttributeEntity();
         $attribute->setAttribute('color', '#99ccff');
@@ -217,10 +217,10 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
         $category2->setParent($pagesRoot);
         $category2->setName('Category2');
         $category2->setDisplay_name([
-            $locale => $this->__('Category 2', $this->bundle->getTranslationDomain(), $locale)
+            $locale => $this->__('Category 2', 'zikulapagesmodule', $locale)
         ]);
         $category2->setDisplay_desc([
-            $locale => $this->__('Initial sub-category created on install', $this->bundle->getTranslationDomain(), $locale)
+            $locale => $this->__('Initial sub-category created on install', 'zikulapagesmodule', $locale)
         ]);
         $attribute = new CategoryAttributeEntity();
         $attribute->setAttribute('color', '#cceecc');

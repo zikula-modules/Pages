@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 use Zikula\Core\Controller\AbstractController;
@@ -93,16 +94,26 @@ class UserController extends AbstractController
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
+        /** @var CategoryRegistryEntity[] $registries */
         $registries = $this->get('zikula_categories_module.category_registry_repository')->findBy([
             'modname' => $this->getName(),
             'entityname' => 'PageEntity'
         ]);
+        $count = [];
+        $categoryAssignments = $this->get('doctrine')->getRepository('ZikulaPagesModule:CategoryAssignmentEntity')->findAll();
+        foreach ($categoryAssignments as $assignment) {
+            $id = $assignment->getCategory()->getId();
+            $count[$id] = !isset($count[$id]) ? $count[$id] = 1 : $count[$id] + 1;
+        }
 
-        return $this->render('ZikulaPagesModule:User:main.html.twig', ['registries' => $registries]);
+        return $this->render('ZikulaPagesModule:User:categories.html.twig', [
+            'registries' => $registries,
+            'count' => $count
+            ]);
     }
 
     /**
-     * @Route("/view/{cat}/{startnum}", requirements={"startnum" = "^[1-9]\d*$", "cat" = "^[1-9]\d*$"})
+     * @Route("/view/{category}/{startnum}", requirements={"startnum" = "^[1-9]\d*$", "category" = "^[1-9]\d*$"})
      *
      * view page list
      *
@@ -112,7 +123,7 @@ class UserController extends AbstractController
      * @param int $startnum
      * @return Response
      */
-    public function viewAction(Request $request, CategoryEntity $category = null, $startnum = 1)
+    public function viewCategoryAction(Request $request, CategoryEntity $category = null, $startnum = 1)
     {
         if (!$this->hasPermission($this->name . '::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();

@@ -34,6 +34,11 @@ class LinkContainer implements LinkContainerInterface
     private $permissionApi;
 
     /**
+     * @var bool
+     */
+    private $enableCategorization;
+
+    /**
      * LinkContainer constructor.
      * @param TranslatorInterface $translator
      * @param RouterInterface $router
@@ -42,11 +47,13 @@ class LinkContainer implements LinkContainerInterface
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        PermissionApiInterface $permissionApi
+        PermissionApiInterface $permissionApi,
+        $enableCategorization
     ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
+        $this->enableCategorization = $enableCategorization;
     }
 
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
@@ -75,6 +82,20 @@ class LinkContainer implements LinkContainerInterface
                     'text' => $this->translator->__('Modify Config'),
                     'icon' => 'wrench'];
             }
+        } else if (LinkContainerInterface::TYPE_USER == $type) {
+            if ($this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_OVERVIEW)) {
+                $links[] = [
+                    'url' => $this->router->generate('zikulapagesmodule_user_listpages'),
+                    'text' => $this->translator->__('Pages list'),
+                    'icon' => 'list'];
+                if ($this->enableCategorization) {
+                    $links[] = [
+                        'url' => $this->router->generate('zikulapagesmodule_user_categories'),
+                        'text' => $this->translator->__('Categories'),
+                        'icon' => 'tag'];
+                }
+            }
+
         }
 
         return $links;

@@ -1,11 +1,8 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaPagesModule:css/style.css')) }}
-{% set templatetitle = __('Pages list') %}
-{{ pageSetVar('title', templatetitle) }}
-{{ showflashes() }}
 
-<h2>{{ templatetitle }}</h2>
+{{ moduleHeader('user', __('Page list'), '', true, true, true) }}
 
-<p>{{ __('Available pages:') }}</p>
+<h4>{{ __('Available pages:') }}</h4>
 <ul>
     {% for page in pages if hasPermission('ZikulaPagesModule::Page', page.title ~ '::' ~ page.pageid, 'ACCESS_READ') %}
         <li><a href="{{ path('zikulapagesmodule_user_display', {urltitle: page.urltitle}) }}">{{ page.title }}</a></li>
