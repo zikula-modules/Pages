@@ -14,7 +14,7 @@ namespace Zikula\PagesModule\Container;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class LinkContainer implements LinkContainerInterface
 {
@@ -29,14 +29,20 @@ class LinkContainer implements LinkContainerInterface
     private $router;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
+    /**
+     * LinkContainer constructor.
+     * @param TranslatorInterface $translator
+     * @param RouterInterface $router
+     * @param PermissionApiInterface $permissionApi
+     */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        PermissionApi $permissionApi
+        PermissionApiInterface $permissionApi
     ) {
         $this->translator = $translator;
         $this->router = $router;
@@ -65,7 +71,7 @@ class LinkContainer implements LinkContainerInterface
                     'text' => $this->translator->__('Purge permalinks'),
                     'icon' => 'refresh'];
                 $links[] = [
-                    'url' => $this->router->generate('zikulapagesmodule_adminform_config'),
+                    'url' => $this->router->generate('zikulapagesmodule_config_config'),
                     'text' => $this->translator->__('Modify Config'),
                     'icon' => 'wrench'];
             }
