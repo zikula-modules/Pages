@@ -95,7 +95,6 @@ class LinkContainer implements LinkContainerInterface
                         'icon' => 'tag'];
                 }
             }
-
         }
 
         return $links;
