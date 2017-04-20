@@ -204,9 +204,9 @@ class UserController extends AbstractController
      * @param PageEntity $page
      * @return Response
      */
-    public function displayPrintableAction(Request $request, PageEntity $pageEntity)
+    public function displayPrintableAction(Request $request, PageEntity $page)
     {
-        return $this->displayAction($request, $pageEntity);
+        return $this->displayAction($request, $page);
     }
 
     /**
