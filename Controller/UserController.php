@@ -23,6 +23,7 @@ use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class UserController
@@ -192,6 +193,20 @@ class UserController extends AbstractController
         $templateParameters['pager'] = ['numitems' => $numitems, 'itemsperpage' => 1];
 
         return $this->render($templateName, $templateParameters);
+    }
+
+    /**
+     * @Route("/print/{urltitle}")
+     * @Theme("print")
+     * display printable page
+     *
+     * @param Request $request
+     * @param PageEntity $page
+     * @return Response
+     */
+    public function displayPrintableAction(Request $request, PageEntity $pageEntity)
+    {
+        return $this->displayAction($request, $pageEntity);
     }
 
     /**

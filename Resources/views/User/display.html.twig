@@ -45,7 +45,7 @@
     {% endif %}
     {% if page.displayprint %}
             <span class="pages_page_printerlink">
-        <a href="{{ path('zikulapagesmodule_user_display', {urltitle:page.urltitle, theme:'Printer'}) }}"><i class="fa fa-print fa-2x"></i></a>
+        <a href="{{ path('zikulapagesmodule_user_displayprintable', {urltitle:page.urltitle}) }}"><i class="fa fa-print fa-2x"></i></a>
     </span>
     {% endif %}
 </div>
