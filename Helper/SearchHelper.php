@@ -110,7 +110,7 @@ class SearchHelper implements SearchableInterface
         foreach ($pages as $page) {
             $pagePermissionCheck = $this->permissionApi->hasPermission('ZikulaPagesModule::', $page->getTitle() . '::' . $page->getPageid(), ACCESS_OVERVIEW);
             if ($this->enableCategorization) {
-                $pagePermissionCheck = $pagePermissionCheck && $this->categoryPermissionApi->hasCategoryAccess($page->getCategoryAssignments());
+                $pagePermissionCheck = $pagePermissionCheck && $this->categoryPermissionApi->hasCategoryAccess($page->getCategoryAssignments()->toArray());
             }
             if (!$pagePermissionCheck) {
                 continue;
