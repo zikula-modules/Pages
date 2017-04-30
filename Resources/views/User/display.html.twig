@@ -29,7 +29,7 @@
 {% endif %}
 
 <div class="pages_page_body">
-{{ page.content|safeHtml|notifyFilters('pages.filter_hooks.pages.filter')|raw }}
+{{ page.content|notifyFilters('pages.filter_hooks.pages.filter')|safeHtml }}
 </div>
 
 {% if page.displayprint or page.displaytextinfo or displayeditlink %}
