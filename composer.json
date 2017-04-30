@@ -28,7 +28,6 @@
       "oldnames": ["Pages"],
       "capabilities": {
         "hook_subscriber": {"class": "Zikula\\PagesModule\\Container\\HookContainer"},
-        "searchable": {"class": "Zikula\\PagesModule\\Helper\\SearchHelper"},
         "categorizable": {"entities": ["Zikula\\PagesModule\\Entity\\PageEntity"]},
         "user": {"route": "zikulapagesmodule_user_index"},
         "admin": {"route": "zikulapagesmodule_admin_index"}
