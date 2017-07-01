@@ -21,7 +21,6 @@ use Zikula\Bundle\HookBundle\FormAwareHook\FormAwareHook;
 use Zikula\Bundle\HookBundle\FormAwareHook\FormAwareResponse;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationResponse;
 use Zikula\Core\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\Core\RouteUrl;
