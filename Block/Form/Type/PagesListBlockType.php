@@ -13,6 +13,8 @@ namespace Zikula\PagesModule\Block\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\IdentityTranslator;
 
 /**
  * Class PagesListBlockType
@@ -23,7 +25,7 @@ class PagesListBlockType extends AbstractType
     {
         $builder
             ->add('numitems', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-                'label' => __('Number of pages to display')
+                'label' => $options['translator']->__('Number of pages to display')
             ])
         ;
     }
@@ -31,5 +33,15 @@ class PagesListBlockType extends AbstractType
     public function getName()
     {
         return 'zikulapagesmodule_pageslistblock';
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'translator' => new IdentityTranslator()
+        ]);
     }
 }

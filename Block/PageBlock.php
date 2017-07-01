@@ -68,6 +68,9 @@ class PageBlock extends AbstractBlockHandler
             $choices[$page->getPageid()] = $page->getTitle();
         }
 
-        return ['pages' => $choices];
+        return [
+            'pages' => $choices,
+            'translator' => $this->getTranslator()
+        ];
     }
 }

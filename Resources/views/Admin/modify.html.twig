@@ -48,6 +48,10 @@
             </div>
         </fieldset>
         {{ notifyDisplayHooks('pages.ui_hooks.pages.form_edit', form.vars.value.pageid|default(null)) }}
+        {% for hook_template in hook_templates %}
+            {{ include(hook_template.0, hook_template.1, ignore_missing = true) }}
+        {% endfor %}
+
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}

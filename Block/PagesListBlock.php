@@ -77,4 +77,11 @@ class PagesListBlock extends AbstractBlockHandler
     {
         return 'Zikula\PagesModule\Block\Form\Type\PagesListBlockType';
     }
+
+    public function getFormOptions()
+    {
+        return [
+            'translator' => $this->getTranslator()
+        ];
+    }
 }

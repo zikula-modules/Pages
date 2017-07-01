@@ -21,6 +21,11 @@
                 </ul>
             </div>
         </fieldset>
+        <fieldset>
+            {% for hook_template in hook_templates %}
+                {{ include(hook_template.0, hook_template.1, ignore_missing = true) }}
+            {% endfor %}
+        </fieldset>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 {{ form_widget(form.Delete, {'attr': {'class': 'btn btn-success'}}) }}

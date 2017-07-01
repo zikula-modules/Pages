@@ -16,15 +16,19 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Zikula\Bundle\HookBundle\Hook\Hook;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
+use Zikula\Bundle\HookBundle\FormAwareHook\FormAwareHook;
+use Zikula\Bundle\HookBundle\FormAwareHook\FormAwareResponse;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationResponse;
 use Zikula\Core\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\Core\RouteUrl;
+use Zikula\PagesModule\Container\HookContainer;
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\AdminAuthInterface;
+use Zikula\PagesModule\Form\Type\PageType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -48,10 +52,12 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
             $page->setDefaultsFromModVars($this->getVars());
         }
 
-        $form = $this->createForm('Zikula\PagesModule\Form\Type\PageType', $page, [
+        $form = $this->createForm(PageType::class, $page, [
             'translator' => $this->getTranslator(),
             'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale())
         ]);
+        $formHook = new FormAwareHook($form);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::SUBSCRIBER_FORMAWARE_TYPE_EDIT, $formHook);
 
         $form->handleRequest($request);
 
@@ -62,14 +68,9 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
                 $em->persist($page);
                 $em->flush();
                 $this->addFlash('status', $this->__('Page saved!'));
-
-                $this->notifyHooks(
-                    new ProcessHook(
-                        $page->getPageid(),
-                        new RouteUrl('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()])
-                    ),
-                    "pages.ui_hooks.pages.process_edit"
-                );
+                $routeUrl = new RouteUrl('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()]);
+                $this->get('hook_dispatcher')->dispatch(HookContainer::SUBSCRIBER_FORMAWARE_TYPE_PROCESS_EDIT, new FormAwareResponse($form, $page, $routeUrl));
+                $this->get('hook_dispatcher')->dispatch('pages.ui_hooks.pages.process_edit', new ProcessHook($page->getPageid(), $routeUrl));
 
                 return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
             }
@@ -77,6 +78,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
 
         return $this->render('ZikulaPagesModule:Admin:modify.html.twig', [
             'form' => $form->createView(),
+            'hook_templates' => $formHook->getTemplates()
         ]);
     }
 
@@ -89,7 +91,9 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
      */
     public function deleteAction(Request $request, PageEntity $page)
     {
-        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType');
+        $form = $this->createForm(DeletionType::class);
+        $formHook = new FormAwareHook($form);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::SUBSCRIBER_FORMAWARE_TYPE_DELETE, $formHook);
         $form->handleRequest($request);
         if ($form->isValid()) {
             if ($form->get('Delete')->isClicked()) {
@@ -97,19 +101,13 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
                     // Save page id for use in hook event. It is set to null during the entitymanager flush.
                     $pageId = $page->getPageid();
 
-                    /** @var \Doctrine\ORM\EntityManager $em */
                     $em = $this->getDoctrine()->getManager();
                     $em->remove($page);
                     $em->flush();
                     $this->addFlash('status', $this->__('Done! Page deleted.'));
 
-                    $this->notifyHooks(
-                        new ProcessHook(
-                            $pageId,
-                            new RouteUrl('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()])
-                        ),
-                        "pages.ui_hooks.pages.process_delete"
-                    );
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::SUBSCRIBER_FORMAWARE_TYPE_PROCESS_DELETE, new FormAwareResponse($form, $pageId));
+                    $this->get('hook_dispatcher')->dispatch('pages.ui_hooks.pages.process_delete', new ProcessHook($pageId));
 
                     return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
                 }
@@ -123,6 +121,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
         return $this->render('ZikulaPagesModule:Admin:delete.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
+            'hook_templates' => $formHook->getTemplates()
         ]);
     }
 
@@ -137,34 +136,17 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
     private function hookValidates(Form $form, $event)
     {
         $validationHook = new ValidationHook();
-        /** @var ValidationHook $validationHook */
-        $validationHook = $this->notifyHooks($validationHook, "pages.ui_hooks.pages.$event");
-        $hookvalidators = $validationHook->getValidators();
+        $this->get('hook_dispatcher')->dispatch("pages.ui_hooks.pages.$event", $validationHook);
+        $hookValidators = $validationHook->getValidators();
 
-        if (!$hookvalidators->hasErrors()) {
+        if (!$hookValidators->hasErrors()) {
             return true;
         }
 
-        /** @var ValidationResponse $validationResponse */
-        foreach ($hookvalidators as $validationResponse) {
-            foreach ($validationResponse->getErrors() as $error) {
-                $form->addError(new FormError($error));
-            }
+        foreach ($hookValidators->getErrors() as $error) {
+            $form->addError(new FormError($error));
         }
 
         return false;
-    }
-
-    /**
-     * Notifies subscribers of the given hook.
-     *
-     * @param Hook $hook
-     * @param $name
-     *
-     * @return Hook
-     */
-    private function notifyHooks(Hook $hook, $name)
-    {
-        return $this->get('hook_dispatcher')->dispatch($name, $hook);
     }
 }
