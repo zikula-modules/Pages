@@ -67,7 +67,6 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             'def_displayprint' => true
         ];
         $this->setVars($modvars);
-        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
         $this->createIntroPage();
         // initialisation successful
         return true;
@@ -143,7 +142,9 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             case '3.0.0':
             case '3.0.1':
             case '3.1.0':
-            case '3.2.0': // current version
+            case '3.2.0':
+                $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+            case '3.2.1': // current version
         }
         // Update successful
         return true;
@@ -169,7 +170,6 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             $this->entityManager->remove($registry);
         }
         $this->entityManager->flush();
-        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
         // Deletion successful
         return true;
     }

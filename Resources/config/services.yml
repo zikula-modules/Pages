@@ -26,3 +26,24 @@ services:
           - "@=service('zikula_extensions_module.api.variable').get('ZikulaPagesModule', 'enablecategorization', true)"
         tags:
             - { name: zikula.searchable_module, bundleName: ZikulaPagesModule}
+
+    zikula_pages_module.hook_subscriber.ui_hooks_subscriber:
+        class: Zikula\PagesModule\HookSubscriber\UiHooksSubscriber
+        arguments:
+          - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: "subscriber.pages.ui_hooks.pages" }
+
+    zikula_pages_module.hook_subscriber.filter_hooks_subscriber:
+        class: Zikula\PagesModule\HookSubscriber\FilterHooksSubscriber
+        arguments:
+          - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: "subscriber.pages.filter_hooks.pagesfilter" }
+
+    zikula_pages_module.hook_subscriber.form_aware_hook_subscriber:
+        class: Zikula\PagesModule\HookSubscriber\FormAwareHookSubscriber
+        arguments:
+          - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: "subscriber.pages.form_aware_hook.pages" }

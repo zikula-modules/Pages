@@ -1,6 +1,6 @@
 {
   "name": "zikula/pages-module",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Pages is a Static Page creation module for the Zikula Application Framework.",
   "type": "zikula-module",
   "license": "LGPL-3.0+",
@@ -27,7 +27,6 @@
       "url": "pages",
       "oldnames": ["Pages"],
       "capabilities": {
-        "hook_subscriber": {"class": "Zikula\\PagesModule\\Container\\HookContainer"},
         "categorizable": {"entities": ["Zikula\\PagesModule\\Entity\\PageEntity"]},
         "user": {"route": "zikulapagesmodule_user_index"},
         "admin": {"route": "zikulapagesmodule_admin_index"}
