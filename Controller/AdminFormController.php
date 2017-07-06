@@ -24,10 +24,10 @@ use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Core\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\Core\RouteUrl;
-use Zikula\PagesModule\Container\HookContainer;
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\AdminAuthInterface;
 use Zikula\PagesModule\Form\Type\PageType;
+use Zikula\PagesModule\HookSubscriber\FormAwareHookSubscriber;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -56,7 +56,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
             'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale())
         ]);
         $formHook = new FormAwareHook($form);
-        $this->get('hook_dispatcher')->dispatch(HookContainer::SUBSCRIBER_FORMAWARE_TYPE_EDIT, $formHook);
+        $this->get('hook_dispatcher')->dispatch(FormAwareHookSubscriber::SUBSCRIBER_FORMAWARE_TYPE_EDIT, $formHook);
 
         $form->handleRequest($request);
 
@@ -68,7 +68,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
                 $em->flush();
                 $this->addFlash('status', $this->__('Page saved!'));
                 $routeUrl = new RouteUrl('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()]);
-                $this->get('hook_dispatcher')->dispatch(HookContainer::SUBSCRIBER_FORMAWARE_TYPE_PROCESS_EDIT, new FormAwareResponse($form, $page, $routeUrl));
+                $this->get('hook_dispatcher')->dispatch(FormAwareHookSubscriber::SUBSCRIBER_FORMAWARE_TYPE_PROCESS_EDIT, new FormAwareResponse($form, $page, $routeUrl));
                 $this->get('hook_dispatcher')->dispatch('pages.ui_hooks.pages.process_edit', new ProcessHook($page->getPageid(), $routeUrl));
 
                 return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
@@ -92,7 +92,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
     {
         $form = $this->createForm(DeletionType::class);
         $formHook = new FormAwareHook($form);
-        $this->get('hook_dispatcher')->dispatch(HookContainer::SUBSCRIBER_FORMAWARE_TYPE_DELETE, $formHook);
+        $this->get('hook_dispatcher')->dispatch(FormAwareHookSubscriber::SUBSCRIBER_FORMAWARE_TYPE_DELETE, $formHook);
         $form->handleRequest($request);
         if ($form->isValid()) {
             if ($form->get('Delete')->isClicked()) {
@@ -105,7 +105,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
                     $em->flush();
                     $this->addFlash('status', $this->__('Done! Page deleted.'));
 
-                    $this->get('hook_dispatcher')->dispatch(HookContainer::SUBSCRIBER_FORMAWARE_TYPE_PROCESS_DELETE, new FormAwareResponse($form, $pageId));
+                    $this->get('hook_dispatcher')->dispatch(FormAwareHookSubscriber::SUBSCRIBER_FORMAWARE_TYPE_PROCESS_DELETE, new FormAwareResponse($form, $pageId));
                     $this->get('hook_dispatcher')->dispatch('pages.ui_hooks.pages.process_delete', new ProcessHook($pageId));
 
                     return $this->redirect($this->generateUrl('zikulapagesmodule_admin_index'));
