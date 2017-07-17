@@ -1,7 +1,7 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaPagesModule:css/style.css')) }}
 
-{% if page.metadescription is not empty %}{{ setMetaTag('description', page.metadescription) }}{% endif %}
-{% if page.metakeywords is not empty %}{{ setMetaTag('keywords', page.metakeywords) }}{% endif %}
+{% if page.metadescription is not empty %}{{ pageSetVar('meta.description', page.metadescription) }}{% endif %}
+{% if page.metakeywords is not empty %}{{ pageSetVar('meta.keywords', page.metakeywords) }}{% endif %}
 
 {{ moduleHeader('user', page.title, '', true, true, true) }}
 
