@@ -12,33 +12,41 @@
 namespace Zikula\PagesModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType;
+use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\PagesModule\Entity\CategoryAssignmentEntity;
 
 class FilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startnum', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('orderby', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('sdir', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('language', 'Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType', [
-                'attr' => ['class' => 'input-sm']
+            ->add('startnum', HiddenType::class)
+            ->add('orderby', HiddenType::class)
+            ->add('sdir', HiddenType::class)
+            ->add('language', LocaleType::class, [
+                'choices' => $options['locales'],
+                'attr' => ['class' => 'input-sm'],
+                'required' => false,
+                'placeholder' => $options['translator']->__('All'),
             ])
-            ->add('filterButton', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('filterButton', SubmitType::class, [
                 'icon' => 'fa-filter fa-lg',
                 'label' => $options['translator']->__('Filter'),
                 'attr' => ['class' => "btn btn-default btn-sm"]
             ])
-            ->add('categoryAssignments', 'Zikula\CategoriesModule\Form\Type\CategoriesType', [
+            ->add('categoryAssignments', CategoriesType::class, [
                 'attr' => ['class' => 'input-sm'],
                 'required' => false,
                 'multiple' => false,
                 'module' => 'ZikulaPagesModule',
                 'entity' => 'PageEntity',
-                'entityCategoryClass' => 'Zikula\PagesModule\Entity\CategoryAssignmentEntity',
+                'entityCategoryClass' => CategoryAssignmentEntity::class,
             ]);
     }
 
@@ -53,6 +61,7 @@ class FilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'locales' => [],
             'translator' => new IdentityTranslator(),
             'csrf_protection' => false,
             'attr' => [

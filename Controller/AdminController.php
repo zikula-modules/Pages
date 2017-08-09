@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Zikula\PagesModule\Form\Type\FilterType;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Component\SortableColumns\SortableColumns;
@@ -46,18 +47,26 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $orderBy = $request->query->get('orderby', 'pageid');
         $currentSortDirection = $request->query->get('sdir', Column::DIRECTION_DESCENDING);
 
-        $filterForm = $this->createForm('Zikula\PagesModule\Form\Type\FilterType', [], [
+        $filterForm = $this->createForm(FilterType::class, [], [
             'translator' => $this->getTranslator(),
+            'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale()),
             'action' => $this->generateUrl('zikulapagesmodule_admin_index'),
             'method' => 'GET',
         ]);
         $filterForm->handleRequest($request);
         $filterData = $filterForm->isSubmitted() ? $filterForm->getData() : $request->query->all();
 
-        $sortableColumns = new SortableColumns($this->get('router'), 'zikulapagesmodule_admin_index', 'orderby', 'sdir');
-        $sortableColumns->addColumn(new Column('pageid')); // first added is automatically the default
-        $sortableColumns->addColumn(new Column('title'));
-        $sortableColumns->addColumn(new Column('cr_date'));
+        $sortableColumns = new SortableColumns(
+            $this->get('router'),
+            'zikulapagesmodule_admin_index',
+            'orderby',
+            'sdir'
+        );
+        $sortableColumns->addColumns([
+            new Column('pageid'),
+            new Column('title'),
+            new Column('cr_date')
+        ]);
         $sortableColumns->setOrderBy($sortableColumns->getColumn($orderBy), $currentSortDirection);
         $sortableColumns->setAdditionalUrlParameters($request->query->all());
 
