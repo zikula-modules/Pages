@@ -14,7 +14,6 @@ namespace Zikula\PagesModule\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\EntityManager;
-use System;
 
 class PageCollectionManager
 {
@@ -83,8 +82,7 @@ class PageCollectionManager
      */
     public function setLanguage($language)
     {
-        $multilingual = System::getVar('multilingual', false);
-        if (!empty($language) && $multilingual) {
+        if (!empty($language)) {
             $this->queryBuilder->andWhere('p.language = :language')->setParameter('language', $language);
         }
     }
