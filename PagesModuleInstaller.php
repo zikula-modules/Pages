@@ -12,6 +12,7 @@
 namespace Zikula\PagesModule;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
@@ -25,8 +26,8 @@ use Zikula\PagesModule\Entity\PageEntity;
 class PagesModuleInstaller extends AbstractExtensionInstaller
 {
     private $entities = [
-        'Zikula\PagesModule\Entity\PageEntity',
-        'Zikula\PagesModule\Entity\CategoryAssignmentEntity'
+        PageEntity::class,
+        CategoryAssignmentEntity::class
     ];
 
     /**
@@ -143,7 +144,10 @@ class PagesModuleInstaller extends AbstractExtensionInstaller
             case '3.0.1':
             case '3.1.0':
             case '3.2.0':
-                $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+                if (method_exists($this->hookApi, 'uninstallSubscriberHooks')) {
+                    // method only exists in core < 2.0.0
+                    $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+                }
             case '3.2.1': // current version
         }
         // Update successful
