@@ -12,6 +12,7 @@
 namespace Zikula\PagesModule\Block\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\IdentityTranslator;
@@ -24,7 +25,7 @@ class PageBlockType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pid', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('pid', ChoiceType::class, [
                 'choices' => $options['pages'],
                 'label' => $options['translator']->__('Page')
             ])

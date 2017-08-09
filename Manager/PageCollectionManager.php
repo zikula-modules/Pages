@@ -14,6 +14,7 @@ namespace Zikula\PagesModule\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\EntityManager;
+use Zikula\PagesModule\Entity\PageEntity;
 
 class PageCollectionManager
 {
@@ -21,13 +22,18 @@ class PageCollectionManager
      * @var \Doctrine\ORM\QueryBuilder
      */
     private $queryBuilder;
+
     /**
      * @var EntityManager
      */
     private $em;
+
     private $itemsPerPage = 0;
+
     private $startNumber = 1;
+
     private $pager = false;
+
     private $numberOfItems = 0;
 
     /**
@@ -65,8 +71,6 @@ class PageCollectionManager
      *
      * @param string $orderBy E.g. titles
      * @param string $orderDirection ASC/DESC
-     *
-     * @return void
      */
     public function setOrder($orderBy, $orderDirection = 'ASC')
     {
@@ -77,8 +81,6 @@ class PageCollectionManager
      * set language
      *
      * @param string $language Language code
-     *
-     * @return void
      */
     public function setLanguage($language)
     {
@@ -126,9 +128,9 @@ class PageCollectionManager
     }
 
     /**
-     * return page as array
+     * return array of pages
      *
-     * @return array
+     * @return PageEntity[]
      */
     public function get()
     {
@@ -149,8 +151,6 @@ class PageCollectionManager
 
     /**
      * enable Pager
-     *
-     * @return array
      */
     public function enablePager()
     {

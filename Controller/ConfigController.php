@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\PagesModule\AdminAuthInterface;
+use Zikula\PagesModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -33,7 +34,7 @@ class ConfigController extends AbstractController implements AdminAuthInterface
      */
     public function configAction(Request $request)
     {
-        $form = $this->createForm('Zikula\PagesModule\Form\Type\ConfigType', $this->getVars(), [
+        $form = $this->createForm(ConfigType::class, $this->getVars(), [
             'translator' => $this->getTranslator()
         ]);
         $form->handleRequest($request);

@@ -12,6 +12,8 @@
 namespace Zikula\PagesModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\PagesModule\Block\Form\Type\PageBlockType;
+use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 
 /**
@@ -38,7 +40,7 @@ class PageBlock extends AbstractBlockHandler
 
         // get the page
         /** @var \Zikula\PagesModule\Entity\PageEntity $page */
-        $page = $this->get('doctrine')->getRepository('\Zikula\PagesModule\Entity\PageEntity')->find($properties['pid']);
+        $page = $this->get('doctrine')->getRepository(PageEntity::class)->find($properties['pid']);
         // check for a valid item
         if (!$page) {
             return;
@@ -52,7 +54,7 @@ class PageBlock extends AbstractBlockHandler
 
     public function getFormClassName()
     {
-        return 'Zikula\PagesModule\Block\Form\Type\PageBlockType';
+        return PageBlockType::class;
     }
 
     public function getFormTemplate()

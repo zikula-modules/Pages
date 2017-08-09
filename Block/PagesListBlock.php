@@ -12,6 +12,7 @@
 namespace Zikula\PagesModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\PagesModule\Block\Form\Type\PagesListBlockType;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 
 /**
@@ -30,7 +31,7 @@ class PagesListBlock extends AbstractBlockHandler
     {
         // Security check
         if (!$this->hasPermission('ZikulaPagesModule:pageslistblock:', "{$properties['title']}::", ACCESS_READ)) {
-            return false;
+            return;
         }
         // Defaults
         if (empty($properties['numitems'])) {
@@ -45,7 +46,7 @@ class PagesListBlock extends AbstractBlockHandler
 
         // Check for no items returned
         if (empty($pages)) {
-            return false;
+            return;
         }
         // Call the modules API to get the numitems
         $countitems = count($pages);
@@ -75,7 +76,7 @@ class PagesListBlock extends AbstractBlockHandler
 
     public function getFormClassName()
     {
-        return 'Zikula\PagesModule\Block\Form\Type\PagesListBlockType';
+        return PagesListBlockType::class;
     }
 
     public function getFormOptions()
