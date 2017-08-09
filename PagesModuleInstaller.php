@@ -12,7 +12,6 @@
 namespace Zikula\PagesModule;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
