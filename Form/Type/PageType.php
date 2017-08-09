@@ -12,10 +12,18 @@
 namespace Zikula\PagesModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
+use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\PagesModule\Entity\CategoryAssignmentEntity;
+use Zikula\PagesModule\Entity\PageEntity;
 
 class PageType extends AbstractType
 {
@@ -23,67 +31,67 @@ class PageType extends AbstractType
     {
         $translator = $options['translator'];
         $builder
-            ->add('title', 'Symfony\Component\Form\Extension\Core\Type\TextType')
-            ->add('urltitle', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('title', TextType::class)
+            ->add('urltitle', TextType::class, [
                 'required' => false,
                 'label' =>  $translator->__('PermaLink URL title')
             ])
-            ->add($builder->create('metadescription', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add($builder->create('metadescription', TextareaType::class, [
                 'required' => false
                 ])->addModelTransformer(new NullToEmptyTransformer())
             )
-            ->add($builder->create('metakeywords', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add($builder->create('metakeywords', TextareaType::class, [
                 'required' => false
                 ])->addModelTransformer(new NullToEmptyTransformer())
             )
-            ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('content', TextareaType::class, [
                 'attr' => ['rows' => '10'],
             ])
-            ->add('displaywrapper', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('displaywrapper', CheckboxType::class, [
                 'required' => false,
                 'label' =>  $translator->__('Display additional information')
             ])
-            ->add('displaytitle', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('displaytitle', CheckboxType::class, [
                 'required' => false,
                 'label' =>  $translator->__('Display page title')
             ])
-            ->add('displaycreated', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('displaycreated', CheckboxType::class, [
                 'required' => false,
                 'label' =>  $translator->__('Display page creation date')
             ])
-            ->add('displayupdated', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('displayupdated', CheckboxType::class, [
                 'required' => false,
                 'label' =>  $translator->__('Display page update date')
             ])
-            ->add('displaytextinfo', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('displaytextinfo', CheckboxType::class, [
                 'required' => false,
                 'label' =>  $translator->__('Display page text statistics')
             ])
-            ->add('displayprint', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('displayprint', CheckboxType::class, [
                 'required' => false,
                 'label' =>  $translator->__('Display page print link')
             ])
             ->add(
-                $builder->create('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+                $builder->create('language', ChoiceType::class, [
                     'choices' => $options['locales'],
                     'choices_as_values' => true,
                     'required' => false,
                     'placeholder' =>  $translator->__('All')
                 ])->addModelTransformer(new NullToEmptyTransformer())
             )
-            ->add('obj_status', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('obj_status', CheckboxType::class, [
                 'required' => false,
                 'label' =>  $translator->__('Page is active')
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save')
             ])
-            ->add('categoryAssignments', 'Zikula\CategoriesModule\Form\Type\CategoriesType', [
+            ->add('categoryAssignments', CategoriesType::class, [
                 'required' => false,
                 'multiple' => true,
                 'module' => 'ZikulaPagesModule',
                 'entity' => 'PageEntity',
-                'entityCategoryClass' => 'Zikula\PagesModule\Entity\CategoryAssignmentEntity',
+                'entityCategoryClass' => CategoryAssignmentEntity::class,
             ]);
     }
 
@@ -99,7 +107,7 @@ class PageType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => new IdentityTranslator(),
-            'data_class' => 'Zikula\PagesModule\Entity\PageEntity',
+            'data_class' => PageEntity::class,
             'locales' => ['English' => 'en']
         ]);
     }
