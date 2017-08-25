@@ -28,12 +28,13 @@
         </fieldset>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {{ form_widget(form.Delete, {'attr': {'class': 'btn btn-success'}}) }}
+                {{ form_widget(form.delete, {'attr': {'class': 'btn btn-success'}}) }}
                 {{ form_widget(form.cancel, {'attr': {'class': 'btn btn-default'}}) }}
             </div>
         </div>
         {{ form_end(form) }}
     </div>
+    {{ notifyDisplayHooks('pages.ui_hooks.pages.form_delete', page.pageid|default(null)) }}
 
 </div>
 {{ adminFooter() }}

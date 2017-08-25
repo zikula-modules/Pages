@@ -47,7 +47,6 @@
                 </ul>
             </div>
         </fieldset>
-        {{ notifyDisplayHooks('pages.ui_hooks.pages.form_edit', form.vars.value.pageid|default(null)) }}
         {% for hook_template in hook_templates %}
             {{ include(hook_template.0, hook_template.1, ignore_missing = true) }}
         {% endfor %}
@@ -59,6 +58,7 @@
         </div>
         {{ form_end(form) }}
     </div>
+    {{ notifyDisplayHooks('pages.ui_hooks.pages.form_edit', form.vars.value.pageid|default(null)) }}
 
 </div>
 {{ adminFooter() }}

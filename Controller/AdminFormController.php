@@ -95,7 +95,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
         $this->get('hook_dispatcher')->dispatch(FormAwareHookSubscriber::SUBSCRIBER_FORMAWARE_TYPE_DELETE, $formHook);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            if ($form->get('Delete')->isClicked()) {
+            if ($form->get('delete')->isClicked()) {
                 if ($this->hookValidates($form, 'validate_delete')) {
                     // Save page id for use in hook event. It is set to null during the entitymanager flush.
                     $pageId = $page->getPageid();
