@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\Core\RouteUrl;
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Manager\PageCollectionManager;
 use Zikula\Core\Controller\AbstractController;
@@ -191,6 +192,7 @@ class UserController extends AbstractController
         $templateParameters['lang'] = $request->getLocale();
         $templateParameters['modvars']['ZikulaPagesModule'] = $this->getVars(); // @todo temporary solution
         $templateParameters['pager'] = ['numitems' => $numitems, 'itemsperpage' => 1];
+        $templateParameters['urlObject'] = RouteUrl::createFromRoute('zikulapagesmodule_user_display', ['urltitle' => $page->getUrltitle()]);
 
         return $this->render($templateName, $templateParameters);
     }

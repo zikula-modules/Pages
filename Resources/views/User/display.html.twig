@@ -52,4 +52,4 @@
 {% endif %}
 
 {{ pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'pagenum', route:'zikulapagesmodule_user_display'}) }}
-{{ notifyDisplayHooks('pages.ui_hooks.pages.display_view', page.pageid) }}
+{{ notifyDisplayHooks('pages.ui_hooks.pages.display_view', page.pageid, urlObject) }}
