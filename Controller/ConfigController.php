@@ -28,7 +28,8 @@ class ConfigController extends AbstractController implements AdminAuthInterface
     /**
      * @Route("/config")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaPagesModule:Config:config.html.twig")
+     *
      * @param Request $request
      * @return RedirectResponse|array
      */
