@@ -18,9 +18,13 @@ use Zikula\Common\Translator\TranslatorInterface;
 class FormAwareHookSubscriber implements HookSubscriberInterface
 {
     const SUBSCRIBER_FORMAWARE_TYPE_DISPLAY = 'zikulapagesmodule.form_aware_hook.pages.display';
+
     const SUBSCRIBER_FORMAWARE_TYPE_EDIT = 'zikulapagesmodule.form_aware_hook.pages.edit';
+
     const SUBSCRIBER_FORMAWARE_TYPE_PROCESS_EDIT = 'zikulapagesmodule.form_aware_hook.pages.process_edit';
+
     const SUBSCRIBER_FORMAWARE_TYPE_DELETE = 'zikulapagesmodule.form_aware_hook.pages.delete';
+
     const SUBSCRIBER_FORMAWARE_TYPE_PROCESS_DELETE = 'zikulapagesmodule.form_aware_hook.pages.process_delete';
 
     /**

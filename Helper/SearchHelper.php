@@ -85,7 +85,7 @@ class SearchHelper implements SearchableInterface
         if (!$this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_READ)) {
             return [];
         }
-        $method = ($searchType == 'OR') ? 'orX' : 'andX';
+        $method = ('OR' == $searchType) ? 'orX' : 'andX';
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('p')
             ->from('Zikula\PagesModule\Entity\PageEntity', 'p');
