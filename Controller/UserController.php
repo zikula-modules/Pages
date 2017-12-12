@@ -164,7 +164,7 @@ class UserController extends AbstractController
     public function displayAction(Request $request, PageEntity $page, $pagenum = 1)
     {
         $accessLevel = $this->getAccessLevel($page);
-        if ($accessLevel == ACCESS_NONE) {
+        if (ACCESS_NONE == $accessLevel) {
             throw new AccessDeniedHttpException();
         }
 

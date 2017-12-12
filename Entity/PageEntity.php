@@ -569,7 +569,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
 
     public function getObjStatus()
     {
-        return $this->obj_status == 'A';
+        return 'A' == $this->obj_status;
     }
 
     public function setObjStatus($status)
