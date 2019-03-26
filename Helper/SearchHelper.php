@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the ZikulaPagesModule package.
  *
@@ -85,17 +86,17 @@ class SearchHelper implements SearchableInterface
         if (!$this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_READ)) {
             return [];
         }
-        $method = ('OR' == $searchType) ? 'orX' : 'andX';
+        $method = ('OR' === $searchType) ? 'orX' : 'andX';
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('p')
             ->from('Zikula\PagesModule\Entity\PageEntity', 'p');
         /** @var $where \Doctrine\ORM\Query\Expr\Composite */
-        $where = $qb->expr()->$method();
+        $where = $qb->expr()->{$method}();
         $i = 1;
         foreach ($words as $word) {
             $subWhere = $qb->expr()->orX();
             foreach (['p.title', 'p.content'] as $field) {
-                $expr = $qb->expr()->like($field, "?$i");
+                $expr = $qb->expr()->like($field, "?${i}");
                 $subWhere->add($expr);
                 $qb->setParameter($i, '%' . $word . '%');
                 $i++;

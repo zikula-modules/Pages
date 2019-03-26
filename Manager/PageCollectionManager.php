@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the ZikulaPagesModule package.
  *
@@ -12,8 +13,8 @@
 namespace Zikula\PagesModule\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\PagesModule\Entity\PageEntity;
 
 class PageCollectionManager
@@ -144,9 +145,9 @@ class PageCollectionManager
             $this->numberOfItems = count($paginator);
 
             return $paginator;
-        } else {
-            return $query->getResult();
         }
+
+        return $query->getResult();
     }
 
     /**
