@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the ZikulaPagesModule package.
  *
@@ -193,12 +194,12 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
 
     public function setDefaultsFromModVars(array $modVars)
     {
-        $this->displaywrapper = isset($modVars['def_displaywrapper']) ? $modVars['def_displaywrapper'] : true;
-        $this->displaytitle = isset($modVars['def_displaytitle']) ? $modVars['def_displaytitle'] : true;
-        $this->displaycreated = isset($modVars['def_displaycreated']) ? $modVars['def_displaycreated'] : true;
-        $this->displayupdated = isset($modVars['def_displayupdated']) ? $modVars['def_displayupdated'] : true;
-        $this->displaytextinfo = isset($modVars['def_displaytextinfo']) ? $modVars['def_displaytextinfo'] : true;
-        $this->displayprint = isset($modVars['def_displayprint']) ? $modVars['def_displayprint'] : true;
+        $this->displaywrapper = $modVars['def_displaywrapper'] ?? true;
+        $this->displaytitle = $modVars['def_displaytitle'] ?? true;
+        $this->displaycreated = $modVars['def_displaycreated'] ?? true;
+        $this->displayupdated = $modVars['def_displayupdated'] ?? true;
+        $this->displaytextinfo = $modVars['def_displaytextinfo'] ?? true;
+        $this->displayprint = $modVars['def_displayprint'] ?? true;
     }
 
     /**
@@ -547,8 +548,8 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
     {
         foreach ($collection as $key => $collectionAssignment) {
             /** @var \Zikula\PagesModule\Entity\CategoryAssignmentEntity $collectionAssignment */
-            if ($collectionAssignment->getCategoryRegistryId() == $element->getCategoryRegistryId()
-                && $collectionAssignment->getCategory() == $element->getCategory()
+            if ($collectionAssignment->getCategoryRegistryId() === $element->getCategoryRegistryId()
+                && $collectionAssignment->getCategory() === $element->getCategory()
             ) {
                 return $key;
             }
@@ -569,7 +570,7 @@ class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
 
     public function getObjStatus()
     {
-        return 'A' == $this->obj_status;
+        return 'A' === $this->obj_status;
     }
 
     public function setObjStatus($status)

@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the ZikulaPagesModule package.
  *
@@ -11,8 +12,8 @@
 
 namespace Zikula\PagesModule\Listener;
 
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\PagesModule\AdminAuthInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;

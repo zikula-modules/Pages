@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the ZikulaPagesModule package.
  *
@@ -15,12 +16,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Zikula\Component\SortableColumns\Column;
+use Zikula\Component\SortableColumns\SortableColumns;
+use Zikula\Core\Controller\AbstractController;
+use Zikula\PagesModule\AdminAuthInterface;
 use Zikula\PagesModule\Form\Type\FilterType;
 use Zikula\PagesModule\Manager\PageCollectionManager;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Component\SortableColumns\SortableColumns;
-use Zikula\Component\SortableColumns\Column;
-use Zikula\PagesModule\AdminAuthInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -114,7 +115,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $this->addFlash('status', $this->__('Permalinks have been reset.'));
 
         $referer = $request->headers->get('referer');
-        $url = strpos($referer, 'purge') ? $this->get('router')->generate('zikulapagesmodule_admin_index') : $referer;
+        $url = mb_strpos($referer, 'purge') ? $this->get('router')->generate('zikulapagesmodule_admin_index') : $referer;
 
         return new RedirectResponse($url);
     }

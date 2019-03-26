@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the ZikulaPagesModule package.
  *
@@ -59,7 +60,7 @@ class LinkContainer implements LinkContainerInterface
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
         $links = [];
-        if (LinkContainerInterface::TYPE_ADMIN == $type) {
+        if (LinkContainerInterface::TYPE_ADMIN === $type) {
             if ($this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_READ)) {
                 $links[] = [
                     'url' => $this->router->generate('zikulapagesmodule_admin_index'),
@@ -82,7 +83,7 @@ class LinkContainer implements LinkContainerInterface
                     'text' => $this->translator->__('Modify Config'),
                     'icon' => 'wrench'];
             }
-        } elseif (LinkContainerInterface::TYPE_USER == $type) {
+        } elseif (LinkContainerInterface::TYPE_USER === $type) {
             if ($this->permissionApi->hasPermission('ZikulaPagesModule::', '::', ACCESS_OVERVIEW)) {
                 $links[] = [
                     'url' => $this->router->generate('zikulapagesmodule_user_listpages'),

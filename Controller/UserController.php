@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the ZikulaPagesModule package.
  *
@@ -20,10 +21,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\RouteUrl;
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Manager\PageCollectionManager;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -45,10 +46,9 @@ class UserController extends AbstractController
         if (!$this->getVar('enablecategorization')) {
             // list all pages
             return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_user_listpages'));
-        } else {
-            // show a list of the categories
-            return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_user_categories'));
         }
+        // show a list of the categories
+        return new RedirectResponse($this->get('router')->generate('zikulapagesmodule_user_categories'));
     }
 
     /**
@@ -164,7 +164,7 @@ class UserController extends AbstractController
     public function displayAction(Request $request, PageEntity $page, $pagenum = 1)
     {
         $accessLevel = $this->getAccessLevel($page);
-        if (ACCESS_NONE == $accessLevel) {
+        if (ACCESS_NONE === $accessLevel) {
             throw new AccessDeniedHttpException();
         }
 

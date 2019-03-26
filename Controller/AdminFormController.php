@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the ZikulaPagesModule package.
  *
@@ -24,8 +25,8 @@ use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\RouteUrl;
-use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\AdminAuthInterface;
+use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Form\Type\PageType;
 use Zikula\PagesModule\HookSubscriber\FormAwareHookSubscriber;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -135,7 +136,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
     private function hookValidates(Form $form, $event)
     {
         $validationHook = new ValidationHook();
-        $this->get('hook_dispatcher')->dispatch("pages.ui_hooks.pages.$event", $validationHook);
+        $this->get('hook_dispatcher')->dispatch("pages.ui_hooks.pages.${event}", $validationHook);
         $hookValidators = $validationHook->getValidators();
 
         if (!$hookValidators->hasErrors()) {
