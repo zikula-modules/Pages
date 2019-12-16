@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Twig\Loader\FilesystemLoader;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\Core\Controller\AbstractController;
@@ -173,7 +174,7 @@ class UserController extends AbstractController
 
         // A custom template may exist for this page (based on page id)
         $customTemplateName = 'ZikulaPagesModule:User:display_' . $page->getPageid() . '.html.twig';
-        $templateName = $this->get('templating')->exists($customTemplateName)
+        $templateName = $this->get(FilesystemLoader::class)->exists($customTemplateName)
             ? $customTemplateName
             : '@ZikulaPagesModule/User/display.html.twig'
         ;
