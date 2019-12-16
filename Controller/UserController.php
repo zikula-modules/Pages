@@ -77,7 +77,7 @@ class UserController extends AbstractController
         $templateParameters['pages'] = $pages->get();
         $templateParameters['pager'] = $pages->getPager();
 
-        return $this->render('ZikulaPagesModule:User:listpages.html.twig', $templateParameters);
+        return $this->render('@ZikulaPagesModule/User/listpages.html.twig', $templateParameters);
     }
 
     /**
@@ -108,7 +108,7 @@ class UserController extends AbstractController
             $count[$id] = !isset($count[$id]) ? $count[$id] = 1 : $count[$id] + 1;
         }
 
-        return $this->render('ZikulaPagesModule:User:categories.html.twig', [
+        return $this->render('@ZikulaPagesModule/User/categories.html.twig', [
             'registries' => $registries,
             'count' => $count
             ]);
@@ -148,7 +148,7 @@ class UserController extends AbstractController
             'pager' => $pages->getPager()
         ];
 
-        return $this->render('ZikulaPagesModule:User:view.html.twig', $templateParameters);
+        return $this->render('@ZikulaPagesModule/User/view.html.twig', $templateParameters);
     }
 
     /**
@@ -173,7 +173,10 @@ class UserController extends AbstractController
 
         // A custom template may exist for this page (based on page id)
         $customTemplateName = 'ZikulaPagesModule:User:display_' . $page->getPageid() . '.html.twig';
-        $templateName = ($this->get('templating')->exists($customTemplateName)) ? $customTemplateName : 'ZikulaPagesModule:User:display.html.twig';
+        $templateName = $this->get('templating')->exists($customTemplateName)
+            ? $customTemplateName
+            : '@ZikulaPagesModule/User/display.html.twig'
+        ;
 
         // Explode the page into an array of separate pages based upon the pagebreak
         $allPages = explode('<!--pagebreak-->', $page->getContent());

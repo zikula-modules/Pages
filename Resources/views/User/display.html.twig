@@ -9,20 +9,19 @@
 <div class="pages_page_header">
     <ul>
         {% if page.displaycreated %}
-        <li>{{ __f('Created by %name% on %date%', { '%name%': page.creator.uname, '%date%': page.cr_date|date("m/d/Y") } ) }}</li>
+            <li>{{ __f('Created by %name% on %date%', { '%name%': page.creator.uname, '%date%': page.cr_date|date("m/d/Y") } ) }}</li>
         {% endif %}
         {% if page.displayupdated %}
-        <li>{{ __f('Last update by %name% on %date%', { '%name%': page.updater.uname, '%date%': page.lu_date|date("m/d/Y") } ) }}</li>
+            <li>{{ __f('Last update by %name% on %date%', { '%name%': page.updater.uname, '%date%': page.lu_date|date("m/d/Y") } ) }}</li>
         {% endif %}
-
         {% if modvars.ZikulaPagesModule.enablecategorization and page.categories is not null %}
-        <li>{{ __('Categories') }}:
-            {% for assignment in page.categories %}
-                {{ assignment.category.display_name[lang] }}{% if not loop.last %}, {% endif %}
-            {% else %}
-                {{  __('No categories') }}
-            {% endfor %}
-        </li>
+            <li>{{ __('Categories') }}:
+                {% for assignment in page.categories %}
+                    {{ assignment.category.display_name[lang] }}{% if not loop.last %}, {% endif %}
+                {% else %}
+                    {{  __('No categories') }}
+                {% endfor %}
+            </li>
         {% endif %}
     </ul>
 </div>
@@ -51,5 +50,5 @@
 </div>
 {% endif %}
 
-{{ pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'pagenum', route:'zikulapagesmodule_user_display'}) }}
+{{ pager({rowcount: pager.numitems, limit: pager.itemsperpage, posvar: 'pagenum', route: 'zikulapagesmodule_user_display'}) }}
 {{ notifyDisplayHooks('pages.ui_hooks.pages.display_view', page.pageid, urlObject) }}

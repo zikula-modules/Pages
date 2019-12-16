@@ -2,13 +2,13 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaPagesModule:js/select2/select2.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaPagesModule:js/select2/select2-bootstrap.css')) }}
 
-{% form_theme form 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig' %}
+{% form_theme form '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig' %}
 {{ form_widget(form) }}
 
 <script type="text/javascript">
     jQuery('#zikulapagesmodule_pageblock_pid').select2({
-        "formatNoMatches": function () {
-            return "{{ __("No match found") }}";
+        'formatNoMatches': function () {
+            return "{{ __('No match found') }}";
         }
     });
 </script>

@@ -92,7 +92,7 @@ class AdminController extends AbstractController implements AdminAuthInterface
         $response = new Response();
         $response->expire();
 
-        return $this->render('ZikulaPagesModule:Admin:view.html.twig', $templateParameters, $response);
+        return $this->render('@ZikulaPagesModule/Admin/view.html.twig', $templateParameters, $response);
     }
 
     /**

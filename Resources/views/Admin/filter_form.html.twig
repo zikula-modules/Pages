@@ -1,6 +1,6 @@
 {% form_theme filterForm with [
-    'ZikulaCategoriesModule:Form:filter_layout_customizations.html.twig',
-    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    '@ZikulaCategoriesModule/Form/filter_layout_customizations.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {% if modvars.ZConfig.multilingual or modvars.ZikulaPagesModule.enablecategorization %}
     {{ form_start(filterForm) }}

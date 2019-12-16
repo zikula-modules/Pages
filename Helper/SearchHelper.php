@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\CategoriesModule\Api\ApiInterface\CategoryPermissionApiInterface;
 use Zikula\Core\RouteUrl;
+use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\SearchableInterface;
@@ -89,7 +90,7 @@ class SearchHelper implements SearchableInterface
         $method = ('OR' === $searchType) ? 'orX' : 'andX';
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('p')
-            ->from('Zikula\PagesModule\Entity\PageEntity', 'p');
+            ->from(PageEntity::class, 'p');
         /** @var $where \Doctrine\ORM\Query\Expr\Composite */
         $where = $qb->expr()->{$method}();
         $i = 1;
@@ -107,7 +108,7 @@ class SearchHelper implements SearchableInterface
         $pages = $qb->getQuery()->getResult();
 
         $results = [];
-        /** @var $pages \Zikula\PagesModule\Entity\PageEntity[] */
+        /** @var $pages PageEntity[] */
         foreach ($pages as $page) {
             $pagePermissionCheck = $this->permissionApi->hasPermission('ZikulaPagesModule::', $page->getTitle() . '::' . $page->getPageid(), ACCESS_OVERVIEW);
             if ($this->enableCategorization) {

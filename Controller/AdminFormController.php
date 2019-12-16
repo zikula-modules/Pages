@@ -41,6 +41,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
     /**
      * @Route("/edit/{page}")
      * @Theme("admin")
+     *
      * @param Request $request
      * @param PageEntity $page
      * @return RedirectResponse|Response
@@ -76,7 +77,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
             }
         }
 
-        return $this->render('ZikulaPagesModule:Admin:modify.html.twig', [
+        return $this->render('@ZikulaPagesModule/Admin/modify.html.twig', [
             'form' => $form->createView(),
             'hook_templates' => $formHook->getTemplates()
         ]);
@@ -85,6 +86,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
     /**
      * @Route("/delete/{page}")
      * @Theme("admin")
+     *
      * @param Request $request
      * @param PageEntity $page
      * @return RedirectResponse|Response
@@ -118,7 +120,7 @@ class AdminFormController extends AbstractController implements AdminAuthInterfa
             }
         }
 
-        return $this->render('ZikulaPagesModule:Admin:delete.html.twig', [
+        return $this->render('@ZikulaPagesModule/Admin/delete.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
             'hook_templates' => $formHook->getTemplates()

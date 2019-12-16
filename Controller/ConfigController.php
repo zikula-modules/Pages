@@ -28,8 +28,8 @@ class ConfigController extends AbstractController implements AdminAuthInterface
 {
     /**
      * @Route("/config")
+     * @Template("@ZikulaPagesModule/Config/config.html.twig")
      * @Theme("admin")
-     * @Template("ZikulaPagesModule:Config:config.html.twig")
      *
      * @param Request $request
      * @return RedirectResponse|array
@@ -54,7 +54,7 @@ class ConfigController extends AbstractController implements AdminAuthInterface
         }
 
         return [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 }
