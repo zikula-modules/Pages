@@ -34,7 +34,7 @@ class CategoryAssignmentEntity extends AbstractCategoryAssignment
     private $entity;
 
     /**
-     * Set entity
+     * Get entity
      *
      * @return \Zikula\PagesModule\Entity\PageEntity
      */
