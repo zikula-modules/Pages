@@ -1,0 +1,75 @@
+{# purpose of this template: pages view filter form #}
+{% trans_default_domain 'page' %}
+{% macro renderQuickNavEntry(quickNavForm, fieldName, isVisible) %}
+    {% if attribute(quickNavForm, fieldName) is defined and attribute(quickNavForm, fieldName) is not null %}
+        {% if not isVisible %}
+            <div class="d-none">
+        {% endif %}
+            {{ form_row(attribute(quickNavForm, fieldName)) }}
+        {% if not isVisible %}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+{% if permissionHelper.mayUseQuickNav('page') %}
+    {% form_theme quickNavForm with [
+        'bootstrap_4_layout.html.twig'
+    ] only %}
+    {{ form_start(quickNavForm, {attr: {id: 'zikulaPagesModulePageQuickNavForm', class: 'zikulapagesmodule-quicknav form-inline', role: 'navigation'}}) }}
+    {{ form_errors(quickNavForm) }}
+    <a href="#collapsePageQuickNav" role="button" data-toggle="collapse" class="btn btn-secondary" aria-expanded="false" aria-controls="collapsePageQuickNav">
+        <i class="fas fa-filter" aria-hidden="true"></i> {% trans %}Filter{% endtrans %}
+    </a>
+    <div id="collapsePageQuickNav" class="collapse">
+        <h3>{% trans %}Quick navigation{% endtrans %}</h3>
+        {% set categoriesEnabled = featureActivationHelper.isEnabled(constant('Zikula\\PagesModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'page') %}
+        {% if categoriesEnabled and quickNavForm.categories is defined and quickNavForm.categories is not null %}
+            {% if categoryFilter is defined and categoryFilter != true %}
+                <div class="d-none">
+            {% else %}
+                <div class="row">
+                    <div class="col-md-3">
+            {% endif %}
+                {{ form_row(quickNavForm.categories) }}
+            {% if categoryFilter is defined and categoryFilter != true %}
+                </div>
+            {% else %}
+                    </div>
+                    <div class="col-md-9">
+            {% endif %}
+        {% endif %}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'workflowState', workflowStateFilter is not defined or workflowStateFilter == true) }}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'pageLanguage', pageLanguageFilter is not defined or pageLanguageFilter == true) }}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'q', searchFilter is not defined or searchFilter == true) }}
+        {% if quickNavForm.sort is defined and quickNavForm.sort is not null %}
+            {% if sorting is defined and sorting != true %}
+                <div class="d-none">
+            {% endif %}
+                {{ form_row(quickNavForm.sort) }}
+                {% if quickNavForm.sortdir is defined and quickNavForm.sortdir is not null %}
+                    {{ form_row(quickNavForm.sortdir) }}
+                {% endif %}
+            {% if sorting is defined and sorting != true %}
+                </div>
+            {% endif %}
+        {% endif %}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'num', pageSizeSelector is not defined or pageSizeSelector == true) }}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'active', activeFilter is not defined or activeFilter == true) }}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'displayWrapper', displayWrapperFilter is not defined or displayWrapperFilter == true) }}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'displayTitle', displayTitleFilter is not defined or displayTitleFilter == true) }}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'displayCreated', displayCreatedFilter is not defined or displayCreatedFilter == true) }}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'displayUpdated', displayUpdatedFilter is not defined or displayUpdatedFilter == true) }}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'displayTextInfo', displayTextInfoFilter is not defined or displayTextInfoFilter == true) }}
+        {{ _self.renderQuickNavEntry(quickNavForm, 'displayPrint', displayPrintFilter is not defined or displayPrintFilter == true) }}
+        {{ form_widget(quickNavForm.updateview) }}
+        <a href="{{ path('zikulapagesmodule_page_' ~ routeArea|default ~ 'view', {tpl: app.request.query.get('tpl', ''), all: app.request.query.get('all', '')}) }}" title="{% trans %}Back to default view{% endtrans %}" class="btn btn-secondary btn-sm">{% trans %}Reset{% endtrans %}</a>
+        {% if categoriesEnabled and quickNavForm.categories is defined and quickNavForm.categories is not null %}
+            {% if categoryFilter is defined and categoryFilter != true %}
+            {% else %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+    {{ form_end(quickNavForm) }}
+{% endif %}

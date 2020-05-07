@@ -1,0 +1,129 @@
+application "Pages" targets ZK30 {
+    vendor "Zikula"
+    author "Zikula Team"
+    email "info@ziku.la"
+    url "https://ziku.la"
+    version "4.0.0"
+    prefix "pages"
+    generateAccountApi false
+    generateModerationBlock false
+    generateListContentType false
+    generateDetailContentType false
+    generateModerationPanel false
+    generatePendingContentSupport false
+    generateMultiHookNeedles true
+    generateCsvTemplates false
+    generateXmlTemplates false
+    generateJsonTemplates false
+    generateKmlTemplates false
+    generateIcsTemplates false
+    entities {
+        entity "page" leading categorisable {
+            nameMultiple "pages"
+            displayPattern "#title#"
+            ownerPermission true
+            fields {
+                string "title" {
+                    defaultValue ""
+                    sluggablePosition 1
+                },
+                string "metaDescription" {
+                    defaultValue ""
+                    mandatory false
+                    displayType DISPLAY
+                },
+                string "pageLanguage" {
+                    defaultValue ""
+                    mandatory false
+                    role LANGUAGE
+                },
+                text "content",
+                integer "counter" counter {
+                    defaultValue "0"
+                    mandatory false
+                    visible false
+                },
+                boolean "active" ajaxTogglability {
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayWrapper" ajaxTogglability {
+                    documentation "Display additional information"
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayTitle" ajaxTogglability {
+                    documentation "Display page title"
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayCreated" ajaxTogglability {
+                    documentation "Display page creation date"
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayUpdated" ajaxTogglability {
+                    documentation "Display page update date"
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayTextInfo" ajaxTogglability {
+                    documentation "Display page text statistics"
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayPrint" ajaxTogglability {
+                    documentation "Display page print link"
+                    defaultValue "true"
+                    mandatory false
+                }
+            }
+            actions {
+                mainAction "Index",
+                viewAction "View",
+                displayAction "Display",
+                editAction "Edit"
+            }
+        }
+    }
+variables {
+        varContainer "GeneralSettings" {
+            fields {
+                boolean "enableCategorisation" {
+                    defaultValue "false"
+                    mandatory false
+                },
+                boolean "displayWrapper" {
+                    documentation "Display additional information"
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayTitle" {
+                    documentation "Display page title"
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayCreated" {
+                    documentation "Display page creation date"
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayUpdated" {
+                    documentation "Display page update date"
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayTextInfo" {
+                    documentation "Display page text statistics"
+                    defaultValue "true"
+                    mandatory false
+                },
+                boolean "displayPrint" {
+                    documentation "Display page print link"
+                    defaultValue "true"
+                    mandatory false
+                }
+            }
+        }
+    }
+}

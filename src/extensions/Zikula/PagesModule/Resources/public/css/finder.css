@@ -1,0 +1,36 @@
+body {
+    background-color: #ddd;
+    margin: 10px;
+    text-align: left;
+}
+
+#zikulapagesmoduleItemContainer {
+    background-color: #eee;
+    height: 300px;
+    overflow: auto;
+    padding: 5px;
+}
+
+#zikulapagesmoduleItemContainer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#zikulapagesmoduleItemContainer a {
+    color: #000;
+    margin: 0.1em 0.2em;
+    text-decoration: underline;
+}
+#zikulapagesmoduleItemContainer a:hover,
+#zikulapagesmoduleItemContainer a:focus,
+#zikulapagesmoduleItemContainer a:active {
+    color: #900;
+    text-decoration: none;
+}
+
+.zikulapagesmodule-finderform fieldset,
+.zikulapagesmodule-finderform fieldset legend {
+    background-color: #fff;
+    border: none;
+}

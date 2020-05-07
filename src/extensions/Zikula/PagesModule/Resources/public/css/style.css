@@ -1,0 +1,74 @@
+/* view pages */
+div#z-maincontent.z-module-pages table tbody tr td {
+    vertical-align: top;
+}
+
+/* display pages */
+.zikulapagesmodule-display p.managelink {
+    margin: 18px 0 0 18px;
+}
+
+.z-module-zikulapagesmodule h2 .dropdown.item-actions,
+.z-module-zikulapagesmodule h3 .dropdown.item-actions {
+    display: inline;
+    font-size: 18px;
+}
+
+
+/* validation */
+div.form-group input:required, div.form-group textarea:required, div.form-group select:required {
+    /*border: 1px solid #00a8e6;*/
+    background-color: #fff;
+}
+div.form-group input:required:valid, div.form-group textarea:required:valid, div.form-group select:required:valid {
+    /*border: 1px solid green;*/
+}
+div.form-group input:required:invalid, div.form-group textarea:required:invalid, div.form-group select:required:invalid {
+    border: 1px solid red;
+}
+
+/* hide legends if tabs are used as both contain the same labels */
+div.pages-edit .tab-pane legend {
+    display: none;
+}
+
+/** fix dropdown visibility inside responsive tables */
+div.zikulapagesmodule-view .table-responsive {
+    min-height: 300px;
+}
+div.zikulapagesmodule-view form.zikulapagesmodule-quicknav {
+    margin: 10px 0;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+}
+
+div.zikulapagesmodule-view form.zikulapagesmodule-quicknav h3 {
+    display: none;
+}
+
+div.zikulapagesmodule-view form.zikulapagesmodule-quicknav .form-group {
+    display: inline-block;
+}
+
+div.zikulapagesmodule-view form.zikulapagesmodule-quicknav .col-md-3 fieldset {
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+div.zikulapagesmodule-view form.zikulapagesmodule-quicknav label {
+    margin: 0 5px;
+    display: inline;
+}
+
+div.zikulapagesmodule-view .avatar img {
+    width: auto;
+    max-height: 24px;
+}
+
+@media (max-width: 767px) {
+    div.form-group div.category-selector {
+        height: auto;
+        padding: 0;
+    }
+}

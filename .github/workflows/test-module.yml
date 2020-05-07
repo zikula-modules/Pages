@@ -1,0 +1,32 @@
+name: Test module
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_USER: zikula
+          MYSQL_PASSWORD: zikula
+          MYSQL_DATABASE: zikula
+          MYSQL_ROOT_PASSWORD: zikula
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v2
+
+    # see https://github.com/Guite/zikula-action
+    - name: Build and test
+      uses: docker://guite/zikula-action:latest
+      with:
+        args: Zikula Pages 4.0.0 ZK30 "src/" true
+
+    # see https://github.com/actions/upload-artifact
+    - name: Upload release folder as artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: ZikulaPagesModule_v4.0.0
+        path: './ZikulaPagesModule_v4.0.0'

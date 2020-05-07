@@ -1,0 +1,7 @@
+{# purpose of this template: Display pages within an external context #}
+{% trans_default_domain 'page' %}
+{% for page in items %}
+    <h3>{{ page|zikulapagesmodule_formattedTitle }}</h3>
+    <p><a href="{{ path('zikulapagesmodule_page_display', {'slug': page.slug}) }}" title="{{ 'Read more'|trans|e('html_attr') }}">{% trans %}Read more{% endtrans %}</a>
+    </p>
+{% endfor %}

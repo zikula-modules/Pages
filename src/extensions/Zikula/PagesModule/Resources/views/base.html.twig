@@ -1,0 +1,30 @@
+{# purpose of this template: general base layout #}
+{% trans_default_domain 'messages' %}
+{% block header %}
+{% endblock %}
+
+{% block appTitle %}
+    {{ moduleHeader('user', '', '', false, true, false, true) }}
+{% endblock %}
+
+{% block titleArea %}
+    <h2>{% block title %}{% endblock %}</h2>
+{% endblock %}
+{{ pageSetVar('title', block('pageTitle') is defined ? block('pageTitle') : block('title')) }}
+
+{{ showflashes() }}
+
+{% block content %}{% endblock %}
+
+{% block footer %}
+    {{ moduleFooter() }}
+{% endblock %}
+
+{% block assets %}
+    <p id="poweredByMost" class="text-center">
+        Powered by <a href="https://modulestudio.de" title="Get the MOST out of Zikula!">ModuleStudio 1.4.0</a>
+    </p>
+    {{ pageAddAsset('javascript', zasset('@ZikulaPagesModule:js/ZikulaPagesModule.Backlink.Integration.js')) }}
+    {{ pageAddAsset('stylesheet', zasset('@ZikulaPagesModule:css/custom.css'), 120) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaPagesModule:js/ZikulaPagesModule.js')) }}
+{% endblock %}

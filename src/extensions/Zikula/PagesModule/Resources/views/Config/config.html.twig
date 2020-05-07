@@ -1,0 +1,114 @@
+{# purpose of this template: module configuration page #}
+{% extends '@ZikulaPagesModule/adminBase.html.twig' %}
+{% trans_default_domain 'config' %}
+{% block title 'Settings'|trans %}
+{% block admin_page_icon 'wrench' %}
+{% block content %}
+    <div class="zikulapagesmodule-config">
+        {% form_theme form with [
+            '@ZikulaPagesModule/Form/bootstrap_4.html.twig',
+            '@ZikulaFormExtension/Form/form_div_layout.html.twig'
+        ] only %}
+        {{ form_start(form) }}
+        <div class="zikula-bootstrap-tab-container">
+            <ul class="nav nav-tabs" role="tablist">
+                {% set tabTitle = 'General settings'|trans %}
+                <li class="nav-item" role="presentation">
+                    <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link active">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = 'List views'|trans %}
+                <li class="nav-item" role="presentation">
+                    <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = 'Moderation'|trans %}
+                <li class="nav-item" role="presentation">
+                    <a id="vars3Tab" href="#tab3" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = 'Integration'|trans %}
+                <li class="nav-item" role="presentation">
+                    <a id="vars4Tab" href="#tab4" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = 'Workflows'|trans %}
+                <li class="nav-item" role="presentation">
+                    <a id="workflowsTab" href="#tabWorkflows" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{{ tabTitle }}</a>
+                </li>
+            </ul>
+
+            {{ form_errors(form) }}
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade show active" id="tab1" aria-labelledby="vars1Tab">
+                    {% set tabTitle = 'General settings'|trans %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                        <p class="alert alert-info">{% trans %}Here you can manage all basic settings for this application.{% endtrans %}</p>
+                    
+                        {{ form_row(form.enableCategorisation) }}
+                        {{ form_row(form.displayWrapper) }}
+                        {{ form_row(form.displayTitle) }}
+                        {{ form_row(form.displayCreated) }}
+                        {{ form_row(form.displayUpdated) }}
+                        {{ form_row(form.displayTextInfo) }}
+                        {{ form_row(form.displayPrint) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab2" aria-labelledby="vars2Tab">
+                    {% set tabTitle = 'List views'|trans %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                        <p class="alert alert-info">{% trans from 'config' %}Here you can configure parameters for list views.{% endtrans %}</p>
+                        
+                        {{ form_row(form.pageEntriesPerPage) }}
+                        {{ form_row(form.pagePrivateMode) }}
+                        {{ form_row(form.showOnlyOwnEntries) }}
+                        {{ form_row(form.filterDataByLocale) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab3" aria-labelledby="vars3Tab">
+                    {% set tabTitle = 'Moderation'|trans %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                        <p class="alert alert-info">{% trans from 'config' %}Here you can define moderation-related settings.{% endtrans %}</p>
+                        
+                        {{ form_row(form.allowModerationSpecificCreatorForPage) }}
+                        {{ form_row(form.allowModerationSpecificCreationDateForPage) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab4" aria-labelledby="vars4Tab">
+                    {% set tabTitle = 'Integration'|trans %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                        <p class="alert alert-info">{% trans from 'config' %}These options allow you to configure integration aspects.{% endtrans %}</p>
+                        
+                        {{ form_row(form.enabledFinderTypes) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabWorkflows" aria-labelledby="workflowsTab">
+                    {% set tabTitle = 'Workflows'|trans %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                
+                        <p class="alert alert-info">{% trans %}Here you can inspect and amend the existing workflows.{% endtrans %}</p>
+                
+                        <h4>{% trans %}Pages{% endtrans %}</h4>
+                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'zikulapagesmodule_none'}) }}" title="{{ 'Edit workflow for pages'|trans|e('html_attr') }}" target="_blank"><i class="fas fa-cubes"></i> {% trans %}Edit pages workflow{% endtrans %}</a>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-buttons row">
+            <div class="col-md-9 offset-md-3">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.reset) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaPagesModule:js/ZikulaPagesModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaPagesModule:js/ZikulaPagesModule.EditFunctions.js'), 99) }}
+    <div id="formEditingDefinition" data-mode="edit" data-entityid="1"></div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{# purpose of this template: build the form to edit an instance of page #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends '@ZikulaPagesModule/' ~ baseTemplate ~ '.html.twig' %}
+{% trans_default_domain 'page' %}
+{% block title mode == 'create' ? 'Create page'|trans : 'Edit page'|trans %}
+{% block admin_page_icon mode == 'create' ? 'plus' : 'edit' %}
+{% block content %}
+    <div class="zikulapagesmodule-page zikulapagesmodule-edit">
+        {% form_theme form with [
+            '@ZikulaPagesModule/Form/bootstrap_4.html.twig',
+            '@ZikulaFormExtension/Form/form_div_layout.html.twig'
+        ] only %}
+        {{ form_start(form, {attr: {id: 'pageEditForm', class: 'zikulapages-edit-form'}}) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>{% trans from 'messages' %}Content{% endtrans %}</legend>
+            {{ form_row(form.title) }}
+            {{ form_row(form.metaDescription) }}
+            {{ form_row(form.pageLanguage) }}
+            {{ form_row(form.content) }}
+            <div class="d-none">
+                {{ form_row(form.counter) }}
+            </div>
+            {{ form_row(form.active) }}
+            {{ form_row(form.displayWrapper) }}
+            {{ form_row(form.displayTitle) }}
+            {{ form_row(form.displayCreated) }}
+            {{ form_row(form.displayUpdated) }}
+            {{ form_row(form.displayTextInfo) }}
+            {{ form_row(form.displayPrint) }}
+            {{ form_row(form.slug) }}
+        </fieldset>
+        
+        {% if featureActivationHelper.isEnabled(constant('Zikula\\PagesModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'page') %}
+            {{ include('@ZikulaPagesModule/Helper/includeCategoriesEdit.html.twig', {obj: page}) }}
+        {% endif %}
+        {% if mode != 'create' %}
+            {{ include('@ZikulaPagesModule/Helper/includeStandardFieldsEdit.html.twig', {obj: page}) }}
+        {% endif %}
+        
+        {% if supportsHookSubscribers and formHookTemplates|length > 0 %}
+            <fieldset>
+                {% for hookTemplate in formHookTemplates %}
+                    {{ include(hookTemplate.0, hookTemplate.1, ignore_missing = true) }}
+                {% endfor %}
+            </fieldset>
+        {% endif %}
+        
+        {% if form.moderationSpecificCreator is defined or form.moderationSpecificCreationDate is defined %}
+            <fieldset id="moderationFieldsSection">
+                <legend>{% trans from 'messages' %}Moderation{% endtrans %} <i class="fas fa-expand"></i></legend>
+                <div id="moderationFieldsContent">
+                    {% if form.moderationSpecificCreator is defined %}
+                        {{ form_row(form.moderationSpecificCreator) }}
+                    {% endif %}
+                    {% if form.moderationSpecificCreationDate is defined %}
+                        {{ form_row(form.moderationSpecificCreationDate) }}
+                    {% endif %}
+                </div>
+            </fieldset>
+        {% endif %}
+        
+        
+        {# include possible submit actions #}
+        <div class="form-group form-buttons row">
+            <div class="col-md-9 offset-md-3">
+                {% for action in actions %}
+                    {{ form_widget(attribute(form, action.id)) }}
+                    {% if mode == 'create' and action.id == 'submit' and form.submitrepeat is defined %}
+                        {{ form_widget(attribute(form, 'submitrepeat')) }}
+                    {% endif %}
+                {% endfor %}
+                {{ form_widget(form.reset) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+        {% if supportsHookSubscribers %}
+            {% set hookId = mode != 'create' ? page.id : null %}
+            {% set hooks = notifyDisplayHooks(eventName='zikulapagesmodule.ui_hooks.pages.form_edit', id=hookId, outputAsArray=true) %}
+            {% if hooks is iterable and hooks|length > 0 %}
+                {% for area, hook in hooks %}
+                    <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+        
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaPagesModule:js/ZikulaPagesModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaPagesModule:js/ZikulaPagesModule.EditFunctions.js'), 99) }}
+    <div id="formEditingDefinition" data-mode="{{ mode|e('html_attr') }}" data-entityid="{% if mode != 'create' %}{{ page.id|e('html_attr') }}{% endif %}"></div>
+    {% if form.moderationSpecificCreator is defined %}
+        <div class="field-editing-definition" data-field-type="user" data-field-name="zikulapagesmodule_page_moderationSpecificCreator"></div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $extension: '@Zikula\PagesModule\ZikulaPagesModule'
+            $twigLoader: '@twig.loader'
+
+    Zikula\PagesModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Base/bootstrap.php,Tests,vendor}'
+
+    Zikula\PagesModule\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    # public because EntityLifecycleListener accesses this using container
+    Zikula\PagesModule\Entity\Factory\EntityFactory:
+        public: true
+    
+    Zikula\PagesModule\Form\Handler\:
+        resource: '../../Form/Handler'
+        calls:
+            - setLockingApi: ['@?Zikula\PageLockModule\Api\LockingApi']
+    
+    Zikula\PagesModule\Listener\EntityLifecycleListener:
+        tags: ['doctrine.event_subscriber']
+    
+    Zikula\PagesModule\Menu\MenuBuilder:
+        tags:
+            - { name: knp_menu.menu_builder, method: createItemActionsMenu, alias: zikulaPagesMenuItemActions }
+            - { name: knp_menu.menu_builder, method: createViewActionsMenu, alias: zikulaPagesMenuViewActions }
+    
+    stof_doctrine_extensions.listener.sluggable:
+        class: '%stof_doctrine_extensions.listener.sluggable.class%'
+        calls:
+            - setAnnotationReader: ['@annotation_reader']
+            - setTransliterator: [[Zikula\PagesModule\Helper\SlugTransliterator, 'transliterate']]
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

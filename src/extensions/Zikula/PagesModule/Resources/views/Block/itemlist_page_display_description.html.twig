@@ -1,0 +1,14 @@
+{# purpose of this template: Display pages within an external context #}
+{% trans_default_domain 'page' %}
+<dl>
+    {% for page in items %}
+        <dt>{{ page|zikulapagesmodule_formattedTitle }}</dt>
+        {% if page.content %}
+            <dd>{{ page.content|striptags|u.truncate(200, '…') }}</dd>
+        {% endif %}
+        <dd><a href="{{ path('zikulapagesmodule_page_display', {'slug': page.slug}) }}" title="{{ 'Read more'|trans|e('html_attr') }}">{% trans %}Read more{% endtrans %}</a>
+        </dd>
+    {% else %}
+        <dt>{% trans %}No pages found.{% endtrans %}</dt>
+    {% endfor %}
+</dl>

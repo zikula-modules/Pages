@@ -1,0 +1,10 @@
+{# purpose of this template: pages index view #}
+{% extends routeArea == 'admin' ? '@ZikulaPagesModule/adminBase.html.twig' : '@ZikulaPagesModule/base.html.twig' %}
+{% trans_default_domain 'page' %}
+{% block title 'Pages'|trans %}
+{% block admin_page_icon 'home' %}
+{% block content %}
+    <div class="zikulapagesmodule-page zikulapagesmodule-index">
+        <p>{% trans %}Welcome to the page section of the Pages application.{% endtrans %}</p>
+    </div>
+{% endblock %}
