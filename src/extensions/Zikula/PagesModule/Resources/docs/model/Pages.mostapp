@@ -19,7 +19,9 @@ application "Pages" targets ZK30 {
     generateIcsTemplates false
     skipFiles "
         Controller/PageController.php,
-        Helper/CollectionFilterHelper.php
+        Entity/Factory/EntityInitialiser.php,
+        Helper/CollectionFilterHelper.php,
+        Helper/FeatureActivationHelper.php
     "
     markFiles "
         composer.json

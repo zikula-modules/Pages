@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Zikula\PagesModule\Helper;
 
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PagesModule\Helper\Base\AbstractFeatureActivationHelper;
 
 /**
@@ -21,5 +22,23 @@ use Zikula\PagesModule\Helper\Base\AbstractFeatureActivationHelper;
  */
 class FeatureActivationHelper extends AbstractFeatureActivationHelper
 {
-    // feel free to add your own convenience methods here
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    public function hasCategories($objectType)
+    {
+        return 'page' === $objectType
+            && $this->variableApi->get('ZikulaPagesModule', 'enableCategorisation', false)
+        ;
+    }
+
+    /**
+     * @required
+     */
+    public function setVariableApi(VariableApiInterface $variableApi): void
+    {
+        $this->variableApi = $variableApi;
+    }
 }

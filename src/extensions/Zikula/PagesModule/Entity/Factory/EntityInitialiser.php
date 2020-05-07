@@ -14,12 +14,39 @@ declare(strict_types=1);
 
 namespace Zikula\PagesModule\Entity\Factory;
 
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PagesModule\Entity\Factory\Base\AbstractEntityInitialiser;
+use Zikula\PagesModule\Entity\PageEntity;
 
 /**
  * Entity initialiser class used to dynamically apply default values to newly created entities.
  */
 class EntityInitialiser extends AbstractEntityInitialiser
 {
-    // feel free to customise the initialiser
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    public function initPage(PageEntity $entity): PageEntity
+    {
+        parent::initPage($entity);
+
+        $entity->setDisplayWrapper($variableApi->get('ZikulaPagesModule', 'displayWrapper', true));
+        $entity->setDisplayTitle($variableApi->get('ZikulaPagesModule', 'displayTitle', true));
+        $entity->setDisplayCreated($variableApi->get('ZikulaPagesModule', 'displayCreated', true));
+        $entity->setDisplayUpdated($variableApi->get('ZikulaPagesModule', 'displayUpdated', true));
+        $entity->setDisplayTextInfo($variableApi->get('ZikulaPagesModule', 'displayTextInfo', true));
+        $entity->setDisplayPrint($variableApi->get('ZikulaPagesModule', 'displayPrint', true));
+
+        return $entity;
+    }
+
+    /**
+     * @required
+     */
+    public function setVariableApi(VariableApiInterface $variableApi): void
+    {
+        $this->variableApi = $variableApi;
+    }
 }
