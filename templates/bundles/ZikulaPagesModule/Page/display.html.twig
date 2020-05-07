@@ -1,0 +1,164 @@
+{# purpose of this template: pages display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends '@ZikulaPagesModule/' ~ baseTemplate ~ '.html.twig' %}
+{% trans_default_domain 'page' %}
+{% block pageTitle %}{{ page|zikulapagesmodule_formattedTitle|default('Page'|trans) }}{% endblock %}
+{% block title %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    {% set templateTitle = page|zikulapagesmodule_formattedTitle|default('Page'|trans) %}
+    {{ templateTitle|notifyFilters('zikulapagesmodule.filter_hooks.pages.filter')|safeHtml }}{% if routeArea == 'admin' %} <small>({{ page.workflowState|zikulapagesmodule_objectState(false)|lower }})</small>{% endif %}
+    {% if not isQuickView %}
+        {% set itemActions = knp_menu_get('zikulaPagesMenuItemActions', [], {entity: page, area: routeArea, context: 'display'}) %}
+        <div class="dropdown item-actions">
+            <a id="itemActions{{ page.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="d-none dropdown-toggle"><i class="fas fa-tasks"></i> {% trans from 'messages' %}Actions{% endtrans %}</a>
+            {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+        </div>
+    {% endif %}
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="zikulapagesmodule-page zikulapagesmodule-display">
+        <dl>
+            {% if page.workflowState is not empty and routeArea == 'admin' %}
+                <dt>{% trans %}State{% endtrans %}</dt>
+                <dd>{{ page.workflowState|zikulapagesmodule_listEntry('page', 'workflowState') }}</dd>
+            {% endif %}
+            {% if page.title is not empty %}
+                <dt>{% trans %}Title{% endtrans %}</dt>
+                <dd>{{ page.title }}</dd>
+            {% endif %}
+            {% if page.metaDescription is not empty %}
+                <dt>{% trans %}Meta description{% endtrans %}</dt>
+                <dd>{{ page.metaDescription }}</dd>
+            {% endif %}
+            {% if page.pageLanguage is not empty %}
+                <dt>{% trans %}Page language{% endtrans %}</dt>
+                <dd>{{ page.pageLanguage|language_name }}</dd>
+            {% endif %}
+            {% if page.content is not empty %}
+                <dt>{% trans %}Content{% endtrans %}</dt>
+                <dd>{{ page.content|notifyFilters('zikulapagesmodule.filter_hooks.pages.filter')|safeHtml }}</dd>
+            {% endif %}
+            {% if page.counter is not empty %}
+                <dt>{% trans %}Counter{% endtrans %}</dt>
+                <dd>{{ page.counter }}</dd>
+            {% endif %}
+            <dt>{% trans %}Active{% endtrans %}</dt>
+            <dd>{% set itemId = page.getKey() %}
+            <a id="toggleActive{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="active" data-item-id="{{ itemId|e('html_attr') }}">
+                <i class="fas fa-check text-success{% if not page.active %} d-none{% endif %}" id="yesActive{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                <i class="fas fa-times text-danger{% if page.active %} d-none{% endif %}" id="noActive{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+            </a>
+            <noscript><div id="noscriptActive{{ itemId|e('html_attr') }}">
+                {% if page.active %}
+                    <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% else %}
+                    <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% endif %}
+            </div></noscript>
+            </dd>
+            <dt>{% trans %}Display wrapper{% endtrans %}</dt>
+            <dd>{% set itemId = page.getKey() %}
+            <a id="toggleDisplayWrapper{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayWrapper" data-item-id="{{ itemId|e('html_attr') }}">
+                <i class="fas fa-check text-success{% if not page.displayWrapper %} d-none{% endif %}" id="yesDisplayWrapper{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                <i class="fas fa-times text-danger{% if page.displayWrapper %} d-none{% endif %}" id="noDisplayWrapper{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+            </a>
+            <noscript><div id="noscriptDisplayWrapper{{ itemId|e('html_attr') }}">
+                {% if page.displayWrapper %}
+                    <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% else %}
+                    <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% endif %}
+            </div></noscript>
+            </dd>
+            <dt>{% trans %}Display title{% endtrans %}</dt>
+            <dd>{% set itemId = page.getKey() %}
+            <a id="toggleDisplayTitle{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayTitle" data-item-id="{{ itemId|e('html_attr') }}">
+                <i class="fas fa-check text-success{% if not page.displayTitle %} d-none{% endif %}" id="yesDisplayTitle{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                <i class="fas fa-times text-danger{% if page.displayTitle %} d-none{% endif %}" id="noDisplayTitle{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+            </a>
+            <noscript><div id="noscriptDisplayTitle{{ itemId|e('html_attr') }}">
+                {% if page.displayTitle %}
+                    <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% else %}
+                    <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% endif %}
+            </div></noscript>
+            </dd>
+            <dt>{% trans %}Display created{% endtrans %}</dt>
+            <dd>{% set itemId = page.getKey() %}
+            <a id="toggleDisplayCreated{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayCreated" data-item-id="{{ itemId|e('html_attr') }}">
+                <i class="fas fa-check text-success{% if not page.displayCreated %} d-none{% endif %}" id="yesDisplayCreated{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                <i class="fas fa-times text-danger{% if page.displayCreated %} d-none{% endif %}" id="noDisplayCreated{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+            </a>
+            <noscript><div id="noscriptDisplayCreated{{ itemId|e('html_attr') }}">
+                {% if page.displayCreated %}
+                    <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% else %}
+                    <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% endif %}
+            </div></noscript>
+            </dd>
+            <dt>{% trans %}Display updated{% endtrans %}</dt>
+            <dd>{% set itemId = page.getKey() %}
+            <a id="toggleDisplayUpdated{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayUpdated" data-item-id="{{ itemId|e('html_attr') }}">
+                <i class="fas fa-check text-success{% if not page.displayUpdated %} d-none{% endif %}" id="yesDisplayUpdated{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                <i class="fas fa-times text-danger{% if page.displayUpdated %} d-none{% endif %}" id="noDisplayUpdated{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+            </a>
+            <noscript><div id="noscriptDisplayUpdated{{ itemId|e('html_attr') }}">
+                {% if page.displayUpdated %}
+                    <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% else %}
+                    <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% endif %}
+            </div></noscript>
+            </dd>
+            <dt>{% trans %}Display text info{% endtrans %}</dt>
+            <dd>{% set itemId = page.getKey() %}
+            <a id="toggleDisplayTextInfo{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayTextInfo" data-item-id="{{ itemId|e('html_attr') }}">
+                <i class="fas fa-check text-success{% if not page.displayTextInfo %} d-none{% endif %}" id="yesDisplayTextInfo{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                <i class="fas fa-times text-danger{% if page.displayTextInfo %} d-none{% endif %}" id="noDisplayTextInfo{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+            </a>
+            <noscript><div id="noscriptDisplayTextInfo{{ itemId|e('html_attr') }}">
+                {% if page.displayTextInfo %}
+                    <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% else %}
+                    <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% endif %}
+            </div></noscript>
+            </dd>
+            <dt>{% trans %}Display print{% endtrans %}</dt>
+            <dd>{% set itemId = page.getKey() %}
+            <a id="toggleDisplayPrint{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayPrint" data-item-id="{{ itemId|e('html_attr') }}">
+                <i class="fas fa-check text-success{% if not page.displayPrint %} d-none{% endif %}" id="yesDisplayPrint{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                <i class="fas fa-times text-danger{% if page.displayPrint %} d-none{% endif %}" id="noDisplayPrint{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+            </a>
+            <noscript><div id="noscriptDisplayPrint{{ itemId|e('html_attr') }}">
+                {% if page.displayPrint %}
+                    <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% else %}
+                    <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                {% endif %}
+            </div></noscript>
+            </dd>
+            
+        </dl>
+        {% if featureActivationHelper.isEnabled(constant('Zikula\\PagesModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'page') %}
+            {{ include('@ZikulaPagesModule/Helper/includeCategoriesDisplay.html.twig', {obj: page}) }}
+        {% endif %}
+        {{ include('@ZikulaPagesModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: page}) }}
+        {{ block('display_hooks') }}
+    </div>
+    {{ zikulapagesmodule_increaseCounter(page, 'counter') }}
+{% endblock %}
+{% block display_hooks %}
+    {% if page.supportsHookSubscribers() %}
+        {% set hooks = notifyDisplayHooks(eventName='zikulapagesmodule.ui_hooks.pages.display_view', id=page.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

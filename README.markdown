@@ -62,7 +62,7 @@ Structural changes:
 
 New features:
 
-- ...
+- Added `active` flag for disabling pages.
 
 Deprecations:
 
