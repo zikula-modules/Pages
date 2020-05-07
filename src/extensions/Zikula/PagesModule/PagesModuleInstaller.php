@@ -14,12 +14,160 @@ declare(strict_types=1);
 
 namespace Zikula\PagesModule;
 
+use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\PagesModule\Base\AbstractPagesModuleInstaller;
+use Zikula\PagesModule\Entity\PageEntity;
+use Zikula\PagesModule\Entity\PageCategoryEntity;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 /**
  * Installer implementation class.
  */
 class PagesModuleInstaller extends AbstractPagesModuleInstaller
 {
-    // feel free to extend the installer here
+    /**
+     * @var UserRepositoryInterface
+     */
+    private $userRepository;
+
+    public function upgrade(string $oldVersion): bool
+    {
+        if (version_compare($oldVersion, '4.0.0', '<')) {
+            ini_set('memory_limit', '2048M');
+            ini_set('max_execution_time', 300); // 300 seconds = 5 minutes
+
+            // delete all old data
+            $this->variableApi->delAll('pages');
+            $this->variableApi->delAll('Pages');
+
+            // reinstall
+            $this->install();
+
+            // determine category registry identifier
+            $categoryRegistries = $this->categoryRegistryRepository->findBy(['modname' => 'ZikulaPagesModule']);
+            $categoryRegistry = null;
+            /** @var CategoryRegistryEntity $registry */
+            foreach ($categoryRegistries as $registry) {
+                if ('PageEntity' === $registry->getEntityname()) {
+                    $categoryRegistry = $registry;
+                    break;
+                }
+            }
+
+            $connection = $this->entityManager->getConnection();
+
+            $categoryData = [];
+            $pageMap = [];
+            $categoryMap = [];
+            $userMap = [];
+
+            // preselect category assignments
+            $stmt = $connection->executeQuery("
+                SELECT *
+                FROM `pages_category`
+            ");
+            while ($row = $stmt->fetch()) {
+                if (!isset($categoryData[$row['entityId']])) {
+                    $categoryData[$row['entityId']] = [];
+                }
+                $categoryData[$row['entityId']][] = [
+                    'registryId' => $row['registryId'],
+                    'categoryId' => $row['categoryId'],
+                ];
+            }
+
+            // migrate pages and primary category assignments
+            $stmt = $connection->executeQuery("
+                SELECT *
+                FROM `pages`
+            ");
+            while ($row = $stmt->fetch()) {
+                $oldPageId = $row['pageid'];
+
+                $page = new PageEntity();
+                $page->setWorkflowState('approved');
+                $page->setTitle($row['title']);
+                $page->setMetaDescription($row['metadescription']);
+                $page->setSlug($row['urltitle']);
+                $page->setContent($row['content']);
+                $page->setCounter($row['counter']);
+                $page->setDisplayWrapper((bool)$row['displaywrapper']);
+                $page->setDisplayTitle((bool)$row['displaytitle']);
+                $page->setDisplayCreated((bool)$row['displaycreated']);
+                $page->setDisplayUpdated((bool)$row['displayupdated']);
+                $page->setDisplayTextInfo((bool)$row['displaytextinfo']);
+                $page->setDisplayPrint((bool)$row['displayprint']);
+                $page->setLanguage((bool)$row['language']);
+                $page->setActive(true);
+
+                $uid = $row['cr_uid'];
+                if (!isset($userMap[$uid])) {
+                    $userMap[$uid] = $this->userRepository->find($uid);
+                }
+                $page->setCreatedBy($userMap[$uid]);
+                $page->setCreatedDate(new DateTime($row['cr_date']));
+                $uid = $row['lu_uid'];
+                if (!isset($userMap[$uid])) {
+                    $userMap[$uid] = $this->userRepository->find($uid);
+                }
+                $page->setUpdatedBy($userMap[$uid]);
+                $page->setUpdatedDate(new DateTime($row['lu_date']));
+
+                $this->entityManager->persist($page);
+
+                if (null !== $categoryRegistry) {
+                    if (isset($categoryData[$oldPageId])) {
+                        foreach ($categoryData[$oldPageId] as $assignment) {
+                            $categoryId = $assignment['categoryId'];
+                            if (!isset($categoryMap[$categoryId])) {
+                                $categoryMap[$categoryId] = $this->entityManager->find(
+                                    'ZikulaCategoriesModule:CategoryEntity',
+                                    $categoryId
+                                );
+                            }
+                            // check if category still exists
+                            if (null !== $categoryMap[$categoryId]) {
+                                $categoryEntity = new PageCategoryEntity(
+                                    $categoryRegistry->getId(),
+                                    $categoryMap[$categoryId],
+                                    $page
+                                );
+                                $page->getCategories()->add($categoryEntity);
+                            }
+                        }
+                    }
+                }
+
+                $this->entityManager->flush();
+
+                $pageMap[$oldPageId] = $page;
+            }
+
+            // remove old tables
+            $connection->executeQuery("DROP TABLE `pages`");
+
+            $this->addFlash('success', $this->trans('Done! Migrated %amount% pages.', ['%amount%' => count($pageMap)]));
+
+            return true;
+        }
+
+        // future
+        /*switch ($oldVersion) {
+            case '4.0.0':
+            case '4.0.1':
+                // future upgrades
+        }*/
+
+        // update successful
+        return true;
+    }
+
+    /**
+     * @required
+     */
+    public function setAdditionalDependencies(
+        UserRepositoryInterface $userRepository
+    ) {
+        $this->userRepository = $userRepository;
+    }
 }

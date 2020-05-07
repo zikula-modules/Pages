@@ -23,6 +23,7 @@ application "Pages" targets ZK30 {
         Helper/CollectionFilterHelper.php,
         Helper/FeatureActivationHelper.php,
         Menu/ExtensionMenu.php,
+        PagesModuleInstaller.php,
         Twig/TwigExtension.php
     "
     markFiles "
