@@ -14,11 +14,20 @@
             {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
         </div>
     {% endif %}
+    {% if page.metaDescription is not empty %}
+        {{ pageSetVar('meta.description', page.metaDescription|striptags) }}
+    {% endif %}
+{% endblock %}
+{% block titleArea %}
+    {% if page.displayTitle %}
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
 {% block admin_page_icon 'eye' %}
 {% block content %}
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}
     <div class="zikulapagesmodule-page zikulapagesmodule-display">
+    {% if routeArea == 'admin' %}
         <dl>
             {% if page.workflowState is not empty and routeArea == 'admin' %}
                 <dt>{% trans %}State{% endtrans %}</dt>
@@ -148,6 +157,47 @@
             {{ include('@ZikulaPagesModule/Helper/includeCategoriesDisplay.html.twig', {obj: page}) }}
         {% endif %}
         {{ include('@ZikulaPagesModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: page}) }}
+    {% else %}
+        <article>
+        {% set displayCategories = featureActivationHelper.isEnabled(constant('Zikula\\PagesModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'page') %}
+        {% if page.displayWrapper or page.displayCreated or page.displayUpdated or displayCategories %}
+            <header>
+                <ul>
+                    {% if page.displayCreated and page.createdBy|default and page.createdBy.uid > 0 %}
+                        {% set profileLink = page.createdBy.uid|profileLinkByUserId %}
+                        <li>{{ 'Created by %user% on %date%'|trans({'%user%': profileLink, '%date%': page.createdDate|format_datetime('medium', 'short')})|raw }}</li>
+                    {% endif %}
+                    {% if page.displayUpdated and page.updatedBy|default and page.updatedBy.uid > 0%}
+                        {% set profileLink = page.updatedBy.uid|profileLinkByUserId %}
+                        {{ 'Last update by %user% on %date%'|trans({'%user%': profileLink, '%date%': page.updatedDate|format_datetime('medium', 'short')})|raw }}
+                    {% endif %}
+                    {% if displayCategories %}
+                        {{ include('@ZikulaPagesModule/Helper/includeCategoriesDisplay.html.twig', {obj: page}) }}
+                    {% endif %}
+                </ul>
+            </header>
+        {% endif %}
+
+        <div class="article-body">
+            {{ page.content|notifyFilters('zikulapagesmodule.filter_hooks.pages.filter')|safeHtml }}
+        </div>
+
+        {% if page.displayPrint or page.displayTextInfo %}
+            <footer>
+                {% if page.displayTextInfo %}
+                    {% trans with {'%contentLength%': page.content|length} %} %}%contentLength% total characters in this text{% endtrans %}
+                    <span class="text-separator">|</span>
+                    {% trans with {'%amountOfReads%': page.counter} %}%amountOfReads% reads{% endtrans %}
+                {% endif %}
+                {% if page.displayPrint %}
+                    <span class="printer-link">
+                        <a href="{{ path('zikulapagesmodule_page_displayprintable', {slug: page.slug}) }}"><i class="fas fa-print fa-2x"></i> {% trans %}Print this page{% endtrans %}</a>
+                    </span>
+                {% endif %}
+            </footer>
+        {% endif %}
+        </article>
+    {% endif %}
         {{ block('display_hooks') }}
     </div>
     {{ zikulapagesmodule_increaseCounter(page, 'counter') }}

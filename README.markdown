@@ -63,6 +63,7 @@ Structural changes:
 New features:
 
 - Added `active` flag for disabling pages.
+- Added support for RSS and Atom feeds.
 
 Deprecations:
 

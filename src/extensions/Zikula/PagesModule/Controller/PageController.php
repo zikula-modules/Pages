@@ -191,6 +191,31 @@ class PageController extends AbstractPageController
     }
     
     /**
+     * @Route("/print/{slug}")
+     * @Theme("print")
+     */
+    public function displayPrintableAction(
+        Request $request,
+        PermissionHelper $permissionHelper,
+        ControllerHelper $controllerHelper,
+        ViewHelper $viewHelper,
+        EntityFactory $entityFactory,
+        PageEntity $page = null,
+        string $slug = ''
+    ): Response {
+        return $this->displayInternal(
+            $request,
+            $permissionHelper,
+            $controllerHelper,
+            $viewHelper,
+            $entityFactory,
+            $page,
+            $slug,
+            false
+        );
+    }
+    
+    /**
      *
      * @Route("/admin/page/{slug}.{_format}",
      *        requirements = {"slug" = "[^/.]+", "_format" = "html"},
