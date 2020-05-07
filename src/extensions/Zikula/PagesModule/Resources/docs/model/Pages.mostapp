@@ -17,6 +17,11 @@ application "Pages" targets ZK30 {
     generateJsonTemplates false
     generateKmlTemplates false
     generateIcsTemplates false
+    skipFiles "
+    "
+    markFiles "
+        composer.json
+    "
     entities {
         entity "page" leading categorisable {
             nameMultiple "pages"

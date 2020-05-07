@@ -26,7 +26,7 @@
             "class": "Zikula\\PagesModule\\ZikulaPagesModule",
             "displayname": "Pages",
             "url": "pages",
-            "icon": "fas fa-database",
+            "icon": "fas fa-file-alt",
             "capabilities": {
                 "admin": {
                     "route": "zikulapagesmodule_page_adminindex"
