@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Zikula\PagesModule\Helper;
 
+use Doctrine\ORM\QueryBuilder;
 use Zikula\PagesModule\Helper\Base\AbstractCollectionFilterHelper;
 
 /**
@@ -21,5 +22,21 @@ use Zikula\PagesModule\Helper\Base\AbstractCollectionFilterHelper;
  */
 class CollectionFilterHelper extends AbstractCollectionFilterHelper
 {
-    // feel free to extend the collection filter helper here
+    protected function applyDefaultFiltersForPage(QueryBuilder $qb, array $parameters = []): QueryBuilder
+    {
+        $qb = parent::applyDefaultFiltersForPage($qb, $parameters);
+
+        $request = $this->requestStack->getCurrentRequest();
+        if (null !== $request) {
+            $routeName = $request->get('_route', '');
+            $isAdminArea = false !== strpos($routeName, 'zikulapagesmodule_page_admin');
+            if ($isAdminArea) {
+                return $qb;
+            }
+        }
+
+        $qb->andWhere('tbl.active = 1');
+        
+        return $qb;
+    }
 }

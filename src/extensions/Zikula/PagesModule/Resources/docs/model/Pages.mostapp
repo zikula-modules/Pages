@@ -18,7 +18,8 @@ application "Pages" targets ZK30 {
     generateKmlTemplates false
     generateIcsTemplates false
     skipFiles "
-        Controller/PageController.php
+        Controller/PageController.php,
+        Helper/CollectionFilterHelper.php
     "
     markFiles "
         composer.json
