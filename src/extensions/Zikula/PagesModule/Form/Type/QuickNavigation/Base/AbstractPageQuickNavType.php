@@ -17,13 +17,14 @@ namespace Zikula\PagesModule\Form\Type\QuickNavigation\Base;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Translation\Extractor\Annotation\Ignore;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType;
 use Zikula\CategoriesModule\Form\Type\CategoriesType;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\PagesModule\Helper\FeatureActivationHelper;
 use Zikula\PagesModule\Helper\ListEntriesHelper;
 
@@ -38,15 +39,22 @@ abstract class AbstractPageQuickNavType extends AbstractType
     protected $listHelper;
 
     /**
+     * @var LocaleApiInterface
+     */
+    protected $localeApi;
+
+    /**
      * @var FeatureActivationHelper
      */
     protected $featureActivationHelper;
 
     public function __construct(
         ListEntriesHelper $listHelper,
+        LocaleApiInterface $localeApi,
         FeatureActivationHelper $featureActivationHelper
     ) {
         $this->listHelper = $listHelper;
+        $this->localeApi = $localeApi;
         $this->featureActivationHelper = $featureActivationHelper;
     }
 
@@ -63,7 +71,7 @@ abstract class AbstractPageQuickNavType extends AbstractType
             $this->addCategoriesField($builder, $options);
         }
         $this->addListFields($builder, $options);
-        $this->addLanguageFields($builder, $options);
+        $this->addLocaleFields($builder, $options);
         $this->addSearchField($builder, $options);
         $this->addSortingFields($builder, $options);
         $this->addAmountField($builder, $options);
@@ -126,17 +134,18 @@ abstract class AbstractPageQuickNavType extends AbstractType
     }
 
     /**
-     * Adds language fields.
+     * Adds locale fields.
      */
-    public function addLanguageFields(FormBuilderInterface $builder, array $options = []): void
+    public function addLocaleFields(FormBuilderInterface $builder, array $options = []): void
     {
-        $builder->add('pageLanguage', LanguageType::class, [
+        $builder->add('pageLanguage', LocaleType::class, [
             'label' => 'Page language',
             'attr' => [
                 'class' => 'form-control-sm'
             ],
             'required' => false,
-            'placeholder' => 'All'
+            'placeholder' => 'All',
+            'choices' => $this->localeApi->getSupportedLocaleNames()
         ]);
     }
 

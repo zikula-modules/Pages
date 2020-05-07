@@ -137,7 +137,6 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     $whereArray[] = 'tbl.metaDescription';
                     $whereArray[] = 'tbl.pageLanguage';
                     $whereArray[] = 'tbl.content';
-                    $languageField = 'pageLanguage';
                     break;
             }
     

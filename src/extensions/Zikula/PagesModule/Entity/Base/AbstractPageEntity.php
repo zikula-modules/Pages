@@ -86,7 +86,7 @@ abstract class AbstractPageEntity extends EntityAccess
      * @ORM\Column(length=255)
      * @Assert\NotNull
      * @Assert\Length(min="0", max="255", allowEmptyString="true")
-     * @Assert\Language
+     * @Assert\Locale
      * @var string $pageLanguage
      */
     protected $pageLanguage = '';

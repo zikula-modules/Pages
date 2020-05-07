@@ -47,7 +47,7 @@ application "Pages" targets ZK30 {
                 string "pageLanguage" {
                     defaultValue ""
                     mandatory false
-                    role LANGUAGE
+                    role LOCALE
                 },
                 text "content",
                 integer "counter" counter {

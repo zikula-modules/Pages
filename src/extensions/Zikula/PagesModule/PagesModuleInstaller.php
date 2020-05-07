@@ -144,6 +144,7 @@ class PagesModuleInstaller extends AbstractPagesModuleInstaller
             }
 
             // remove old tables
+            $connection->executeQuery("DROP TABLE `pages_category`");
             $connection->executeQuery("DROP TABLE `pages`");
 
             $this->addFlash('success', $this->trans('Done! Migrated %amount% pages.', ['%amount%' => count($pageMap)]));

@@ -107,7 +107,7 @@
                         <a href="{{ path('zikulapagesmodule_page_' ~ routeArea ~ 'display', {'slug': page.slug}) }}" title="{{ 'View detail page'|trans({}, 'messages')|e('html_attr') }}">{{ page.title|notifyFilters('zikulapagesmodule.filterhook.pages')|safeHtml }}</a>
                     </td>
                     <td headers="hPageLanguage" class="text-left">
-                        {{ page.pageLanguage|language_name }}
+                        {{ page.pageLanguage|locale_name }}
                     </td>
                     <td headers="hContent" class="text-left">
                         {{ page.content|striptags|u.truncate(50) }}

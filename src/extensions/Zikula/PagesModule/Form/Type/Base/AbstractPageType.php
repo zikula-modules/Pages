@@ -18,7 +18,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -29,7 +28,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType;
 use Zikula\CategoriesModule\Form\Type\CategoriesType;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\PagesModule\Entity\Factory\EntityFactory;
 use Zikula\PagesModule\Entity\PageEntity;
 use Zikula\PagesModule\Entity\PageCategoryEntity;
@@ -60,6 +61,11 @@ abstract class AbstractPageType extends AbstractType
     protected $listHelper;
 
     /**
+     * @var LocaleApiInterface
+     */
+    protected $localeApi;
+
+    /**
      * @var FeatureActivationHelper
      */
     protected $featureActivationHelper;
@@ -68,11 +74,13 @@ abstract class AbstractPageType extends AbstractType
         RequestStack $requestStack,
         EntityFactory $entityFactory,
         ListEntriesHelper $listHelper,
+        LocaleApiInterface $localeApi,
         FeatureActivationHelper $featureActivationHelper
     ) {
         $this->requestStack = $requestStack;
         $this->entityFactory = $entityFactory;
         $this->listHelper = $listHelper;
+        $this->localeApi = $localeApi;
         $this->featureActivationHelper = $featureActivationHelper;
     }
 
@@ -114,7 +122,7 @@ abstract class AbstractPageType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('pageLanguage', LanguageType::class, [
+        $builder->add('pageLanguage', LocaleType::class, [
             'label' => 'Page language:',
             'empty_data' => '',
             'attr' => [
@@ -123,7 +131,9 @@ abstract class AbstractPageType extends AbstractType
                 'title' => 'Choose the page language of the page.'
             ],
             'required' => false,
-            'placeholder' => 'All'
+            'placeholder' => 'All',
+            'choices' => /** @Ignore */$this->localeApi->getSupportedLocaleNames(),
+            'choice_loader' => null,
             'choice_translation_locale' => $this->requestStack->getCurrentRequest()->getLocale()
         ]);
         

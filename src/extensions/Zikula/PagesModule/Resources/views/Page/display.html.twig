@@ -34,7 +34,7 @@
             {% endif %}
             {% if page.pageLanguage is not empty %}
                 <dt>{% trans %}Page language{% endtrans %}</dt>
-                <dd>{{ page.pageLanguage|language_name }}</dd>
+                <dd>{{ page.pageLanguage|locale_name }}</dd>
             {% endif %}
             {% if page.content is not empty %}
                 <dt>{% trans %}Content{% endtrans %}</dt>
