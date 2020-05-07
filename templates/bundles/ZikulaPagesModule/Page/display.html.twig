@@ -157,7 +157,7 @@
             {{ include('@ZikulaPagesModule/Helper/includeCategoriesDisplay.html.twig', {obj: page}) }}
         {% endif %}
         {{ include('@ZikulaPagesModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: page}) }}
-    {% else %}
+    {% else %}{# user area #}
         <article>
         {% set displayCategories = featureActivationHelper.isEnabled(constant('Zikula\\PagesModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'page') %}
         {% if page.displayWrapper or page.displayCreated or page.displayUpdated or displayCategories %}

@@ -1,0 +1,309 @@
+{# purpose of this template: pages list view #}
+{% extends routeArea == 'admin' ? '@ZikulaPagesModule/adminBase.html.twig' : '@ZikulaPagesModule/base.html.twig' %}
+{% trans_default_domain 'page' %}
+{% block title %}{% set list = app.request.query.get('list', '') %}{% if own %}{{ 'My pages'|trans }}{% elseif routeArea == 'admin' %}{{ 'Pages list'|trans }}{% elseif list == 'categories' %}{{ 'Categories list'|trans }}{% else %}{{ 'Pages list'|trans }}{% endif %}{% endblock %}
+{% block admin_page_icon 'list-alt' %}
+{% block content %}
+{% if routeArea == 'admin' %}
+    <div class="zikulapagesmodule-page zikulapagesmodule-view">
+        {% set viewActions = knp_menu_get('zikulaPagesMenuViewActions', [], {objectType: 'page', area: routeArea}) %}
+        {{ knp_menu_render(viewActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+        
+        {{ include('@ZikulaPagesModule/Page/viewQuickNav.html.twig') }}{# see template file for available options #}
+
+        {% if routeArea == 'admin' %}
+        <form action="{{ path('zikulapagesmodule_page_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="pagesViewForm">
+            <div>
+        {% endif %}
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <colgroup>
+                    {% if routeArea == 'admin' %}
+                        <col id="cSelect" />
+                    {% endif %}
+                    <col id="cItemActionsStart" />
+                    {% if routeArea == 'admin' %}
+                    <col id="cWorkflowState" />
+                    {% endif %}
+                    <col id="cTitle" />
+                    <col id="cPageLanguage" />
+                    <col id="cContent" />
+                    <col id="cCounter" />
+                    <col id="cActive" />
+                    <col id="cDisplayWrapper" />
+                    <col id="cDisplayTitle" />
+                    <col id="cDisplayCreated" />
+                    <col id="cDisplayUpdated" />
+                    <col id="cDisplayTextInfo" />
+                    <col id="cDisplayPrint" />
+                </colgroup>
+                <thead>
+                <tr>
+                    {% if routeArea == 'admin' %}
+                        <th id="hSelect" scope="col" class="text-center">
+                            <input type="checkbox" class="zikulapages-mass-toggle" />
+                        </th>
+                    {% endif %}
+                    <th id="hItemActionsStart" scope="col" class="">{% trans from 'messages' %}Actions{% endtrans %}</th>
+                    {% if routeArea == 'admin' %}
+                    <th id="hWorkflowState" scope="col" class="text-left">
+                        <a href="{{ sort.workflowState.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'state'}, 'messages')|e('html_attr') }}" class="{{ sort.workflowState.class }}">{% trans %}State{% endtrans %}</a>
+                    </th>
+                    {% endif %}
+                    <th id="hTitle" scope="col" class="text-left">
+                        <a href="{{ sort.title.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'title'}, 'messages')|e('html_attr') }}" class="{{ sort.title.class }}">{% trans %}Title{% endtrans %}</a>
+                    </th>
+                    <th id="hPageLanguage" scope="col" class="text-left">
+                        <a href="{{ sort.pageLanguage.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'page language'}, 'messages')|e('html_attr') }}" class="{{ sort.pageLanguage.class }}">{% trans %}Page language{% endtrans %}</a>
+                    </th>
+                    <th id="hContent" scope="col" class="text-left">
+                        <a href="{{ sort.content.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'content'}, 'messages')|e('html_attr') }}" class="{{ sort.content.class }}">{% trans %}Content{% endtrans %}</a>
+                    </th>
+                    <th id="hCounter" scope="col" class="text-right">
+                        <a href="{{ sort.counter.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'counter'}, 'messages')|e('html_attr') }}" class="{{ sort.counter.class }}">{% trans %}Counter{% endtrans %}</a>
+                    </th>
+                    <th id="hActive" scope="col" class="text-center">
+                        <a href="{{ sort.active.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'active'}, 'messages')|e('html_attr') }}" class="{{ sort.active.class }}">{% trans %}Active{% endtrans %}</a>
+                    </th>
+                    <th id="hDisplayWrapper" scope="col" class="text-center">
+                        <a href="{{ sort.displayWrapper.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'display wrapper'}, 'messages')|e('html_attr') }}" class="{{ sort.displayWrapper.class }}">{% trans %}Display wrapper{% endtrans %}</a>
+                    </th>
+                    <th id="hDisplayTitle" scope="col" class="text-center">
+                        <a href="{{ sort.displayTitle.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'display title'}, 'messages')|e('html_attr') }}" class="{{ sort.displayTitle.class }}">{% trans %}Display title{% endtrans %}</a>
+                    </th>
+                    <th id="hDisplayCreated" scope="col" class="text-center">
+                        <a href="{{ sort.displayCreated.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'display created'}, 'messages')|e('html_attr') }}" class="{{ sort.displayCreated.class }}">{% trans %}Display created{% endtrans %}</a>
+                    </th>
+                    <th id="hDisplayUpdated" scope="col" class="text-center">
+                        <a href="{{ sort.displayUpdated.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'display updated'}, 'messages')|e('html_attr') }}" class="{{ sort.displayUpdated.class }}">{% trans %}Display updated{% endtrans %}</a>
+                    </th>
+                    <th id="hDisplayTextInfo" scope="col" class="text-center">
+                        <a href="{{ sort.displayTextInfo.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'display text info'}, 'messages')|e('html_attr') }}" class="{{ sort.displayTextInfo.class }}">{% trans %}Display text info{% endtrans %}</a>
+                    </th>
+                    <th id="hDisplayPrint" scope="col" class="text-center">
+                        <a href="{{ sort.displayPrint.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'display print'}, 'messages')|e('html_attr') }}" class="{{ sort.displayPrint.class }}">{% trans %}Display print{% endtrans %}</a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+            
+            {% for page in items %}
+                <tr>
+                    {% if routeArea == 'admin' %}
+                        <td headers="hSelect" class="text-center">
+                            <input type="checkbox" name="items[]" value="{{ page.getKey() }}" class="zikulapages-toggle-checkbox" />
+                        </td>
+                    {% endif %}
+                    <td id="itemActions{{ page.getKey() }}Start" headers="hItemActionsStart" class="actions">
+                        {% set itemActions = knp_menu_get('zikulaPagesMenuItemActions', [], {entity: page, area: routeArea, context: 'view'}) %}
+                        <div class="dropdown item-actions">
+                            <a id="itemActions{{ page.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="d-none dropdown-toggle"><i class="fas fa-tasks"></i></a>
+                            {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+                        </div>
+                    </td>
+                    {% if routeArea == 'admin' %}<td headers="hWorkflowState" class="text-left nowrap">
+                        {{ page.workflowState|zikulapagesmodule_objectState }}
+                    </td>
+                    {% endif %}<td headers="hTitle" class="text-left">
+                        <a href="{{ path('zikulapagesmodule_page_' ~ routeArea ~ 'display', {'slug': page.slug}) }}" title="{{ 'View detail page'|trans({}, 'messages')|e('html_attr') }}">{{ page.title|notifyFilters('zikulapagesmodule.filterhook.pages')|safeHtml }}</a>
+                    </td>
+                    <td headers="hPageLanguage" class="text-left">
+                        {{ page.pageLanguage|language_name }}
+                    </td>
+                    <td headers="hContent" class="text-left">
+                        {{ page.content|striptags|u.truncate(50) }}
+                    </td>
+                    <td headers="hCounter" class="text-right">
+                        {{ page.counter }}
+                    </td>
+                    <td headers="hActive" class="text-center">
+                        {% set itemId = page.getKey() %}
+                        <a id="toggleActive{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="active" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fas fa-check text-success{% if not page.active %} d-none{% endif %}" id="yesActive{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            <i class="fas fa-times text-danger{% if page.active %} d-none{% endif %}" id="noActive{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        </a>
+                        <noscript><div id="noscriptActive{{ itemId|e('html_attr') }}">
+                            {% if page.active %}
+                                <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% else %}
+                                <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% endif %}
+                        </div></noscript>
+                    </td>
+                    <td headers="hDisplayWrapper" class="text-center">
+                        {% set itemId = page.getKey() %}
+                        <a id="toggleDisplayWrapper{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayWrapper" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fas fa-check text-success{% if not page.displayWrapper %} d-none{% endif %}" id="yesDisplayWrapper{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            <i class="fas fa-times text-danger{% if page.displayWrapper %} d-none{% endif %}" id="noDisplayWrapper{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        </a>
+                        <noscript><div id="noscriptDisplayWrapper{{ itemId|e('html_attr') }}">
+                            {% if page.displayWrapper %}
+                                <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% else %}
+                                <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% endif %}
+                        </div></noscript>
+                    </td>
+                    <td headers="hDisplayTitle" class="text-center">
+                        {% set itemId = page.getKey() %}
+                        <a id="toggleDisplayTitle{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayTitle" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fas fa-check text-success{% if not page.displayTitle %} d-none{% endif %}" id="yesDisplayTitle{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            <i class="fas fa-times text-danger{% if page.displayTitle %} d-none{% endif %}" id="noDisplayTitle{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        </a>
+                        <noscript><div id="noscriptDisplayTitle{{ itemId|e('html_attr') }}">
+                            {% if page.displayTitle %}
+                                <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% else %}
+                                <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% endif %}
+                        </div></noscript>
+                    </td>
+                    <td headers="hDisplayCreated" class="text-center">
+                        {% set itemId = page.getKey() %}
+                        <a id="toggleDisplayCreated{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayCreated" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fas fa-check text-success{% if not page.displayCreated %} d-none{% endif %}" id="yesDisplayCreated{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            <i class="fas fa-times text-danger{% if page.displayCreated %} d-none{% endif %}" id="noDisplayCreated{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        </a>
+                        <noscript><div id="noscriptDisplayCreated{{ itemId|e('html_attr') }}">
+                            {% if page.displayCreated %}
+                                <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% else %}
+                                <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% endif %}
+                        </div></noscript>
+                    </td>
+                    <td headers="hDisplayUpdated" class="text-center">
+                        {% set itemId = page.getKey() %}
+                        <a id="toggleDisplayUpdated{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayUpdated" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fas fa-check text-success{% if not page.displayUpdated %} d-none{% endif %}" id="yesDisplayUpdated{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            <i class="fas fa-times text-danger{% if page.displayUpdated %} d-none{% endif %}" id="noDisplayUpdated{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        </a>
+                        <noscript><div id="noscriptDisplayUpdated{{ itemId|e('html_attr') }}">
+                            {% if page.displayUpdated %}
+                                <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% else %}
+                                <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% endif %}
+                        </div></noscript>
+                    </td>
+                    <td headers="hDisplayTextInfo" class="text-center">
+                        {% set itemId = page.getKey() %}
+                        <a id="toggleDisplayTextInfo{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayTextInfo" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fas fa-check text-success{% if not page.displayTextInfo %} d-none{% endif %}" id="yesDisplayTextInfo{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            <i class="fas fa-times text-danger{% if page.displayTextInfo %} d-none{% endif %}" id="noDisplayTextInfo{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        </a>
+                        <noscript><div id="noscriptDisplayTextInfo{{ itemId|e('html_attr') }}">
+                            {% if page.displayTextInfo %}
+                                <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% else %}
+                                <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% endif %}
+                        </div></noscript>
+                    </td>
+                    <td headers="hDisplayPrint" class="text-center">
+                        {% set itemId = page.getKey() %}
+                        <a id="toggleDisplayPrint{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="zikulapages-ajax-toggle d-none" data-object-type="page" data-field-name="displayPrint" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fas fa-check text-success{% if not page.displayPrint %} d-none{% endif %}" id="yesDisplayPrint{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            <i class="fas fa-times text-danger{% if page.displayPrint %} d-none{% endif %}" id="noDisplayPrint{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        </a>
+                        <noscript><div id="noscriptDisplayPrint{{ itemId|e('html_attr') }}">
+                            {% if page.displayPrint %}
+                                <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% else %}
+                                <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% endif %}
+                        </div></noscript>
+                    </td>
+                </tr>
+            {% else %}
+                <tr class="table-info">
+                    <td colspan="{% if routeArea == 'admin' %}14{% else %}13{% endif %}" class="text-center">
+                {% trans %}No pages found.{% endtrans %}
+                  </td>
+                </tr>
+            {% endfor %}
+            
+                </tbody>
+            </table>
+            </div>
+            
+            {% if all != 1 %}
+                {{ include(paginator.template) }}
+            {% endif %}
+        {% if routeArea == 'admin' %}
+                <fieldset class="my-3 pt-3">
+                    <div class="row">
+                        <label for="zikulaPagesModuleAction" class="col-md-3 col-form-label">{% trans %}With selected pages{% endtrans %}</label>
+                        <div class="col-md-6">
+                            <select id="zikulaPagesModuleAction" name="action" class="form-control form-control-sm">
+                                <option value="">{% trans from 'messages' %}Choose action{% endtrans %}</option>
+                                <option value="delete" title="{{ 'Delete content permanently.'|trans({}, 'messages')|e('html_attr') }}">{% trans from 'messages' %}Delete{% endtrans %}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" value="{{ 'Submit'|trans({}, 'messages')|e('html_attr') }}" class="btn btn-secondary btn-sm" />
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+        {% endif %}
+
+        {{ block('display_hooks') }}
+    </div>
+{% else %}{# user area #}
+    {% set list = app.request.query.get('list', '') %}
+    <div class="zikulapagesmodule-page zikulapagesmodule-view list-{{ list|default('pages') }}">
+        {% if list != 'categories' %}
+            <h3>{% trans %}Available pages:{% endtrans %}</h3>
+            {% if items|length > 0 %}
+                <ul>
+                    {% for page in items %}
+                        <li><a href="{{ path('zikulapagesmodule_page_display', {slug: page.slug}) }}" title="{{ page.title|e('html_attr') }}">{{ page.title }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% if all != 1 %}
+                    {{ include(paginator.template) }}
+                {% endif %}
+            {% else %}
+                <p>{% trans %}No pages found.{% endtrans %}</p>
+            {% endif %}
+        {% elseif list == 'categories' %}
+            <h3>{% trans %}Page categories{% endtrans %}</h3>
+            {% set categoryInfoPerRegistry = zikulapagesmodule_categoryInfo() %}
+            {% if categoryInfoPerRegistry|length > 0 %}
+                {% for registryLabel, categoryInfo in categoryInfoPerRegistry %}
+                    <h4>{{ registryLabel }}</h4>
+                    {% set categories = categoryInfo.categories %}
+                    {% if categories|length > 0 %}
+                        {% set pageCounts = categoryInfo.pageCounts %}
+                        <p>{% trans %}The available categories:{% endtrans %}</p>
+                        <ul>
+                            {% for category in categories %}
+                                {% set categoryName = category.displayName[app.request.locale]|default(category.name) %}
+                                {% set amountOfPages = pageCounts[category.id]|default(0) %}
+                                <li><a href="{{ path('zikulapagesmodule_page_view', {catId: category.id}) }}" title="{{ categoryName|e('html_attr') }}">{% if category.icon %}<i class="fa-fw {{ category.icon|e('html_attr') }}"></i> {% endif %}{{ categoryName }}</a> ({{ 'plural_n.pages'|trans({'%count%': amountOfPages})|desc('{count, plural,\n  =0    {No pages}\n  one   {One page}\n  other {# pages}\n}') }}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{% trans %}No categories found.{% endtrans %}</p>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>{% trans %}No categories found.{% endtrans %}</p>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}
+{% block display_hooks %}
+    {# here you can activate calling display hooks for the view page if you need it #}
+    {# % if routeArea != 'admin' %}
+        {% set hooks = notifyDisplayHooks(eventName='zikulapagesmodule.ui_hooks.pages.display_view', urlObject=currentUrlObject, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endif % #}
+{% endblock %}

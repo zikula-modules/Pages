@@ -14,6 +14,11 @@ declare(strict_types=1);
 
 namespace Zikula\PagesModule\Twig;
 
+use Twig\TwigFunction;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\PagesModule\Entity\Factory\EntityFactory;
+use Zikula\PagesModule\Helper\CategoryHelper;
+use Zikula\PagesModule\Helper\CollectionFilterHelper;
 use Zikula\PagesModule\Twig\Base\AbstractTwigExtension;
 
 /**
@@ -21,5 +26,87 @@ use Zikula\PagesModule\Twig\Base\AbstractTwigExtension;
  */
 class TwigExtension extends AbstractTwigExtension
 {
-    // feel free to add your own Twig extension methods here
+    /**
+     * @var CategoryHelper
+     */
+    private $categoryHelper;
+
+    /**
+     * @var EntityFactory
+     */
+    private $entityFactory;
+
+    /**
+     * @var CollectionFilterHelper
+     */
+    private $collectionFilterHelper;
+
+    public function getFunctions()
+    {
+        $functions = parent::getFunctions();
+
+        $functions[] = new TwigFunction('zikulapagesmodule_categoryInfo', [$this, 'getCategoryInfo']);
+
+        return $functions;
+    }
+
+    /**
+     * The zikulapagesmodule_categoryInfo function returns all main categories
+     * together with the amount of included pages.
+     * Examples:
+     *    {% set categoryInfoPerRegistry = zikulapagesmodule_categoryInfo() %}
+     */
+    public function getCategoryInfo(): array
+    {
+        $properties = $this->categoryHelper->getAllPropertiesWithMainCat('page');
+        if (!count($properties)) {
+            return [];
+        }
+
+        $categoryInfoPerRegistry = [];
+        $locale = $this->requestStack->getCurrentRequest()->getLocale();
+        $pageRepository = $this->entityFactory->getRepository('page');
+
+        foreach ($properties as $categoryId) {
+            $baseCategory = $this->categoryRepository->find($categoryId);
+            if (null === $baseCategory) {
+                continue;
+            }
+            $displayName = $baseCategory->getDisplayName();
+            $registryLabel = $displayName[$locale] ?? $displayName['en'];
+
+            $categories = $baseCategory->getChildren();
+            $pageCounts = [];
+            /** @var CategoryEntity $category */
+            foreach ($categories as $category) {
+                $qb = $pageRepository->getCountQuery('', false);
+                $qb = $this->collectionFilterHelper->applyDefaultFilters('page', $qb);
+                $qb->leftJoin('tbl.categories', 'tblCategories')
+                    ->andWhere('tblCategories.category = :category')
+                    ->setParameter('category', $category->getId());
+                $pageCount = $qb->getQuery()->getSingleScalarResult();
+                $pageCounts[$category->getId()] = $pageCount;
+            }
+
+            $categoryInfoPerRegistry[$registryLabel] = [
+                'categories' => $categories,
+                'pageCounts' => $pageCounts
+            ];
+        }
+
+        return $categoryInfoPerRegistry;
+    }
+
+    /**
+     * @required
+     */
+    public function setAdditionalDependencies(
+        CategoryHelper $categoryHelper,
+        EntityFactory $entityFactory,
+        CollectionFilterHelper $collectionFilterHelper
+    ): void {
+        $this->categoryHelper = $categoryHelper;
+        $this->entityFactory = $entityFactory;
+        $this->collectionFilterHelper = $collectionFilterHelper;
+    }
 }

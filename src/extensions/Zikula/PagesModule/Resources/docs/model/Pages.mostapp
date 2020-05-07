@@ -21,7 +21,9 @@ application "Pages" targets ZK30 {
         Controller/PageController.php,
         Entity/Factory/EntityInitialiser.php,
         Helper/CollectionFilterHelper.php,
-        Helper/FeatureActivationHelper.php
+        Helper/FeatureActivationHelper.php,
+        Menu/ExtensionMenu.php,
+        Twig/TwigExtension.php
     "
     markFiles "
         composer.json
