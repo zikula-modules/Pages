@@ -289,7 +289,7 @@ abstract class AbstractPageRepository extends EntityRepository
         $qb = $this->genericBaseQuery('', '', $useJoins, $slimMode);
         $qb = $this->addIdListFilter($idList, $qb);
     
-        if (!$slimMode && null !== $this->collectionFilterHelper) {
+        if (null !== $this->collectionFilterHelper) {
             $qb = $this->collectionFilterHelper->applyDefaultFilters('page', $qb);
         }
     
@@ -324,7 +324,7 @@ abstract class AbstractPageRepository extends EntityRepository
             $qb = $this->addExclusion($qb, [$excludeId]);
         }
     
-        if (!$slimMode && null !== $this->collectionFilterHelper) {
+        if (null !== $this->collectionFilterHelper) {
             $qb = $this->collectionFilterHelper->applyDefaultFilters('page', $qb);
         }
     
@@ -358,7 +358,7 @@ abstract class AbstractPageRepository extends EntityRepository
         bool $slimMode = false
     ): QueryBuilder {
         $qb = $this->genericBaseQuery($where, $orderBy, $useJoins, $slimMode);
-        if (!$slimMode && null !== $this->collectionFilterHelper) {
+        if (null !== $this->collectionFilterHelper) {
             $qb = $this->collectionFilterHelper->addCommonViewFilters('page', $qb);
         }
     
