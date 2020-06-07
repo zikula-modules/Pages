@@ -20,7 +20,6 @@ use Twig\Environment;
 use Twig\Loader\LoaderInterface;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ThemeModule\Engine\AssetFilter;
 use Zikula\PagesModule\Helper\ControllerHelper;
 use Zikula\PagesModule\Helper\PermissionHelper;
 
@@ -50,11 +49,6 @@ abstract class AbstractViewHelper
     protected $variableApi;
     
     /**
-     * @var AssetFilter
-     */
-    protected $assetFilter;
-    
-    /**
      * @var ControllerHelper
      */
     protected $controllerHelper;
@@ -69,7 +63,6 @@ abstract class AbstractViewHelper
         LoaderInterface $twigLoader,
         RequestStack $requestStack,
         VariableApiInterface $variableApi,
-        AssetFilter $assetFilter,
         ControllerHelper $controllerHelper,
         PermissionHelper $permissionHelper
     ) {
@@ -77,7 +70,6 @@ abstract class AbstractViewHelper
         $this->twigLoader = $twigLoader;
         $this->requestStack = $requestStack;
         $this->variableApi = $variableApi;
-        $this->assetFilter = $assetFilter;
         $this->controllerHelper = $controllerHelper;
         $this->permissionHelper = $permissionHelper;
     }
@@ -134,7 +126,6 @@ abstract class AbstractViewHelper
         $response = null;
         if (true === $raw) {
             // standalone output
-            $output = $this->injectAssetsIntoRawOutput($output);
     
             $response = new PlainResponse($output);
         } else {
@@ -153,14 +144,6 @@ abstract class AbstractViewHelper
         }
     
         return $response;
-    }
-    
-    /**
-     * Adds assets to a raw page which is not processed by the Theme engine.
-     */
-    protected function injectAssetsIntoRawOutput(string $output = ''): string
-    {
-        return $this->assetFilter->filter($output);
     }
     
     /**

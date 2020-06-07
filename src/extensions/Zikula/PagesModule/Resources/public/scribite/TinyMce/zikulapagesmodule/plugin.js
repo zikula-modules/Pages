@@ -7,22 +7,17 @@
  * @param {string} url Absolute URL to where the plugin is located
  */
 tinymce.PluginManager.add('zikulapagesmodule', function(editor, url) {
-    var icon;
-
-    icon = Zikula.Config.baseURL + Zikula.Config.baseURI + '/public/modules/zikulapages/images/admin.png';
-
-    editor.addButton('zikulapagesmodule', {
-        //text: 'Pages',
-        image: icon,
-        onclick: function() {
+    editor.ui.registry.addButton('zikulapagesmodule', {
+        icon: 'link',
+        tooltip: 'Pages',
+        onAction: function() {
             ZikulaPagesModuleFinderOpenPopup(editor, 'tinymce');
         }
     });
-    editor.addMenuItem('zikulapagesmodule', {
+    editor.ui.registry.addMenuItem('zikulapagesmodule', {
         text: 'Pages',
-        context: 'tools',
-        image: icon,
-        onclick: function() {
+        icon: 'link',
+        onAction: function() {
             ZikulaPagesModuleFinderOpenPopup(editor, 'tinymce');
         }
     });
