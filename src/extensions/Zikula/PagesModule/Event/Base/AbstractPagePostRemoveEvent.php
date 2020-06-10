@@ -19,7 +19,7 @@ use Zikula\PagesModule\Entity\PageEntity;
 /**
  * Event base class for filtering page processing.
  */
-class AbstractPagePostRemoveEvent
+abstract class AbstractPagePostRemoveEvent
 {
     /**
      * @var PageEntity Reference to treated entity instance.
