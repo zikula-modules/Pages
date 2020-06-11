@@ -11,8 +11,8 @@ jobs:
 
       - name: Move custom files
         run: |
-          cp -r public/overrides/zikulapagesmodule/ src/extensions/Zikula/PagesModule/Resources/public/
-          cp -r templates/bundles/ZikulaPagesModule/ src/extensions/Zikula/PagesModule/Resources/views/
+          cp -tr public/overrides/zikulapagesmodule/ src/extensions/Zikula/PagesModule/Resources/public/
+          cp -tr templates/bundles/ZikulaPagesModule/ src/extensions/Zikula/PagesModule/Resources/views/
           mv src/extensions/Zikula/PagesModule/README.md src/extensions/Zikula/PagesModule/_README.md
           mv README.markdown src/extensions/Zikula/PagesModule/README.md
 
