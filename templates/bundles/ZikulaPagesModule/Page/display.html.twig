@@ -185,7 +185,7 @@
         {% if page.displayPrint or page.displayTextInfo %}
             <footer>
                 {% if page.displayTextInfo %}
-                    {% trans with {'%contentLength%': page.content|length} %} %}%contentLength% total characters in this text{% endtrans %}
+                    {% trans with {'%contentLength%': page.content|length} %}%contentLength% total characters in this text{% endtrans %}
                     <span class="text-separator">|</span>
                     {% trans with {'%amountOfReads%': page.counter} %}%amountOfReads% reads{% endtrans %}
                 {% endif %}
