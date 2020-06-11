@@ -16,15 +16,15 @@ jobs:
           mv src/extensions/Zikula/PagesModule/README.md src/extensions/Zikula/PagesModule/_README.md
           mv README.markdown src/extensions/Zikula/PagesModule/README.md
 
-      - name: Remove customization dirs
-        run: |
-          rm -rf ./public
-          rm -rf ./templates
-          rm -rf ./.github
-
-      - name: Finalize package
-        run: |
-          mv src/extensions/Zikula/PagesModule ./
+#      - name: Remove customization dirs
+#        run: |
+#          rm -rf ./public
+#          rm -rf ./templates
+#          rm -rf ./.github
+#
+#      - name: Finalize package
+#        run: |
+#          mv src/extensions/Zikula/PagesModule ./
 #          rm -rf ./src
 
       # see https://github.com/actions/upload-artifact
@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: ZikulaPagesModule_v4.0.0
-          path: './PagesModule'
+          path: './src/extensions/Zikula/PagesModule'
