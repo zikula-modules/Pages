@@ -37,8 +37,8 @@ class PagesModuleInstaller extends AbstractPagesModuleInstaller
             ini_set('max_execution_time', 300); // 300 seconds = 5 minutes
 
             // delete all old data
-            $this->variableApi->delAll('pages');
-            $this->variableApi->delAll('Pages');
+            $this->getVariableApi()->delAll('pages');
+            $this->getVariableApi()->delAll('Pages');
 
             // reinstall
             $this->install();
