@@ -206,7 +206,7 @@ abstract class AbstractPagesModuleInstaller extends AbstractExtensionInstaller
         $this->delVars();
     
         // remove category registry entries
-        $registries = $this->registryRepository->findBy(['modname' => 'ZikulaPagesModule']);
+        $registries = $this->categoryRegistryRepository->findBy(['modname' => 'ZikulaPagesModule']);
         foreach ($registries as $registry) {
             $this->entityManager->remove($registry);
         }
