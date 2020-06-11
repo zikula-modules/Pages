@@ -4,32 +4,32 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout sources
-      uses: actions/checkout@v2
-      with:
-        ref: master
+      - name: Checkout sources
+        uses: actions/checkout@v2
+        with:
+          ref: master
 
-    - name: Move custom files
-      - run: |
-          - cp -r public/overrides/zikulapagesmodule/ src/extensions/Zikula/PagesModule/Resources/public/
-          - cp -r templates/bundles/ZikulaPagesModule/ src/extensions/Zikula/PagesModule/Resources/views/
-          - mv src/extensions/Zikula/PagesModule/README.md src/extensions/Zikula/PagesModule/_README.md
-          - mv README.markdown src/extensions/Zikula/PagesModule/README.md
+      - name: Move custom files
+        - run: |
+            - cp -r public/overrides/zikulapagesmodule/ src/extensions/Zikula/PagesModule/Resources/public/
+            - cp -r templates/bundles/ZikulaPagesModule/ src/extensions/Zikula/PagesModule/Resources/views/
+            - mv src/extensions/Zikula/PagesModule/README.md src/extensions/Zikula/PagesModule/_README.md
+            - mv README.markdown src/extensions/Zikula/PagesModule/README.md
 
-    - name: Remove customization dirs
-      - run: |
-          - rm -rf public
-          - rm -rf templates
-          - rm -rf .github
+      - name: Remove customization dirs
+        - run: |
+            - rm -rf public
+            - rm -rf templates
+            - rm -rf .github
 
-    - name: Finalize package
-      - run: |
-          - mv src/extensions/Zikula/PagesModule .
-          - rm -rf src
+      - name: Finalize package
+        - run: |
+            - mv src/extensions/Zikula/PagesModule .
+            - rm -rf src
 
-    # see https://github.com/actions/upload-artifact
-    - name: Upload release folder as artifact
-      uses: actions/upload-artifact@master
-      with:
-        name: ZikulaPagesModule_v4.0.0
-        path: './ZikulaPagesModule_v4.0.0'
+      # see https://github.com/actions/upload-artifact
+      - name: Upload release folder as artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: ZikulaPagesModule_v4.0.0
+          path: './ZikulaPagesModule_v4.0.0'
