@@ -134,7 +134,6 @@ abstract class AbstractPageType extends AbstractType
             'placeholder' => 'All',
             'choices' => /** @Ignore */$this->localeApi->getSupportedLocaleNames(),
             'choice_loader' => null,
-            'choice_translation_locale' => $this->requestStack->getCurrentRequest()->getLocale()
         ]);
         
         $builder->add('content', TextareaType::class, [
