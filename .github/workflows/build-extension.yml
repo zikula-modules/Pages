@@ -1,7 +1,5 @@
-name: Test module
-on:
-  push:
-    branches: [master]
+name: Build extension for release
+on: [push] # maybe just on tag
 jobs:
   build:
     runs-on: ubuntu-latest
