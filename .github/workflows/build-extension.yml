@@ -18,14 +18,14 @@ jobs:
 
       - name: Remove customization dirs
         run: |
-          rm -rf public
-          rm -rf templates
-          rm -rf .github
+          rm -rf ./public
+          rm -rf ./templates
+          rm -rf ./.github
 
       - name: Finalize package
         run: |
-          mv src/extensions/Zikula/PagesModule .
-          rm -rf src
+          mv src/extensions/Zikula/PagesModule ./
+#          rm -rf ./src
 
       # see https://github.com/actions/upload-artifact
       - name: Upload release folder as artifact
