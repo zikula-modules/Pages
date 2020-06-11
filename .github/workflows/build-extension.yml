@@ -1,5 +1,7 @@
 name: Test module
-on: [push] # maybe just on tag
+on:
+  push:
+    branches: [master]
 jobs:
   build:
     runs-on: ubuntu-latest
