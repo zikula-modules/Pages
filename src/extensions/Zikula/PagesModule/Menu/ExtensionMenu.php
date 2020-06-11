@@ -39,7 +39,7 @@ class ExtensionMenu extends AbstractExtensionMenu
         $menu = parent::get($type);
 
         if (self::TYPE_USER !== $type) {
-            return 0 === $menu->count() ? null : $menu;
+            return null === $menu || 0 === $menu->count() ? null : $menu;
         }
 
         $pagesLabel = $this->translator->trans('Pages', [], 'page');
