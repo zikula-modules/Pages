@@ -32,6 +32,8 @@ class EntityInitialiser extends AbstractEntityInitialiser
     {
         parent::initPage($entity);
 
+        $variableApi = $this->variableApi;
+
         $entity->setDisplayWrapper($variableApi->get('ZikulaPagesModule', 'displayWrapper', true));
         $entity->setDisplayTitle($variableApi->get('ZikulaPagesModule', 'displayTitle', true));
         $entity->setDisplayCreated($variableApi->get('ZikulaPagesModule', 'displayCreated', true));

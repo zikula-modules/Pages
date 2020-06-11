@@ -44,7 +44,7 @@ class ExtensionMenu extends AbstractExtensionMenu
 
         $pagesLabel = $this->translator->trans('Pages', [], 'page');
         $pagesLink = $menu->getChild($pagesLabel);
-        if (null !== $myPagesLink) {
+        if (null !== $pagesLink) {
             $pagesLink
                 ->setLabel('Pages list')
                 ->setAttribute('icon', 'fas fa-list')
@@ -52,13 +52,12 @@ class ExtensionMenu extends AbstractExtensionMenu
         }
 
         if ($this->featureActivationHelper->hasCategories('page')) {
-                $menu->addChild('Categories', [
-                    'route' => 'zikulapagesmodule_page_view',
-                    'routeParameters' => ['list' => 'categories']
-                ])
-                    ->setAttribute('icon', 'fas fa-tags')
-                ;
-            }
+            $menu->addChild('Categories', [
+                'route' => 'zikulapagesmodule_page_view',
+                'routeParameters' => ['list' => 'categories']
+            ])
+                ->setAttribute('icon', 'fas fa-tags')
+            ;
         }
 
         return 0 === $menu->count() ? null : $menu;
