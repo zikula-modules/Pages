@@ -10,22 +10,22 @@ jobs:
           ref: master
 
       - name: Move custom files
-        - run: |
-            - cp -r public/overrides/zikulapagesmodule/ src/extensions/Zikula/PagesModule/Resources/public/
-            - cp -r templates/bundles/ZikulaPagesModule/ src/extensions/Zikula/PagesModule/Resources/views/
-            - mv src/extensions/Zikula/PagesModule/README.md src/extensions/Zikula/PagesModule/_README.md
-            - mv README.markdown src/extensions/Zikula/PagesModule/README.md
+        run: |
+          cp -r public/overrides/zikulapagesmodule/ src/extensions/Zikula/PagesModule/Resources/public/
+          cp -r templates/bundles/ZikulaPagesModule/ src/extensions/Zikula/PagesModule/Resources/views/
+          mv src/extensions/Zikula/PagesModule/README.md src/extensions/Zikula/PagesModule/_README.md
+          mv README.markdown src/extensions/Zikula/PagesModule/README.md
 
       - name: Remove customization dirs
-        - run: |
-            - rm -rf public
-            - rm -rf templates
-            - rm -rf .github
+        run: |
+          rm -rf public
+          rm -rf templates
+          rm -rf .github
 
       - name: Finalize package
-        - run: |
-            - mv src/extensions/Zikula/PagesModule .
-            - rm -rf src
+        run: |
+          mv src/extensions/Zikula/PagesModule .
+          rm -rf src
 
       # see https://github.com/actions/upload-artifact
       - name: Upload release folder as artifact
