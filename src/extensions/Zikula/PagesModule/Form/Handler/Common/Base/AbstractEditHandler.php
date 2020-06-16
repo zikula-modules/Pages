@@ -477,7 +477,7 @@ abstract class AbstractEditHandler
         $templateId = $request->query->getInt('astemplate');
         $entity = null;
     
-        if ($templateId > 0) {
+        if (0 < $templateId) {
             // reuse existing entity
             $entityT = $this->entityFactory->getRepository($this->objectType)->selectById($templateId);
             if (null === $entityT) {
