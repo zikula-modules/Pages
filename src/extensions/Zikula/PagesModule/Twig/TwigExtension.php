@@ -16,6 +16,7 @@ namespace Zikula\PagesModule\Twig;
 
 use Twig\TwigFunction;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\PagesModule\Entity\Factory\EntityFactory;
 use Zikula\PagesModule\Helper\CategoryHelper;
 use Zikula\PagesModule\Helper\CollectionFilterHelper;
@@ -40,6 +41,11 @@ class TwigExtension extends AbstractTwigExtension
      * @var CollectionFilterHelper
      */
     private $collectionFilterHelper;
+
+    /**
+     * @var CategoryRepositoryInterface
+     */
+    private $categoryRepository;
 
     public function getFunctions()
     {
@@ -103,10 +109,12 @@ class TwigExtension extends AbstractTwigExtension
     public function setAdditionalDependencies(
         CategoryHelper $categoryHelper,
         EntityFactory $entityFactory,
-        CollectionFilterHelper $collectionFilterHelper
+        CollectionFilterHelper $collectionFilterHelper,
+        CategoryRepositoryInterface $categoryRepository;
     ): void {
         $this->categoryHelper = $categoryHelper;
         $this->entityFactory = $entityFactory;
         $this->collectionFilterHelper = $collectionFilterHelper;
+        $this->categoryRepository = $categoryRepository;
     }
 }
