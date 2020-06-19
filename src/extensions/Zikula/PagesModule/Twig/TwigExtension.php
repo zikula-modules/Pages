@@ -110,7 +110,7 @@ class TwigExtension extends AbstractTwigExtension
         CategoryHelper $categoryHelper,
         EntityFactory $entityFactory,
         CollectionFilterHelper $collectionFilterHelper,
-        CategoryRepositoryInterface $categoryRepository;
+        CategoryRepositoryInterface $categoryRepository
     ): void {
         $this->categoryHelper = $categoryHelper;
         $this->entityFactory = $entityFactory;
