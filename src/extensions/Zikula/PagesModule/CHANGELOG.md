@@ -1,3 +1,3 @@
 # Changelog
 
-Changes in ZikulaPagesModule 4.0.0
+Changes in ZikulaPagesModule 4.1.0
