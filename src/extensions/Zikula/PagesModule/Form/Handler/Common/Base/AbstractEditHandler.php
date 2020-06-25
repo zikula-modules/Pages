@@ -539,7 +539,7 @@ abstract class AbstractEditHandler
         $entity = $this->entityRef;
     
         if (method_exists($entity, 'supportsHookSubscribers') && $entity->supportsHookSubscribers()) {
-            // Let any ui hooks perform additional validation actions
+            // let any ui hooks perform additional validation actions
             $hookType = 'delete' === $action
                 ? UiHooksCategory::TYPE_VALIDATE_DELETE
                 : UiHooksCategory::TYPE_VALIDATE_EDIT
@@ -574,14 +574,14 @@ abstract class AbstractEditHandler
                 $routeUrl = new RouteUrl('zikulapagesmodule_' . $this->objectTypeLower . '_display', $urlArgs);
             }
     
-            // Call form aware processing hooks
+            // call form aware processing hooks
             $hookType = 'delete' === $action
                 ? FormAwareCategory::TYPE_PROCESS_DELETE
                 : FormAwareCategory::TYPE_PROCESS_EDIT
             ;
             $this->hookHelper->callFormProcessHooks($this->form, $entity, $hookType, $routeUrl);
     
-            // Let any ui hooks know that we have created, updated or deleted an item
+            // let any ui hooks know that we have created, updated or deleted an item
             $hookType = 'delete' === $action
                 ? UiHooksCategory::TYPE_PROCESS_DELETE
                 : UiHooksCategory::TYPE_PROCESS_EDIT
