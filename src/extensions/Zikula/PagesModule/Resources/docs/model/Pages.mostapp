@@ -3,7 +3,7 @@ application "Pages" targets ZK30 {
     author "Zikula Team"
     email "info@ziku.la"
     url "https://ziku.la"
-    version "4.0.0"
+    version "4.1.0"
     prefix "pages"
     generateAccountApi false
     generateModerationBlock false
