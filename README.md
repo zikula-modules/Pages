@@ -39,10 +39,10 @@ The Pages module is installed like this:
 1. Ensure you have Zikula 2.x with Pages 3.2.3 running (download from the [this release](https://github.com/zikula-modules/Pages/releases/tag/3.2.3)).
 2. Upgrade Zikula core to 3.x.
 3. Delete the `modules/Zikula/PagesModule/` directory entirely.
-4. Copy the content of `extensions/` into the `extensions/` directory of your Zikula installation. Afterwards you should a folder named `extensions/Zikula/ContentModule/`.
+4. Copy the content of `extensions/` into the `extensions/` directory of your Zikula installation. Afterwards you should a folder named `extensions/Zikula/PagesModule/`.
 5. In `/.env.local` set `APP_DEBUG=1`.
 6. **Create a backup of your database!**
-7. Update ZikulaContentModule in the extensions administration.
+7. Update ZikulaPagesModule in the extensions administration.
 8. In `/.env.local` set `APP_DEBUG=0`.
 
 In case something goes wrong:
@@ -53,6 +53,10 @@ In case something goes wrong:
 4. Update ZikulaPagesModule in the extensions administration again.
 
 ## Changelog
+
+### Version 4.1.0
+
+- Fixed combination of owner permission, private mode and only own flag.
 
 ### Version 4.0.0
 
