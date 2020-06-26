@@ -69,6 +69,7 @@ New features:
 - Added `active` flag for disabling pages.
 - Added support for RSS and Atom feeds.
 - Added support for MultiHook needles.
+- Added owner permission support so people may edit their own pages.
 
 Deprecations:
 
