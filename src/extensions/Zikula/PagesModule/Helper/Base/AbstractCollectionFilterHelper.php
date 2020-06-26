@@ -227,7 +227,11 @@ abstract class AbstractCollectionFilterHelper
             return $qb;
         }
     
-        $showOnlyOwnEntries = (bool)$this->variableApi->get('ZikulaPagesModule', 'pagePrivateMode', false);
+        $showOnlyOwnEntries = (bool)$request->query->getInt('own', (int) $this->showOnlyOwnEntries);
+        $privateMode = (bool)$this->variableApi->get('ZikulaPagesModule', 'pagePrivateMode', false);
+        if ($privateMode) {
+            $showOnlyOwnEntries = true;
+        }
         if ($showOnlyOwnEntries) {
             $qb = $this->addCreatorFilter($qb);
         }
