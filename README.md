@@ -56,6 +56,12 @@ In case something goes wrong:
 
 ### Version 4.1.0
 
+New features:
+
+- None yet.
+
+Bugfixes:
+
 - Fixed combination of owner permission, private mode and only own flag.
 
 ### Version 4.0.0
