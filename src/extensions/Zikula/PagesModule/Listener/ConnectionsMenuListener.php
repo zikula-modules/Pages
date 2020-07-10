@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Zikula\PagesModule\Listener;
 
-use Zikula\PagesModule\Listener\Base\AbstractModuleDispatchListener;
+use Zikula\PagesModule\Listener\Base\AbstractConnectionsMenuListener;
 
 /**
  * Event handler implementation class for adding connections to extension menus.
