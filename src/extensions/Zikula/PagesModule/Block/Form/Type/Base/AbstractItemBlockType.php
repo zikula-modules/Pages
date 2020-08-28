@@ -125,7 +125,7 @@ abstract class AbstractItemBlockType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'object_type' => 'page'
+                'object_type' => 'page',
             ])
             ->setRequired(['object_type'])
             ->setAllowedTypes('object_type', 'string')

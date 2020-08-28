@@ -211,7 +211,6 @@ abstract class AbstractPageEntity extends EntityAccess
      */
     protected $categories = null;
     
-    
     /**
      * PageEntity constructor.
      *

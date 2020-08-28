@@ -254,7 +254,7 @@ abstract class AbstractPageType extends AbstractType
                 'maxlength' => 255,
                 'class' => 'validate-unique',
                 /** @Ignore */
-                'title' => $helpText
+                'title' => $helpText,
             ],
             /** @Ignore */
             'help' => $helpText,
