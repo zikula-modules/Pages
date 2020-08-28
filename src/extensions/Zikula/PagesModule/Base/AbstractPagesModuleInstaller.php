@@ -82,7 +82,8 @@ abstract class AbstractPagesModuleInstaller extends AbstractExtensionInstaller
         CurrentUserApiInterface $currentUserApi,
         CategoryRepositoryInterface $categoryRepository,
         CategoryRegistryRepositoryInterface $categoryRegistryRepository,
-        CategoryPermissionApi $categoryPermissionApi) {
+        CategoryPermissionApi $categoryPermissionApi
+    ) {
         parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
         $this->logger = $logger;
         $this->currentUserApi = $currentUserApi;
