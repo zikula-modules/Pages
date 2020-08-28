@@ -36,7 +36,6 @@ class AjaxController extends AbstractAjaxController
 {
     
     /**
-     *
      * @Route("/getItemListFinder", methods = {"GET"}, options={"expose"=true})
      */
     public function getItemListFinderAction(

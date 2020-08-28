@@ -61,7 +61,6 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
         ];
     }
     
-    
     /**
      * Listener for the `EditorHelperEvent`.
      *

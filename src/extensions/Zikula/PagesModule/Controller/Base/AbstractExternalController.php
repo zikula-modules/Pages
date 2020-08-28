@@ -38,7 +38,6 @@ abstract class AbstractExternalController extends AbstractController
 {
     /**
      * Displays one item of a certain object type using a separate template for external usages.
-     *
      */
     public function displayAction(
         Request $request,

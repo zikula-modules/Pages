@@ -64,7 +64,7 @@ abstract class AbstractItemBlockType extends AbstractType
     {
         $builder->add('objectType', HiddenType::class, [
             'label' => 'Object type:',
-            'empty_data' => 'page'
+            'empty_data' => 'page',
         ]);
     }
 
@@ -88,7 +88,7 @@ abstract class AbstractItemBlockType extends AbstractType
             'expanded' => false,
             'choices' => /** @Ignore */$choices,
             'required' => true,
-            'label' => 'Entry to display:'
+            'label' => 'Entry to display:',
         ]);
     }
 
@@ -104,14 +104,14 @@ abstract class AbstractItemBlockType extends AbstractType
                 'attr' => [
                     'maxlength' => 80,
                     /** @Ignore */
-                    'title' => /** @Translate */'Example' . ': displaySpecial.html.twig'
+                    'title' => /** @Translate */'Example' . ': displaySpecial.html.twig',
                 ],
                 /** @Ignore */
                 'help' => [
                     /** @Translate */'Example' . ': <code>displaySpecial.html.twig</code>',
                     /** @Translate */'Needs to be located in the "External/YourEntity/" directory.'
                 ],
-                'help_html' => true
+                'help_html' => true,
             ])
         ;
     }

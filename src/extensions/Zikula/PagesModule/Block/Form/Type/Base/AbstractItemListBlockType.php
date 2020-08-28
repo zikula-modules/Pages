@@ -177,7 +177,7 @@ abstract class AbstractItemListBlockType extends AbstractType
             'attr' => [
                 'maxlength' => 2,
                 /** @Ignore */
-                'title' => $helpText
+                'title' => $helpText,
             ],
             /** @Ignore */
             'help' => $helpText,
@@ -246,7 +246,7 @@ abstract class AbstractItemListBlockType extends AbstractType
                 'object_type' => 'page',
                 'is_categorisable' => false,
                 'category_helper' => null,
-                'feature_activation_helper' => null
+                'feature_activation_helper' => null,
             ])
             ->setRequired(['object_type'])
             ->setDefined(['is_categorisable', 'category_helper', 'feature_activation_helper'])

@@ -51,7 +51,6 @@ abstract class AbstractPageFinderType extends AbstractType
     protected $featureActivationHelper;
 
     public function __construct(
-        
         RequestStack $requestStack,
         VariableApiInterface $variableApi,
         FeatureActivationHelper $featureActivationHelper
