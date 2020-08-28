@@ -206,6 +206,7 @@ abstract class AbstractPageEntity extends EntityAccess
      *                mappedBy="entity", cascade={"all"},
      *                orphanRemoval=true
      * )
+     *
      * @var \Zikula\PagesModule\Entity\PageCategoryEntity
      */
     protected $categories = null;

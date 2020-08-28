@@ -34,7 +34,6 @@ use Zikula\PagesModule\Helper\ListEntriesHelper;
  */
 abstract class AbstractConfigType extends AbstractType
 {
-
     /**
      * @var ListEntriesHelper
      */

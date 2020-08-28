@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Zikula\PagesModule\Helper\Base;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;

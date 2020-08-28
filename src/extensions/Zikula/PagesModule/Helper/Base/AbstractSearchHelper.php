@@ -213,7 +213,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
             'zikulaPagesModulePages' => [
                 'value' => 'page',
                 'label' => $this->trans('Pages', [], 'page'),
-            ]
+            ],
         ];
     
         $allowedTypes = $this->controllerHelper->getObjectTypes(

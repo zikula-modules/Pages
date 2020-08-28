@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Zikula\PagesModule\Block\Base;
 
-use Exception;
 use Twig\Loader\LoaderInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\PagesModule\Block\Form\Type\ItemListBlockType;

@@ -115,7 +115,7 @@ abstract class AbstractAjaxController extends AbstractController
     ): array {
         $objectType = $item->get_objectType();
         $previewParameters = [
-            $objectType => $item
+            $objectType => $item,
         ];
         $contextArgs = ['controller' => $objectType, 'action' => 'display'];
         $previewParameters = $controllerHelper->addTemplateParameters(
