@@ -127,7 +127,7 @@ abstract class AbstractPageEntity extends EntityAccess
     protected $active = true;
     
     /**
-     * Display additional information
+     * Display additional information.
      *
      * @ORM\Column(type="boolean")
      * @Assert\NotNull
@@ -138,7 +138,7 @@ abstract class AbstractPageEntity extends EntityAccess
     protected $displayWrapper = true;
     
     /**
-     * Display page title
+     * Display page title.
      *
      * @ORM\Column(type="boolean")
      * @Assert\NotNull
@@ -149,7 +149,7 @@ abstract class AbstractPageEntity extends EntityAccess
     protected $displayTitle = true;
     
     /**
-     * Display page creation date
+     * Display page creation date.
      *
      * @ORM\Column(type="boolean")
      * @Assert\NotNull
@@ -160,7 +160,7 @@ abstract class AbstractPageEntity extends EntityAccess
     protected $displayCreated = true;
     
     /**
-     * Display page update date
+     * Display page update date.
      *
      * @ORM\Column(type="boolean")
      * @Assert\NotNull
@@ -171,7 +171,7 @@ abstract class AbstractPageEntity extends EntityAccess
     protected $displayUpdated = true;
     
     /**
-     * Display page text statistics
+     * Display page text statistics.
      *
      * @ORM\Column(type="boolean")
      * @Assert\NotNull
@@ -182,7 +182,7 @@ abstract class AbstractPageEntity extends EntityAccess
     protected $displayTextInfo = true;
     
     /**
-     * Display page print link
+     * Display page print link.
      *
      * @ORM\Column(type="boolean")
      * @Assert\NotNull

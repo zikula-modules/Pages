@@ -71,7 +71,7 @@ abstract class AbstractItemListBlockType extends AbstractType
         $helpText = /** @Translate */'If you change this please save the block once to reload the parameters below.';
         $builder->add('objectType', HiddenType::class, [
             'label' => 'Object type:',
-            'empty_data' => 'page'
+            'empty_data' => 'page',
         ]);
     }
 
@@ -97,7 +97,7 @@ abstract class AbstractItemListBlockType extends AbstractType
             'empty_data' => $hasMultiSelection ? [] : null,
             'attr' => [
                 'class' => 'category-selector',
-                'title' => 'This is an optional filter.'
+                'title' => 'This is an optional filter.',
             ],
             'help' => 'This is an optional filter.',
             'required' => false,
@@ -105,7 +105,7 @@ abstract class AbstractItemListBlockType extends AbstractType
             'module' => 'ZikulaPagesModule',
             'entity' => ucfirst($objectType) . 'Entity',
             'entityCategoryClass' => $entityCategoryClass,
-            'showRegistryLabels' => true
+            'showRegistryLabels' => true,
         ]);
     
         $categoryRepository = $this->categoryRepository;
@@ -150,17 +150,17 @@ abstract class AbstractItemListBlockType extends AbstractType
         $builder->add('sorting', ChoiceType::class, [
             'label' => 'Sorting:',
             'label_attr' => [
-                'class' => 'radio-custom'
+                'class' => 'radio-custom',
             ],
             'empty_data' => 'default',
             'choices' => [
                 'Random' => 'random',
                 'Newest' => 'newest',
                 'Updated' => 'updated',
-                'Default' => 'default'
+                'Default' => 'default',
             ],
             'multiple' => false,
-            'expanded' => true
+            'expanded' => true,
         ]);
     }
 
@@ -181,7 +181,7 @@ abstract class AbstractItemListBlockType extends AbstractType
             ],
             /** @Ignore */
             'help' => $helpText,
-            'empty_data' => 5
+            'empty_data' => 5,
         ]);
     }
 
@@ -196,10 +196,10 @@ abstract class AbstractItemListBlockType extends AbstractType
             'choices' => [
                 'Only item titles' => 'itemlist_display.html.twig',
                 'With description' => 'itemlist_display_description.html.twig',
-                'Custom template' => 'custom'
+                'Custom template' => 'custom',
             ],
             'multiple' => false,
-            'expanded' => false
+            'expanded' => false,
         ]);
         $exampleTemplate = 'itemlist_[objectType]_display.html.twig';
         $builder->add('customTemplate', TextType::class, [
@@ -208,11 +208,11 @@ abstract class AbstractItemListBlockType extends AbstractType
             'attr' => [
                 'maxlength' => 80,
                 /** @Ignore */
-                'title' => /** @Translate */'Example' . ': ' . $exampleTemplate
+                'title' => /** @Translate */'Example' . ': ' . $exampleTemplate,
             ],
             /** @Ignore */
             'help' => /** @Translate */'Example' . ': <code>' . $exampleTemplate . '</code>',
-            'help_html' => true
+            'help_html' => true,
         ]);
     }
 
@@ -227,10 +227,10 @@ abstract class AbstractItemListBlockType extends AbstractType
             'attr' => [
                 'maxlength' => 255,
                 /** @Ignore */
-                'title' => /** @Translate */'Example' . ': tbl.age >= 18'
+                'title' => /** @Translate */'Example' . ': tbl.age >= 18',
             ],
             /** @Ignore */
-            'help' => /** @Translate */'Example' . ': tbl.age >= 18'
+            'help' => /** @Translate */'Example' . ': tbl.age >= 18',
         ]);
     }
 

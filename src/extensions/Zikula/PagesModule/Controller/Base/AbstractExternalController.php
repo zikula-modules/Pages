@@ -77,7 +77,7 @@ abstract class AbstractExternalController extends AbstractController
             'objectType' => $objectType,
             'source' => $source,
             $objectType => $entity,
-            'displayMode' => $displayMode
+            'displayMode' => $displayMode,
         ];
         
         $contextArgs = ['controller' => 'external', 'action' => 'display'];
@@ -136,7 +136,7 @@ abstract class AbstractExternalController extends AbstractController
             return new RedirectResponse($redirectUrl);
         }
         
-        $formData = $request->query->get('zikulapagesmodule_' . strtolower($objectType) . 'finder', []);
+        $formData = $request->query->get('zikulapagesmodule_' . mb_strtolower($objectType) . 'finder', []);
         
         if (!$permissionHelper->hasComponentPermission($objectType, ACCESS_COMMENT)) {
             throw new AccessDeniedException();
@@ -154,7 +154,7 @@ abstract class AbstractExternalController extends AbstractController
             $sort = $repository->getDefaultSortingField();
         }
         
-        $sdir = strtolower($sortdir);
+        $sdir = mb_strtolower($sortdir);
         if ('asc' !== $sdir && 'desc' !== $sdir) {
             $sdir = 'asc';
         }
@@ -171,13 +171,13 @@ abstract class AbstractExternalController extends AbstractController
             'sort' => $sort,
             'sortdir' => $sdir,
             'currentPage' => $page,
-            'language' => isset($formData['language']) ? $formData['language'] : $request->getLocale()
+            'language' => isset($formData['language']) ? $formData['language'] : $request->getLocale(),
         ];
         $searchTerm = '';
         
         $formOptions = [
             'object_type' => $objectType,
-            'editor_name' => $editor
+            'editor_name' => $editor,
         ];
         $form = $this->createForm(
             'Zikula\PagesModule\Form\Type\Finder\\' . ucfirst($objectType) . 'FinderType',

@@ -87,7 +87,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
         }
     
         $builder->add('active', HiddenType::class, [
-            'data' => true
+            'data' => true,
         ]);
     
         $searchTypes = $this->getSearchTypes();
@@ -98,7 +98,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
                 'value' => $typeInfo['value'],
                 'label' => $typeInfo['label'],
                 'label_attr' => ['class' => 'checkbox-inline'],
-                'required' => false
+                'required' => false,
             ]);
         }
     }
@@ -184,7 +184,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
                         ? $entity[$languageField]
                         : $request->getLocale()
                     ;
-                    $displayUrl = new RouteUrl('zikulapagesmodule_' . strtolower($objectType) . '_display', $urlArgs);
+                    $displayUrl = new RouteUrl('zikulapagesmodule_' . mb_strtolower($objectType) . '_display', $urlArgs);
                 }
     
                 $result = new SearchResultEntity();
@@ -212,7 +212,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
         $searchTypes = [
             'zikulaPagesModulePages' => [
                 'value' => 'page',
-                'label' => $this->trans('Pages', [], 'page')
+                'label' => $this->trans('Pages', [], 'page'),
             ]
         ];
     
@@ -262,7 +262,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
                 $expr = $qb->expr()->like($field, "?$i");
                 $subWhere->add($expr);
                 $qb->setParameter($i, '%' . $word . '%');
-                $i++;
+                ++$i;
             }
             $where->add($subWhere);
         }

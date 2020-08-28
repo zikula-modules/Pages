@@ -86,7 +86,7 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     
         $commonEditorAssets = [
             'images/admin.png',
-            'js/ZikulaPagesModule.Finder.js'
+            'js/ZikulaPagesModule.Finder.js',
         ];
     
         foreach ($commonEditorAssets as $assetRelativePath) {
@@ -101,7 +101,7 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
             [
                 'module' => 'ZikulaPagesModule',
                 'type' => 'javascript',
-                'path' => $this->getPathToModuleWebAssets() . 'js/ZikulaPagesModule.Finder.js'
+                'path' => $this->getPathToModuleWebAssets() . 'js/ZikulaPagesModule.Finder.js',
             ]
         );
     }
@@ -117,12 +117,12 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
                 'name' => 'zikulapagesmodule',
                 'path' => $this->getPathToModuleWebAssets() . 'scribite/' . $editorId . '/zikulapagesmodule/',
                 'file' => 'plugin.js',
-                'img' => 'ed_zikulapagesmodule.gif'
+                'img' => 'ed_zikulapagesmodule.gif',
             ]);
         } elseif (in_array($editorId, ['Quill', 'Summernote', 'TinyMce'], true)) {
             $event->getPluginCollection()->add([
                 'name' => 'zikulapagesmodule',
-                'path' => $this->getPathToModuleWebAssets() . 'scribite/' . $editorId . '/zikulapagesmodule/plugin.js'
+                'path' => $this->getPathToModuleWebAssets() . 'scribite/' . $editorId . '/zikulapagesmodule/plugin.js',
             ]);
         }
     }

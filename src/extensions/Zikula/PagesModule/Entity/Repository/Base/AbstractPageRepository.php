@@ -608,7 +608,6 @@ abstract class AbstractPageRepository extends EntityRepository
      */
     protected function addJoinsToFrom(QueryBuilder $qb): QueryBuilder
     {
-    
         $qb->leftJoin('tbl.categories', 'tblCategories');
     
         return $qb;

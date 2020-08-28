@@ -30,6 +30,7 @@ abstract class AbstractPageCategoryEntity extends AbstractCategoryAssignment
     /**
      * @ORM\ManyToOne(targetEntity="\Zikula\PagesModule\Entity\PageEntity", inversedBy="categories")
      * @ORM\JoinColumn(name="entityId", referencedColumnName="id")
+     *
      * @var PageEntity
      */
     protected $entity;
