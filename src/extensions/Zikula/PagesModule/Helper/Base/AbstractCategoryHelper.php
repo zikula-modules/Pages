@@ -121,9 +121,9 @@ abstract class AbstractCategoryHelper
     
         $properties = $this->getAllProperties($objectType);
         $inputValues = null;
-        $inputName = 'zikulapagesmodule_' . strtolower($objectType) . 'quicknav';
+        $inputName = 'zikulapagesmodule_' . mb_strtolower($objectType) . 'quicknav';
         if (!$dataSource->has($inputName)) {
-            $inputName = 'zikulapagesmodule_' . strtolower($objectType) . 'finder';
+            $inputName = 'zikulapagesmodule_' . mb_strtolower($objectType) . 'finder';
         }
         if ($dataSource->has($inputName)) {
             $inputValues = $dataSource->get($inputName);
@@ -172,7 +172,7 @@ abstract class AbstractCategoryHelper
         $filtersPerRegistry = [];
         $filterParameters = [
             'values' => [],
-            'registries' => []
+            'registries' => [],
         ];
     
         foreach ($properties as $propertyName => $propertyId) {
@@ -225,7 +225,7 @@ abstract class AbstractCategoryHelper
     
         $moduleRegistries = $this->categoryRegistryRepository->findBy([
             'modname' => 'ZikulaPagesModule',
-            'entityname' => ucfirst($objectType) . 'Entity'
+            'entityname' => ucfirst($objectType) . 'Entity',
         ]);
     
         $result = [];
@@ -247,7 +247,7 @@ abstract class AbstractCategoryHelper
     
         $moduleRegistries = $this->categoryRegistryRepository->findBy([
             'modname' => 'ZikulaPagesModule',
-            'entityname' => ucfirst($objectType) . 'Entity'
+            'entityname' => ucfirst($objectType) . 'Entity',
         ], ['id' => 'ASC']);
     
         $result = [];

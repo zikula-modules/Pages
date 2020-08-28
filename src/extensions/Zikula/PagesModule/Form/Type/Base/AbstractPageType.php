@@ -257,7 +257,7 @@ abstract class AbstractPageType extends AbstractType
                 'title' => $helpText
             ],
             /** @Ignore */
-            'help' => $helpText
+            'help' => $helpText,
         ]);
     }
 
@@ -270,14 +270,14 @@ abstract class AbstractPageType extends AbstractType
             'label' => 'Category:',
             'empty_data' => null,
             'attr' => [
-                'class' => 'category-selector'
+                'class' => 'category-selector',
             ],
             'required' => false,
             'multiple' => false,
             'module' => 'ZikulaPagesModule',
             'entity' => 'PageEntity',
             'entityCategoryClass' => PageCategoryEntity::class,
-            'showRegistryLabels' => true
+            'showRegistryLabels' => true,
         ]);
     }
 

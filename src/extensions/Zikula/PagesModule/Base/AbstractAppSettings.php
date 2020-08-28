@@ -39,7 +39,7 @@ abstract class AbstractAppSettings
     protected $enableCategorisation = false;
     
     /**
-     * Display additional information
+     * Display additional information.
      *
      * @Assert\NotNull
      * @Assert\Type(type="bool")
@@ -49,7 +49,7 @@ abstract class AbstractAppSettings
     protected $displayWrapper = true;
     
     /**
-     * Display page title
+     * Display page title.
      *
      * @Assert\NotNull
      * @Assert\Type(type="bool")
@@ -59,7 +59,7 @@ abstract class AbstractAppSettings
     protected $displayTitle = true;
     
     /**
-     * Display page creation date
+     * Display page creation date.
      *
      * @Assert\NotNull
      * @Assert\Type(type="bool")
@@ -69,7 +69,7 @@ abstract class AbstractAppSettings
     protected $displayCreated = true;
     
     /**
-     * Display page update date
+     * Display page update date.
      *
      * @Assert\NotNull
      * @Assert\Type(type="bool")
@@ -79,7 +79,7 @@ abstract class AbstractAppSettings
     protected $displayUpdated = true;
     
     /**
-     * Display page text statistics
+     * Display page text statistics.
      *
      * @Assert\NotNull
      * @Assert\Type(type="bool")
@@ -89,7 +89,7 @@ abstract class AbstractAppSettings
     protected $displayTextInfo = true;
     
     /**
-     * Display page print link
+     * Display page print link.
      *
      * @Assert\NotNull
      * @Assert\Type(type="bool")

@@ -66,7 +66,7 @@ abstract class AbstractAjaxController extends AbstractController
             $sort = $repository->getDefaultSortingField();
         }
         
-        $sdir = strtolower($request->query->getAlpha('sortdir'));
+        $sdir = mb_strtolower($request->query->getAlpha('sortdir'));
         if ('asc' !== $sdir && 'desc' !== $sdir) {
             $sdir = 'asc';
         }
@@ -77,7 +77,7 @@ abstract class AbstractAjaxController extends AbstractController
         
         $entities = [];
         if ('' !== $searchTerm) {
-            list ($entities, $totalAmount) = $repository->selectSearch($searchTerm, [], $sortParam, 1, 50, false);
+            list($entities, $totalAmount) = $repository->selectSearch($searchTerm, [], $sortParam, 1, 50, false);
         } else {
             $entities = $repository->selectWhere($where, $sortParam);
         }
@@ -132,7 +132,7 @@ abstract class AbstractAjaxController extends AbstractController
         $previewInfo = base64_encode($previewInfo);
     
         $title = $entityDisplayHelper->getFormattedTitle($item);
-        $description = $descriptionField !== '' ? $item[$descriptionField] : '';
+        $description = '' !== $descriptionField ? $item[$descriptionField] : '';
     
         return [
             'id' => $itemId,

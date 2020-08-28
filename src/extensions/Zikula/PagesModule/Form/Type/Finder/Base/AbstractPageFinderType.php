@@ -90,7 +90,7 @@ abstract class AbstractPageFinderType extends AbstractType
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn-success',
-                ]
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
@@ -248,7 +248,7 @@ abstract class AbstractPageFinderType extends AbstractType
             ->setDefaults([
                 'object_type' => 'page',
                 'editor_name' => 'ckeditor',
-                'translation_domain' => 'page'
+                'translation_domain' => 'page',
             ])
             ->setRequired(['object_type', 'editor_name'])
             ->setAllowedTypes('object_type', 'string')

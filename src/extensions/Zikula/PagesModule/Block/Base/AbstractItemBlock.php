@@ -84,7 +84,7 @@ abstract class AbstractItemBlock extends AbstractBlockHandler
             'objectType' => $properties['objectType'],
             'id' => $properties['id'],
             'source' => 'block',
-            'displayMode' => 'embed'
+            'displayMode' => 'embed',
         ];
     }
     
@@ -112,7 +112,7 @@ abstract class AbstractItemBlock extends AbstractBlockHandler
         }
     
         return [
-            'object_type' => $objectType
+            'object_type' => $objectType,
         ];
     }
     
@@ -130,7 +130,7 @@ abstract class AbstractItemBlock extends AbstractBlockHandler
             'objectType' => 'page',
             'id' => null,
             'template' => 'item_display.html.twig',
-            'customTemplate' => null
+            'customTemplate' => null,
         ];
     }
     

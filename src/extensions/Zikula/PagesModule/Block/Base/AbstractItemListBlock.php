@@ -145,7 +145,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         $templateParameters = [
             'vars' => $properties,
             'objectType' => $objectType,
-            'items' => $entities
+            'items' => $entities,
         ];
         if ($hasCategories) {
             $templateParameters['properties'] = $categoryProperties;
@@ -179,7 +179,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         $templateOptions = [
             'Block/' . $templateForObjectType,
             'Block/' . $templateFile,
-            'Block/itemlist.html.twig'
+            'Block/itemlist.html.twig',
         ];
     
         $template = '';
@@ -221,7 +221,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
             'object_type' => $objectType,
             'is_categorisable' => in_array($objectType, $this->categorisableObjectTypes, true),
             'category_helper' => $this->categoryHelper,
-            'feature_activation_helper' => $this->featureActivationHelper
+            'feature_activation_helper' => $this->featureActivationHelper,
         ];
     }
     
@@ -241,7 +241,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
             'amount' => 5,
             'template' => 'itemlist_display.html.twig',
             'customTemplate' => null,
-            'filter' => ''
+            'filter' => '',
         ];
     }
     

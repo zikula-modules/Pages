@@ -155,7 +155,7 @@ abstract class AbstractPageController extends AbstractController
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
         EntityFactory $entityFactory,
-        PageEntity $page = null,
+        ?PageEntity $page = null,
         string $slug = '',
         bool $isAdmin = false
     ): Response {
@@ -181,7 +181,7 @@ abstract class AbstractPageController extends AbstractController
         
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : '',
-            $objectType => $page
+            $objectType => $page,
         ];
         
         $templateParameters = $controllerHelper->processDisplayActionParameters(

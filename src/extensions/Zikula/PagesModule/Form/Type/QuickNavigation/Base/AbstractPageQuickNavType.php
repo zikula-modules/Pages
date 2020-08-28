@@ -148,7 +148,7 @@ abstract class AbstractPageQuickNavType extends AbstractType
             'required' => false,
             'placeholder' => 'All',
             /** @Ignore */
-            'choices' => $this->localeApi->getSupportedLocaleNames()
+            'choices' => $this->localeApi->getSupportedLocaleNames(),
         ]);
     }
 

@@ -23,6 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Entity extension domain class storing page categories.
  *
  * This is the concrete category class for page entities.
+ *
  * @ORM\Entity(repositoryClass="\Zikula\PagesModule\Entity\Repository\PageCategoryRepository")
  * @ORM\Table(name="zikula_pages_page_category",
  *     uniqueConstraints={
