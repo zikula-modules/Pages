@@ -69,6 +69,7 @@ abstract class AbstractPageController extends AbstractController
         
         return $this->redirectToRoute('zikulapagesmodule_page_' . $templateParameters['routeArea'] . 'view');
     }
+
     
     /**
      * This action provides an item list overview.
@@ -142,6 +143,7 @@ abstract class AbstractPageController extends AbstractController
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
     }
+
     
     /**
      * This action provides a item detail view.
@@ -195,6 +197,7 @@ abstract class AbstractPageController extends AbstractController
         
         return $response;
     }
+
     
     /**
      * This action provides a handling of edit requests.
@@ -239,6 +242,8 @@ abstract class AbstractPageController extends AbstractController
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'edit', $templateParameters);
     }
+
+    
     
     /**
      * Process status changes for multiple items.
@@ -389,5 +394,4 @@ abstract class AbstractPageController extends AbstractController
         
         return $this->redirectToRoute('zikulapagesmodule_page_' . ($isAdmin ? 'admin' : '') . 'index');
     }
-    
 }
