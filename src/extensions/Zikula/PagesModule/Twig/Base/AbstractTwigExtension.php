@@ -120,7 +120,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
         return $result;
     }
     
-    
     /**
      * The zikulapagesmodule_listEntry filter displays the name
      * or names for a given list item.
@@ -139,7 +138,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
     
         return $this->listHelper->resolve($value, $objectType, $fieldName, $delimiter);
     }
-    
     
     /**
      * The zikulapagesmodule_increaseCounter function increases a counter field of a specific entity.
@@ -174,7 +172,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
             ['id' => $entityId]
         );
     }
-    
     
     
     
