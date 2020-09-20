@@ -45,7 +45,6 @@ use Zikula\PagesModule\Helper\WorkflowHelper;
  */
 abstract class AbstractPageController extends AbstractController
 {
-    
     /**
      * This is the default action handling the index area called without defining arguments.
      *
@@ -70,7 +69,6 @@ abstract class AbstractPageController extends AbstractController
         return $this->redirectToRoute('zikulapagesmodule_page_' . $templateParameters['routeArea'] . 'view');
     }
 
-    
     /**
      * This action provides an item list overview.
      *
@@ -144,7 +142,6 @@ abstract class AbstractPageController extends AbstractController
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
     }
 
-    
     /**
      * This action provides a item detail view.
      *
@@ -198,7 +195,6 @@ abstract class AbstractPageController extends AbstractController
         return $response;
     }
 
-    
     /**
      * This action provides a handling of edit requests.
      *
