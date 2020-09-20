@@ -25,6 +25,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\PagesModule\Form\Type\Field\MultiListType;
 use Zikula\PagesModule\AppSettings;
 use Zikula\PagesModule\Helper\ListEntriesHelper;
@@ -60,7 +61,7 @@ abstract class AbstractConfigType extends AbstractType
      */
     public function addGeneralSettingsFields(FormBuilderInterface $builder, array $options = []): void
     {
-        $builder->add('enableCategorisation', CheckboxType::class, [
+        $builder->add($builder->create('enableCategorisation', CheckboxType::class, [
             'label' => 'Enable categorisation:',
             'label_attr' => [
                 'class' => 'switch-custom',
@@ -70,8 +71,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable categorisation option',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayWrapper', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayWrapper', CheckboxType::class, [
             'label' => 'Display wrapper:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -83,8 +84,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The display wrapper option',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayTitle', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayTitle', CheckboxType::class, [
             'label' => 'Display title:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -96,8 +97,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The display title option',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayCreated', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayCreated', CheckboxType::class, [
             'label' => 'Display created:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -109,8 +110,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The display created option',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayUpdated', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayUpdated', CheckboxType::class, [
             'label' => 'Display updated:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -122,8 +123,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The display updated option',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayTextInfo', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayTextInfo', CheckboxType::class, [
             'label' => 'Display text info:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -135,8 +136,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The display text info option',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayPrint', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayPrint', CheckboxType::class, [
             'label' => 'Display print:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -148,7 +149,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The display print option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**
@@ -171,7 +172,7 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => true,
         ]);
-        $builder->add('pagePrivateMode', CheckboxType::class, [
+        $builder->add($builder->create('pagePrivateMode', CheckboxType::class, [
             'label' => 'Page private mode:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -183,8 +184,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The page private mode option',
             ],
             'required' => false,
-        ]);
-        $builder->add('showOnlyOwnEntries', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('showOnlyOwnEntries', CheckboxType::class, [
             'label' => 'Show only own entries:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -196,8 +197,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The show only own entries option',
             ],
             'required' => false,
-        ]);
-        $builder->add('filterDataByLocale', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('filterDataByLocale', CheckboxType::class, [
             'label' => 'Filter data by locale:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -209,7 +210,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The filter data by locale option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**
@@ -217,7 +218,7 @@ abstract class AbstractConfigType extends AbstractType
      */
     public function addModerationFields(FormBuilderInterface $builder, array $options = []): void
     {
-        $builder->add('allowModerationSpecificCreatorForPage', CheckboxType::class, [
+        $builder->add($builder->create('allowModerationSpecificCreatorForPage', CheckboxType::class, [
             'label' => 'Allow moderation specific creator for page:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -229,8 +230,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The allow moderation specific creator for page option',
             ],
             'required' => false,
-        ]);
-        $builder->add('allowModerationSpecificCreationDateForPage', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('allowModerationSpecificCreationDateForPage', CheckboxType::class, [
             'label' => 'Allow moderation specific creation date for page:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -242,7 +243,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The allow moderation specific creation date for page option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**
@@ -257,7 +258,7 @@ abstract class AbstractConfigType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('enabledFinderTypes', MultiListType::class, [
+        $builder->add($builder->create('enabledFinderTypes', MultiListType::class, [
             'label' => 'Enabled finder types:',
             'label_attr' => [
                 'class' => 'tooltips',
@@ -275,7 +276,7 @@ abstract class AbstractConfigType extends AbstractType
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
             'expanded' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**

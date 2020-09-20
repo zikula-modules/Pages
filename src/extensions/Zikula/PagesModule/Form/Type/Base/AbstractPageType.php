@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType;
 use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
@@ -111,7 +112,7 @@ abstract class AbstractPageType extends AbstractType
             ],
             'required' => true,
         ]);
-        $builder->add('metaDescription', TextType::class, [
+        $builder->add($builder->create('metaDescription', TextType::class, [
             'label' => 'Meta description:',
             'empty_data' => '',
             'attr' => [
@@ -120,8 +121,8 @@ abstract class AbstractPageType extends AbstractType
                 'title' => 'Enter the meta description of the page.',
             ],
             'required' => false,
-        ]);
-        $builder->add('pageLanguage', LocaleType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('pageLanguage', LocaleType::class, [
             'label' => 'Page language:',
             'empty_data' => '',
             'attr' => [
@@ -133,7 +134,7 @@ abstract class AbstractPageType extends AbstractType
             'placeholder' => 'All',
             'choices' => /** @Ignore */$this->localeApi->getSupportedLocaleNames(),
             'choice_loader' => null,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $builder->add('content', TextareaType::class, [
             'label' => 'Content:',
             'help' => 'Note: this value must not exceed %length% characters.',
@@ -146,7 +147,7 @@ abstract class AbstractPageType extends AbstractType
             ],
             'required' => true,
         ]);
-        $builder->add('counter', IntegerType::class, [
+        $builder->add($builder->create('counter', IntegerType::class, [
             'label' => 'Counter:',
             'empty_data' => 0,
             'attr' => [
@@ -155,8 +156,8 @@ abstract class AbstractPageType extends AbstractType
                 'title' => 'Enter the counter of the page. Only digits are allowed.',
             ],
             'required' => false,
-        ]);
-        $builder->add('active', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('active', CheckboxType::class, [
             'label' => 'Active:',
             'label_attr' => [
                 'class' => 'switch-custom',
@@ -166,8 +167,8 @@ abstract class AbstractPageType extends AbstractType
                 'title' => 'active ?',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayWrapper', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayWrapper', CheckboxType::class, [
             'label' => 'Display wrapper:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -179,8 +180,8 @@ abstract class AbstractPageType extends AbstractType
                 'title' => 'display wrapper ?',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayTitle', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayTitle', CheckboxType::class, [
             'label' => 'Display title:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -192,8 +193,8 @@ abstract class AbstractPageType extends AbstractType
                 'title' => 'display title ?',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayCreated', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayCreated', CheckboxType::class, [
             'label' => 'Display created:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -205,8 +206,8 @@ abstract class AbstractPageType extends AbstractType
                 'title' => 'display created ?',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayUpdated', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayUpdated', CheckboxType::class, [
             'label' => 'Display updated:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -218,8 +219,8 @@ abstract class AbstractPageType extends AbstractType
                 'title' => 'display updated ?',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayTextInfo', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayTextInfo', CheckboxType::class, [
             'label' => 'Display text info:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -231,8 +232,8 @@ abstract class AbstractPageType extends AbstractType
                 'title' => 'display text info ?',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayPrint', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayPrint', CheckboxType::class, [
             'label' => 'Display print:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -244,7 +245,7 @@ abstract class AbstractPageType extends AbstractType
                 'title' => 'display print ?',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         
         $helpText = /** @Translate */'You can input a custom permalink for the page or let this field free to create one automatically.';
         $builder->add('slug', TextType::class, [
