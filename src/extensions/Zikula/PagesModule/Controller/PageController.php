@@ -46,7 +46,7 @@ class PageController extends AbstractPageController
      * )
      * @Theme("admin")
      */
-    public function adminIndexAction(
+    public function adminIndex(
         Request $request,
         PermissionHelper $permissionHelper
     ): Response {
@@ -63,7 +63,7 @@ class PageController extends AbstractPageController
      *        methods = {"GET"}
      * )
      */
-    public function indexAction(
+    public function index(
         Request $request,
         PermissionHelper $permissionHelper
     ): Response {
@@ -83,7 +83,7 @@ class PageController extends AbstractPageController
      * )
      * @Theme("admin")
      */
-    public function adminViewAction(
+    public function adminView(
         Request $request,
         RouterInterface $router,
         PermissionHelper $permissionHelper,
@@ -116,7 +116,7 @@ class PageController extends AbstractPageController
      *        methods = {"GET"}
      * )
      */
-    public function viewAction(
+    public function view(
         Request $request,
         RouterInterface $router,
         PermissionHelper $permissionHelper,
@@ -150,7 +150,7 @@ class PageController extends AbstractPageController
      * )
      * @Theme("admin")
      */
-    public function adminEditAction(
+    public function adminEdit(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -175,7 +175,7 @@ class PageController extends AbstractPageController
      *        methods = {"GET", "POST"}
      * )
      */
-    public function editAction(
+    public function edit(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -196,7 +196,7 @@ class PageController extends AbstractPageController
      * @Route("/print/{slug}")
      * @Theme("print")
      */
-    public function displayPrintableAction(
+    public function displayPrintable(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -226,7 +226,7 @@ class PageController extends AbstractPageController
      * )
      * @Theme("admin")
      */
-    public function adminDisplayAction(
+    public function adminDisplay(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -255,7 +255,7 @@ class PageController extends AbstractPageController
      *        methods = {"GET"}
      * )
      */
-    public function displayAction(
+    public function display(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -284,7 +284,7 @@ class PageController extends AbstractPageController
      * )
      * @Theme("admin")
      */
-    public function adminHandleSelectedEntriesAction(
+    public function adminHandleSelectedEntries(
         Request $request,
         LoggerInterface $logger,
         EntityFactory $entityFactory,
@@ -292,7 +292,7 @@ class PageController extends AbstractPageController
         HookHelper $hookHelper,
         CurrentUserApiInterface $currentUserApi
     ): RedirectResponse {
-        return $this->handleSelectedEntriesActionInternal(
+        return $this->handleSelectedEntriesInternal(
             $request,
             $logger,
             $entityFactory,
@@ -310,7 +310,7 @@ class PageController extends AbstractPageController
      *        methods = {"POST"}
      * )
      */
-    public function handleSelectedEntriesAction(
+    public function handleSelectedEntries(
         Request $request,
         LoggerInterface $logger,
         EntityFactory $entityFactory,
@@ -318,7 +318,7 @@ class PageController extends AbstractPageController
         HookHelper $hookHelper,
         CurrentUserApiInterface $currentUserApi
     ): RedirectResponse {
-        return $this->handleSelectedEntriesActionInternal(
+        return $this->handleSelectedEntriesInternal(
             $request,
             $logger,
             $entityFactory,
