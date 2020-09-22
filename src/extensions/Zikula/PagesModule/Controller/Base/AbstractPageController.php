@@ -249,7 +249,7 @@ abstract class AbstractPageController extends AbstractController
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
-    protected function handleSelectedEntriesActionInternal(
+    protected function handleSelectedEntriesInternal(
         Request $request,
         LoggerInterface $logger,
         EntityFactory $entityFactory,
