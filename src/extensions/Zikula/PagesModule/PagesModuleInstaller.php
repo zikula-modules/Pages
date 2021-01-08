@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace Zikula\PagesModule;
 
+use DateTime;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\PagesModule\Base\AbstractPagesModuleInstaller;
 use Zikula\PagesModule\Entity\PageEntity;
