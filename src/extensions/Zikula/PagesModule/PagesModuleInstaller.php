@@ -99,7 +99,7 @@ class PagesModuleInstaller extends AbstractPagesModuleInstaller
                 $page->setDisplayUpdated((bool) $row['displayupdated']);
                 $page->setDisplayTextInfo((bool) $row['displaytextinfo']);
                 $page->setDisplayPrint((bool) $row['displayprint']);
-                $page->setLanguage((bool) $row['language']);
+                $page->setPageLanguage((bool) $row['language']);
                 $page->setActive(true);
 
                 $uid = $row['cr_uid'];
