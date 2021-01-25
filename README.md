@@ -21,7 +21,7 @@ For a more comprehensive content management extension see [Content](https://gith
 
 ## Requirements
 
-The `master` branch of this module is intended for being used with Zikula 3.0.
+The `main` branch of this module is intended for being used with Zikula 3.0.
 For Zikula 2.0.x look at [releases](https://github.com/zikula-modules/Pages/releases/) and the [v3 branch](https://github.com/zikula-modules/Pages/tree/v3).
 
 ## Installation
