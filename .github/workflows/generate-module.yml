@@ -38,7 +38,7 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: '⬆️ update dependencies'
+        commit-message: '⬆️ update generated code'
         title: ${{ steps.vars.outputs.pr_title }}
         body: ${{ steps.vars.outputs.pr_body }}
         branch: generator-update
