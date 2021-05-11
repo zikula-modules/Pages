@@ -93,14 +93,14 @@ class PagesModuleInstaller extends AbstractPagesModuleInstaller
                 $page->setMetaDescription($row['metadescription']);
                 $page->setSlug($row['urltitle']);
                 $page->setContent($row['content']);
-                $page->setCounter($row['counter']);
+                $page->setCounter((int) $row['counter']);
                 $page->setDisplayWrapper((bool) $row['displaywrapper']);
                 $page->setDisplayTitle((bool) $row['displaytitle']);
                 $page->setDisplayCreated((bool) $row['displaycreated']);
                 $page->setDisplayUpdated((bool) $row['displayupdated']);
                 $page->setDisplayTextInfo((bool) $row['displaytextinfo']);
                 $page->setDisplayPrint((bool) $row['displayprint']);
-                $page->setPageLanguage((bool) $row['language']);
+                $page->setPageLanguage((string) $row['language']);
                 $page->setActive(true);
 
                 $uid = $row['cr_uid'];
