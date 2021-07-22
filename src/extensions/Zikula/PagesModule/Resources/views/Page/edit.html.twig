@@ -14,20 +14,44 @@
         {{ form_errors(form) }}
         <fieldset>
             <legend>{% trans from 'messages' %}Content{% endtrans %}</legend>
-            {{ form_row(form.title) }}
-            {{ form_row(form.metaDescription) }}
-            {{ form_row(form.pageLanguage) }}
-            {{ form_row(form.content) }}
-            <div class="d-none">
-                {{ form_row(form.counter) }}
-            </div>
-            {{ form_row(form.active) }}
-            {{ form_row(form.displayWrapper) }}
-            {{ form_row(form.displayTitle) }}
-            {{ form_row(form.displayCreated) }}
-            {{ form_row(form.displayUpdated) }}
-            {{ form_row(form.displayTextInfo) }}
-            {{ form_row(form.displayPrint) }}
+            {% if form.title is defined %}
+                {{ form_row(form.title) }}
+            {% endif %}
+            {% if form.metaDescription is defined %}
+                {{ form_row(form.metaDescription) }}
+            {% endif %}
+            {% if form.pageLanguage is defined %}
+                {{ form_row(form.pageLanguage) }}
+            {% endif %}
+            {% if form.content is defined %}
+                {{ form_row(form.content) }}
+            {% endif %}
+            {% if form.counter is defined %}
+                <div class="d-none">
+                    {{ form_row(form.counter) }}
+                </div>
+            {% endif %}
+            {% if form.active is defined %}
+                {{ form_row(form.active) }}
+            {% endif %}
+            {% if form.displayWrapper is defined %}
+                {{ form_row(form.displayWrapper) }}
+            {% endif %}
+            {% if form.displayTitle is defined %}
+                {{ form_row(form.displayTitle) }}
+            {% endif %}
+            {% if form.displayCreated is defined %}
+                {{ form_row(form.displayCreated) }}
+            {% endif %}
+            {% if form.displayUpdated is defined %}
+                {{ form_row(form.displayUpdated) }}
+            {% endif %}
+            {% if form.displayTextInfo is defined %}
+                {{ form_row(form.displayTextInfo) }}
+            {% endif %}
+            {% if form.displayPrint is defined %}
+                {{ form_row(form.displayPrint) }}
+            {% endif %}
             {{ form_row(form.slug) }}
         </fieldset>
         

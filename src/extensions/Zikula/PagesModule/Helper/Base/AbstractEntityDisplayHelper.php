@@ -57,7 +57,19 @@ abstract class AbstractEntityDisplayHelper
     }
     
     /**
-     * Returns the formatted title for a given entity.
+     * Returns an additional description for a given entity.
+     */
+    public function getDescription(EntityAccess $entity): string
+    {
+        if ($entity instanceof PageEntity) {
+            return $this->getPageDescription($entity);
+        }
+    
+        return '';
+    }
+    
+    /**
+     * Returns the formatted title for a given page.
      */
     protected function formatPage(PageEntity $entity): string
     {
@@ -68,6 +80,19 @@ abstract class AbstractEntityDisplayHelper
             ],
             'page'
         );
+    }
+    
+    /**
+     * Returns an additional description for a given page.
+     */
+    protected function getPageDescription(PageEntity $entity): string
+    {
+        $descriptionFieldName = $this->getDescriptionFieldName($entity->get_objectType());
+    
+        return isset($entity[$descriptionFieldName]) && !empty($entity[$descriptionFieldName])
+            ? $entity[$descriptionFieldName]
+            : ''
+        ;
     }
     
     /**

@@ -194,8 +194,8 @@ abstract class AbstractPageEntity extends EntityAccess
     
     /**
      * @Gedmo\Slug(fields={"title"}, updatable=true, unique=true, separator="-", style="lower")
-     * @ORM\Column(type="string", length=255, unique=true)
-     * @Assert\Length(min="1", max="255")
+     * @ORM\Column(type="string", length=190, unique=true)
+     * @Assert\Length(min="1", max="190")
      *
      * @var string
      */
@@ -228,11 +228,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->_objectType;
     }
     
-    public function set_objectType(string $_objectType): void
+    public function set_objectType(string $_objectType): self
     {
         if ($this->_objectType !== $_objectType) {
             $this->_objectType = $_objectType ?? '';
         }
+    
+        return $this;
     }
     
     public function getId(): ?int
@@ -240,11 +242,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->id;
     }
     
-    public function setId(?int $id = null): void
+    public function setId(?int $id = null): self
     {
         if ((int) $this->id !== $id) {
             $this->id = $id;
         }
+    
+        return $this;
     }
     
     public function getWorkflowState(): string
@@ -252,11 +256,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->workflowState;
     }
     
-    public function setWorkflowState(string $workflowState): void
+    public function setWorkflowState(string $workflowState): self
     {
         if ($this->workflowState !== $workflowState) {
             $this->workflowState = $workflowState ?? '';
         }
+    
+        return $this;
     }
     
     public function getTitle(): string
@@ -264,11 +270,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->title;
     }
     
-    public function setTitle(string $title): void
+    public function setTitle(string $title): self
     {
         if ($this->title !== $title) {
             $this->title = $title ?? '';
         }
+    
+        return $this;
     }
     
     public function getMetaDescription(): string
@@ -276,11 +284,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->metaDescription;
     }
     
-    public function setMetaDescription(string $metaDescription): void
+    public function setMetaDescription(string $metaDescription): self
     {
         if ($this->metaDescription !== $metaDescription) {
             $this->metaDescription = $metaDescription ?? '';
         }
+    
+        return $this;
     }
     
     public function getPageLanguage(): string
@@ -288,11 +298,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->pageLanguage;
     }
     
-    public function setPageLanguage(string $pageLanguage): void
+    public function setPageLanguage(string $pageLanguage): self
     {
         if ($this->pageLanguage !== $pageLanguage) {
             $this->pageLanguage = $pageLanguage ?? '';
         }
+    
+        return $this;
     }
     
     public function getContent(): string
@@ -300,11 +312,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->content;
     }
     
-    public function setContent(string $content): void
+    public function setContent(string $content): self
     {
         if ($this->content !== $content) {
             $this->content = $content ?? '';
         }
+    
+        return $this;
     }
     
     public function getCounter(): int
@@ -312,11 +326,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->counter;
     }
     
-    public function setCounter(int $counter): void
+    public function setCounter(int $counter): self
     {
         if ((int) $this->counter !== $counter) {
             $this->counter = $counter;
         }
+    
+        return $this;
     }
     
     public function getActive(): bool
@@ -324,11 +340,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->active;
     }
     
-    public function setActive(bool $active): void
+    public function setActive(bool $active): self
     {
         if ((bool) $this->active !== $active) {
             $this->active = $active;
         }
+    
+        return $this;
     }
     
     public function getDisplayWrapper(): bool
@@ -336,11 +354,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->displayWrapper;
     }
     
-    public function setDisplayWrapper(bool $displayWrapper): void
+    public function setDisplayWrapper(bool $displayWrapper): self
     {
         if ((bool) $this->displayWrapper !== $displayWrapper) {
             $this->displayWrapper = $displayWrapper;
         }
+    
+        return $this;
     }
     
     public function getDisplayTitle(): bool
@@ -348,11 +368,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->displayTitle;
     }
     
-    public function setDisplayTitle(bool $displayTitle): void
+    public function setDisplayTitle(bool $displayTitle): self
     {
         if ((bool) $this->displayTitle !== $displayTitle) {
             $this->displayTitle = $displayTitle;
         }
+    
+        return $this;
     }
     
     public function getDisplayCreated(): bool
@@ -360,11 +382,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->displayCreated;
     }
     
-    public function setDisplayCreated(bool $displayCreated): void
+    public function setDisplayCreated(bool $displayCreated): self
     {
         if ((bool) $this->displayCreated !== $displayCreated) {
             $this->displayCreated = $displayCreated;
         }
+    
+        return $this;
     }
     
     public function getDisplayUpdated(): bool
@@ -372,11 +396,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->displayUpdated;
     }
     
-    public function setDisplayUpdated(bool $displayUpdated): void
+    public function setDisplayUpdated(bool $displayUpdated): self
     {
         if ((bool) $this->displayUpdated !== $displayUpdated) {
             $this->displayUpdated = $displayUpdated;
         }
+    
+        return $this;
     }
     
     public function getDisplayTextInfo(): bool
@@ -384,11 +410,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->displayTextInfo;
     }
     
-    public function setDisplayTextInfo(bool $displayTextInfo): void
+    public function setDisplayTextInfo(bool $displayTextInfo): self
     {
         if ((bool) $this->displayTextInfo !== $displayTextInfo) {
             $this->displayTextInfo = $displayTextInfo;
         }
+    
+        return $this;
     }
     
     public function getDisplayPrint(): bool
@@ -396,11 +424,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->displayPrint;
     }
     
-    public function setDisplayPrint(bool $displayPrint): void
+    public function setDisplayPrint(bool $displayPrint): self
     {
         if ((bool) $this->displayPrint !== $displayPrint) {
             $this->displayPrint = $displayPrint;
         }
+    
+        return $this;
     }
     
     public function getSlug(): ?string
@@ -408,11 +438,13 @@ abstract class AbstractPageEntity extends EntityAccess
         return $this->slug;
     }
     
-    public function setSlug(?string $slug = null): void
+    public function setSlug(?string $slug = null): self
     {
         if ($this->slug !== $slug) {
             $this->slug = $slug;
         }
+    
+        return $this;
     }
     
     public function getCategories(): ?Collection

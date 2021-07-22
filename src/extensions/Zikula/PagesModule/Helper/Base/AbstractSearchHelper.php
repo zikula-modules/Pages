@@ -120,7 +120,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
         foreach ($searchTypes as $searchTypeCode => $typeInfo) {
             $isActivated = false;
             $searchSettings = $request->query->get('zikulasearchmodule_search', []);
-            $moduleActivationInfo = $searchSettings['modules'];
+            $moduleActivationInfo = $searchSettings['modules'] ?? [];
             if (isset($moduleActivationInfo['ZikulaPagesModule'])) {
                 $moduleActivationInfo = $moduleActivationInfo['ZikulaPagesModule'];
                 $isActivated = isset($moduleActivationInfo['active_' . $searchTypeCode]);

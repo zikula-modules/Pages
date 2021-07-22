@@ -534,7 +534,9 @@ abstract class AbstractEditHandler
     
         $action = $args['commandName'];
     
-        $this->fetchInputData();
+        if (false === $this->fetchInputData()) {
+            return false;
+        }
     
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
