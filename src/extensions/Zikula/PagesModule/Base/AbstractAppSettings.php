@@ -183,11 +183,13 @@ abstract class AbstractAppSettings
         return $this->enableCategorisation;
     }
     
-    public function setEnableCategorisation(bool $enableCategorisation): void
+    public function setEnableCategorisation(bool $enableCategorisation): self
     {
         if ((bool) $this->enableCategorisation !== $enableCategorisation) {
             $this->enableCategorisation = $enableCategorisation;
         }
+    
+        return $this;
     }
     
     public function getDisplayWrapper(): bool
@@ -195,11 +197,13 @@ abstract class AbstractAppSettings
         return $this->displayWrapper;
     }
     
-    public function setDisplayWrapper(bool $displayWrapper): void
+    public function setDisplayWrapper(bool $displayWrapper): self
     {
         if ((bool) $this->displayWrapper !== $displayWrapper) {
             $this->displayWrapper = $displayWrapper;
         }
+    
+        return $this;
     }
     
     public function getDisplayTitle(): bool
@@ -207,11 +211,13 @@ abstract class AbstractAppSettings
         return $this->displayTitle;
     }
     
-    public function setDisplayTitle(bool $displayTitle): void
+    public function setDisplayTitle(bool $displayTitle): self
     {
         if ((bool) $this->displayTitle !== $displayTitle) {
             $this->displayTitle = $displayTitle;
         }
+    
+        return $this;
     }
     
     public function getDisplayCreated(): bool
@@ -219,11 +225,13 @@ abstract class AbstractAppSettings
         return $this->displayCreated;
     }
     
-    public function setDisplayCreated(bool $displayCreated): void
+    public function setDisplayCreated(bool $displayCreated): self
     {
         if ((bool) $this->displayCreated !== $displayCreated) {
             $this->displayCreated = $displayCreated;
         }
+    
+        return $this;
     }
     
     public function getDisplayUpdated(): bool
@@ -231,11 +239,13 @@ abstract class AbstractAppSettings
         return $this->displayUpdated;
     }
     
-    public function setDisplayUpdated(bool $displayUpdated): void
+    public function setDisplayUpdated(bool $displayUpdated): self
     {
         if ((bool) $this->displayUpdated !== $displayUpdated) {
             $this->displayUpdated = $displayUpdated;
         }
+    
+        return $this;
     }
     
     public function getDisplayTextInfo(): bool
@@ -243,11 +253,13 @@ abstract class AbstractAppSettings
         return $this->displayTextInfo;
     }
     
-    public function setDisplayTextInfo(bool $displayTextInfo): void
+    public function setDisplayTextInfo(bool $displayTextInfo): self
     {
         if ((bool) $this->displayTextInfo !== $displayTextInfo) {
             $this->displayTextInfo = $displayTextInfo;
         }
+    
+        return $this;
     }
     
     public function getDisplayPrint(): bool
@@ -255,11 +267,13 @@ abstract class AbstractAppSettings
         return $this->displayPrint;
     }
     
-    public function setDisplayPrint(bool $displayPrint): void
+    public function setDisplayPrint(bool $displayPrint): self
     {
         if ((bool) $this->displayPrint !== $displayPrint) {
             $this->displayPrint = $displayPrint;
         }
+    
+        return $this;
     }
     
     public function getPageEntriesPerPage(): int
@@ -267,11 +281,13 @@ abstract class AbstractAppSettings
         return $this->pageEntriesPerPage;
     }
     
-    public function setPageEntriesPerPage(int $pageEntriesPerPage): void
+    public function setPageEntriesPerPage(int $pageEntriesPerPage): self
     {
         if ((int) $this->pageEntriesPerPage !== $pageEntriesPerPage) {
             $this->pageEntriesPerPage = $pageEntriesPerPage;
         }
+    
+        return $this;
     }
     
     public function getPagePrivateMode(): bool
@@ -279,11 +295,13 @@ abstract class AbstractAppSettings
         return $this->pagePrivateMode;
     }
     
-    public function setPagePrivateMode(bool $pagePrivateMode): void
+    public function setPagePrivateMode(bool $pagePrivateMode): self
     {
         if ((bool) $this->pagePrivateMode !== $pagePrivateMode) {
             $this->pagePrivateMode = $pagePrivateMode;
         }
+    
+        return $this;
     }
     
     public function getShowOnlyOwnEntries(): bool
@@ -291,11 +309,13 @@ abstract class AbstractAppSettings
         return $this->showOnlyOwnEntries;
     }
     
-    public function setShowOnlyOwnEntries(bool $showOnlyOwnEntries): void
+    public function setShowOnlyOwnEntries(bool $showOnlyOwnEntries): self
     {
         if ((bool) $this->showOnlyOwnEntries !== $showOnlyOwnEntries) {
             $this->showOnlyOwnEntries = $showOnlyOwnEntries;
         }
+    
+        return $this;
     }
     
     public function getFilterDataByLocale(): bool
@@ -303,11 +323,13 @@ abstract class AbstractAppSettings
         return $this->filterDataByLocale;
     }
     
-    public function setFilterDataByLocale(bool $filterDataByLocale): void
+    public function setFilterDataByLocale(bool $filterDataByLocale): self
     {
         if ((bool) $this->filterDataByLocale !== $filterDataByLocale) {
             $this->filterDataByLocale = $filterDataByLocale;
         }
+    
+        return $this;
     }
     
     public function getAllowModerationSpecificCreatorForPage(): bool
@@ -315,11 +337,13 @@ abstract class AbstractAppSettings
         return $this->allowModerationSpecificCreatorForPage;
     }
     
-    public function setAllowModerationSpecificCreatorForPage(bool $allowModerationSpecificCreatorForPage): void
+    public function setAllowModerationSpecificCreatorForPage(bool $allowModerationSpecificCreatorForPage): self
     {
         if ((bool) $this->allowModerationSpecificCreatorForPage !== $allowModerationSpecificCreatorForPage) {
             $this->allowModerationSpecificCreatorForPage = $allowModerationSpecificCreatorForPage;
         }
+    
+        return $this;
     }
     
     public function getAllowModerationSpecificCreationDateForPage(): bool
@@ -327,11 +351,13 @@ abstract class AbstractAppSettings
         return $this->allowModerationSpecificCreationDateForPage;
     }
     
-    public function setAllowModerationSpecificCreationDateForPage(bool $allowModerationSpecificCreationDateForPage): void
+    public function setAllowModerationSpecificCreationDateForPage(bool $allowModerationSpecificCreationDateForPage): self
     {
         if ((bool) $this->allowModerationSpecificCreationDateForPage !== $allowModerationSpecificCreationDateForPage) {
             $this->allowModerationSpecificCreationDateForPage = $allowModerationSpecificCreationDateForPage;
         }
+    
+        return $this;
     }
     
     public function getEnabledFinderTypes(): string
@@ -339,11 +365,13 @@ abstract class AbstractAppSettings
         return $this->enabledFinderTypes;
     }
     
-    public function setEnabledFinderTypes(string $enabledFinderTypes): void
+    public function setEnabledFinderTypes(string $enabledFinderTypes): self
     {
         if ($this->enabledFinderTypes !== $enabledFinderTypes) {
             $this->enabledFinderTypes = $enabledFinderTypes ?? '';
         }
+    
+        return $this;
     }
     
     /**

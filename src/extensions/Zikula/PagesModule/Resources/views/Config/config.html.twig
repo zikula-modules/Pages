@@ -42,13 +42,27 @@
                         <legend>{{ tabTitle }}</legend>
                         <p class="alert alert-info">{% trans %}Here you can manage all basic settings for this application.{% endtrans %}</p>
                     
-                        {{ form_row(form.enableCategorisation) }}
-                        {{ form_row(form.displayWrapper) }}
-                        {{ form_row(form.displayTitle) }}
-                        {{ form_row(form.displayCreated) }}
-                        {{ form_row(form.displayUpdated) }}
-                        {{ form_row(form.displayTextInfo) }}
-                        {{ form_row(form.displayPrint) }}
+                        {% if form.enableCategorisation is defined %}
+                            {{ form_row(form.enableCategorisation) }}
+                        {% endif %}
+                        {% if form.displayWrapper is defined %}
+                            {{ form_row(form.displayWrapper) }}
+                        {% endif %}
+                        {% if form.displayTitle is defined %}
+                            {{ form_row(form.displayTitle) }}
+                        {% endif %}
+                        {% if form.displayCreated is defined %}
+                            {{ form_row(form.displayCreated) }}
+                        {% endif %}
+                        {% if form.displayUpdated is defined %}
+                            {{ form_row(form.displayUpdated) }}
+                        {% endif %}
+                        {% if form.displayTextInfo is defined %}
+                            {{ form_row(form.displayTextInfo) }}
+                        {% endif %}
+                        {% if form.displayPrint is defined %}
+                            {{ form_row(form.displayPrint) }}
+                        {% endif %}
                     </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab2" aria-labelledby="vars2Tab">
@@ -57,10 +71,18 @@
                         <legend>{{ tabTitle }}</legend>
                         <p class="alert alert-info">{% trans from 'config' %}Here you can configure parameters for list views.{% endtrans %}</p>
                         
-                        {{ form_row(form.pageEntriesPerPage) }}
-                        {{ form_row(form.pagePrivateMode) }}
-                        {{ form_row(form.showOnlyOwnEntries) }}
-                        {{ form_row(form.filterDataByLocale) }}
+                        {% if form.pageEntriesPerPage is defined %}
+                            {{ form_row(form.pageEntriesPerPage) }}
+                        {% endif %}
+                        {% if form.pagePrivateMode is defined %}
+                            {{ form_row(form.pagePrivateMode) }}
+                        {% endif %}
+                        {% if form.showOnlyOwnEntries is defined %}
+                            {{ form_row(form.showOnlyOwnEntries) }}
+                        {% endif %}
+                        {% if form.filterDataByLocale is defined %}
+                            {{ form_row(form.filterDataByLocale) }}
+                        {% endif %}
                     </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab3" aria-labelledby="vars3Tab">
@@ -69,8 +91,12 @@
                         <legend>{{ tabTitle }}</legend>
                         <p class="alert alert-info">{% trans from 'config' %}Here you can define moderation-related settings.{% endtrans %}</p>
                         
-                        {{ form_row(form.allowModerationSpecificCreatorForPage) }}
-                        {{ form_row(form.allowModerationSpecificCreationDateForPage) }}
+                        {% if form.allowModerationSpecificCreatorForPage is defined %}
+                            {{ form_row(form.allowModerationSpecificCreatorForPage) }}
+                        {% endif %}
+                        {% if form.allowModerationSpecificCreationDateForPage is defined %}
+                            {{ form_row(form.allowModerationSpecificCreationDateForPage) }}
+                        {% endif %}
                     </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab4" aria-labelledby="vars4Tab">
@@ -79,7 +105,9 @@
                         <legend>{{ tabTitle }}</legend>
                         <p class="alert alert-info">{% trans from 'config' %}These options allow you to configure integration aspects.{% endtrans %}</p>
                         
-                        {{ form_row(form.enabledFinderTypes) }}
+                        {% if form.enabledFinderTypes is defined %}
+                            {{ form_row(form.enabledFinderTypes) }}
+                        {% endif %}
                     </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tabWorkflows" aria-labelledby="workflowsTab">
